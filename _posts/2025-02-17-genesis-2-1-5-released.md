@@ -14,4 +14,4 @@ This version has the following updates.
 -   Fix explanation in the user document.
 
 Get GENESIS 2.1.5 now from our [download
-page](../../index.html@p=25924.html)!
+page](https://github.com/genesis-release-r-ccs/genesis/releases/tag/v2.1.5)!

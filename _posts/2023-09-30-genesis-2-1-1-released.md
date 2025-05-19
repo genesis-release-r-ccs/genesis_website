@@ -27,4 +27,4 @@ This version has the following updates.
     replicas
 
 Get GENESIS 2.1.1 now from our [download
-page](../../index.html@p=25924.html)!
+page](https://github.com/genesis-release-r-ccs/genesis/releases/tag/v2.1.1)!

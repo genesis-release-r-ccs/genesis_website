@@ -11,4 +11,4 @@ This version has the following new feature.
 
 <!--more-->
 Get GENESIS 2.1.0 now from our [download
-page](../../index.html@p=25924.html)!
+page](https://github.com/genesis-release-r-ccs/genesis/releases/tag/v2.1.0)!

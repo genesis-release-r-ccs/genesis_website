@@ -19,4 +19,4 @@ This version has the following updates.
     available for multiple compilers and architectures.
 
 Get GENESIS 2.1.2 now from our [download
-page](../../index.html@p=25924.html)!
+page](https://github.com/genesis-release-r-ccs/genesis/releases/tag/v2.1.2)!
