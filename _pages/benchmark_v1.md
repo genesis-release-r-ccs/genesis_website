@@ -5,6 +5,8 @@ excerpt: "Benchmark of GENESIS ver ≤1.4."
 last_modified_at: 2025-05-13T11:59:59+09:00
 toc: true
 toc_sticky: true
+sidebar:
+  nav: sidebar-basic
 ---
 
 

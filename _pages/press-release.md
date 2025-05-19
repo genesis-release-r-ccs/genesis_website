@@ -4,6 +4,8 @@ title: "Press Release"
 excerpt: "Press release of GENESIS stories."
 last_modified_at: 2025-05-13T17:59:26-09:00
 toc: false
+sidebar:
+  nav: sidebar-basic
 ---
 
 ## Press release

@@ -4,6 +4,8 @@ excerpt: "Supported Features of GENESIS."
 last_modified_at: 2025-05-08T11:59:26+09:00
 layout: single
 toc: false
+sidebar:
+  nav: sidebar-basic
 ---
 
 ## Functions of GENESIS

@@ -5,6 +5,8 @@ excerpt: "Benchmark of GENESIS."
 last_modified_at: 2025-05-12T11:59:26+09:00
 toc: true
 toc_sticky: true
+sidebar:
+  nav: sidebar-basic
 ---
 
 ## Benchmark of GENESIS 2.0 beta / 1.6 on FUGAKU

@@ -4,10 +4,10 @@ excerpt: "GENESIS developers list."
 last_modified_at: 2025-05-13T11:59:26+09:00
 layout: single
 toc: false
+sidebar:
+  nav: sidebar-basic
 ---
 
-
-## Developers
 
 ### Project leader
 

@@ -4,6 +4,8 @@ title: "Links"
 excerpt: "Preferred by researchers around the world."
 last_modified_at: 2025-05-13T21:59:26-09:00
 toc: false
+sidebar:
+  nav: sidebar-basic
 ---
 
 ##  CHARMM-GUI
