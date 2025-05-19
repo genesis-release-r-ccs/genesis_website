@@ -18,7 +18,7 @@ Jaewoon Jung, Yuji Sugita
 - Scaling molecular dynamics for large-scale simulation of biological
 systems on AMD CPU/GPU supercomputers: Lessons from LUMI  
 Diego Ugarte La Torre, Jaewoon Jung, Yuji Sugita  
-[*HPC Asia 2024* , , (2025).](http://dx.doi.org/10.1145/3712031.3712036)
+[*Proc. Int. Conf. High Perform. Comput. Asia-Pacific Region* (HPCAsia **’25**), 1–12, (2025).](http://dx.doi.org/10.1145/3712031.3712036)
 
 
 ## 2024
@@ -135,6 +135,29 @@ Hiraku Oshima, Yuji Sugita
 Relationship between α/β-Ligand Binding and Distal Domain Closure  
 Shingo Ito, Kiyoshi Yagi, Yuji Sugita  
 [*The Journal of Physical Chemistry B* **126**, 17, 3300-3308, (2022).](http://dx.doi.org/10.1021/acs.jpcb.2c01556)
+
+- Protein Folding Intermediates on the Dimensionality Reduced Landscape with UMAP and Native Contact Likelihood  
+Mao Oide, Yuji Sugita  
+[*J. Chem. Phys.* **157**, 075101, (2022).](http://dx.doi.org/10.1063/5.0099094) 
+
+- Practical Protocols for Efficient Sampling of Kinase-Inhibitor Binding Pathways Using Two-Dimensional Replica-Exchange Molecular Dynamics  
+Ai Shinobu, Suyong Re, Yuji Sugita  
+[*Frontiers in Molecular Biosciences* **9**, 878830, (2022).](http://dx.doi.org/10.3389/fmolb.2022.878830)
+
+- Implementation of residue-level coarse-grained models in GENESIS for large-scale molecular dynamics simulations  
+Cheng Tan, Jaewoon Jung, Chigusa Kobayashi, Diego Ugarte La Torre, Shoji Takada, Yuji Sugita  
+[*PLOS Computational Biology* **18**, e1009578, (2022).](http://dx.doi.org/10.1371/journal.pcbi.1009578)
+
+- The inherent flexibility of receptor binding domains in SARS-CoV-2 spike protein  
+Hisham M Dokainish, Suyong Re, Takaharu Mori, Chigusa Kobayashi, Jaewoon Jung, Yuji Sugita  
+[*eLife* **11**, e75720, (2022).](http://dx.doi.org/10.7554/elife.75720)
+
+
+## 2021
+
+- Structural and energetic analysis of metastable intermediate states in the E1P--E2P transition of Ca2+-ATPase  
+Chigusa Kobayashi, Yasuhiro Matsunaga, Jaewoon Jung, Yuji Sugita  
+[*Proc. Natl. Acad. Sci. USA* **118**, e2105507118, (2021).](http://dx.doi.org/10.1073/pnas.2105507118) 
 
 - Unraveling the Coupling between Conformational Changes and Ligand
 Binding in Ribose Binding Protein Using Multiscale Molecular Dynamics
