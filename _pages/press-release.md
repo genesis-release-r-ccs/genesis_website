@@ -8,6 +8,9 @@ toc: false
 
 ## Press release
 
+-   細胞内生命現象を計算機で観察－粗視化分子動力学プログラム GENESIS CGDYNの開発－
+    [理化学研究所 (2024年5月10日)](https://www.riken.jp/press/2024/20240510_3/index.html)
+
 -   超並列分子動力学計算ソフトウェア「GENESIS」を開発 －「京」を活用し巨大生体分子システムのシミュレーションを実現－
     [理化学研究所 (2015年5月8日)](http://www.riken.jp/pr/press/2015/20150508_2/)
 
@@ -16,11 +19,11 @@ toc: false
 -   The genesis of GENESIS  
     [RIKEN Research SUMMER 2015](http://www.riken.jp/~/media/riken/pr/publications/riken_research/2015/rr201506.pdf)
 -   「京」とGENESIS で細胞の中を観る  
-    [RIKEN NEWS 2015年10月号](http://www.riken.jp/~/media/riken/pr/publications/news/2015/rn201510.pdf)
+    [RIKEN NEWS 2015年10月号](https://www.riken.jp/medialibrary/riken/pr/publications/news/2015/rn201510.pdf)
 -   「京」を活用して巨大生体分子システムの分子動力学シミュレーションを実現  
     [BioSupercomputing Newsletter 2015年9月号](http://www.scls.riken.jp/newsletter/Vol.13/pdf/biospcmp_news_13.pdf)
 -   速く！大規模に！精密に！タンパク質の動きを解析する超並列分子動力学計算ソフトウェア「GENESIS」  
-    [理化学研究所計算科学研究機構](https://www.r-ccs.riken.jp/jp/science/research-highlights/genesis.html)
+    [理化学研究所計算科学研究機構](https://aics.riken.jp/jp/science/research-highlights/genesis.html)
 
 ## Media
 
@@ -35,7 +38,7 @@ toc: false
 -   "並列計算高速に、理研、スパコン向けソフト、新薬開発に道"  
     日経産業新聞10面 (2015年5月9日)
 -   "理研、スパコン向けシミュレーションソフトを OSS で公開"   
-    [インターネットコム (2015年5月9日)](http://internetcom.jp/webtech/20150509/riken-publishes-simulation-software-for-supercomputer-in-oss.html)
+    インターネットコム (2015年5月9日)
 -   "理研、分子動力学シミュレーションソフト「GENESIS」を無償公開"  
     [PC Watch (2015年5月8日)](http://pc.watch.impress.co.jp/docs/news/yajiuma/20150508_700932.html)
 
