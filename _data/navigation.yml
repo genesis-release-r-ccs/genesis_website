@@ -28,7 +28,7 @@ sidebar-basic:
       - title: "Download"
         url: /docs/download/
       - title: "Releases"
-        url: /news/
+        url: /docs/release_notes/
       - title: "Citation"
         url: /docs/citation/
       - title: "About"
