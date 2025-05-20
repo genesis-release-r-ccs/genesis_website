@@ -18,5 +18,3 @@ This is a minor update release concerning the following issues.
     default
 -   (manual) fix sample of the \[SELECTION\] section (p.43)
 
-The new version is available
-[here](http://www.r-ccs.riken.jp/labs/cbrt/download/)!

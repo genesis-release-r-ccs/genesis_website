@@ -9,10 +9,6 @@ This version contains following bugfixes.
 
 -   (spdyn/atdyn) Enable generalized replica exchange with solute
     tempering (gREST)
-<!--more-->
-    -   see Chap 14 REMD of the manual, [web
-        tutorial](../../index.html@p=5001.html) and
-        [FAQ](../../index.html@p=6513.html).
 -   (spdyn) Improvement of nonbonded energy in GPU usage
 -   (spdyn/atdyn) Enable options,
     pressure_virial/pressure_rmsd,including virial terms from
