@@ -3,7 +3,7 @@ title: "GENESIS Related Publications"
 excerpt: "GENESIS has been widely used by many people."
 last_modified_at: 2025-05-13T11:59:26+09:00
 layout: single
-class: wide
+classes: wide
 toc: false
 sidebar:
   nav: sidebar-basic
