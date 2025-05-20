@@ -11,19 +11,12 @@ Denver](https://sc17.supercomputing.org/) as follows.
 ------------------------------------------------------------------------
 <!--more-->
 
-**[[General introduction of
-GENESIS]{style="color: #ff9900; text-decoration: underline;"}]{style="text-decoration: underline;"}\
-**[by [[Dr. Chigusa
-Kobayashi]{style="color: #808080;"}](http://www.riken.jp/TMS2012/cbp/en/member/profile/chigusa_kobayashi.html)
-(RIKEN, AICS)]{style="color: #808080;"}\
-[*on 14th Nov. AM11:00-11:10*]{style="color: #808080;"}
+**General introduction of GENESIS** by **[Dr. Chigusa Kobayashi](https://cbp.riken.jp/en/member/profile/chigusa_kobayashi/)** (RIKEN, AICS)
+*on 14th Nov. AM11:00-11:10*
 
-[**High performance scheme in
-GENESIS**]{style="text-decoration: underline; color: #ff9900;"}\
-[by [[Dr. Jaewoon
-Jung]{style="color: #808080;"}](http://www.riken.jp/TMS2012/cbp/en/member/profile/jaewoon_jung.html)
-(RIKEN, AICS)]{style="color: #808080;"}\
-[*on 14th Nov. AM11:10-11:20*]{style="color: #808080;"}
+
+**High performance scheme in GENESIS** by **[Dr. Jaewoon Jung](https://cbp.riken.jp/en/member/profile/jaewoon_jung/)** (RIKEN, AICS)
+*on 14th Nov. AM11:10-11:20*
 
 ------------------------------------------------------------------------
 
