@@ -24,7 +24,4 @@ Fixes:
     check upon pairlist generation)
 -   (atdyn) support CHARMM19
 
-Please also check [the updated usage page](http://www.r-ccs.riken.jp/labs/cbrt/usage/usage-on-workstation-with-gpu/)
-about GPUs.
-
-TODO: FIX LINK
+Please also check [the updated usage page]({{ "/docs/usage_on_gpu_workstations" | relative_url }}) about GPUs.
