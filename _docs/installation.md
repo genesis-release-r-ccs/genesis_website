@@ -69,7 +69,7 @@ the user's computer environment. For example, "`--enable-gpu`" should be
 appended to turn on the GPGPU calculation (see Chapter "Getting started" in the
 user manual). After the "configure" command is successfully finished, type the
 following command to compile and install GENESIS. All programs of GENESIS are
-compiled and installed into the "`./bin`" directory by default. The followings
+compiled and installed into the "`genesis-X.Y.Z/bin`" directory by default. The followings
 are example commands to install GENESIS for typical Linux workstations.
 
     $ mv ~/Downloads/genesis-X.Y.Z.tar.bz2 ./
@@ -147,9 +147,10 @@ test sets, see Chapter "Getting started" in the user manual.
 -   [Installation/usage on Intel PC cluster with/without GPU](/docs/usage_on_gpu_workstations/)
 -   [Installation/usage on Fugaku at RIKEN R-CCS](/tutorials/genesis_tutorial_appendix_3_2022/)
 
+<!--
 ## Old systems
 
 -   [Installation/usage on HOKUSAI GreatWave (FX100) and BigWaterfall at RIKEN ACCC](/docs/usage_on_hokusai/)
 -   [Installation/usage on K-computer at RIKEN R-CCS](/docs/usage_on_k_computer/)
 -   [Installation/usage on TSUBAME2.5 at Tokyo Institute of Technology](/docs/usage_on_tsubame/)
-
+-->
