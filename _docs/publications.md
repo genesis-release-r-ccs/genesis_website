@@ -223,6 +223,13 @@ Medium Resolution
 Marta Kulik, Takaharu Mori, Yuji Sugita  
 [*Front. Mol. Biosci.* **8**, 631854, (2021).](http://dx.doi.org/10.3389/fmolb.2021.631854)
 
+- New parallel computing algorithm of molecular dynamics for extremely
+huge scale biological systems  
+Jaewoon Jung, Chigusa Kobayashi, Kento Kasahara, Cheng Tan, Akiyoshi
+Kuroda, Kazuo Minami, Shigeru Ishiduki, Tatsuo Nishiki, Hikaru Inoue,
+Yutaka Ishikawa, Michael Feig, Yuji Sugita  
+[*J. Comput. Chem.* **42**, 231--241, (2021).](http://dx.doi.org/10.1002/jcc.26450)
+
 
 ## 2020
 
@@ -230,13 +237,6 @@ Marta Kulik, Takaharu Mori, Yuji Sugita
 Dynamics with Enhanced Conformational Sampling  
 Hisham M. Dokainish, Yuji Sugita  
 [*International Journal of Molecular Sciences* **22**, 270, (2020).](http://dx.doi.org/10.3390/ijms22010270)
-
-- New parallel computing algorithm of molecular dynamics for extremely
-huge scale biological systems  
-Jaewoon Jung, Chigusa Kobayashi, Kento Kasahara, Cheng Tan, Akiyoshi
-Kuroda, Kazuo Minami, Shigeru Ishiduki, Tatsuo Nishiki, Hikaru Inoue,
-Yutaka Ishikawa, Michael Feig, Yuji Sugita  
-[*J. Comput. Chem.* **42**, 231--241, (2020).](http://dx.doi.org/10.1002/jcc.26450)
 
 - Group-based evaluation of temperature and pressure for molecular
 dynamics simulation with a large time step  
@@ -253,6 +253,15 @@ dynamics simulations
 Cheng Tan, Jaewoon Jung, Chigusa Kobayashi, Yuji Sugita  
 [*J. Chem. Phys.* **153**, 044110, (2020).](http://dx.doi.org/10.1063/5.0013089)
 
+- Implicit Micelle Model for Membrane Proteins Using Superellipsoid
+Approximation  
+Takaharu Mori, Yuji Sugita  
+[*J. Chem. Theory Comput.* **16**, 711--724, (2020).](http://dx.doi.org/10.1021/acs.jctc.9b00783)
+
+- Role of the N-Terminal Transmembrane Helix Contacts in the Activation of FGFR3  
+Daisuke Matsuoka, Motoshi Kamiya, Takeshi Sato, Yuji Sugita  
+[*J. Comput. Chem.* **41**, 561--572, (2020).](https://doi.org/10.1002/jcc.26122)
+
 
 ## 2019
 
@@ -260,11 +269,6 @@ Cheng Tan, Jaewoon Jung, Chigusa Kobayashi, Yuji Sugita
 Acceptance Ratio  
 Ai Shinobu, Chigusa Kobayashi, Yasuhiro Matsunaga, Yuji Sugita  
 [*Biophysics and Physicobiology* **16**, 310--321, (2019).](http://dx.doi.org/10.2142/biophysico.16.0_310)
-
-- Implicit Micelle Model for Membrane Proteins Using Superellipsoid
-Approximation  
-Takaharu Mori, Yuji Sugita  
-[*J. Chem. Theory Comput.* **16**, 711--724, (2019).](http://dx.doi.org/10.1021/acs.jctc.9b00783)
 
 - Encounter complexes and hidden poses of kinase-inhibitor binding on the
 free-energy landscape  
@@ -301,13 +305,12 @@ Takaharu Mori, Marta Kulik, Osamu Miyashita, Jaewoon Jung, Florence
 Tama, Yuji Sugita  
 [*Structure* **27**, 161--174, (2019).](http://dx.doi.org/10.1016/j.str.2018.09.004)
 
-
-## 2018
-
 - Optimal Temperature Evaluation in Molecular Dynamics Simulations with a
 Large Time Step  
 Jaewoon Jung, Chigusa Kobayashi, Yuji Sugita  
-[*Journal of Chemical Theory and Computation* **15**, 84--94, (2018).](http://dx.doi.org/10.1021/acs.jctc.8b00874)
+[*Journal of Chemical Theory and Computation* **15**, 84--94, (2019).](http://dx.doi.org/10.1021/acs.jctc.8b00874)
+
+## 2018
 
 - Molecular mechanisms for dynamic regulation of N1 riboswitch by
 aminoglycosides  
@@ -379,6 +382,10 @@ macromolecular crowding
 Po-hung Wang, Isseki Yu, Michael Feig, Yuji Sugita  
 [*Chemical Physics Letters* **671**, 63--70, (2017).](http://dx.doi.org/10.1016/j.cplett.2017.01.012)
 
+- Multiple program/multiple data molecular dynamics method with multiple
+time step integrator for large biological systems  
+Jaewoon Jung, Yuji Sugita  
+[*Journal of Computational Chemistry* **38**, 1410--1418, (2017).](http://dx.doi.org/10.1002/jcc.24511)
 
 ## 2016
 
@@ -392,11 +399,6 @@ Yuji Sugita, Michael Feig
 Environments: Theoretical and Simulation Studies with a Simplified Model  
 Tadashi Ando, Isseki Yu, Michael Feig, Yuji Sugita  
 [*The Journal of Physical Chemistry B* **120**, 11856--11865, (2016).](http://dx.doi.org/10.1021/acs.jpcb.6b06243)
-
-- Multiple program/multiple data molecular dynamics method with multiple
-time step integrator for large biological systems  
-Jaewoon Jung, Yuji Sugita  
-[*Journal of Computational Chemistry* **38**, 1410--1418, (2016).](http://dx.doi.org/10.1002/jcc.24511)
 
 - Graphics Processing Unit Acceleration and Parallelization of GENESIS for
 Large-Scale Molecular Dynamics Simulations  
