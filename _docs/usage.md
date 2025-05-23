@@ -91,9 +91,10 @@ systems.
 - [Installation/usage on Fugaku at RIKEN R-CCS](/tutorials/genesis_tutorial_appendix_3_2022/)
 
 
+<!--
 ## Old systems
 
 -   [Installation/usage on HOKUSAI GreatWave (FX100) and BigWaterfall at RIKEN ACCC](/docs/usage_on_hokusai/)
 -   [Installation/usage on K-computer at RIKEN R-CCS](/docs/usage_on_k_computer/)
 -   [Installation/usage on TSUBAME2.5 at Tokyo Institute of Technology](/docs/usage_on_tsubame/)
-
+-->
