@@ -4,19 +4,21 @@ excerpt: "Installation of GENESIS."
 last_modified_at: 2025-05-08T11:59:26+09:00
 layout: single
 toc: true
+toc_sticky: true
 sidebar:
   nav: sidebar-basic
 ---
 
 ## Requirements
 
-The recommended compilers, preprocessors, and libraries for **GENESIS
-ver. 1.4.0 or later** are listed below. Please make sure that at least
-one of them in each section is installed on your system. If the users do
-not use the Intel or Fujitsu compilers, the combination of GCC compiler,
-GCC preprocessor, and OpenMPI is recommended. Detailed information about
-the requirements for each version is described in the user manual (see
-Chapter "Getting started").
+The recommended compilers, preprocessors, and libraries for **GENESIS version
+1.4.0 or later** are listed below. Please ensure that at least one option from
+each category is installed on your system. If you are not using the Intel or
+Fujitsu compilers, we recommend the combination of the GCC compiler, GCC
+preprocessor, and OpenMPI.
+
+For detailed version-specific requirements, please refer to the User Manual,
+Chapter “Getting Started”.
 
 -   **Operating systems**
     -   Linux
@@ -59,29 +61,31 @@ Chapter "Getting started").
 
 ##  General scheme for installation
 
-The source code of GENESIS is available in the [Download page](/docs/download/).
-The users have to first uncompress the download file in an appropriate
-directory. In order to compile the source code, the users execute a "configure"
-script in the directory. This script automatically detects appropriate
-compilers, preprocessors, and libraries in the users' computer, and create
-"`Makefile`". The users may have to add some options in the command according to
-the user's computer environment. For example, "`--enable-gpu`" should be
-appended to turn on the GPGPU calculation (see Chapter "Getting started" in the
-user manual). After the "configure" command is successfully finished, type the
-following command to compile and install GENESIS. All programs of GENESIS are
-compiled and installed into the "`genesis-X.Y.Z/bin`" directory by default. The followings
-are example commands to install GENESIS for typical Linux workstations.
+Instructions for obtaining the GENESIS source code are provided on the [Download page](/docs/download/).
+After downloading, first extract the archive to an appropriate directory.
 
-    $ mv ~/Downloads/genesis-X.Y.Z.tar.bz2 ./
-    $ tar xvfj genesis-X.Y.Z.tar.bz2
-    $ cd genesis-X.Y.Z
-    $ ./configure
-    $ make install
+To compile the source code, run the `configure` script in the extracted directory. 
+This script will automatically detect suitable compilers, preprocessors, and libraries on your system, and then generate a `Makefile`. 
+Depending on your environment, you may need to add additional options to the configure command. 
+For example, to enable GPGPU acceleration, use the `--enable-gpu` option (see the "Getting Started" chapter in the User Manual for details).
 
-If the users encountered a failure during
-the installation, check the error message carefully. In most cases,
-errors are caused by invalid path of compilers and libraries. The
-followings are possible suggestions to solve frequent problems.
+Once configure completes successfully, compile and install GENESIS by executing the following command. 
+By default, all programs will be installed in the `genesis/bin` directory.
+
+Below are example commands for installing GENESIS on typical Linux workstations.
+
+```bash
+$ mv ~/Downloads/genesis-X.Y.Z.tar.bz2 ./
+$ tar xvfj genesis-X.Y.Z.tar.bz2
+$ cd genesis-X.Y.Z
+$ ./configure
+$ make install
+```
+
+If you encounter an error during installation, please review the error message
+carefully. In most cases, the issue is caused by incorrect paths to compilers or
+libraries.
+
 
 ### Trouble shooting 
 
@@ -89,57 +93,34 @@ followings are possible suggestions to solve frequent problems.
 
 #### Configure
 
--   If the error message is like "configure: error: Fortran compiler
-    cannot create executables", any Fortran compilers might not be
-    detected. Basically, the configure script looks for "mpiifort",
-    "mpif90", or "mpifrtpx" for Fortran compiler, and "mpiicc", "mpicc",
-    or "mpifccpx" for C compiler. If one of them was not detected in
-    your computer, the configure will be failed with such error. To
-    solve such problems, you may have to set the path to the executables
-    and libraries about MPI in "\~/.bashrc" or specify the compilers
-    explicitly in the configure command. You should also check the
-    typing mistakes in the path.
--   If recommended software is not used for compilation, warning
-    messages might be displayed in the terminal when the configure
-    command is executed. That message is just a warning (not an error),
-    and you can continue the compilation. However, we strongly recommend
-    you perform installation check in such cases
--   In some supercomputer systems, "module load \[module\]" command
-    might be required before the configure command. See the user guide
-    of the supercomputer system.
--   Make an attempt to execute "autoreconf" before the configure. If
-    your computer environment is significantly different from the
-    developer's one, or if you modified "configure.ac" or "Makefile.am"
-    by yourself, this attempt may work well.
+- If you encounter an error such as "configure: error: Fortran compiler cannot create executables", it is likely that no suitable Fortran compiler was detected. By default, the configure script looks for `mpiifort`, `mpif90`, or `mpifrtpx` as Fortran compilers, and `mpiicc`, `mpicc`, or `mpifccpx` for C compilers. If none of these are available in your environment, the configuration process will fail. To resolve this, ensure that the appropriate compiler and MPI library paths are correctly set in your `~/.bashrc` (or equivalent shell configuration file), or specify them explicitly in the configure command. Double-check for any typos in the paths as well.
+- If you are using compilers or libraries other than the recommended ones, warning messages may appear during the configure step. These are only warnings (not errors), and compilation can still proceed. However, we strongly recommend performing an installation check in such cases.
+- On some supercomputing systems, you may need to run `module load [module]` before executing the `configure` command. Please consult the user guide of your system for more details.
+- If you experience unexpected configuration errors, especially after editing `configure.ac` or `Makefile.am`, or if your environment differs significantly from the developer’s, try running `autoreconf` before executing `configure`. This may help resolve compatibility issues.
+
 
 #### Make install
 
--   If the error message is like "/usr/bin/ld: cannot find -lblas" or
-    "/usr/bin/ld: cannot find -llapack", make sure that the BLAS or
-    LAPACK libraries are installed in the computer. The users may also
-    have to set the path to the libraries in the "configure" command
-    with the "`LAPACK_LIBS`" or "`LAPACK_PATH`" option.
+- If you see an error such as "`/usr/bin/ld: cannot find -lblas`" or "`/usr/bin/ld: cannot find -llapack`", it indicates that the BLAS or LAPACK libraries are not found on your system. Please ensure that these libraries are properly installed. You may also need to specify their path explicitly in the `configure` command using the `LAPACK_LIBS` or `LAPACK_PATH` options.
 
 #### Other minor errors
 
--   If `Makefile.depends` is lost or broken, parallel compilation using
-    `-j` option will fail. If you encounter this situation, please go to
-    the directory where the error occurred and check the existence of
-    `Makefile.depends`. If Makefile.depends does not exist, you can
-    create the file by executing `make depend`.
+- If `Makefile.depends` is missing or corrupted, parallel compilation using the `-j` option will fail.  To resolve this issue, navigate to the directory where the error occurred and check whether the `Makefile.depends` file exists. If it does not, you can generate it by running the command `make depend`.
+
 
 ###  Verify the installation
 
-The users can verify the installation of GENESIS by using "test sets" prepared
-by the developers, which are available in the [Download page](/docs/download/).
-The following commands verify the installed spdyn. For detailed usage of the
-test sets, see Chapter "Getting started" in the user manual.
 
-    $ mv ~/Downloads/tests-X.Y.Z.tar.bz2 ./
-    $ tar xvfj tests-X.Y.Z.tar.bz2
-    $ cd tests-X.Y.Z/regression_test
-    $ export OMP_NUM_THREADS=1
-    $ ./test.py "mpirun -np 8 /home/user/genesis-X.Y.Z/bin/spdyn"
+Users can verify the successful installation of GENESIS using the official test sets provided by the developers, included in the GENESIS package on [GitHub](https://github.com/genesis-release-r-ccs/genesis/tree/main/tests).  
+The following commands demonstrate how to validate the spdyn program. For more details on using the test sets, please refer to the "Getting Started" chapter in the user manual.
+
+```bash
+$ mv ~/Downloads/tests-X.Y.Z.tar.bz2 ./
+$ tar xvfj tests-X.Y.Z.tar.bz2
+$ cd tests-X.Y.Z/regression_test
+$ export OMP_NUM_THREADS=1
+$ ./test.py "mpirun -np 8 /home/user/genesis-X.Y.Z/bin/spdyn"
+```
 
 ##  Installation for various computer systems
 
