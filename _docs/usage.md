@@ -3,7 +3,8 @@ title: "Using GENESIS"
 excerpt: "How to use GENESIS."
 last_modified_at: 2025-05-14T11:59:26+09:00
 layout: single
-toc: false
+toc: true
+toc_sticky: true
 sidebar:
   nav: sidebar-basic
 ---
@@ -22,36 +23,40 @@ programs").
 The GENESIS program package contains two MD simulators: atdyn and spdyn.
 In most cases, atdyn is applied to small systems or coarse-grained
 systems. On the other hand, spdyn is mainly employed for large systems
-(\> 100,000 atoms) in a periodic boundary condition. Basic usage of
+(> 100,000 atoms) in a periodic boundary condition. Basic usage of
 atdyn and spdyn is almost same, and it is displayed by executing the
 program with the "`-h`" option.
 
-    # Show the usage of spdyn 
-    $ /home/user/genesis/bin/spdyn -h
+```bash
+# Show the usage of spdyn 
+$ /home/user/genesis/bin/spdyn -h
+```
 
 Template input (or control) file of atdyn/spdyn can be obtained with the "`-h
 ctrl`" or "`-h ctrl_all`" option. If the users want to use spdyn for MD
 simulations, the following command is executed to generate a template control
 file:
 
-    # Generate a template control file for MD 
-    $ /home/user/genesis/bin/spdyn -h ctrl_all md > INP
-    $ less INP
+```bash
+# Generate a template control file for MD 
+$ /home/user/genesis/bin/spdyn -h ctrl_all md > INP
+$ less INP
+```
 
-Then, the users edit this control file by themselves according to the
-user's desired simulation condition. Note that in one line of the file
-all characters after "#" are recognized as a comment (not read in the
-program). Example control files are shown in
-[Samples](/docs/samples2021/) and
-[Tutorials](/tutorials/genesis_tutorial_2022/). In order to run the MD simulation,
-the users execute atdyn/spdyn for the control file. In the following
+Then, the users edit this control file by themselves according to the user's
+desired simulation condition. Note that in one line of the file all characters
+after "#" are recognized as a comment (not read in the program). Example control
+files are shown in [Samples](/docs/samples2021/) and
+[Tutorials](/tutorials/genesis_tutorial_2022/). In order to run the MD
+simulation, the users execute atdyn/spdyn for the control file. In the following
 example, MD simulation is carried out with 16 CPU cores, where the 4 MPI
-processors and 4 OpenMP threads are employed for parallel
-calculation:
+processors and 4 OpenMP threads are employed for parallel calculation:
 
-    # Run spdyn for INP using 16 CPU cores with mpirun
-    $ export OMP_NUM_THREADS=4
-    $ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
+```bash
+# Run spdyn for INP using 16 CPU cores with mpirun
+$ export OMP_NUM_THREADS=4
+$ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
+```
 
 ##  General usage of the trajectory analysis tools
 
@@ -62,9 +67,11 @@ to that in the MD simulators, and it is displayed by executing the
 program with the "`-h`" option.  For example, in the case of
 rmsd_analysis, the following command is executed:
 
-    # Generate a template control file of rmsd_analysis
-    $ /home/user/genesis/bin/rmsd_analysis -h ctrl > INP
-    $ less INP
+```bash
+# Generate a template control file of rmsd_analysis
+$ /home/user/genesis/bin/rmsd_analysis -h ctrl > INP
+$ less INP
+```
 
 Then, the users edit this control file by themselves according to the
 user's desired condition. Example control files are shown in
@@ -72,12 +79,13 @@ user's desired condition. Example control files are shown in
 [Tutorials](/tutorials/genesis_tutorial_2022/). In order to run the analysis, the
 users execute the tool for the control file.
 
-    # Run RMSD analysis
-    $ /home/user/genesis/bin/rmsd_analysis INP > log
+```bash
+# Run RMSD analysis
+$ /home/user/genesis/bin/rmsd_analysis INP > log
+```
 
-Note that MPI is disable in most analysis tools, while OpenMP
-parallelization is enable in some tools (e.g., wham_analysis and
-mbar_analysis).
+Note that MPI is disable in most analysis tools, while OpenMP parallelization is
+enable in some tools (e.g., `wham_analysis` and `mbar_analysis`).
 
 ## Usage on specific computer systems
 

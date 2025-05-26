@@ -108,7 +108,7 @@ libraries.
 - If `Makefile.depends` is missing or corrupted, parallel compilation using the `-j` option will fail.  To resolve this issue, navigate to the directory where the error occurred and check whether the `Makefile.depends` file exists. If it does not, you can generate it by running the command `make depend`.
 
 
-###  Verify the installation
+### Verify the installation
 
 
 Users can verify the successful installation of GENESIS using the official test sets provided by the developers, included in the GENESIS package on [GitHub](https://github.com/genesis-release-r-ccs/genesis/tree/main/tests).  
@@ -122,15 +122,14 @@ $ export OMP_NUM_THREADS=1
 $ ./test.py "mpirun -np 8 /home/user/genesis-X.Y.Z/bin/spdyn"
 ```
 
-##  Installation for various computer systems
+## Platform-Specific Installation Instructions
 
--   [Installation/usage on GPU workstations](/docs/usage_on_gpu_workstations/)
--   [Installation/usage on Intel PC cluster with/without GPU](/docs/usage_on_gpu_workstations/)
--   [Installation/usage on Fugaku at RIKEN R-CCS](/tutorials/genesis_tutorial_appendix_3_2022/)
+- [Installation/usage on GPU workstations](/docs/usage_on_gpu_workstations/)
+- [Installation/usage on Intel PC cluster with/without GPU](/docs/usage_on_gpu_workstations/)
+- [Installation/usage on Fugaku at RIKEN R-CCS](/tutorials/genesis_tutorial_appendix_3_2022/)
 
 <!--
 ## Old systems
-
 -   [Installation/usage on HOKUSAI GreatWave (FX100) and BigWaterfall at RIKEN ACCC](/docs/usage_on_hokusai/)
 -   [Installation/usage on K-computer at RIKEN R-CCS](/docs/usage_on_k_computer/)
 -   [Installation/usage on TSUBAME2.5 at Tokyo Institute of Technology](/docs/usage_on_tsubame/)
