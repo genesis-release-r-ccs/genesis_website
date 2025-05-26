@@ -9,59 +9,10 @@ sidebar:
   nav: sidebar-releases
 ---
 
-### GENESIS version 1.6
-
-#####  Download ver. 1.6.2 
-
-+-----------------------+-----------------------+-----------------------+
-| **Source code**       | Sep 27, 2021          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (genesis-1.6.2        |
-|                       |                       | .tar.bz2)](index.html |
-|                       |                       | @sdm_process_download |
-|                       |                       | =1&download_id=16710  |
-|                       |                       | "GENESIS 1.6.2 Source |
-|                       |                       |  Code"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **User manual\        | Sep 27, 2021          | :::: sdm_downlo       |
-| **                    |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (gene                 |
-|                       |                       | sis-1.6.2.pdf)](index |
-|                       |                       | .html@sdm_process_dow |
-|                       |                       | nload=1&download_id=1 |
-|                       |                       | 6712 "GENESIS 1.6.2 M |
-|                       |                       | anual"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **Test set**          | Dec 10, 2021          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (tes                  |
-|                       |                       | ts-1.6.2_211210.tar.b |
-|                       |                       | z2)](index.html@sdm_p |
-|                       |                       | rocess_download=1&dow |
-|                       |                       | nload_id=17222 "GENES |
-|                       |                       | IS 1.6.2 Tests Dec 10 |
-|                       |                       |  2021"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-
 The license of GENESIS source code is [the GNU Lesser General Public
 License version 3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
 
-#####  List of functions in ver. 1.6.2 
+## List of functions in ver. 1.6.2 
 
 -   CHARMM and AMBER force fields
 -   MARTINI model
@@ -94,37 +45,16 @@ License version 3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
 -   QM/MM calculation
     -   Minimization and vibrational analysis
     -   Anharmonic vibrational analysis
-        (+[SINDO](https://tms.riken.jp/en/research/software/sindo/){target="_blank"
-        rel="noopener noreferrer"})
-    -   QM/MM molecular
-        dynamics**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
-    -   Minimum energy path search using String
-        methods**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+        (+[SINDO](https://tms.riken.jp/en/research/software/sindo/)
+    -   QM/MM molecular dynamics ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+    -   Minimum energy path search using String methods ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
     -   Supported QM software:
-        [Gaussian](http://gaussian.com/){target="_blank"
-        rel="noopener noreferrer"},
-        [Q-Chem](http://www.q-chem.com){target="_blank"
-        rel="noopener noreferrer"},
-        [TeraChem](http://www.petachem.com){target="_blank"
-        rel="noopener noreferrer"},
-        [DFTB+](https://www.dftbplus.org){target="_blank"
-        rel="noopener noreferrer"},
-        [QSimulate-QM](https://qsimulate.com/academic.html){target="_blank"
-        rel="noopener noreferrer"}**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
-    -   Available MM force field: CHARMM and
-        AMBER**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+        [Gaussian](http://gaussian.com/)
+        [Q-Chem](http://www.q-chem.com)
+        [TeraChem](http://www.petachem.com)
+        [DFTB+](https://www.dftbplus.org)
+        [QSimulate-QM](https://qsimulate.com/academic.html) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+    -   Available MM force field: CHARMM and AMBER ![](/assets/images/2016_04_icon4neworange.gif){: width="40"} 
 -   Cryo-EM flexible fitting
 -   Free-energy perturbation method (FEP)** **
     -   Hybrid topology scheme
@@ -136,82 +66,20 @@ License version 3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
 -   TIP4P water model in SPDYN
 -   Trajectory analysis tools (Bond, Angle, Dihedral, RMSD, etc + 18
     tools)
--   Spatial decomposition analysis
-    (SPANA)**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-    .size-full .wp-image-911 decoding="async" width="36" height="15"
-    srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-    sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+-   Spatial decomposition analysis (SPANA) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"} 
 
-[Change log]{#id680b381734808 .collapseomatic tabindex="0"
-title="Change log"}
+## Change log
 
 -   Dec 23, 2020: GENESIS 1.6.0 released\
     -   (ATDYN) QM/MM MD
     -   (ATDYN) Minimum energy path search
     -   (TOOL) SPANA (sasa, rdf, density, hbond, contact)
-
-```{=html}
-<!-- -->
-```
 -   Aug 1, 2021: GENESIS 1.6.1 released\
     -   (ATDYN) QM/MM with AMBER force field
     -   (ATDYN) Interface with QSimulate-QM
-
-```{=html}
-<!-- -->
-```
 -   Sep 27, 2021: GENESIS 1.6.2 released\
     -   (SPDYN/ATDYN) Compiling and running GENESIS on Windows 10
     -   (TOOL) Deprecate energy_analysis
 
-\
-[Older versions]{#id680b381734845 .collapseomatic tabindex="0"
-title="Older versions"}
 
-##### Download ver. 1.6.1 
-
-+-----------------------+-----------------------+-----------------------+
-| **Source code**       | Aug 1, 2021           | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (genesis-1.6.1        |
-|                       |                       | .tar.bz2)](index.html |
-|                       |                       | @sdm_process_download |
-|                       |                       | =1&download_id=16435  |
-|                       |                       | "GENESIS 1.6.1 Source |
-|                       |                       |  Code"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **User manual\        | Aug 1, 2021           | :::: sdm_downlo       |
-| **                    |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (gene                 |
-|                       |                       | sis-1.6.1.pdf)](index |
-|                       |                       | .html@sdm_process_dow |
-|                       |                       | nload=1&download_id=1 |
-|                       |                       | 6432 "GENESIS 1.6.1 M |
-|                       |                       | anual"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **Test set**          | Dec 10, 2021          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (tes                  |
-|                       |                       | ts-1.6.1_211210.tar.b |
-|                       |                       | z2)](index.html@sdm_p |
-|                       |                       | rocess_download=1&dow |
-|                       |                       | nload_id=17221 "GENES |
-|                       |                       | IS 1.6.1 Tests Dec 10 |
-|                       |                       |  2021"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
 

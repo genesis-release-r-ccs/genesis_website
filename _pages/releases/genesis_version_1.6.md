@@ -9,61 +9,12 @@ sidebar:
   nav: sidebar-releases
 ---
 
-### GENESIS version 1.6
-
-#####  Download ver. 1.6.0 
-
-+-----------------------+-----------------------+-----------------------+
-| **Source code**       | Dec 23, 2020          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (genesis-1.6.0        |
-|                       |                       | .tar.bz2)](index.html |
-|                       |                       | @sdm_process_download |
-|                       |                       | =1&download_id=15613  |
-|                       |                       | "GENESIS 1.6.0 Source |
-|                       |                       |  Code"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **User manual\        | Dec 23, 2020          | :::: sdm_downlo       |
-| **                    |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (gene                 |
-|                       |                       | sis-1.6.0.pdf)](index |
-|                       |                       | .html@sdm_process_dow |
-|                       |                       | nload=1&download_id=1 |
-|                       |                       | 5622 "GENESIS 1.6.0 M |
-|                       |                       | anual"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **Test set**          | Dec 23, 2020          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (tests                |
-|                       |                       | -1.6.0.tar.bz2)](inde |
-|                       |                       | x.html@sdm_process_do |
-|                       |                       | wnload=1&download_id= |
-|                       |                       | 15621 "GENESIS 1.6.0  |
-|                       |                       | Tests"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-
-The license of GENESIS source code is changed from [the GNU General
-Public License version
-2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) to [the
-GNU Lesser General Public License version
+The license of GENESIS source code is changed from [the GNU General Public
+License version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) to
+[the GNU Lesser General Public License version
 3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
 
-#####  List of functions in ver. 1.6.0 
+##  List of functions in ver. 1.6.0 
 
 -   CHARMM and AMBER force fields
 -   MARTINI model
@@ -96,18 +47,11 @@ GNU Lesser General Public License version
 -   QM/MM calculation
     -   Minimization and vibrational analysis
     -   Anharmonic vibrational analysis
-        (+[SINDO](https://tms.riken.jp/en/research/software/sindo/){target="_blank"
-        rel="noopener noreferrer"})
+        (+[SINDO](https://tms.riken.jp/en/research/software/sindo/))
     -   QM/MM molecular
-        dynamics**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+        dynamics ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
     -   Minimum energy path search using String/NEB
-        methods**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-        .size-full .wp-image-911 decoding="async" width="36" height="15"
-        srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-        sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+        methods ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 -   Cryo-EM flexible fitting
 -   Free-energy perturbation method (FEP)** **
     -   Hybrid topology scheme
@@ -120,13 +64,9 @@ GNU Lesser General Public License version
 -   Trajectory analysis tools (Bond, Angle, Dihedral, RMSD, etc + 18
     tools)
 -   Spatial decomposition analysis
-    (SPANA)**[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-    .size-full .wp-image-911 decoding="async" width="36" height="15"
-    srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-    sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+    (SPANA) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-[Change log]{#id680b3813e1d1d .collapseomatic tabindex="0"
-title="Change log"}
+## Change log
 
 -   Dec 23, 2020: GENESIS 1.6.0 released\
     -   (ATDYN) QM/MM MD

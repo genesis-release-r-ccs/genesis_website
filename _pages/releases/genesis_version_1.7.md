@@ -21,18 +21,18 @@ The license of GENESIS source code is [the GNU Lesser General Public License ver
     -   CHARMM19, 22, 27, C36, C36m
 -   AMBER force fields
     -   FF99SB (ATDYN/SPDYN), FF14SB (ATDYN/SPDYN), FF19SB
-        (SPDYN) ![](/assets/images/2016_04_icon4neworange.gif)
+        (SPDYN) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 -   MARTINI model
 -   Go models for protein\
     -   Cα and KB Go models
     -   All-atom Go model
-    -   AICG2+ protein model ![](/assets/images/2016_04_icon4neworange.gif)
-    -   Macro-mixing KB Go/DoME model ![](/assets/images/2016_04_icon4neworange.gif)
--   3SPN.2C DNA model ![](/assets/images/2016_04_icon4neworange.gif)
--   Structure-based RNA model ![](/assets/images/2016_04_icon4neworange.gif)
--   HPS/KH model for IDR and RNA ![](/assets/images/2016_04_icon4neworange.gif)
--   PWMcos model for protein-DNA sequence-specific interaction ![](/assets/images/2016_04_icon4neworange.gif)
--   A tool for preparing CG files: [GENESIS-CG-tool](https://github.com/genesis-release-r-ccs/genesis_cg_tool) ![](/assets/images/2016_04_icon4neworange.gif)
+    -   AICG2+ protein model ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+    -   Macro-mixing KB Go/DoME model ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+-   3SPN.2C DNA model ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+-   Structure-based RNA model ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+-   HPS/KH model for IDR and RNA ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+-   PWMcos model for protein-DNA sequence-specific interaction ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+-   A tool for preparing CG files: [GENESIS-CG-tool](https://github.com/genesis-release-r-ccs/genesis_cg_tool) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 -   Energy minimization
     -   Steepest descent method
     -   LBFGS
@@ -46,7 +46,7 @@ The license of GENESIS source code is [the GNU Lesser General Public License ver
     -   Simulated annealing MD
     -   Steered MD and Targeted MD
 -   Implicit solvent model
-    -   GB/SA model with CHARMM and AMBER force fields ![](/assets/images/2016_04_icon4neworange.gif)
+    -   GB/SA model with CHARMM and AMBER force fields ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
     -   EEF1, IMM1, IMIC models
 -   Replica-exchange molecular dynamics method
     -   Temperature, Pressure, Surface-tension REMD
@@ -85,7 +85,7 @@ The license of GENESIS source code is [the GNU Lesser General Public License ver
 -   Trajectory analysis tools (Bond, Angle, Dihedral, RMSD, etc + 18
     tools)
 -   Spatial decomposition analysis (SPANA)
--   Morphing calculation(ATDYN) ![](/assets/images/2016_04_icon4neworange.gif)
+-   Morphing calculation(ATDYN) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
 ## Change log
 

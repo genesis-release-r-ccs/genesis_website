@@ -33,7 +33,7 @@ Only SPDYN is available currently.  For the other functions that are not impleme
   - Temperature, Pressure, Surface-tension REMD
   - Replica-exchange umbrella sampling (REUS or H-REMD)
   - Generalized replica exchange with solute tempering (gREST)
-  - On-the-fly energy analysis in gREST ![](/assets/images/2016_04_icon4neworange.gif)
+  - On-the-fly energy analysis in gREST ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
   - Multi-dimensional REMD (T-REMD/REUS, gREST/REUS)
   - Collective variable REUS
 - Boundary

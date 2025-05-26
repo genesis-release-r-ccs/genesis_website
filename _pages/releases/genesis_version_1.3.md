@@ -9,55 +9,7 @@ sidebar:
   nav: sidebar-releases
 ---
 
-### [GENESIS version 1.3]{style="color: #000000;"}
-
-#####  Download ver. 1.3.0 
-
-+-----------------------+-----------------------+-----------------------+
-| **Source code**       | Jun 18, 2018          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (genesis-1.3.         |
-|                       |                       | 0.tar.bz2)](index.htm |
-|                       |                       | l@sdm_process_downloa |
-|                       |                       | d=1&download_id=6587  |
-|                       |                       | "GENESIS 1.3.0 Source |
-|                       |                       |  Code"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **User manual\        | Jun 18, 2018          | :::: sdm_downlo       |
-| **                    |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (GEN                  |
-|                       |                       | ESIS-1.3.0.pdf)](inde |
-|                       |                       | x.html@sdm_process_do |
-|                       |                       | wnload=1&download_id= |
-|                       |                       | 6585 "GENESIS 1.3.0 M |
-|                       |                       | anual"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-| **Test set**          | Jun 18, 2018          | :::: sdm_downlo       |
-|                       |                       | ad_button_box_default |
-|                       |                       | ::: sdm_download_link |
-|                       |                       | [Download             |
-|                       |                       | (test                 |
-|                       |                       | s-1.3.0.tar.bz2)](ind |
-|                       |                       | ex.html@sdm_process_d |
-|                       |                       | ownload=1&download_id |
-|                       |                       | =6588 "GENESIS 1.3.0  |
-|                       |                       | Tests"){.sdm_download |
-|                       |                       | .grey}                |
-|                       |                       | :::                   |
-|                       |                       | ::::                  |
-+-----------------------+-----------------------+-----------------------+
-
-#####  List of functions in ver. 1.3.0  {#list-of-functions-in-ver.-1.3.0 style="text-align: left;"}
+##  List of functions in ver. 1.3.0
 
 -   MD, REMD, and Minimization
 -   Computation with working precision (Single/Double precision)
@@ -87,13 +39,9 @@ sidebar:
 -   Trajectory analysis tools (Bond, Angle, Dihedral, RMSD)
 -   TIP4P water model (AMBER/CHARMM; spdyn only)
 -   Generalized replica exchange with solute tempering
-    (gREST) **[![](assets/images/2016_04_icon4neworange.gif){.alignnone
-    .size-full .wp-image-911 decoding="async" height="15" width="36"
-    srcset="wp-content/uploads/2016/04/icon4neworange.gif 36w, wp-content/uploads/2016/04/icon4neworange-20x8.gif 20w"
-    sizes="(max-width: 36px) 100vw, 36px"}](wp-content/uploads/2016/04/icon4neworange.gif)**
+    (gREST) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-[Change log]{#id680b380c07ca8 .collapseomatic tabindex="0"
-title="Change log"}
+## Change log
 
 -   Jun 18, 2018: GENESIS 1.3.0 released
     -   (spdyn/atdyn) Enable generalized replica exchange with solute

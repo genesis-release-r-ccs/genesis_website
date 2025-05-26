@@ -67,7 +67,7 @@ sidebar:
         [QSimulate-QM](https://qsimulate.com/academic)
     -   Available MM force field: CHARMM and AMBER
 -   Cryo-EM flexible fitting
--   Free-energy perturbation method (FEP) ![](/assets/images/2016_04_icon4neworange.gif)
+-   Free-energy perturbation method (FEP) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
     -   Dual and hybrid topology schemes
     -   Soft core potentials for non-bonded interactions
     -   Modified Hamiltonian
@@ -108,9 +108,9 @@ sidebar:
 -   Oct 2, 2023: GENESIS 2.1.1 released
     -   Add energy_analysis for QM/MM calculation
     -   Enable prediodic CV in pmf_analysis
-    -   (ATDYN/SPDYN) Update simd directive for Intel compiler version \> 23.1
+    -   (ATDYN/SPDYN) Update simd directive for Intel compiler version > 23.1
     -   (ATDYN) Increase output frequency
-    -   (SPDYN) Update configure file for CUDA \> 12.0
+    -   (SPDYN) Update configure file for CUDA > 12.0
     -   (ATDYN) Added QM interface with ORCA
     -   (SPDYN) Bugfix: fix timing of transfer charge values to GPU card
         in gREST

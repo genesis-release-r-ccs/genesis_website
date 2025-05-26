@@ -24,8 +24,8 @@ gallery:
 #     image_path: /assets/images/2016_02_top.png 
 #     alt: "" 
 #     title: ""
-#   - url: /assets/images/2016_02_bpti-e1457591676943.png
-#     image_path: /assets/images/2016_02_bpti-e1457591676943.png 
+#   - url: /assets/images/2016_02_bpti.png
+#     image_path: /assets/images/2016_02_bpti.png 
 #     alt: "BPTI" 
 #     title: "BPTI"
   - url: /assets/images/2016_03_dppc.png
@@ -44,10 +44,10 @@ gallery:
     image_path: /assets/images/2016_07_tutorial-2.2.png 
     alt: "Replica Exchange Umbrella Sampling" 
     title: "Replica Exchange Umbrella Sampling"
-#   - url: /assets/images/2016_06_2dremd_pair.png
-#     image_path: /assets/images/2016_06_2dremd_pair.png 
-#     alt: "2D REMD" 
-#     title: "2D REMD"
+  - url: /assets/images/2016_06_2dremd_pair.png
+    image_path: /assets/images/2016_06_2dremd_pair.png 
+    alt: "2D REMD" 
+    title: "2D REMD"
 #   - url: /assets/images/2016_06_plot_path.png
 #     image_path: /assets/images/2016_06_plot_path.png 
 #     alt: "String Method" 
