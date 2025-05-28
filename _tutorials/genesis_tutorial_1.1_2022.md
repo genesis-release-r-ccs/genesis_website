@@ -1,5 +1,5 @@
 ---
-title: "1.1 Installation of GENESIS for Tutorials"
+title: "GENESIS Tutorial 1.1 (2022)"
 excerpt: ""
 last_modified_at: 2025-05-13T11:59:26+09:00
 layout: single
@@ -9,21 +9,22 @@ sidebar:
   nav: sidebar-basic
 ---
 
+# Installation of GENESIS for Tutorials
 
 ## Preparation of the directory
 
 First of all, let's create a directory for the GENESIS tutorials under the home
 directory (`/home/user`) by executing the following commands. We create a main
-directory "`GENESIS_Tutorials-2022`", followed by three sub-directories
-"`Programs`", "`Data`", and "`Works`".  "`Programs`" is where we will put the
-main software used in this project, i.e. the GENESIS program. "`Data`" is where
+directory `GENESIS_Tutorials-2022`, followed by three sub-directories
+`Programs`, `Data`, and `Works`.  `Programs` is where we will put the
+main software used in this project, i.e. the GENESIS program. `Data` is where
 we will put external data that will be commonly used throughout this project,
 such as PDB files (see [Tutorial 2.1](genesis_tutorial_2.1_2022.md) and force
 field parameter files (see [Tutorials 2.2](genesis_tutorial_2.2_2022.md).
-Thus, we would like to make two sub-directories "`PDB`" and "`Parameters`" under
-"`Data`" beforehand. "`Works`" is where we will run the MD simulation of the
-tutorial (see Tutorial 3 and later). Here, we also make a "`TRASH`" directory
-under "`Works`". The role of `TRASH` will be explained later.
+Thus, we would like to make two sub-directories `PDB` and `Parameters` under
+`Data` beforehand. `Works` is where we will run the MD simulation of the
+tutorial (see Tutorial 3 and later). Here, we also make a `TRASH` directory
+under `Works`. The role of `TRASH` will be explained later.
 
 ```bash
 # Move to the home directory 
@@ -67,11 +68,11 @@ ChangeLog       NEWS         configure   install-sh
 
 ## Install GENESIS
 
-Let's run the configure command. This "`configure`" is a script that checks your
-computing environment, and automatically create a "`Makefile`" that includes
+Let's run the configure command. This `configure` is a script that checks your
+computing environment, and automatically create a `Makefile` that includes
 suitable compile options. If you have some troubles, please check the GENESIS
-user manual or [Installation](/docs/installation/) page. Next, run the "`make`"
-and "`make install`" commands, which will create a "`bin`" directory in the
+user manual or [Installation](/docs/installation/) page. Next, run the `make`
+and `make install` commands, which will create a `bin` directory in the
 current directory, and install the program there. After the compilation, you
 will find many programs in the `bin` directory. Here, `atdyn` and `spdyn` are
 the MD programs, and the others are mostly trajectory analysis tools. In
@@ -129,7 +130,7 @@ directories. Please take a look inside
 the `Programs` directory. We have `genesis-2.0.0.tar` and
 `genesis-2.0.0`. In fact, we don't need the `genesis-2.0.0.tar` anymore,
 and we can delete it with the `rm` command. Here, instead of deleting
-the file, we would like to make a "`Source`" directory, compress the tar
+the file, we would like to make a `Source` directory, compress the tar
 file, and keep it there. This is because we can quickly reinstall the
 program without downloading it again, and also we can install other
 software in the `Programs` directory later.
@@ -174,12 +175,12 @@ Some people may want to install programs in a common directory, such as
 source code is. To avoid such situation, we would like to install the main
 programs locally, i.e., under the project's directory.
 
- We made the "`Data`" directory to put external data, which allows us to easily
+ We made the `Data` directory to put external data, which allows us to easily
  understand what were used as the input data in the project. In the actual
  research project, such data might include unpublished PDB files you received
  from an experimental group. The external data should always maintain the
  integrity. In order to avoid accidental update of the original external data,
- we would like to keep them in a specific directory, namely, "`Data`" directory.
+ we would like to keep them in a specific directory, namely, `Data` directory.
  
 
 As demonstrated above, in our tutorial we will also show you some techniques for

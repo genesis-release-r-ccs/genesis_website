@@ -1,5 +1,5 @@
 ---
-title: "1.2 Let's take a quick look at the source code of GENESIS"
+title: "GENESIS Tutorial 1.2 (2022)"
 excerpt: ""
 last_modified_at: 2025-05-13T11:59:26+09:00
 layout: single
@@ -8,6 +8,8 @@ toc_sticky: true
 sidebar:
   nav: sidebar-basic
 ---
+
+# Let's take a quick look at the source code of GENESIS
 
 ## Take a look at the source directory
 
@@ -109,8 +111,8 @@ interaction, and electrostatic interaction, respectively.  The first three terms
 are also called bonded interactions, and the last two terms are called
 non-bonded interactions.
 
-In the "`atdyn`" directory, you can see several files whose names start with
-"`at_energy`". You can easily imagine that `at_energy_bonds.fpp`,
+In the `atdyn` directory, you can see several files whose names start with
+`at_energy`. You can easily imagine that `at_energy_bonds.fpp`,
 `at_energy_angles.fpp`, `at_energy_dihedrals.fpp`, and `at_energy_nonbonds.fpp`
 are related to the energy calculation for the bond stretching, angle bending,
 dihedral angle rotation, and non-bonded interactions, respectively. As for the
@@ -258,16 +260,16 @@ $ less at_md_leapfrog.fpp
 Here, `coord` and `vel` are the atomic coordinates and velocities, respectively,
 `dt` is the time step, and `inv_mass` is the inverse of the atomic mass. As
 described above, the atomic forces are calculated in the subroutine
-"`compute_energy`". The trajectories of the coordinates and energy are output in
-the subroutine "`output_md`", which is contained in `at_output.fpp`.
+`compute_energy`. The trajectories of the coordinates and energy are output in
+the subroutine `output_md`, which is contained in `at_output.fpp`.
 
 In the case of the NVT or NPT ensemble, temperature and pressure are kept
 constant, where the velocities and coordinates are re-scaled according to the
 instantaneous temperature and pressure. In the leap-frog integrator of `atdyn`,
 Langevin thermostat/barostat [^4] [^5] and Berendsen thermostat/barostat [^6]
-are available. Let's search for "`langevin`" or "`berendsen`" in
+are available. Let's search for `langevin` or `berendsen` in
 `at_md_leapfrog.fpp` to see how the velocities and coordinates are re-scaled.
-In addition, let's search for "`constraints`" to understand the SHAKE algorithm
+In addition, let's search for `constraints` to understand the SHAKE algorithm
 [^7], which further updates the coordinates to fix the length of the covalent
 bond involving hydrogen.
 
