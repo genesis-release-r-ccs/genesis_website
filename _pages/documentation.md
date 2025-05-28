@@ -31,7 +31,7 @@ feature_row:
     alt: "tutorials"
     title: "Tutorials"
     excerpt: ""
-    url: "/tutorials/"
+    url: "/docs/tutorial_2022/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
   - image_path: /assets/images/20250513_showcase.png
