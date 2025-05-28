@@ -91,7 +91,8 @@ baidu_site_verification  :
 
 # site scripts
 head_scripts:
-  - https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS_CHTML
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js
+  # - https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS_CHTML
 
 
 # Social Sharing
@@ -239,6 +240,9 @@ collections:
   docs:
     output: true
     permalink: /docs/:path/
+  tutorials:
+    output: true
+    permalink: /tutorials/:path/
 
 
 # Sass/SCSS
