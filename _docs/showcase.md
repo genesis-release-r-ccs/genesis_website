@@ -12,22 +12,22 @@ gallery:
     image_path: /assets/images/2024_10_09_Droplet_Dynamics.png 
     alt: "CG simulation of large-scale droplet dynamics" 
     title: "CG simulation of large-scale droplet dynamics"
-#   - url: /assets/images/2017_10_yu_cytoplasm.jpg
-#     image_path: /assets/images/2017_10_yu_cytoplasm.jpg 
-#     alt: "All-atom MD simulation of Mycoplasma cytoplasm" 
-#     title: "All-atom MD simulation of Mycoplasma cytoplasm"
-#   - url: /assets/images/2017_10_E_mdA0201.png
-#     image_path: /assets/images/2017_10_E_mdA0201.png 
-#     alt: "" 
-#     title: ""
-#   - url: /assets/images/2016_02_top.png
-#     image_path: /assets/images/2016_02_top.png 
-#     alt: "" 
-#     title: ""
-#   - url: /assets/images/2016_02_bpti.png
-#     image_path: /assets/images/2016_02_bpti.png 
-#     alt: "BPTI" 
-#     title: "BPTI"
+  - url: /assets/images/2017_10_yu_cytoplasm.png
+    image_path: /assets/images/2017_10_yu_cytoplasm.png 
+    alt: "All-atom MD simulation of Mycoplasma cytoplasm" 
+    title: "All-atom MD simulation of Mycoplasma cytoplasm"
+  - url: /assets/images/2017_10_E_mdA0201.png
+    image_path: /assets/images/2017_10_E_mdA0201.png 
+    alt: "cd1NiR:cNOR complex" 
+    title: "cd1NiR:cNOR complex"
+  - url: /assets/images/2016_02_top.png
+    image_path: /assets/images/2016_02_top.png 
+    alt: "SecYEG channel" 
+    title: "SecYEG channel"
+  - url: /assets/images/2016_02_bpti.png
+    image_path: /assets/images/2016_02_bpti.png 
+    alt: "BPTI" 
+    title: "BPTI"
   - url: /assets/images/2016_03_dppc.png
     image_path: /assets/images/2016_03_dppc.png 
     alt: "DPPC bilayer" 
@@ -48,10 +48,11 @@ gallery:
     image_path: /assets/images/2016_06_2dremd_pair.png 
     alt: "2D REMD" 
     title: "2D REMD"
-#   - url: /assets/images/2016_06_plot_path.png
-#     image_path: /assets/images/2016_06_plot_path.png 
-#     alt: "String Method" 
-#     title: "String Method"
+  - url: /assets/images/2016_06_plot_path.png
+    image_path: /assets/images/2016_06_plot_path.png 
+    alt: "String Method" 
+    title: "String Method"
 ---
 
-{% include gallery id="gallery" layout="half" class="full" caption="This is a gallery of GENESIS simulation methods and results." %}
+<!-- {% include gallery id="gallery" layout="half" class="full" caption="This is a gallery of GENESIS simulation methods and results." %} -->
+{% include gallery id="gallery" class="full" caption="This is a gallery of GENESIS simulation methods and results." %}
