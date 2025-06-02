@@ -1,105 +1,106 @@
-### 3.1 MD simulation of alanine-dipeptide in the gas-phase 
+---
+title: "GENESIS Tutorial 3.1 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:56+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
+# 3.1 MD simulation of alanine-dipeptide in the gas-phase 
 
--   [Preparation](genesis_tutorial_3.1_2022.md#Preparation)
--   [1. Setup](genesis_tutorial_3.1_2022.md#1_Setup)
--   [2. MD simulation](genesis_tutorial_3.1_2022.md#2_MD_simulation)
--   [3. Trajectory
-    analysis](genesis_tutorial_3.1_2022.md#3_Trajectory_analysis)
-    -   [3.1 Energy](genesis_tutorial_3.1_2022.md#31_Energy)
-    -   [3.2 Dihedral angle](genesis_tutorial_3.1_2022.md#32_Dihedral_angle)
--   [References](genesis_tutorial_3.1_2022.md#References)
-
-#### [ Preparation]{#Preparation}
+##  Preparation
 
 First, let's download the tutorial file
-([tutorial22-3.1.tar.gz](assets/tutorial_files/2022_07_tutorial22-3.1.tar.gz){.mtli_attachment
-.mtli_zip}). This tutorial consists of three steps: 1) system setup, 2)
+([tutorial22-3.1.tar.gz](/assets/tutorial_files/2022_07_tutorial22-3.1.tar.gz)). This tutorial consists of three steps: 1) system setup, 2)
 MD simulation, and 3) trajectory analysis. GENESIS control file in each
 step is already included in the download file. To use the CHARMM36m
-force field parameters \[1\], let's create a symbolic link to the CHARMM
-toppar directory (see [Tutorial
-2.2](genesis_tutorial_2.2_2022.md){target="_blank" rel="noopener"}), and in
-addition, create a symbolic link to the GENESIS bin directory (see
-[Tutorial 1.1](genesis_tutorial_1.1_2022.md){target="_blank"
-rel="noopener"}).
+force field parameters [^1], let's create a symbolic link to the CHARMM
+toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)), and in
+addition, create a symbolic link to the GENESIS bin directory (see [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)).
 
-    # Download the tutorial file
-    $ cd ~/GENESIS_Tutorials-2022/Works
-    $ mv ~/Downloads/tutorial22-3.1.zip ./
-    $ unzip tutorial22-3.1.zip
 
-    # Let's clean up the directory
-    $ mv tutorial22-3.1.zip TRASH
+```
+# Download the tutorial file
+$ cd ~/GENESIS_Tutorials-2022/Works
+$ mv ~/Downloads/tutorial22-3.1.zip ./
+$ unzip tutorial22-3.1.zip
 
-    # Let's take a note
-    $ echo "tutorial-3.1: MD simulation of alanine-dipeptide in gas" >> README
+# Let's clean up the directory
+$ mv tutorial22-3.1.zip TRASH
 
-    # Check out the contents in Tutorial 3.1
-    $ cd tutorial-3.1
-    $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
-    $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
-    $ ls 
-    1_setup  2_runmd  3_trjana  bin  toppar
+# Let's take a note
+$ echo "tutorial-3.1: MD simulation of alanine-dipeptide in gas" >> README
 
-#### [ 1. Setup ]{#1_Setup}
+# Check out the contents in Tutorial 3.1
+$ cd tutorial-3.1
+$ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
+$ ln -s ../../Programs/genesis-2.0.0/bin ./bin
+$ ls 
+1_setup  2_runmd  3_trjana  bin  toppar
+
+```
+
+##  1. Setup 
 
 In this tutorial, we will simulate alanine-dipeptide in the gas phase,
 i.e., without solvent molecules. First, we build a system using
 VMD/PSFGEN from a PDB file of the alanine-dipeptide. The scheme is the
-same as in Steps1 and 3 of [Tutorial
-2.3](genesis_tutorial_2.3_2022.md){target="_blank" rel="noopener"}. We obtain
+same as in Steps1 and 3 of [Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/). We obtain
 `proa.pdb` and `proa.psf` as the input files for GENESIS. The peptide
 has one alanine residue, with the N- and C-termini capped by acetyl
 (CH~3~CO-) and N-methyl (-NHCH~3~) groups, respectively. This structure
 has already been optimized by energy minimization and there are no
 clashes between atoms. Therefore, MD simulations can be started
 immediately. Note that in most cases, energy minimization is required
-before MD simulation (e.g. [Tutorials
-3.2](genesis_tutorial_3.2_2022.md){target="_blank" rel="noopener"} and
-[3.3](genesis_tutorial_3.3_2022.md){target="_blank" rel="noopener"}).
+before MD simulation (e.g. [Tutorials 3.2](/tutorials/genesis_tutorial_3.2_2022/) and [3.3](/tutorials/genesis_tutorial_3.3_2022/)).
 
-    # Change directory for the system setup
-    $ cd 1_setup
-    $ ls
-    1_oripdb  2_psfgen
 
-    # Step1: Make a symbolic link to the original PDB file
-    $ cd 1_oripdb
-    $ ln -s ../../../../Data/PDB/ala2.pdb ./
+```
+# Change directory for the system setup
+$ cd 1_setup
+$ ls
+1_oripdb  2_psfgen
 
-    # Step2: Make PDB and PSF files 
-    $ cd ../2_psfgen
-    $ ls
-    build.tcl
+# Step1: Make a symbolic link to the original PDB file
+$ cd 1_oripdb
+$ ln -s ../../../../Data/PDB/ala2.pdb ./
 
-    $ vmd -dispdev text -e build.tcl > log 
-    $ ls
-    build.tcl  log  proa.pdb  proa.psf
+# Step2: Make PDB and PSF files 
+$ cd ../2_psfgen
+$ ls
+build.tcl
 
-    # View the initial structure 
-    $ vmd proa.pdb -psf proa.psf 
+$ vmd -dispdev text -e build.tcl > log 
+$ ls
+build.tcl  log  proa.pdb  proa.psf
 
-![](assets/images/2019_07_ala2.jpg){.aligncenter
-.wp-image-10398 fetchpriority="high" decoding="async" width="250"
-height="236"
-srcset="wp-content/uploads/2019/07/ala2-300x283.jpg 300w, wp-content/uploads/2019/07/ala2-20x20.jpg 20w, wp-content/uploads/2019/07/ala2-30x28.jpg 30w, wp-content/uploads/2019/07/ala2-40x38.jpg 40w, wp-content/uploads/2019/07/ala2.jpg 356w"
-sizes="(max-width: 250px) 100vw, 250px"}
+# View the initial structure 
+$ vmd proa.pdb -psf proa.psf 
 
-#### [ 2. MD simulation]{#2_MD_simulation}
+```
+
+![](/assets/images/2019_07_ala2.jpg)
+
+##  2. MD simulation
 
 To run the MD simulation of this peptide, change the directory to
 `2_runmd`. This directory already contains the GENESIS control file.
 Let's look at it and check the simulation conditions.
 
-    # Change directory to run MD simulation
-    $ cd ../../2_runmd
-    $ ls
-    INP
 
-    # View the control file
-    $ less INP
+```
+# Change directory to run MD simulation
+$ cd ../../2_runmd
+$ ls
+INP
+
+# View the control file
+$ less INP
+
+```
 
 In the control file, the `[INPUT]` section specifies the topology and
 parameter files for the CHARMMC36m force field. The psf and pdb files
@@ -113,65 +114,69 @@ calculate the potential energy with the cutoff distance of 49 Å, as
 specified in the `[ENERGY]` section.
 
 We use the velocity Verlet integrator (VVER) with a time step of 2 fs
-(`[DYNAMICS]`), where the SHAKE \[2\] and RATTLE algorithms \[3\] are
+(`[DYNAMICS]`), where the SHAKE [^2] and RATTLE algorithms [^3] are
 used for constraining the bond length involving hydrogen
 (`[CONSTRAINTS]`). The energy and coordinates are output every 500 steps
-(`[DYNAMICS]`). We use the Bussi thermostat \[4\] to keep the
+(`[DYNAMICS]`). We use the Bussi thermostat [^4] to keep the
 temperature constant at 298.15 K (`[ENSEMBLE]`). Since the system is the
 gas-phase, we do not use the periodic boundary condition, namely,
 boundary type is set to "`NOBC`" (no boundary condition) (`[BOUNDARY]`).
 We carry out a 1-ns MD simulation (nsteps = 500000).
 
-    [INPUT]
-    topfile = ../toppar/top_all36_prot.rtf   # topology file
-    parfile = ../toppar/par_all36m_prot.prm  # parameter file
-    psffile = ../1_setup/2_psfgen/proa.psf   # protein structure file
-    pdbfile = ../1_setup/2_psfgen/proa.pdb   # PDB file
-     
-    [OUTPUT]
-    dcdfile = md.dcd             # Coordinates trajectory file
 
-    [ENERGY]
-    forcefield       = CHARMM    # CHARMM force field
-    electrostatic    = CUTOFF    # cutoff scheme is used
-    switchdist       =   48.0    # switch distance
-    cutoffdist       =   49.0    # cutoff distance
-    pairlistdist     =   50.0    # pair-list distance
-     
-    [DYNAMICS]
-    integrator       =   VVER    # velocity Verlet
-    nsteps           = 500000    # number of MD steps
-    timestep         =  0.002    # timestep (ps)
-    eneout_period    =    500    # energy output period
-    crdout_period    =    500    # coordinates output period
-    stoptr_period    =     10    # remove translational and rotational motions
-     
-    [CONSTRAINTS]
-    rigid_bond       = YES       # use SHAKE/RATTLE
-     
-    [ENSEMBLE] 
-    ensemble         = NVT       # Canonical ensemble 
-    tpcontrol        = BUSSI     # Bussi thermostat 
-    temperature      = 298.15    # initial and target temperature (K)
+```
+[INPUT]
+topfile = ../toppar/top_all36_prot.rtf   # topology file
+parfile = ../toppar/par_all36m_prot.prm  # parameter file
+psffile = ../1_setup/2_psfgen/proa.psf   # protein structure file
+pdbfile = ../1_setup/2_psfgen/proa.pdb   # PDB file
+ 
+[OUTPUT]
+dcdfile = md.dcd             # Coordinates trajectory file
 
-    [BOUNDARY]
-    type             = NOBC      # non-periodic system
+[ENERGY]
+forcefield       = CHARMM    # CHARMM force field
+electrostatic    = CUTOFF    # cutoff scheme is used
+switchdist       =   48.0    # switch distance
+cutoffdist       =   49.0    # cutoff distance
+pairlistdist     =   50.0    # pair-list distance
+ 
+[DYNAMICS]
+integrator       =   VVER    # velocity Verlet
+nsteps           = 500000    # number of MD steps
+timestep         =  0.002    # timestep (ps)
+eneout_period    =    500    # energy output period
+crdout_period    =    500    # coordinates output period
+stoptr_period    =     10    # remove translational and rotational motions
+ 
+[CONSTRAINTS]
+rigid_bond       = YES       # use SHAKE/RATTLE
+ 
+[ENSEMBLE] 
+ensemble         = NVT       # Canonical ensemble 
+tpcontrol        = BUSSI     # Bussi thermostat 
+temperature      = 298.15    # initial and target temperature (K)
+
+[BOUNDARY]
+type             = NOBC      # non-periodic system
+
+```
 
 Now let's run GENESIS. ATDYN is more suitable than SPDYN for this
 simulation because the peptide is very small and the system is
 non-periodic. Here we specify one OpenMP thread and use only one CPU
-core for the calculation (see the [Usage
-page](usage.md){target="_blank" rel="noopener"} for
-details). The simulation takes approximately 20 seconds. Specifying
+core for the calculation (see the [Usage page](usage.md) for details). The simulation takes approximately 20 seconds. Specifying
 "`> log`" on the command line will write the output message to `log`
-(this procedure is called
-"[Redirection](https://en.wikipedia.org/wiki/Redirection_(computing)){target="_blank"
-rel="noopener"}"). if "`> log`" is omitted, the message will be
+(this procedure is called "[Redirection](https://en.wikipedia.org/wiki/Redirection_(computing))"). if "`> log`" is omitted, the message will be
 displayed in the terminal window.
 
-    # Run the MD simulation (it takes ~20 seconds)
-    $ export OMP_NUM_THREADS=1
-    $ ../bin/atdyn INP > log
+
+```
+# Run the MD simulation (it takes ~20 seconds)
+$ export OMP_NUM_THREADS=1
+$ ../bin/atdyn INP > log
+
+```
 
 After the simulation is finished, we can obtain `md.dcd` and `log` as
 the "coordinates" and "energy" trajectory of the system, respectively.
@@ -179,28 +184,32 @@ Let's visualize the coordinates trajectory with VMD. Click the "Play"
 button in the VMD main window. You can see that the atoms of the peptide
 are moving fast, including the rotation of dihedral angles.
 
-    # Check the output files
-    $ ls
-    INP  log  md.dcd
 
-    # View the MD trajectory using VMD
-    $ vmd ../1_setup/2_psfgen/proa.pdb -dcd md.dcd
+```
+# Check the output files
+$ ls
+INP  log  md.dcd
 
-![](assets/images/2022_04_Figure3.1_VMD.png){.aligncenter
-.wp-image-23511 decoding="async" width="400" height="237"
-srcset="wp-content/uploads/2022/04/Figure3.1_VMD-300x178.png 300w, wp-content/uploads/2022/04/Figure3.1_VMD-1024x607.png 1024w, wp-content/uploads/2022/04/Figure3.1_VMD-768x455.png 768w, wp-content/uploads/2022/04/Figure3.1_VMD-20x12.png 20w, wp-content/uploads/2022/04/Figure3.1_VMD-30x18.png 30w, wp-content/uploads/2022/04/Figure3.1_VMD-40x24.png 40w, wp-content/uploads/2022/04/Figure3.1_VMD.png 1164w"
-sizes="(max-width: 400px) 100vw, 400px"}
+# View the MD trajectory using VMD
+$ vmd ../1_setup/2_psfgen/proa.pdb -dcd md.dcd
+
+```
+
+![](/assets/images/2022_04_Figure3.1_VMD.png)
 
  The resulting DCD file is a binary file, not
 a text file. So, even if you use the `less` command for the dcd file,
-its contents cannot be visually confirmed by human eyes. In [Tutorial
-4.1](genesis_tutorial_4.1_2022.md){target="_blank" rel="noopener"}, you will
+its contents cannot be visually confirmed by human eyes. In [Tutorial 4.1](/tutorials/genesis_tutorial_4.1_2022/), you will
 learn how to handle DCD files.
 
 Also, let's take a look at the `log` file with the `less` command.
 
-    # View the log file
-    $ less log
+
+```
+# View the log file
+$ less log
+
+```
 
 In the middle of the `log` file, there are many lines beginning with
 "`INFO:`". In these lines, system information at each step is displayed,
@@ -209,28 +218,31 @@ where `STEP` is the number of MD steps, `TIME` is the simulation time
 (`POTENTIAL_ENE`) and kinetic energy (`KINETIC_ENE`), `RMSG` is the
 gradient of the potential energy averaged over all atoms
 (root-mean-square gradient). The components of the potential energy of
-the CHARMM force field are then displayed (bond, angle, Urey-Bradley,
-dihedral angle, improper torsion angle, CMAP, van der Waals, Coulomb).
+the CHARMM force field are then displayed (bond, angle, Urey-Bradley, dihedral angle, improper torsion angle, CMAP, van der Waals, Coulomb).
 `TEMPERATURE` is the system temperature, which is calculated from the
 kinetic energy and velocities by K~e~ = 1/2Σm~i~v~i~^2^ = 3/2Nk~B~T. The
 unit of the energy is kcal/mol, and temperature is Kelvin.
 
-    :
-    INFO:       STEP            TIME       TOTAL_ENE   POTENTIAL_ENE     KINETIC_ENE
-                RMSG            BOND           ANGLE    UREY-BRADLEY        DIHEDRAL
-            IMPROPER            CMAP         VDWAALS           ELECT     TEMPERATURE
-              VOLUME
-     --------------- --------------- --------------- --------------- ---------------
-    INFO:          0          0.0000         -6.0756        -16.3544         10.2788
-              0.7599          0.3534          0.6844          0.1145          3.5537
-              0.0216         -1.2625         -1.0729        -18.7464        215.5215
-              0.0000
 
-    INFO:        500          1.0000         -3.6016        -10.1971          6.5955
-             10.0918          2.4181          4.5486          0.4363          4.1692
-              0.1899         -1.2175         -0.8483        -19.8936        138.2915
-              0.0000
-    :
+```
+:
+INFO:       STEP            TIME       TOTAL_ENE   POTENTIAL_ENE     KINETIC_ENE
+            RMSG            BOND           ANGLE    UREY-BRADLEY        DIHEDRAL
+        IMPROPER            CMAP         VDWAALS           ELECT     TEMPERATURE
+          VOLUME
+ --------------- --------------- --------------- --------------- ---------------
+INFO:          0          0.0000         -6.0756        -16.3544         10.2788
+          0.7599          0.3534          0.6844          0.1145          3.5537
+          0.0216         -1.2625         -1.0729        -18.7464        215.5215
+          0.0000
+
+INFO:        500          1.0000         -3.6016        -10.1971          6.5955
+         10.0918          2.4181          4.5486          0.4363          4.1692
+          0.1899         -1.2175         -0.8483        -19.8936        138.2915
+          0.0000
+:
+
+```
 
  Please note that your detailed results may
 differ from the above results. The main reason is that the initial
@@ -242,8 +254,7 @@ initial seed value, set "`iseed`" explicitly in the `[DYNAMICS]` section
 
  `VOLUME` is the volume of the system. In
 this case, zero is output, since we employed the gas-phase. If periodic
-system is simulated as in [Tutorial
-3.2](genesis_tutorial_3.2_2022.md){target="_blank" rel="noopener"}, the
+system is simulated as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/), the
 volume of the simulation box is displayed in this column.
 
 At the end of the `log` file, detailed computation times for this
@@ -252,42 +263,61 @@ integrator, pair list making, and so on. "`setup`" is the time taken to
 start the MD simulation, including loading the input file and initial
 memory allocation, and "`dynamics`" represents the time for pure MD
 simulation, excluding initial setup. It can be seen that the most time
-consuming part is the non-bonded energy calculation (van der Waals and
-Coulomb terms).
+consuming part is the non-bonded energy calculation (van der Waals and Coulomb terms).
 
-    # View the last 100 lines of log
-    $ tail -100 log
 
-``` {style="text-align: justify;"}
+```
+# View the last 100 lines of log
+$ tail -100 log
+
+```
+
+``` 
 Output_Time> Averaged timer profile (Min, Max)
   total time      =      13.266
-    setup         =       0.133
-    dynamics      =      13.133
-      energy      =      11.084
-      integrator  =       1.730
-      pairlist    =       0.140 (       0.140,       0.140)
+
+```
+setup         =       0.133
+dynamics      =      13.133
+  energy      =      11.084
+  integrator  =       1.730
+  pairlist    =       0.140 (       0.140,       0.140)
+```
+
   energy           
-    bond          =       0.279 (       0.279,       0.279)
-    angle         =       2.560 (       2.560,       2.560)
-    dihedral      =       3.069 (       3.069,       3.069)
-    nonbond       =       4.193 (       4.193,       4.193)
+
+```
+bond          =       0.279 (       0.279,       0.279)
+angle         =       2.560 (       2.560,       2.560)
+dihedral      =       3.069 (       3.069,       3.069)
+nonbond       =       4.193 (       4.193,       4.193)
+```
+
 :
   integrator       
-    constraint    =       1.234 (       1.234,       1.234)
+
+```
+constraint    =       1.234 (       1.234,       1.234)
+```
+
 :
 ```
 
-#### [ 3. Trajectory analysis]{#3_Trajectory_analysis}
+##  3. Trajectory analysis
 
 Now let's analyze the energy and conformational changes of the peptide
 from the trajectory data.
 
-    # Change directory for trajectory analysis 
-    $ cd ../3_trjana/ 
-    $ ls 
-    1_energy  2_dihedral
 
-##### [3.1 Energy ]{#31_Energy}
+```
+# Change directory for trajectory analysis 
+$ cd ../3_trjana/ 
+$ ls 
+1_energy  2_dihedral
+
+```
+
+### 3.1 Energy 
 
 Let's plot the time course of the potential energy using Gnuplot. First,
 pick up the lines containing "`INFO:`" from the `log` file with the
@@ -295,50 +325,58 @@ pick up the lines containing "`INFO:`" from the `log` file with the
 the 5th column, which corresponds to the total potential energy. You can
 see that the energy fluctuates around a certain value.
 
-    # Change directory for trajectory analysis
-    $ cd 1_energy
 
-    # Select lines that contain "INFO:" using the "grep" command
-    $ grep "INFO:" ../../2_runmd/log > energy.log
-    $ less energy.log
+```
+# Change directory for trajectory analysis
+$ cd 1_energy
 
-    # View the time courses of energy using gnuplot
-    $ gnuplot
-    gnuplot> set key autotitle columnhead
-    gnuplot> set xlabel "Time (ps)"
-    gnuplot> set ylabel "Potential energy (kcal/mol)"
-    gnuplot> plot 'energy.log' using 3:5 with lines
+# Select lines that contain "INFO:" using the "grep" command
+$ grep "INFO:" ../../2_runmd/log > energy.log
+$ less energy.log
 
-![](assets/images/2022_03_tutorial3.1-figure2.png){.alignnone
-.wp-image-19840 decoding="async" width="390" height="260"
-srcset="wp-content/uploads/2022/03/tutorial3.1-figure2.png 720w, wp-content/uploads/2022/03/tutorial3.1-figure2-300x200.png 300w, wp-content/uploads/2022/03/tutorial3.1-figure2-20x13.png 20w, wp-content/uploads/2022/03/tutorial3.1-figure2-30x20.png 30w, wp-content/uploads/2022/03/tutorial3.1-figure2-40x27.png 40w"
-sizes="(max-width: 390px) 100vw, 390px"}
+# View the time courses of energy using gnuplot
+$ gnuplot
+gnuplot> set key autotitle columnhead
+gnuplot> set xlabel "Time (ps)"
+gnuplot> set ylabel "Potential energy (kcal/mol)"
+gnuplot> plot 'energy.log' using 3:5 with lines
+
+```
+
+![](/assets/images/2022_03_tutorial3.1-figure2.png)
 
 If you want to pick up the columns of time (3rd column) and total
 potential energy (5th column) at the same time, the `awk` command is
 useful:
 
-    # Pick up the 3rd and 5th columns
-    $ awk '{print $3, $5}' energy.log > potential_ene.log
-    $ less potential_ene.log
+
+```
+# Pick up the 3rd and 5th columns
+$ awk '{print $3, $5}' energy.log > potential_ene.log
+$ less potential_ene.log
+
+```
 
 Now let's calculate the averaged potential energy from
 `potential_ene.log`. The averaged value for each column can be quickly
 calculated with the `awk` command. The following is an example,
 analyzing the 2nd column of `potential_ene.log`. This file consists of
-1,002 lines, and the first two lines (header information and initial
-step energy) are skipped in the analysis.
+1,002 lines, and the first two lines (header information and initial step energy) are skipped in the analysis.
 
-    # Compute the averaged potential energy using the tail and awk commands
-    $ tail -1000 potential_ene.log > tmp
-    $ awk '{sum+=$2} END {print sum/NR}' tmp
-    -1.30413
 
-    # The above two commands can be combined with the pipeline "|"
-    $ tail -1000 potential_ene.log | awk '{sum+=$2} END {print sum/NR}'
-    -1.30413
+```
+# Compute the averaged potential energy using the tail and awk commands
+$ tail -1000 potential_ene.log > tmp
+$ awk '{sum+=$2} END {print sum/NR}' tmp
+-1.30413
 
-##### [3.2 Dihedral angle ]{#32_Dihedral_angle}
+# The above two commands can be combined with the pipeline "|"
+$ tail -1000 potential_ene.log | awk '{sum+=$2} END {print sum/NR}'
+-1.30413
+
+```
+
+### 3.2 Dihedral angle 
 
 We analyze the conformational changes of the peptide using the GENESIS
 trajectory analysis tool. The peptide has two major variables that can
@@ -347,18 +385,19 @@ dihedral angle of the C-N-Cα-C atoms and ψ is the dihedral angle of the
 N-Cα-C-N atoms. The `trj_analysis` tool is used to analyze these
 dihedral angles, whose control file is shown below.
 
-![](assets/images/2019_07_ala2_dihed.jpg){.aligncenter
-.wp-image-10465 loading="lazy" decoding="async" width="250" height="236"
-srcset="wp-content/uploads/2019/07/ala2_dihed-1024x967.jpg 1024w, wp-content/uploads/2019/07/ala2_dihed-300x283.jpg 300w, wp-content/uploads/2019/07/ala2_dihed-768x725.jpg 768w, wp-content/uploads/2019/07/ala2_dihed-20x20.jpg 20w, wp-content/uploads/2019/07/ala2_dihed-30x28.jpg 30w, wp-content/uploads/2019/07/ala2_dihed-40x38.jpg 40w, wp-content/uploads/2019/07/ala2_dihed.jpg 1483w"
-sizes="(max-width: 250px) 100vw, 250px"}
+![](/assets/images/2019_07_ala2_dihed.jpg)
 
-    # Change directory for the analysis of dihedral angles
-    $ cd ../2_dihedral
-    $ ls
-    INP
 
-    # View the control file (see below)
-    $ less INP
+```
+# Change directory for the analysis of dihedral angles
+$ cd ../2_dihedral
+$ ls
+INP
+
+# View the control file (see below)
+$ less INP
+
+```
 
 We specify the input and output files in the `[INPUT]` and `[OUTPUT]`
 sections. In the `[TRAJECTORY]` section, we specify the number of MD
@@ -376,9 +415,7 @@ We specify the input and output files in the `[INPUT]` and `[OUTPUT]`
 sections. In the `[TRAJECTORY]` section, we specify the DCD file to be
 analyzed, and also total number of MD steps (`md_step`) and MD output
 period (`mdout_period`), each of which is corresponding to `nsteps` and
-`crdout_period` in the control file of ATDYN, respectively (For more
-detailed description of the `[TRAJECTORY]` section, see [Appendix
-1](genesis_tutorial_appendix_1_2022.md){target="_blank" rel="noopener"}). In the
+`crdout_period` in the control file of ATDYN, respectively (For more detailed description of the `[TRAJECTORY]` section, see [Appendix 1](/tutorials/genesis_tutorial_appendix_1_2022/)). In the
 `[OPTION]` section, we set atom lists to be used for the dihedral angle
 calculation. These atom names should be written carefully by looking at
 the molecular structure in VMD or by checking the PDB file. Here, the
@@ -387,26 +424,30 @@ syntax of the atom selection is
 particular, `PROA:1:ALAD:CA` means the Cα atom of ALAD1 in
 `segment:PROA`.
 
-    [INPUT]
-    psffile       = ../../1_setup/2_psfgen/proa.psf  # protein structure file
-    reffile       = ../../1_setup/2_psfgen/proa.pdb  # PDB file
-     
-    [OUTPUT]
-    torfile       = output.tor              # torsion file
-     
-    [TRAJECTORY]
-    trjfile1      = ../../2_runmd/md.dcd    # trajectory file
-    md_step1      = 500000                  # number of MD steps
-    mdout_period1 = 500                     # MD output period
-    ana_period1   = 500                     # analysis period
-    repeat1       = 1
-    trj_format    = DCD                     # (PDB/DCD)
-    trj_type      = COOR+BOX                # (COOR/COOR+BOX)
-    trj_natom     = 0                       # (0:uses reference PDB atom count)
 
-    [OPTION]
-    torsion1      = PROA:1:ALAD:CLP  PROA:1:ALAD:NL  PROA:1:ALAD:CA   PROA:1:ALAD:CRP
-    torsion2      = PROA:1:ALAD:NL   PROA:1:ALAD:CA  PROA:1:ALAD:CRP  PROA:1:ALAD:NR
+```
+[INPUT]
+psffile       = ../../1_setup/2_psfgen/proa.psf  # protein structure file
+reffile       = ../../1_setup/2_psfgen/proa.pdb  # PDB file
+ 
+[OUTPUT]
+torfile       = output.tor              # torsion file
+ 
+[TRAJECTORY]
+trjfile1      = ../../2_runmd/md.dcd    # trajectory file
+md_step1      = 500000                  # number of MD steps
+mdout_period1 = 500                     # MD output period
+ana_period1   = 500                     # analysis period
+repeat1       = 1
+trj_format    = DCD                     # (PDB/DCD)
+trj_type      = COOR+BOX                # (COOR/COOR+BOX)
+trj_natom     = 0                       # (0:uses reference PDB atom count)
+
+[OPTION]
+torsion1      = PROA:1:ALAD:CLP  PROA:1:ALAD:NL  PROA:1:ALAD:CA   PROA:1:ALAD:CRP
+torsion2      = PROA:1:ALAD:NL   PROA:1:ALAD:CA  PROA:1:ALAD:CRP  PROA:1:ALAD:NR
+
+```
 
 Let's run `trj_analysis`. As an output file, we get `output.tor`, where
 columns 1 to 3 correspond to the snapshot index, the dihedral angle of
@@ -414,55 +455,68 @@ torsion1 (φ), and torsion2 (ψ), respectively. Finally, let us plot the
 time courses of φ and ψ and the distribution of φ and ψ in
 two-dimensional space.
 
-    # Analyze the time courses of dihedral angle PHI and PSI
-    $ ../../bin/trj_analysis INP > log
-    $ ls
-    INP  log  output.tor
 
-    # Time courses of the dihedral angles phi and psi
-    $ gnuplot
-    gnuplot> set xlabel 'Time (ps)'
-    gnuplot> set ylabel 'Dihedral angle (deg)'
-    gnuplot> set key top outside
-    gnuplot> plot [][-180:180]'output.tor' u 1:2 t "phi", 'output.tor' u 1:3 t "psi"
+```
+# Analyze the time courses of dihedral angle PHI and PSI
+$ ../../bin/trj_analysis INP > log
+$ ls
+INP  log  output.tor
 
-![](assets/images/2022_03_tutorial3.1-figure4.png){.alignnone
-.wp-image-19843 loading="lazy" decoding="async" width="520" height="260"
-srcset="wp-content/uploads/2022/03/tutorial3.1-figure4.png 960w, wp-content/uploads/2022/03/tutorial3.1-figure4-300x150.png 300w, wp-content/uploads/2022/03/tutorial3.1-figure4-768x384.png 768w, wp-content/uploads/2022/03/tutorial3.1-figure4-20x10.png 20w, wp-content/uploads/2022/03/tutorial3.1-figure4-30x15.png 30w, wp-content/uploads/2022/03/tutorial3.1-figure4-40x20.png 40w"
-sizes="(max-width: 520px) 100vw, 520px"}
+# Time courses of the dihedral angles phi and psi
+$ gnuplot
+gnuplot> set xlabel 'Time (ps)'
+gnuplot> set ylabel 'Dihedral angle (deg)'
+gnuplot> set key top outside
+gnuplot> plot [][-180:180]'output.tor' u 1:2 t "phi", 'output.tor' u 1:3 t "psi"
 
-    # Distribution of the dihedral angles phi and psi
-    $ gnuplot
-    gnuplot> set xlabel 'phi (deg)'
-    gnuplot> set ylabel 'psi (deg)'
-    gnuplot> unset key
-    gnuplot> set size square
-    gnuplot> plot [-180:180][-180:180]'output.tor' u 2:3
+```
 
-![](assets/images/2022_03_tutorial3.1-figure5.png){.alignnone
-.wp-image-19844 loading="lazy" decoding="async" width="390" height="260"
-srcset="wp-content/uploads/2022/03/tutorial3.1-figure5.png 720w, wp-content/uploads/2022/03/tutorial3.1-figure5-300x200.png 300w, wp-content/uploads/2022/03/tutorial3.1-figure5-20x13.png 20w, wp-content/uploads/2022/03/tutorial3.1-figure5-30x20.png 30w, wp-content/uploads/2022/03/tutorial3.1-figure5-40x27.png 40w"
-sizes="(max-width: 390px) 100vw, 390px"}
+![](/assets/images/2022_03_tutorial3.1-figure4.png)
+
+
+```
+# Distribution of the dihedral angles phi and psi
+$ gnuplot
+gnuplot> set xlabel 'phi (deg)'
+gnuplot> set ylabel 'psi (deg)'
+gnuplot> unset key
+gnuplot> set size square
+gnuplot> plot [-180:180][-180:180]'output.tor' u 2:3
+
+```
+
+![](/assets/images/2022_03_tutorial3.1-figure5.png)
 
 We can see that the backbone dihedral angles of the alanine-dipeptide
 are predominantly distributed in the β-sheet region around (φ, ψ) =
-(-139, 135) rather than in the α-helix region around (φ, ψ) = (-57,
--47).
+(-139, 135) rather than in the α-helix region around (φ, ψ) = (-57, -47).
 
-#### [ References]{#References}
+##  References
 
 1.  J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).
-    [](https://www.nature.com/articles/nmeth.4067){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.nature.com/articles/nmeth.4067)
+```
+
 2.  J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).
-    [](https://www.sciencedirect.com/science/article/pii/0021999177900985){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.sciencedirect.com/science/article/pii/0021999177900985)
+```
+
 3.  H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).
-    [](https://www.sciencedirect.com/science/article/pii/0021999183900141){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.sciencedirect.com/science/article/pii/0021999183900141)
+```
+
 4.  G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).
-    [](https://aip.scitation.org/doi/10.1063/1.2408420){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://aip.scitation.org/doi/10.1063/1.2408420)
+
+```
 
 ------------------------------------------------------------------------
 

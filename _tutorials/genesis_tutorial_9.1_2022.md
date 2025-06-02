@@ -1,44 +1,44 @@
-### 9.1 Target MD and steered MD simulations of Ribose Binding Protein (RBP) in water 
+---
+title: "GENESIS Tutorial 9.1 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:56+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
-
--   [Preparation](genesis_tutorial_9.1_2022.md#Preparation)
--   [1. Simulation System](genesis_tutorial_9.1_2022.md#1_Simulation_System)
--   [2. Minimization](genesis_tutorial_9.1_2022.md#2_Minimization)
--   [3. Equilibration](genesis_tutorial_9.1_2022.md#3_Equilibration)
--   [4. Restraint function of group
-    distances](genesis_tutorial_9.1_2022.md#4_Restraint_function_of_group_distances)
--   [5. Targeted MD
-    simulation](genesis_tutorial_9.1_2022.md#5_Targeted_MD_simulation)
--   [6. Steered MD
-    simulation](genesis_tutorial_9.1_2022.md#6_Steered_MD_simulation)
--   [7. References](genesis_tutorial_9.1_2022.md#7_References)
+# 9.1 Target MD and steered MD simulations of Ribose Binding Protein (RBP) in water 
 
 GENESIS prepares several functions that restrain selected
 distance/angle/dihedral angles. In this section, these restraint
 functions are described.
 
-#### [Preparation]{#Preparation}
+## Preparation
 
 First of all, let's download the tutorial file
-[(tutorial22-9.1.tar.gz).](fundamental/2022_03_tutorial22-9.1.zip "tutorial22-9.1.zip"){.mtli_attachment
-.mtli_zip} This tutorial consists of five steps: 1) simulation system,
+[(tutorial22-9.1.tar.gz).](fundamental/2022_03_tutorial22-9.1.zip "tutorial22-9.1.zip") This tutorial consists of five steps: 1) simulation system,
 2) energy minimization, 3) equilibration, 4) production run with a
 restraint function, 5) Targeted MD simulation, and 6) Steered MD
 simulation. Control files for GENESIS are already included in the
 download file.
 
-    # Download the tutorial file
-    $ cd /home/user/GENESIS/Tutorials
-    $ mv ~/Downloads/tutorial22-9-1.zip ./ 
-    $ unzip tutorial22-9.1.zip 
-    $ cd tutorial-9.1
-    $ ls
-    1_system  2_minimize  3_equilibrate  4_MD_restraint  5_targeted_MD  6_steered_MD
+
+```
+# Download the tutorial file
+$ cd /home/user/GENESIS/Tutorials
+$ mv ~/Downloads/tutorial22-9-1.zip ./ 
+$ unzip tutorial22-9.1.zip 
+$ cd tutorial-9.1
+$ ls
+1_system  2_minimize  3_equilibrate  4_MD_restraint  5_targeted_MD  6_steered_MD
+
+```
 
 A direcotry in paramter files can be linked as shown in Tutorial 3.1.
 
-#### [1. Simulation System ]{#1_Simulation_System}
+## 1. Simulation System 
 
 In this tutorial, we use the all-atom model of the Ribose Binding
 Protein (RBP). RBP has two domains and adopts closed and open
@@ -46,60 +46,66 @@ conformations related to ligand binding.  We are going to explain
 restraint energy functions using the protein. The 1_system directory
 contains two pdb and a psf files for the system.
 
-#### [[![](assets/images/2020_11_rbp-close-open_t.png){.size-medium .wp-image-14779 .aligncenter fetchpriority="high" decoding="async" width="300" height="228" srcset="assets/images/2020_11_rbp-close-open_t.png 300w, wp-content/uploads/2020/11/rbp-close-open_t-20x15.png 20w, wp-content/uploads/2020/11/rbp-close-open_t-30x23.png 30w, wp-content/uploads/2020/11/rbp-close-open_t-40x30.png 40w, assets/images/2020_11_rbp-close-open_t.png 379w" sizes="(max-width: 300px) 100vw, 300px"}](assets/images/2020_11_rbp-close-open_t.png)2. Minimization []{#2_Minimization_and_pre-equilibration}]{#2_Minimization}
+## [[![](/assets/images/2020_11_rbp-close-open_t.png)](/assets/images/2020_11_rbp-close-open_t.png)2. Minimization []]
 
 First, we execute the energy minimization of the system to remove steric
 clashes in the initial structure. For further details of the control
 file and choice of parameters, please refer to the basic tutorials
-section (see [Tutorial 3.2](tutorials2022/tutorial-3.2/index.html){#sec2
-target="_blank" rel="noopener"}). In the `2_minimize` directory, a
+section (see [Tutorial 3.2](tutorials2022/tutorial-3.2/index.html)). In the `2_minimize` directory, a
 control file, "INP", is given.
 
-    # Change directory to 2_minimize
-    $ cd 2_minimize
-    $ ls
-    INP
-    # Energy minimization
-    $ export OMP_NUM_THREADS=3
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
 
-#### [3. Equilibration ]{#3_Equilibration}
+```
+# Change directory to 2_minimize
+$ cd 2_minimize
+$ ls
+INP
+# Energy minimization
+$ export OMP_NUM_THREADS=3
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
+
+## 3. Equilibration 
 
 Equilibration runs are executed in the following steps: 1) equilibration
 in the NVT ensemble, 2) relaxation of the simulation box in the NPT
 ensemble with positional restraints, and 3) equilibration in the NVT
 ensemble with positional restraints. The procedure is similar to the
-basic tutorial section, except that the step numbers are doubled. (see
-[Tutorial 3.2](tutorials2019/tutorial-3.2/index.html){#sec2
-target="_blank" rel="noopener noreferrer"})
+basic tutorial section, except that the step numbers are doubled. (see [Tutorial 3.2](tutorials2019/tutorial-3.2/index.html))
 
-    $ cd ../3_equilibrate
-    $ ls
-    1_md 2_comdist
-    $ cd 1_md
-    INP1 INP2 INP3
-    $ export OMP_NUM_THREADS=3
-    # equilibration in NVT ensemble (w/ positional restraints, VVER 2fs)
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP1 > log1
-    # relaxation of the simulation box (w/ positional restraints, VVER 2fs)
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP2 > log2
-    # equilibration in NVT ensemble (w/ positional restraints, VRES 2.5 fs)
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP3 > log3
+
+```
+$ cd ../3_equilibrate
+$ ls
+1_md 2_comdist
+$ cd 1_md
+INP1 INP2 INP3
+$ export OMP_NUM_THREADS=3
+# equilibration in NVT ensemble (w/ positional restraints, VVER 2fs)
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP1 > log1
+# relaxation of the simulation box (w/ positional restraints, VVER 2fs)
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP2 > log2
+# equilibration in NVT ensemble (w/ positional restraints, VRES 2.5 fs)
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP3 > log3
+
+```
 
 To see the structural changes of the protein, we sometimes need to
 restrain the distances between the centers of mass (COMs) of two domains
 (groups).
 
-[![](assets/images/2020_11_rbp2_closed_t.png){.size-full
-.wp-image-14778 .aligncenter decoding="async" width="160" height="242"
-srcset="wp-content/uploads/2020/11/rbp2_closed_t.png 160w, wp-content/uploads/2020/11/rbp2_closed_t-13x20.png 13w, wp-content/uploads/2020/11/rbp2_closed_t-20x30.png 20w, wp-content/uploads/2020/11/rbp2_closed_t-26x40.png 26w"
-sizes="(max-width: 160px) 100vw, 160px"}](assets/images/2020_11_rbp2_closed_t.png)Before
+[![](/assets/images/2020_11_rbp2_closed_t.png)](/assets/images/2020_11_rbp2_closed_t.png)Before
 running simulations with the restraints, we need to calculate the
 distance between two groups from the trajectory. 
 
-    $ cd ../2_comdist
-    $ cat INP
-    $ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
+$ cd ../2_comdist
+$ cat INP
+$ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
 
 INP is a control file for `trj_analysis`. In the `[OUTPUT]` section, the
 distance between COMs of groups is calculated if comdisfile is defined.
@@ -108,132 +114,154 @@ in each group are selected via the `[SELECTION]` section.  See the
 GENESIS manual for instructions on how to specify the group. Please use
 `com_distance1` instead of `distance1` in the `[OPTION]` section.
 
-    [INPUT]
-    psffile = ../../1_setup/rbp_closed.psf
-    reffile = ../../1_setup/rbp_closed.pdb
-    [OUTPUT]
-    comdisfile = output.comdis           # COM distance file
-    [TRAJECTORY]
-    trjfile1 = ../1_md/eq3.dcd           # trajectory file
-    md_step1 = 40000                     # number of MD steps
-    mdout_period1 = 400                  # MD output period
-    ana_period1 = 10                     # analysis period
-    repeat1 = 1
-    trj_format = DCD                     # (PDB/DCD)
-    trj_type = COOR+BOX                  # (COOR/COOR+BOX)
-    trj_natom = 0                        # (0:uses reference PDB atom count)
-    [SELECTION]
-    group1 = segid:PROA & (resno:1-100 | resno:236-259) and an:CA
-    group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
-    [OPTION]
-    check_only = NO                        # only checking input files (YES/NO)
-    allow_backup = NO                      # backup existing output files (YES/NO)
-    com_distance1 = 1 2                    # Analyze the time courses of COM distance
 
-    $ /home/user/GENESIS/bin/trj_analysis INP > log
-    $ ls
-    INP  log  output.comdis
-    $ tail -n5 output.comdis
-    96 29.422
-    97 29.446
-    98 29.475
-    99 29.463
-    100 29.437
+```
+[INPUT]
+psffile = ../../1_setup/rbp_closed.psf
+reffile = ../../1_setup/rbp_closed.pdb
+[OUTPUT]
+comdisfile = output.comdis           # COM distance file
+[TRAJECTORY]
+trjfile1 = ../1_md/eq3.dcd           # trajectory file
+md_step1 = 40000                     # number of MD steps
+mdout_period1 = 400                  # MD output period
+ana_period1 = 10                     # analysis period
+repeat1 = 1
+trj_format = DCD                     # (PDB/DCD)
+trj_type = COOR+BOX                  # (COOR/COOR+BOX)
+trj_natom = 0                        # (0:uses reference PDB atom count)
+[SELECTION]
+group1 = segid:PROA & (resno:1-100 | resno:236-259) and an:CA
+group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
+[OPTION]
+check_only = NO                        # only checking input files (YES/NO)
+allow_backup = NO                      # backup existing output files (YES/NO)
+com_distance1 = 1 2                    # Analyze the time courses of COM distance
+
+$ /home/user/GENESIS/bin/trj_analysis INP > log
+$ ls
+INP  log  output.comdis
+$ tail -n5 output.comdis
+96 29.422
+97 29.446
+98 29.475
+99 29.463
+100 29.437
+
+```
 
 The COM distance at the last step is used in the next simulation.
 
-#### [4. Restraint function of group distances ]{#4_Restraint_function_of_group_distances}
+## 4. Restraint function of group distances 
 
 A simulation with restraints on the COM distance can be used in
 conventional MD and REUS simulations. In this section, we show how to
 use restraints on the COM distance.
 
-    $ cd ../../4_MD_restraint
-    $ ls
-    1_md 2_comdist
-    $ cd 1_md
-    $ ls
-    INP
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
+$ cd ../../4_MD_restraint
+$ ls
+1_md 2_comdist
+$ cd 1_md
+$ ls
+INP
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
 
 To restrain the COM distance, we set keywords in `[SELECTION]` and
 `[RESTRAINTS]` sections in the following way.
 
-    [SELECTION]
-    group1 = segid:PROA & (resno:1-100 | resno:236-259) and an:CA
-    group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
-    [RESTRAINTS]
-    nfunctions = 1
-    function1 = DISTMASS
-    reference1 = 29.4
-    constant1 = 1.0
-    select_index1 = 1 2
+
+```
+[SELECTION]
+group1 = segid:PROA & (resno:1-100 | resno:236-259) and an:CA
+group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
+[RESTRAINTS]
+nfunctions = 1
+function1 = DISTMASS
+reference1 = 29.4
+constant1 = 1.0
+select_index1 = 1 2
+
+```
 
 After the simulation, you can check the COM distance during the
 simulation using trj_analysis.
 
-    $ cd ../2_comdist
-    $ cat INP
-    $ /home/user/GENESIS/bin/trj_analysis INP > log
 
-#### [5. Targeted MD simulation ]{#5_Targeted_MD_simulation}
+```
+$ cd ../2_comdist
+$ cat INP
+$ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
+
+## 5. Targeted MD simulation 
 
 Targeted MD (TMD)\[1,2\] is a method that applies holonomic forces to
 drive the system towards a targeted RMSD of the system during the
 simulation.
 
-    $ cd ../../5_targeted_MD
-    $ ls
-    1_md 2_rmsd_analysis 3_comdist 4_crd_concert
-    $ cd 1_md
-    $ ls
-    INP
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
+$ cd ../../5_targeted_MD
+$ ls
+1_md 2_rmsd_analysis 3_comdist 4_crd_concert
+$ cd 1_md
+$ ls
+INP
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
 
 The keywords, target_md and final_rmsd, should be set in the
 `[DYNAMICS]` section. In TMD, the initial RMSD value (ininital_rmsd) is
-calculated automatically. (in the `[RESTRAINT]` section, reference1 is
-set, however, the reference is updated during the simulation).
+calculated automatically. (in the `[RESTRAINT]` section, reference1 is set, however, the reference is updated during the simulation).
 
 Caution: the number of steps (nsteps) is small for the tutorial purpose.
 Please increase the number when you execute the simulation in your
 research.
 
-    [INPUT]
-    (skip)
-    psffile = ../../1_setup/rbp_closed.psf
-    pdbfile = ../../1_setup/rbp_closed.pdb
-    reffile = ../../1_setup/rbp_open.pdb
-    rstfile = ../../3_equilibrate/1_md/eq3.rst
 
-    (skip)
+```
+[INPUT]
+(skip)
+psffile = ../../1_setup/rbp_closed.psf
+pdbfile = ../../1_setup/rbp_closed.pdb
+reffile = ../../1_setup/rbp_open.pdb
+rstfile = ../../3_equilibrate/1_md/eq3.rst
+
+(skip)
 
 
-    [DYNAMICS]
-    integrator = VRES      # [LEAP,VVER,VRES]
-    nsteps = 40000         # number of MD steps (100 ps)
-    timestep = 0.0025      # timestep (2.5fs)
-    eneout_period = 400    # energy output period (1ps)
-    crdout_period = 400    # coordinates output period (1ps)
-    rstout_period = 40000  # restart output period
-    nbupdate_period = 10   # nonbond update period
-    elec_long_period = 2   # period of reciprocal space calculation
-    thermostat_period = 10 # period of thermostat update
-    barostat_period = 10   # period of barostat update
-    target_md = YES        # targeted MD
-    final_rmsd = 0.5       # target RMSD value
-    (skip)
-    [RESTRAINT]
-    nfunctions = 1
-    function1 = RMSDMASS
-    reference1 = 4.3
-    constant1 = 1.0
-    select_index1 = 1
+[DYNAMICS]
+integrator = VRES      # [LEAP,VVER,VRES]
+nsteps = 40000         # number of MD steps (100 ps)
+timestep = 0.0025      # timestep (2.5fs)
+eneout_period = 400    # energy output period (1ps)
+crdout_period = 400    # coordinates output period (1ps)
+rstout_period = 40000  # restart output period
+nbupdate_period = 10   # nonbond update period
+elec_long_period = 2   # period of reciprocal space calculation
+thermostat_period = 10 # period of thermostat update
+barostat_period = 10   # period of barostat update
+target_md = YES        # targeted MD
+final_rmsd = 0.5       # target RMSD value
+(skip)
+[RESTRAINT]
+nfunctions = 1
+function1 = RMSDMASS
+reference1 = 4.3
+constant1 = 1.0
+select_index1 = 1
+
+```
 
 In the TMD and SMD, reffile in the `[INPUT]`  section should be a
 structure file of the target coordinate. The number of atoms and the
-order of atoms must be the same as in psffile (as well as in the pdbfile
-and rstfile).
+order of atoms must be the same as in psffile (as well as in the pdbfile and rstfile).
 
 After the simulation, you can check the structural change from open to
 closed forms via `vmd`.
@@ -242,87 +270,98 @@ In addition, GENESIS prepare analysis tools. In this tutorial, the
 control files for `rmsd_analysis`,  `trj_analysis`, and `crd_convert`
 are also prepared.
 
-    # mass-weighted RMSD
-    $ cd ../2_rmsd_analysis
-    $ /home/user/GENESIS/bin/rmsd_analysis INP > log
+
+```
+# mass-weighted RMSD
+$ cd ../2_rmsd_analysis
+$ /home/user/GENESIS/bin/rmsd_analysis INP > log
+
+```
 
 This figure shows that RMSD goes down linearly in this simulation.
 
-[![](assets/images/2022_03_tmd_rmsd.png){.aligncenter .size-full
-.wp-image-19554 decoding="async" width="320"
-height="224"}](assets/images/2022_03_tmd_rmsd.png)
+[![](/assets/images/2022_03_tmd_rmsd.png)](/assets/images/2022_03_tmd_rmsd.png)
 
  
 
-    # COM distance
-    $ cd ../3_trj_analysis
-    $ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
+# COM distance
+$ cd ../3_trj_analysis
+$ /home/user/GENESIS/bin/trj_analysis INP > log
 
  
+
+```
 
 The COM dist also changes during the simulation.
 
-[![](assets/images/2022_03_tmd_comdis.png){.aligncenter .size-full
-.wp-image-19554 loading="lazy" decoding="async" width="320"
-height="224"}](assets/images/2022_03_tmd_comdis.png)
+[![](/assets/images/2022_03_tmd_comdis.png)](/assets/images/2022_03_tmd_comdis.png)
 
 You can select coordinates from the trajectory for making a movie.
 
-    # Convert crd for movie 
-    $ cd ../4_crd_convert 
-    $ /home/user/GENESIS/bin/crd_convert INP > log
 
-#### [6. Steered MD simulation ]{#6_Steered_MD_simulation}
+```
+# Convert crd for movie 
+$ cd ../4_crd_convert 
+$ /home/user/GENESIS/bin/crd_convert INP > log
 
-Steered MD (SMD)\[3\] is a method that applies forces to change the
+```
+
+## 6. Steered MD simulation 
+
+Steered MD (SMD)[^3] is a method that applies forces to change the
 conformations. Targeted MD applies a holonomic constraint to keep RMSD
 value, whereas Steered MD applies a harmonic restraint force that
 changes the reference value throughout the simulation. GENESIS has two
 types of simulations.
 
-    $ cd ../../6_Steered_MD
-    $ ls
-    1_md 2_rmsd_analysis 3_comdist 4_crd_concert
-    $ cd 1_md
-    $ ls
-    INP
-    $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
+$ cd ../../6_Steered_MD
+$ ls
+1_md 2_rmsd_analysis 3_comdist 4_crd_concert
+$ cd 1_md
+$ ls
+INP
+$ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
+
+```
 
 The keywords, steered_md and final_rmsd, should be set in the
 `[DYNAMICS]` section. As well as in TMD, the initial RMSD value
-(ininital_rmsd) is calculated automatically, too. (in the  `[RESTRAINT]`
-section, despite reference1 being set, the reference is updated during
-the simulation). Since Steered MD applies a harmonic restraint force, it
-is necessary to set a reasonable force constant (constant1 in this
-example). The value will change the speed of structural change. Later we
+(ininital_rmsd) is calculated automatically, too. (in the  `[RESTRAINT]` section, despite reference1 being set, the reference is updated during the simulation). Since Steered MD applies a harmonic restraint force, it
+is necessary to set a reasonable force constant (constant1 in this example). The value will change the speed of structural change. Later we
 will show the difference between the force constants (FCs).
 
 Caution: the number of steps (nsteps) is small, and FC is slightly large
 for the tutorial purpose. Please increase the number of steps when you
-execute the simulation in your research. [The value of FC should be
-determined with care, taking into account the aspect of possible
-structural changes.]{style="color: #ff0000;"}
+execute the simulation in your research. [The value of FC should be determined with care, taking into account the aspect of possible structural changes.]
 
-    [DYNAMICS]
-    integrator = VRES      # [LEAP,VVER,VRES]
-    nsteps = 40000         # number of MD steps (100 ps)
-    timestep = 0.0025      # timestep (2.5fs)
-    eneout_period = 400    # energy output period (1ps)
-    crdout_period = 400    # coordinates output period (1ps)
-    rstout_period = 40000  # restart output period
-    nbupdate_period = 10   # nonbond update period
-    elec_long_period = 2   # period of reciprocal space calculation
-    thermostat_period = 10 # period of thermostat update
-    barostat_period = 10   # period of barostat update
-    steered_md = YES       # steered MD
-    final_rmsd = 0.5       # target RMSD value
-    (skip)
-    [RESTRAINT]
-    nfunctions = 1
-    function1 = RMSDMASS
-    reference1 = 4.3
-    constant1 = 10.0
-    select_index1 = 1
+
+```
+[DYNAMICS]
+integrator = VRES      # [LEAP,VVER,VRES]
+nsteps = 40000         # number of MD steps (100 ps)
+timestep = 0.0025      # timestep (2.5fs)
+eneout_period = 400    # energy output period (1ps)
+crdout_period = 400    # coordinates output period (1ps)
+rstout_period = 40000  # restart output period
+nbupdate_period = 10   # nonbond update period
+elec_long_period = 2   # period of reciprocal space calculation
+thermostat_period = 10 # period of thermostat update
+barostat_period = 10   # period of barostat update
+steered_md = YES       # steered MD
+final_rmsd = 0.5       # target RMSD value
+(skip)
+[RESTRAINT]
+nfunctions = 1
+function1 = RMSDMASS
+reference1 = 4.3
+constant1 = 10.0
+select_index1 = 1
+
+```
 
 After the simulation finishes, you can check the structural change from
 open to closed forms using `vmd`.
@@ -331,50 +370,47 @@ In addition, GENESIS provides analysis tools. In this tutorial, the
 control files for `rmsd_analysis`,  `trj_analysis`, and `crd_convert`
 are also prepared.
 
-    # mass-weighted RMSD
-    $ cd ../2_rmsd_analysis
-    $ /home/user/GENESIS/bin/rmsd_analysis INP > log
+
+```
+# mass-weighted RMSD
+$ cd ../2_rmsd_analysis
+$ /home/user/GENESIS/bin/rmsd_analysis INP > log
+
+```
 
 We examine two FCs (10 and 100). Please notice that the behaviour of the
-RMSD curve changes when [[a different value of FC is used]{.hotkey-layer
-.preview-overlay .is-preview-sidebar-visible}]{.hotkey-layer}.
+RMSD curve changes when [[a different value of FC is used]{.hotkey-layer .preview-overlay .is-preview-sidebar-visible}]{.hotkey-layer}.
 
-[![](assets/images/2022_03_smd_rmsd.png){.aligncenter .size-full
-.wp-image-19554 loading="lazy" decoding="async" width="320"
-height="224"}](assets/images/2022_03_smd_rmsd.png)
+[![](/assets/images/2022_03_smd_rmsd.png)](/assets/images/2022_03_smd_rmsd.png)
 
-    # COM distance
-    $ cd ../3_trj_analysis
-    $ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
+# COM distance
+$ cd ../3_trj_analysis
+$ /home/user/GENESIS/bin/trj_analysis INP > log
+
+```
 
 As shown in the RMSD plot, the amounts of change in the COM dist are
 also different.
 
-[![](assets/images/2022_03_smd_comdis.png){.aligncenter .size-full
-.wp-image-19554 loading="lazy" decoding="async" width="320"
-height="224"}](assets/images/2022_03_smd_comdis.png)
+[![](/assets/images/2022_03_smd_comdis.png)](/assets/images/2022_03_smd_comdis.png)
 
 You can select coordinates from the trajectory for making a movie.
 
-    # Convert crd for movie 
-    $ cd ../4_crd_convert 
-    $ /home/user/GENESIS/bin/crd_convert INP > log
 
-#### [7. References]{#7_References}
+```
+# Convert crd for movie 
+$ cd ../4_crd_convert 
+$ /home/user/GENESIS/bin/crd_convert INP > log
 
-1.  [J. Schlitter, *et. al.*  ]{dir="ltr" role="presentation"}*[Mol.
-    Sim.]{dir="ltr" role="presentation"}*[, **10**, 291-308,
-    (1993).]{dir="ltr"
-    role="presentation"}[](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170){target="_blank"
-    rel="noopener"}
-2.  [J. Schlitter, *et. al.* ]{dir="ltr" role="presentation"} *[J. Mol.
-    Graph.]{dir="ltr" role="presentation"}*[, **12**, 84--89,
-    (1994).[](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723){target="_blank"
-    rel="noopener"}]{dir="ltr" role="presentation"}
-3.  [H Grubmüller ]{.MUxGbd .wuQ4Ob .WZ8Tjf}*et al. Science, [**271**,
-    997--999,]{dir="ltr" role="presentation"} [(1996).]{dir="ltr"
-    role="presentation"}*[[]{dir="ltr"
-    role="presentation"}](https://www.science.org/doi/10.1126/science.271.5251.997)
+```
+
+## 7. References
+
+1.  [J. Schlitter, *et. al.*  ]{dir="ltr" role="presentation"}*[Mol.     Sim.]{dir="ltr" role="presentation"}*[, **10**, 291-308,     (1993).]{dir="ltr"     role="presentation"}[](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170)
+2.  [J. Schlitter, *et. al.* ]{dir="ltr" role="presentation"} *[J. Mol.     Graph.]{dir="ltr" role="presentation"}*[, **12**, 84--89,     (1994).[](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723)]{dir="ltr" role="presentation"}
+3.  [H Grubmüller ]{.MUxGbd .wuQ4Ob .WZ8Tjf}*et al. Science, [**271**,     997--999,]{dir="ltr" role="presentation"} [(1996).]{dir="ltr"     role="presentation"}*[[]{dir="ltr"     role="presentation"}](https://www.science.org/doi/10.1126/science.271.5251.997)
 
 *Written by Chigusa Kobayashi@RIKEN R-CCS. March, 4, 2022*
 

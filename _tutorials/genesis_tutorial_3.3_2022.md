@@ -1,153 +1,143 @@
-### 3.3 MD simulation of Protein G in NaCl solution 
+---
+title: "GENESIS Tutorial 3.3 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:56+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
+# 3.3 MD simulation of Protein G in NaCl solution 
 
--   [Preparation](genesis_tutorial_3.3_2022.md#Preparation)
--   [1. Setup](genesis_tutorial_3.3_2022.md#1_Setup)
--   [2. Minimization](genesis_tutorial_3.3_2022.md#2_Minimization)
--   [3. Equilibration](genesis_tutorial_3.3_2022.md#3_Equilibration)
--   [4. Production](genesis_tutorial_3.3_2022.md#4_Production)
-    -   [Benchmark test](genesis_tutorial_3.3_2022.md#Benchmark_test)
-    -   [File size
-        estimation](genesis_tutorial_3.3_2022.md#File_size_estimation)
-    -   [Production run](genesis_tutorial_3.3_2022.md#Production_run)
--   [5. Analysis](genesis_tutorial_3.3_2022.md#5_Analysis)
-    -   [5.1 Make a trajectory file with PBC
-        wrapping](genesis_tutorial_3.3_2022.md#51_Make_a_trajectory_file_with_PBC_wrapping)
-    -   [5.2 Make a trajectory file containing protein
-        only](genesis_tutorial_3.3_2022.md#52_Make_a_trajectory_file_containing_protein_only)
-    -   [5.3 Root-mean-square deviation
-        (RMSD)](genesis_tutorial_3.3_2022.md#53_Root-mean-square_deviation_RMSD)
--   [References](genesis_tutorial_3.3_2022.md#References)
-
-#### [ Preparation]{#Preparation}
+##  Preparation
 
 If you are ready, let's download the tutorial file
-([tutorial22-3.3.tar.gz](assets/tutorial_files/2022_04_tutorial22-3.3.tar.gz){.mtli_attachment
-.mtli_zip}). This tutorial consists of five steps: 1) system setup, 2)
+([tutorial22-3.3.tar.gz](/assets/tutorial_files/2022_04_tutorial22-3.3.tar.gz)). This tutorial consists of five steps: 1) system setup, 2)
 energy minimization, 3) equilibration, 4) production run, and 5)
 trajectory analysis. The control files for GENESIS are already included
-in the download file. To use the CHARMM36m force field parameters \[1\],
-we create a symbolic link to the CHARMM toppar directory (see [Tutorial
-2.2](genesis_tutorial_2.2_2022.md){target="_blank" rel="noopener"}).
+in the download file. To use the CHARMM36m force field parameters [^1],
+we create a symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
-    # Put the tutorial file in the Works directory
-    $ cd ~/GENESIS_Tutorials-2022/Works
-    $ mv ~/Downloads/tutorial22-3.3.zip ./
-    $ unzip tutorial22-3.3.zip
 
-    # Let's clean up the directory
-    $ mv tutorial22-3.3.zip TRASH
+```
+# Put the tutorial file in the Works directory
+$ cd ~/GENESIS_Tutorials-2022/Works
+$ mv ~/Downloads/tutorial22-3.3.zip ./
+$ unzip tutorial22-3.3.zip
 
-    # Let's take a note
-    $ echo "tutorial-3.3: MD simulation of Protein G in NaCl solution" >> README
+# Let's clean up the directory
+$ mv tutorial22-3.3.zip TRASH
 
-    # Check the contents of Tutorial 3.3
-    $ cd tutorial-3.3
-    $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
-    $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
-    $ ls 
-    1_setup     3_equilibrate  5_analysis  bin
-    2_minimize  4_production   benchmark   toppar
+# Let's take a note
+$ echo "tutorial-3.3: MD simulation of Protein G in NaCl solution" >> README
+
+# Check the contents of Tutorial 3.3
+$ cd tutorial-3.3
+$ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
+$ ln -s ../../Programs/genesis-2.0.0/bin ./bin
+$ ls 
+1_setup     3_equilibrate  5_analysis  bin
+2_minimize  4_production   benchmark   toppar
+
+```
 
 One of the aims of this tutorial is to help you think about how to
 perform efficient calculations. To do this, we first need to know the
 architecture of the CPU in the computer in advance. We assume that you
 are using a typical Linux workstation. Let's review the CPU information
-on the computer. You can use the following command (or the `lscpu`
-command) to know the CPU model, number of physical CPUs, number of cores
+on the computer. You can use the following command (or the `lscpu` command) to know the CPU model, number of physical CPUs, number of cores
 in one physical CPU, and number of logical processors.
 
-    # Check the CPU model
-    $ grep 'model name' /proc/cpuinfo | uniq
-    model name : Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz
 
-    # Check the number of physical CPUs
-    $ grep physical.id /proc/cpuinfo | sort -u | wc -l
-    2
+```
+# Check the CPU model
+$ grep 'model name' /proc/cpuinfo | uniq
+model name : Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz
 
-    # Check the number of cores in one physical CPU
-    $ grep cpu.cores /proc/cpuinfo | sort -u
-    cpu cores : 8
+# Check the number of physical CPUs
+$ grep physical.id /proc/cpuinfo | sort -u | wc -l
+2
 
-    # Check the number of logical processors
-    $ grep processor /proc/cpuinfo | wc -l
-    16
+# Check the number of cores in one physical CPU
+$ grep cpu.cores /proc/cpuinfo | sort -u
+cpu cores : 8
 
-This example shows that the computer is equipped with an Intel [Intel
-Xeon
-E5-2670](https://ark.intel.com/content/www/us/en/ark/products/64595/intel-xeon-processor-e5-2670-20m-cache-2-60-ghz-8-00-gt-s-intel-qpi.html){target="_blank"
-rel="noopener"} processor. There are two physical CPUs, each of which
+# Check the number of logical processors
+$ grep processor /proc/cpuinfo | wc -l
+16
+
+```
+
+This example shows that the computer is equipped with an Intel [Intel Xeon E5-2670](https://ark.intel.com/content/www/us/en/ark/products/64595/intel-xeon-processor-e5-2670-20m-cache-2-60-ghz-8-00-gt-s-intel-qpi.html) processor. There are two physical CPUs, each of which
 has 8 CPU cores. Thus, there are 16 CPU cores in total. This CPU
 architecture can be pictured as follows. Please try to draw a similar
 picture for your case.
 
-![](assets/images/2019_08_cpu2.jpg){.aligncenter .wp-image-11387
-decoding="async" width="312" height="160"
-srcset="wp-content/uploads/2019/08/cpu2.jpg 539w, wp-content/uploads/2019/08/cpu2-300x154.jpg 300w, wp-content/uploads/2019/08/cpu2-20x10.jpg 20w, wp-content/uploads/2019/08/cpu2-30x15.jpg 30w, wp-content/uploads/2019/08/cpu2-40x20.jpg 40w"
-sizes="(max-width: 312px) 100vw, 312px"}
+![](/assets/images/2019_08_cpu2.jpg)
 
  If number of logical processors is twice the
 (number of physical CPUs) \* (number of cores in one physical CPU),
-[hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading){target="_blank"
-rel="noopener"} might be turned on, which means that the number of
+[hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading) might be turned on, which means that the number of
 logical processors is virtually doubled. If so, performance of GENESIS
 may suffer. Please consult with the system administrator if you want to
 disable the hyper-threading.
 
-#### [ 1. Setup ]{#1_Setup}
+##  1. Setup 
 
 In this tutorial, we will simulate protein G using the all-atom model.
 The detailed setup scheme of the system has already been described in
-[Tutorial 2.3](genesis_tutorial_2.3_2022.md){target="_blank" rel="noopener"}
+[Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/)
 and will not be covered here. Since we will create symbolic links to the
-files and directories obtained in [Tutorial
-2.3](genesis_tutorial_2.3_2022.md){target="_blank" rel="noopener"}, please
+files and directories obtained in [Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/), please
 finish that first, if you have not yet done. The protein is solvated in
 a 150 mM NaCl solution with a box size of 64 Å × 64 Å × 64 Å, resulting
 in a total number of 24,552 atoms in the system. We have `ionized.pdb`
 and `ionized.psf` as input files for GENESIS. Since the system is twice
-as large as in [Tutorial 3.2](genesis_tutorial_3.2_2022.md){target="_blank"
-rel="noopener"}, there will be much computational cost for the MD
+as large as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/), there will be much computational cost for the MD
 simulation.
 
-    # Change directory for the system setup
-    $ cd 1_setup
-    $ ln -s ../../tutorial-2.3/* ./
-    $ ls
-    1_oripdb  2_modpdb  3_psfgen  4_solvate  5_ionize  toppar
 
-    $ ls ./5_ionize
-    build.tcl  ionized.pdb  ionized.psf  log
+```
+# Change directory for the system setup
+$ cd 1_setup
+$ ln -s ../../tutorial-2.3/* ./
+$ ls
+1_oripdb  2_modpdb  3_psfgen  4_solvate  5_ionize  toppar
 
-![](assets/images/2019_07_setup_figure5.jpg){.wp-image-10755
-fetchpriority="high" decoding="async"
-aria-describedby="caption-attachment-10755" width="250" height="250"
-srcset="wp-content/uploads/2019/07/setup_figure5.jpg 512w, wp-content/uploads/2019/07/setup_figure5-150x150.jpg 150w, wp-content/uploads/2019/07/setup_figure5-300x300.jpg 300w, wp-content/uploads/2019/07/setup_figure5-20x20.jpg 20w, wp-content/uploads/2019/07/setup_figure5-30x30.jpg 30w, wp-content/uploads/2019/07/setup_figure5-40x40.jpg 40w"
-sizes="(max-width: 250px) 100vw, 250px"}
+$ ls ./5_ionize
+build.tcl  ionized.pdb  ionized.psf  log
+
+```
+
+![](/assets/images/2019_07_setup_figure5.jpg)
 
 ionized.pdb
 
-#### [ 2. Minimization]{#2_Minimization}
+##  2. Minimization
 
 First, we perform a 2,000-step energy minimization with the steepest
 descent (SD) method. We use the CHARMM C36m force field parameters. The
-particle mesh Ewald method (PME) \[2\] is used to compute the long-range
-interactions. The scheme is the same as in [Tutorial
-3.2](genesis_tutorial_3.2_2022.md){target="_blank" rel="noopener"}. Let's
+particle mesh Ewald method (PME) [^2] is used to compute the long-range
+interactions. The scheme is the same as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). Let's
 execute spdyn for the control file `INP`. The following command uses 4
 MPI processors and 4 OpenMP threads, that is, a total of 16 CPU cores.
 It will take about 1 minute to finish the calculation.
 
-    # Change directory for the energy minimization 
-    $ cd ../2_minimize
 
-    # Run energy minimization
-    $ export OMP_NUM_THREADS=4
-    $ mpirun -np 4 ../bin/spdyn INP > log
+```
+# Change directory for the energy minimization 
+$ cd ../2_minimize
 
-    # Check the log output
-    $ less log
+# Run energy minimization
+$ export OMP_NUM_THREADS=4
+$ mpirun -np 4 ../bin/spdyn INP > log
+
+# Check the log output
+$ less log
+
+```
 
 Now, let's check the `log` file. At the end of the file, you will
 recognize that "ring structure" and "chirality" are checked for the
@@ -157,57 +147,63 @@ error. However, such errors are rarely found even in the system that was
 minimized from the high-resolution X-ray crystal structure, and you have
 to pay attention to the results of this error check for every case.
 GENESIS checks those errors in general amino acids and nucleic acids.
-For details, see the user manual (`[MINIMIZE]` section) or [Tutorial
-Appendix 6](genesis_tutorial_appendix_6_2022.md){target="_blank" rel="noopener"}.
+For details, see the user manual (`[MINIMIZE]` section) or [Tutorial Appendix 6](/tutorials/genesis_tutorial_appendix_6_2022/).
 
-    :
 
-    Check_Ring_Structure> Check ring structure
+```
+:
 
-      No suspicious residue was detected.
+Check_Ring_Structure> Check ring structure
 
-    Check_Chirality> Check chirality
+  No suspicious residue was detected.
 
-      No suspicious residue was detected.
+Check_Chirality> Check chirality
 
-    :
+  No suspicious residue was detected.
 
-#### [ 3. Equilibration]{#3_Equilibration}
+:
 
-The system is gradually equilibrated in three steps as in [Tutorial
-3.2](genesis_tutorial_3.2_2022.md){target="_blank" rel="noopener"}. First, we
+```
+
+##  3. Equilibration
+
+The system is gradually equilibrated in three steps as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). First, we
 perform a 50-ps MD simulation with positional constraints on the heavy
 atoms of the protein (force constant = 1.0 kcal/mol/Å^2^) in the NVT
 ensemble at *T* = 298.15 K. The equations of motion are integrated with
 a time step of 2 fs with the velocity Verlet algorithm, in which the
-SHAKE/RATTLE \[3,4\] and SETTLE \[5\] algorithms are used for the bond
+SHAKE/RATTLE \[3,4\] and SETTLE [^5] algorithms are used for the bond
 constraint. The temperature is controlled with the Bussi thermostat
-\[6\]. Then, we perform a 50-ps MD simulation in the NPT ensemble at *T*
+[^6]. Then, we perform a 50-ps MD simulation in the NPT ensemble at *T*
 = 298.15 K and *P* = 1 atm with the Bussi thermostat and the barostat
-\[7\]. Positional restraints are applied to the protein backbone heavy
+[^7]. Positional restraints are applied to the protein backbone heavy
 atoms. The other simulation conditions are the same as in the first
 step. Finally, we perform a 50-ps MD in the NPT ensemble at *T* = 298.15
 K and *P* = 1 atm , where the equations of motion are integrated with
-the RESPA algorithm \[8\] with a time step of 2.5 fs. In the RESPA
+the RESPA algorithm [^8] with a time step of 2.5 fs. In the RESPA
 integrator, the PME calculation is performed every 2 steps and the
 thermostat and ballostat momenta are updated every 10 steps.
 
-    # Change directory for equilibration
-    $ cd ../3_equilibrate
 
-    # Step1: NVT-MD with positional restraints on protein heavy atoms
-    $ export OMP_NUM_THREADS=4
-    $ mpirun -np 4 ../bin/spdyn INP1 > log1
+```
+# Change directory for equilibration
+$ cd ../3_equilibrate
 
-    # Step2: NPT-MD with positional restraints on protein heavy atoms
-    $ mpirun -np 4 ../bin/spdyn INP2 > log2
+# Step1: NVT-MD with positional restraints on protein heavy atoms
+$ export OMP_NUM_THREADS=4
+$ mpirun -np 4 ../bin/spdyn INP1 > log1
 
-    # Step3: NPT-MD with positional restraints on protein backbone heavy atoms
-    $ mpirun -np 4 ../bin/spdyn INP3 > log3
+# Step2: NPT-MD with positional restraints on protein heavy atoms
+$ mpirun -np 4 ../bin/spdyn INP2 > log2
 
-#### [ 4. Production]{#4_Production}
+# Step3: NPT-MD with positional restraints on protein backbone heavy atoms
+$ mpirun -np 4 ../bin/spdyn INP3 > log3
 
-##### [Benchmark test]{#Benchmark_test}
+```
+
+##  4. Production
+
+### Benchmark test
 
 Now, before we go into the production run, let's check the benchmark
 performance of GENESIS. Of course, if many CPU cores are available, you
@@ -215,10 +211,14 @@ can expect that the simulation will finish quickly. Benchmark test will
 give you detailed information in advance on how many hours or days the
 simulation will take to finish.
 
-    # Change directory for benchmark check
-    $ cd ../benchmark
-    $ ls
-    INP
+
+```
+# Change directory for benchmark check
+$ cd ../benchmark
+$ ls
+INP
+
+```
 
 In the benchmark test, we measure the simulation time by changing the
 number of CPU cores. Our computer has 16 CPU cores as shown above.
@@ -234,37 +234,44 @@ cores within one physical CPU. Please adjust the number of CPU cores
 according to your computer environment. Each run is just a 1,000-steps
 MD (2.5 ps), which is long enough to check the performance.
 
-    $ export OMP_NUM_THREADS=1
-    $ mpirun -np  1 ../bin/spdyn INP >  1MPIx1OpenMP
-    $ mpirun -np  2 ../bin/spdyn INP >  2MPIx1OpenMP
-    $ mpirun -np  4 ../bin/spdyn INP >  4MPIx1OpenMP
-    $ mpirun -np  8 ../bin/spdyn INP >  8MPIx1OpenMP
-    $ mpirun -np 16 ../bin/spdyn INP > 16MPIx1OpenMP
 
-    $ export OMP_NUM_THREADS=2
-    $ mpirun -np  1 ../bin/spdyn INP >  1MPIx2OpenMP
-    $ mpirun -np  2 ../bin/spdyn INP >  2MPIx2OpenMP
-    $ mpirun -np  4 ../bin/spdyn INP >  4MPIx2OpenMP
-    $ mpirun -np  8 ../bin/spdyn INP >  8MPIx2OpenMP
+```
+$ export OMP_NUM_THREADS=1
+$ mpirun -np  1 ../bin/spdyn INP >  1MPIx1OpenMP
+$ mpirun -np  2 ../bin/spdyn INP >  2MPIx1OpenMP
+$ mpirun -np  4 ../bin/spdyn INP >  4MPIx1OpenMP
+$ mpirun -np  8 ../bin/spdyn INP >  8MPIx1OpenMP
+$ mpirun -np 16 ../bin/spdyn INP > 16MPIx1OpenMP
 
-    $ export OMP_NUM_THREADS=4
-    $ mpirun -np  1 ../bin/spdyn INP >  1MPIx4OpenMP
-    $ mpirun -np  2 ../bin/spdyn INP >  2MPIx4OpenMP
-    $ mpirun -np  4 ../bin/spdyn INP >  4MPIx4OpenMP
+$ export OMP_NUM_THREADS=2
+$ mpirun -np  1 ../bin/spdyn INP >  1MPIx2OpenMP
+$ mpirun -np  2 ../bin/spdyn INP >  2MPIx2OpenMP
+$ mpirun -np  4 ../bin/spdyn INP >  4MPIx2OpenMP
+$ mpirun -np  8 ../bin/spdyn INP >  8MPIx2OpenMP
+
+$ export OMP_NUM_THREADS=4
+$ mpirun -np  1 ../bin/spdyn INP >  1MPIx4OpenMP
+$ mpirun -np  2 ../bin/spdyn INP >  2MPIx4OpenMP
+$ mpirun -np  4 ../bin/spdyn INP >  4MPIx4OpenMP
+
+```
 
  When using 16 MPI processors, the simulation
 was interrupted and the following error message was displayed:
 
-    Setup_Processor_Number> Cannot define domains and cells. 
-    Smaller or adjusted MPI processors, or shorter pairlistdist, 
-    or larger boxsize should be used.
+
+```
+Setup_Processor_Number> Cannot define domains and cells. 
+Smaller or adjusted MPI processors, or shorter pairlistdist, 
+or larger boxsize should be used.
+
+```
 
 This message indicates that 16 MPI processors cannot be used for this
 calculation. SPDYN uses a method in which the system is divided into
 multiple domains for parallel computation (domain decomposition scheme),
 where the number of domains must be equal to the number of MPI
-processors (for details, see the "Available Programs" chapter of the
-User Manual). This message tells you that the system could not be
+processors (for details, see the "Available Programs" chapter of the User Manual). This message tells you that the system could not be
 divided into 16 domains. In fact, the domain size is related to the pair
 list distance. If a short `pairlistdist` is specified in the control
 file, it may be possible to divide the system into 16 domains. However,
@@ -277,24 +284,32 @@ Now let's collect the timings (timers for dynamics calculations) from
 all log files. Timers are in seconds. On our computer, we found that the
 best performance is achieved with 8 MPI processors and 2 OpenMP threads.
 
-    # Gather the timing from all log files
-    $ grep "dynamics      =" * | sort -g -r -k 4 > timer.out
-    $ tail -4 timer.out
-    2MPIx4OpenMP:    dynamics      =      44.213
-    4MPIx2OpenMP:    dynamics      =      44.069
-    4MPIx4OpenMP:    dynamics      =      24.393
-    8MPIx2OpenMP:    dynamics      =      24.318
+
+```
+# Gather the timing from all log files
+$ grep "dynamics      =" * | sort -g -r -k 4 > timer.out
+$ tail -4 timer.out
+2MPIx4OpenMP:    dynamics      =      44.213
+4MPIx2OpenMP:    dynamics      =      44.069
+4MPIx4OpenMP:    dynamics      =      24.393
+8MPIx2OpenMP:    dynamics      =      24.318
+
+```
 
 Since we ran a 2.5 ps MD simulation for each job, the timings (s/2.5 ps)
 are converted to ns/day with the following command.
 
-    # Convert sec/2.5ps to ns/day
-    $ awk '{print $1, 24*60*60*2.5*0.001/$4}' timer.out > benckmark.out
-    $ tail -4 benckmark.out
-    2MPIx4OpenMP: 4.88544
-    4MPIx2OpenMP: 4.9014
-    4MPIx4OpenMP: 8.855
-    8MPIx2OpenMP: 8.88231
+
+```
+# Convert sec/2.5ps to ns/day
+$ awk '{print $1, 24*60*60*2.5*0.001/$4}' timer.out > benckmark.out
+$ tail -4 benckmark.out
+2MPIx4OpenMP: 4.88544
+4MPIx2OpenMP: 4.9014
+4MPIx4OpenMP: 8.855
+8MPIx2OpenMP: 8.88231
+
+```
 
 To summarize, let's plot the timings with the number of CPU cores on the
 X axis and the estimated simulation time (ns/day) on the Y axis.
@@ -304,12 +319,9 @@ it takes about 114 days to run a 1 μs MD simulation on this computer.
 Such an estimate is important for making a schedule and plan to complete
 the simulation within a limited research period.
 
-![](assets/images/2019_08_proteing_bench.png){.aligncenter
-.wp-image-11615 decoding="async" width="375" height="250"
-srcset="wp-content/uploads/2019/08/proteing_bench.png 720w, wp-content/uploads/2019/08/proteing_bench-300x200.png 300w, wp-content/uploads/2019/08/proteing_bench-20x13.png 20w, wp-content/uploads/2019/08/proteing_bench-30x20.png 30w, wp-content/uploads/2019/08/proteing_bench-40x27.png 40w"
-sizes="(max-width: 375px) 100vw, 375px"}
+![](/assets/images/2019_08_proteing_bench.png)
 
-##### [File size estimation]{#File_size_estimation}
+### File size estimation
 
 Since MD simulations generate a large amount of trajectory data, but at
 the same time the available disk space is finite, it is important to
@@ -323,12 +335,16 @@ of the equilibration run generated 15 MB of data at each stage. Based on
 this scheme, let us estimate the file size of the trajectory data
 generated in the subsequent production runs.
 
-    $ du -h ../3_equilibrate/*.dcd
-    15M ../3_equilibrate/eq1.dcd
-    15M ../3_equilibrate/eq2.dcd
-    15M ../3_equilibrate/eq3.dcd
 
-##### [Production run]{#Production_run}
+```
+$ du -h ../3_equilibrate/*.dcd
+15M ../3_equilibrate/eq1.dcd
+15M ../3_equilibrate/eq2.dcd
+15M ../3_equilibrate/eq3.dcd
+
+```
+
+### Production run
 
 Now let's perform the production run. The simulation conditions are the
 same as for the last stage of the equilibration run in Step 3, but with
@@ -337,43 +353,48 @@ OpenMP threads to achieve the best performance. We run spdyn
 sequentially for `INP1`--`INP5`, each corresponding to a 100-ps MD
 simulation. In total, we will get 500-ps MD trajectories.
 
-    # Change directory for production run
-    $ cd ../4_production
-    $ ls
-    INP1  INP2  INP3  INP4  INP5
 
-    # Production runs
-    $ export OMP_NUM_THREADS=2
-    $ mpirun -np 8 ../bin/spdyn INP1 > log1
-    $ mpirun -np 8 ../bin/spdyn INP2 > log2
-    $ mpirun -np 8 ../bin/spdyn INP3 > log3
-    $ mpirun -np 8 ../bin/spdyn INP4 > log4
-    $ mpirun -np 8 ../bin/spdyn INP5 > log5
+```
+# Change directory for production run
+$ cd ../4_production
+$ ls
+INP1  INP2  INP3  INP4  INP5
 
-    # View the MD trajectories using VMD
-    $ vmd ../1_setup/5_ionize/ionized.pdb -psf ../1_setup/5_ionize/ionized.psf -dcd md{1..5}.dcd
+# Production runs
+$ export OMP_NUM_THREADS=2
+$ mpirun -np 8 ../bin/spdyn INP1 > log1
+$ mpirun -np 8 ../bin/spdyn INP2 > log2
+$ mpirun -np 8 ../bin/spdyn INP3 > log3
+$ mpirun -np 8 ../bin/spdyn INP4 > log4
+$ mpirun -np 8 ../bin/spdyn INP5 > log5
+
+# View the MD trajectories using VMD
+$ vmd ../1_setup/5_ionize/ionized.pdb -psf ../1_setup/5_ionize/ionized.psf -dcd md{1..5}.dcd
+
+```
 
 Looking at the trajectory, you will observe that the protein is very
 stable and does not show a large conformational change during 500 ps.
 
-![](assets/images/2019_08_pgmd.jpg){.aligncenter
-.wp-image-11617 loading="lazy" decoding="async" width="428" height="220"
-srcset="wp-content/uploads/2019/08/pgmd-1024x526.jpg 1024w, wp-content/uploads/2019/08/pgmd-300x154.jpg 300w, wp-content/uploads/2019/08/pgmd-768x395.jpg 768w, wp-content/uploads/2019/08/pgmd-20x10.jpg 20w, wp-content/uploads/2019/08/pgmd-30x15.jpg 30w, wp-content/uploads/2019/08/pgmd-40x21.jpg 40w, wp-content/uploads/2019/08/pgmd.jpg 1316w"
-sizes="(max-width: 428px) 100vw, 428px"}
+![](/assets/images/2019_08_pgmd.jpg)
 
-#### [ 5. Analysis]{#5_Analysis}
+##  5. Analysis
 
 In this section, we will mainly learn how to process coordinates
 trajectory files for efficient analysis. We will also analyze the
 root-mean-square deviation (RMSD) of the protein using the processed DCD
 files.
 
-    # Change directory for analysis
-    $ cd ../5_analysis
-    $ ls
-    1_crd_convert_wrap  2_crd_convert_pro  3_rmsd
 
-##### [5.1 Make a trajectory file with PBC wrapping ]{#51_Make_a_trajectory_file_with_PBC_wrapping}
+```
+# Change directory for analysis
+$ cd ../5_analysis
+$ ls
+1_crd_convert_wrap  2_crd_convert_pro  3_rmsd
+
+```
+
+### 5.1 Make a trajectory file with PBC wrapping 
 
 When we load the coordinates trajectory data in VMD, we see that water
 molecules are spread out of the box and the protein is undergoing
@@ -383,54 +404,53 @@ program package, such trajectories can be converted to those in which
 all molecules are wrapped into the unit cell and the target protein is
 fitted to the original position.
 
-![](assets/images/2019_08_crd_convert_wrap2.jpg){.aligncenter
-.wp-image-11624 loading="lazy" decoding="async" width="492" height="240"
-srcset="wp-content/uploads/2019/08/crd_convert_wrap2.jpg 983w, wp-content/uploads/2019/08/crd_convert_wrap2-300x146.jpg 300w, wp-content/uploads/2019/08/crd_convert_wrap2-768x375.jpg 768w, wp-content/uploads/2019/08/crd_convert_wrap2-20x10.jpg 20w, wp-content/uploads/2019/08/crd_convert_wrap2-30x15.jpg 30w, wp-content/uploads/2019/08/crd_convert_wrap2-40x20.jpg 40w"
-sizes="(max-width: 492px) 100vw, 492px"}
+![](/assets/images/2019_08_crd_convert_wrap2.jpg)
 
 Let's change the directory to "`1_crd_convert_wrap`" for this process.
 This directory already contains the control file. The most important
 part of the control file is shown below. When you convert the
 trajectory, the center of mass of the protein is moved to the origin
-(blue option) and all molecules are wrapped into the unit cell (red
-option). Here, `psffile` must be specified in the `[INPUT]` section for
+(blue option) and all molecules are wrapped into the unit cell (red option). Here, `psffile` must be specified in the `[INPUT]` section for
 the CHARMM force field to wrap the molecules. The coordinates of all
-atoms in the system are output to a new DCD file "`output.dcd`" (green
-option). In the original 5 DCD files, there were a total of 1,000
+atoms in the system are output to a new DCD file "`output.dcd`" (green option). In the original 5 DCD files, there were a total of 1,000
 snapshots (200 snapshots in each). To reduce the file size, the
 trajectory analysis period is set to 800 instead of the original
 crdout_period (purple option). Thus, the new DCD file contains a total
 of 250 snapshots.
 
-    [INPUT]
-    psffile = ../../1_setup/5_ionize/ionized.psf  # protein structure file
-    reffile = ../../1_setup/5_ionize/ionized.pdb  # PDB file
 
-    [OUTPUT]
-    pdbfile = output.pdb                          # PDB file
-    trjfile = output.dcd                          # trajectory file
+```
+[INPUT]
+psffile = ../../1_setup/5_ionize/ionized.psf  # protein structure file
+reffile = ../../1_setup/5_ionize/ionized.pdb  # PDB file
 
-    [TRAJECTORY]
-    trjfile1       = ../../4_production/md1.dcd   # trajectory file
-    :
-    trjfile5       = ../../4_production/md5.dcd   # trajectory file
-    md_step1       = 40000                        # number of MD steps
-    mdout_period1  = 200                          # MD output period (crdout_period)
-    ana_period1    = 800                          # analysis period
-    repeat1        = 5
+[OUTPUT]
+pdbfile = output.pdb                          # PDB file
+trjfile = output.dcd                          # trajectory file
 
-    [SELECTION]
-    group1         = sid:PROA        # selection group 1
-    group2         = all             # selection group 2
+[TRAJECTORY]
+trjfile1       = ../../4_production/md1.dcd   # trajectory file
+:
+trjfile5       = ../../4_production/md5.dcd   # trajectory file
+md_step1       = 40000                        # number of MD steps
+mdout_period1  = 200                          # MD output period (crdout_period)
+ana_period1    = 800                          # analysis period
+repeat1        = 5
 
-    [OPTION]
-    centering      = YES             # shift center of mass
-    centering_atom = 1               # atom group
-    center_coord   = 0.0 0.0 0.0     # target center coordinates
-    pbc_correct    = MOLECULE        # (NO/MOLECULE)
-    trjout_format  = DCD             # (PDB/DCD)
-    trjout_type    = COOR+BOX        # (COOR/COOR+BOX)
-    trjout_atom    = 2               # atom group
+[SELECTION]
+group1         = sid:PROA        # selection group 1
+group2         = all             # selection group 2
+
+[OPTION]
+centering      = YES             # shift center of mass
+centering_atom = 1               # atom group
+center_coord   = 0.0 0.0 0.0     # target center coordinates
+pbc_correct    = MOLECULE        # (NO/MOLECULE)
+trjout_format  = DCD             # (PDB/DCD)
+trjout_type    = COOR+BOX        # (COOR/COOR+BOX)
+trjout_atom    = 2               # atom group
+
+```
 
 Let's run `crd_convert` and check the resulting DCD file in VMD. This
 DCD file is actually useful for analyzing protein-water interactions.
@@ -439,24 +459,25 @@ spread out of the box and present in the image cells, and we do not know
 which water molecules are interacting with the protein. But with this
 new DCD, it is obvious at a glance.
 
-    # Convert the trajectory (wrap molecules)
-    $ ../../bin/crd_convert INP > log
-    $ ls
-    INP  log  output.pdb  output.dcd
 
-    # Check the trajectory using VMD
-    $ vmd output.pdb -dcd output.dcd
+```
+# Convert the trajectory (wrap molecules)
+$ ../../bin/crd_convert INP > log
+$ ls
+INP  log  output.pdb  output.dcd
 
-##### [5.2 Make a trajectory file containing protein only ]{#52_Make_a_trajectory_file_containing_protein_only}
+# Check the trajectory using VMD
+$ vmd output.pdb -dcd output.dcd
+
+```
+
+### 5.2 Make a trajectory file containing protein only 
 
 With `crd_convert`, it is possible to fit the Cα atoms to the initial
 structure, remove the water molecules, and create a new DCD file
 containing only protein atoms.
 
-![](assets/images/2019_08_crd_convert_pro2.jpg){.aligncenter
-.wp-image-11623 loading="lazy" decoding="async" width="456" height="240"
-srcset="wp-content/uploads/2019/08/crd_convert_pro2.jpg 911w, wp-content/uploads/2019/08/crd_convert_pro2-300x158.jpg 300w, wp-content/uploads/2019/08/crd_convert_pro2-768x405.jpg 768w, wp-content/uploads/2019/08/crd_convert_pro2-20x11.jpg 20w, wp-content/uploads/2019/08/crd_convert_pro2-30x16.jpg 30w, wp-content/uploads/2019/08/crd_convert_pro2-40x21.jpg 40w"
-sizes="(max-width: 456px) 100vw, 456px"}
+![](/assets/images/2019_08_crd_convert_pro2.jpg)
 
 Let's change the directory to "`2_crd_convert_pro`". This directory
 already contains the control file. Below is the most important part of
@@ -467,18 +488,22 @@ rotation (`TR+ROT`) (blue option). Since all snapshots in the original 5
 DCD files were analyzed, each of which contains 200 snapshots, the
 resulting new DCD file contains 1,000 snapshots.
 
-    [SELECTION]
-    group1         = an:CA            # selection group 1
-    group2         = sid:PROA         # selection group 2
-     
-    [FITTING]
-    fitting_method = TR+ROT           # NO/TR+ROT/TR/TR+ZROT/XYTR/XYTR+ZROT
-    fitting_atom   = 1                # atom group
-     
-    [OPTION]
-    trjout_format  = DCD              # (PDB/DCD)
-    trjout_type    = COOR+BOX         # (COOR/COOR+BOX)
-    trjout_atom    = 2                # atom group
+
+```
+[SELECTION]
+group1         = an:CA            # selection group 1
+group2         = sid:PROA         # selection group 2
+ 
+[FITTING]
+fitting_method = TR+ROT           # NO/TR+ROT/TR/TR+ZROT/XYTR/XYTR+ZROT
+fitting_atom   = 1                # atom group
+ 
+[OPTION]
+trjout_format  = DCD              # (PDB/DCD)
+trjout_type    = COOR+BOX         # (COOR/COOR+BOX)
+trjout_atom    = 2                # atom group
+
+```
 
 Let's run `crd_convert` and check the resulting DCD file in VMD. This
 file is actually useful for analyzing the protein structure itself. This
@@ -490,7 +515,7 @@ of the water molecules, which would be a waste of time. In the next
 section, we will analyze the RMSD using the resulting DCD file instead
 of using the original DCD files.
 
-##### [5.3 Root-mean-square deviation (RMSD)]{#53_Root-mean-square_deviation_RMSD}
+### 5.3 Root-mean-square deviation (RMSD)
 
 To examine the structural stability of the protein, the `rmsd_analysis`
 tool in GENESIS is used to analyze the RMSD of the Cα atoms with respect
@@ -499,63 +524,88 @@ subsection is used. In the analysis, each snapshot is fitted to the
 initial structure (`../2_crd_convert_pro/output.pdb`) using rigid body
 translation and rotation (`TR+ROT`).
 
-    [INPUT]
-    reffile        = ../2_crd_convert_pro/output.pdb  # PDB file
-     
-    [TRAJECTORY]
-    trjfile1       = ../2_crd_convert_pro/output.dcd  # trajectory file
-    md_step1       = 1000            # number of MD steps
-    mdout_period1  = 1               # MD output period
-    ana_period1    = 1               # analysis period
-    repeat1        = 1
-    :
-     
-    [SELECTION]
-    group1         = an:CA           # selection group 1
-     
-    [FITTING]
-    fitting_method = TR+ROT          # NO/TR+ROT/TR/TR+ZROT/XYTR/XYTR+ZROT
-    fitting_atom   = 1               # atom group
-     
-    [OPTION]
-    analysis_atom  = 1               # atom group
+
+```
+[INPUT]
+reffile        = ../2_crd_convert_pro/output.pdb  # PDB file
+ 
+[TRAJECTORY]
+trjfile1       = ../2_crd_convert_pro/output.dcd  # trajectory file
+md_step1       = 1000            # number of MD steps
+mdout_period1  = 1               # MD output period
+ana_period1    = 1               # analysis period
+repeat1        = 1
+:
+ 
+[SELECTION]
+group1         = an:CA           # selection group 1
+ 
+[FITTING]
+fitting_method = TR+ROT          # NO/TR+ROT/TR/TR+ZROT/XYTR/XYTR+ZROT
+fitting_atom   = 1               # atom group
+ 
+[OPTION]
+analysis_atom  = 1               # atom group
+
+```
 
 During 500 ps, the RMSD is less than 1 Å, indicating that this protein
 structure is very stable. However, the RMSD is still gradually
 increasing and may require longer simulation runs to converge.
 
-![](assets/images/2019_08_figure_rmsd.jpg){.aligncenter
-.wp-image-11473 loading="lazy" decoding="async" width="375" height="250"
-srcset="wp-content/uploads/2019/08/figure_rmsd.jpg 720w, wp-content/uploads/2019/08/figure_rmsd-300x200.jpg 300w, wp-content/uploads/2019/08/figure_rmsd-20x13.jpg 20w, wp-content/uploads/2019/08/figure_rmsd-30x20.jpg 30w, wp-content/uploads/2019/08/figure_rmsd-40x27.jpg 40w"
-sizes="(max-width: 375px) 100vw, 375px"}
+![](/assets/images/2019_08_figure_rmsd.jpg)
 
-#### [ References]{#References}
+##  References
 
 1.  J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).
-    [](https://www.nature.com/articles/nmeth.4067){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.nature.com/articles/nmeth.4067)
+```
+
 2.  T. Darden *et al.*, *J. Chem. Phys.*, **98**, 10089-10092 (1993).
-    [](https://aip.scitation.org/doi/abs/10.1063/1.464397){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://aip.scitation.org/doi/abs/10.1063/1.464397)
+```
+
 3.  J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).
-    [](https://www.sciencedirect.com/science/article/pii/0021999177900985){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.sciencedirect.com/science/article/pii/0021999177900985)
+```
+
 4.  H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).
-    [](https://www.sciencedirect.com/science/article/pii/0021999183900141){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.sciencedirect.com/science/article/pii/0021999183900141)
+```
+
 5.  S. Miyamoto and P. A. Kollman, *J. Comput. Chem.*, **13**, 952-962
-    (1992).
-    [](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.540130805){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+(1992).
+[](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.540130805)
+```
+
 6.  G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).
-    [](https://aip.scitation.org/doi/10.1063/1.2408420){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://aip.scitation.org/doi/10.1063/1.2408420)
+```
+
 7.  G. Bussi *et al.*, *J. Chem. Phys.*, **130**, 074101 (2009).
-    [](https://aip.scitation.org/doi/10.1063/1.3073889){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://aip.scitation.org/doi/10.1063/1.3073889)
+```
+
 8.  M. Tuckerman *et al.*, *J. Chem. Phys.*, **97**, 1990-2001 (1992).
-    [](https://aip.scitation.org/doi/10.1063/1.463137){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://aip.scitation.org/doi/10.1063/1.463137)
+
+```
 
 ------------------------------------------------------------------------
 

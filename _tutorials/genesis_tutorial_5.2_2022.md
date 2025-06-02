@@ -1,27 +1,15 @@
-### 5.2 Creating initial files for the AMBER force field
+---
+title: "GENESIS Tutorial 5.2 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:56+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
-
--   [Preparations](genesis_tutorial_5.2_2022.md#Preparations)
--   [1. Single-chain
-    protein](genesis_tutorial_5.2_2022.md#1_Single-chain_protein)
--   [2. Multi-chain
-    protein](genesis_tutorial_5.2_2022.md#2_Multi-chain_protein)
--   [3. Changing the protonation states of
-    side-chains](genesis_tutorial_5.2_2022.md#3_Changing_the_protonation_states_of_side-chains)
--   [4. Adding disulfide
-    bonds](genesis_tutorial_5.2_2022.md#4_Adding_disulfide_bonds)
--   [5. Protein-DNA
-    complex](genesis_tutorial_5.2_2022.md#5_Protein-DNA_complex)
--   [6. Including crystal structure water and
-    ions](genesis_tutorial_5.2_2022.md#6_Including_crystal_structure_water_and_ions)
--   [7. Ligand-containing
-    system](genesis_tutorial_5.2_2022.md#7_Ligand-containing_system)
--   [8. Solvating the
-    system](genesis_tutorial_5.2_2022.md#8_Solvating_the_system)
--   [Appendix. Executing tleap using a
-    script](genesis_tutorial_5.2_2022.md#Appendix_Executing_tleap_using_a_script)
--   [References](genesis_tutorial_5.2_2022.md#References)
+# 5.2 Creating initial files for the AMBER force field
 
 In this tutorial, we provide a guide for preparing parameter files,
 topology files (`prmtop` file), and coordinate files (`crd` file) for
@@ -36,44 +24,42 @@ we use tleap, but the same procedures can also be performed using xleap.
 The prmtop and crd files produced in this tutorial can be used as input
 for GENESIS.
 
-#### [ Preparations]{#Preparations}
+##  Preparations
 
 In this tutorial, we use
-[[AmberTools18](http://ambermd.org/doc12/Amber18.pdf){.mtli_attachment
-.mtli_pdf target="_blank" rel="noopener noreferrer"} as an example,
-which is available free of charge. Of course, you can use the latest
-version of AmberTools. First, download the program from the webpage. We
-assume that you install the AMBER tools in
-`$HOME/GENESIS_Tutorials-2022/Programs`. Then, add the following
-commands in the `.bashrc` or the `.bash_profile` file with respect to
-your installation path. Or alternatively, execute the commands directly
-in the command line. ]{style="font-size: 12pt; color: #000000;"}
+[[AmberTools18](http://ambermd.org/doc12/Amber18.pdf) as an example, which is available free of charge. Of course, you can use the latest version of AmberTools. First, download the program from the webpage. We assume that you install the AMBER tools in `$HOME/GENESIS_Tutorials-2022/Programs`. Then, add the following commands in the `.bashrc` or the `.bash_profile` file with respect to your installation path. Or alternatively, execute the commands directly in the command line. ]
 
-    source ~/GENESIS_Tutorials-2022/Programs/amber18/amber.sh
-    export AMBERHOME="~/GENESIS_Tutorials-2022/Programs/amber18"
+
+```
+source ~/GENESIS_Tutorials-2022/Programs/amber18/amber.sh
+export AMBERHOME="~/GENESIS_Tutorials-2022/Programs/amber18"
+
+```
 
 This tutorial consists of 8 sections, create a directory for each
 section.
 
-    # Preparation of Tutorial 5.2
-    $ cd ~/GENESIS_Tutorials-2022/Works
 
-    # Let's take a note
-    $ echo "tutorial-5.2: Creating input files for AMBER" >> README
+```
+# Preparation of Tutorial 5.2
+$ cd ~/GENESIS_Tutorials-2022/Works
 
-    $ mkdir tutorial-5.2
-    $ cd tutorial-5.2
-    $ mkdir Sec1 Sec2 Sec3 Sec4.1 Sec4.2 Sec5 Sec6 Sec7 Sec8
+# Let's take a note
+$ echo "tutorial-5.2: Creating input files for AMBER" >> README
+
+$ mkdir tutorial-5.2
+$ cd tutorial-5.2
+$ mkdir Sec1 Sec2 Sec3 Sec4.1 Sec4.2 Sec5 Sec6 Sec7 Sec8
+
+```
 
 A large number of files will be created during the execution of the
 following tutorial. In order to keep an uncluttered environment, execute
 the commands for each section inside the sections's directory.
 
-#### [ 1. Single-chain protein]{#1_Single-chain_protein}
+##  1. Single-chain protein
 
-Using [PDB ID:
-3MP9](https://www.rcsb.org/structure/3MP9){target="_blank"
-rel="noopener noreferrer"} as an example, we show how to create `prmtop`
+Using [PDB ID: 3MP9](https://www.rcsb.org/structure/3MP9) as an example, we show how to create `prmtop`
 and `crd` files for a protein composed of a single chain. In the
 commands presented below, we use VMD to select chain A of the protein
 and write it out as `proa.pdb`. The phrase `and not altloc B` refers to
@@ -84,23 +70,27 @@ atoms are not resolved. LEaP will automatically add hydrogen atoms. The
 obtained `proa.pdb` file is read by tleap, and prmtop and crd files are
 created using the ff14SB the force field.
 
-    # Download the PDB file
-    $ cd Sec1
-    $ wget https://files.rcsb.org/download/3MP9.pdb
 
-    # Use VMD to create a PDB file containing only chain A of the protein
-    $ vmd -dispdev text 3MP9.pdb
-    vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
-    vmd > $sel writepdb proa.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec1
+$ wget https://files.rcsb.org/download/3MP9.pdb
 
-    # Use tleap in AMBER tools to create the prmtop and crd files
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > mol = loadpdb proa.pdb
-    > saveamberparm mol test.prmtop test.crd
-    > savepdb mol test.pdb
-    > quit
+# Use VMD to create a PDB file containing only chain A of the protein
+$ vmd -dispdev text 3MP9.pdb
+vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
+vmd > $sel writepdb proa.pdb
+vmd > exit
+
+# Use tleap in AMBER tools to create the prmtop and crd files
+$ tleap
+> source leaprc.protein.ff14SB
+> mol = loadpdb proa.pdb
+> saveamberparm mol test.prmtop test.crd
+> savepdb mol test.pdb
+> quit
+
+```
 
 This protein contains several histidine residues. Histidines can exist
 as three different types (HID, HIE, HIP) depending on the position of
@@ -110,7 +100,11 @@ converted to HIE and hydrogen atoms are added in the corresponding
 locations. Open the `test.prmtop` and `test.crd` output files in VMD and
 confirm that the structure is correctly displayed.
 
-    $ vmd -parm7 test.prmtop -rst7 test.crd
+
+```
+$ vmd -parm7 test.prmtop -rst7 test.crd
+
+```
 
 Also look at the `test.pdb` file and verify its content. In the original
 PDB file, residue numbers started with 4, but here they were shifted to
@@ -118,26 +112,23 @@ start with 1. This feature is specific to LEaP, and the user should be
 careful upon referencing residue numbers when performing trajectory
 analysis.
 
-[ ]{style="color: #0000ff;"}In this section, we used a single-chain
+[ ]In this section, we used a single-chain
 protein with no missing amino acid residues. Within the structures
 deposited in the PDB, there are some in which parts such as loop regions
 are missing. In such cases, residue numbers are not consecutive and care
 should be taken. If tleap is executed as is, without considering the
 number skip, a covalent bond will be generated, bypassing the missing
 part. In case of missing regions, programs such as
-[Modeller](https://salilab.org/modeller/){target="_blank"
-rel="noopener noreferrer"} may be used to model them, or, if the missing
+[Modeller](https://salilab.org/modeller/) may be used to model them, or, if the missing
 region does not have an important functional role, modeling may be
 skipped, and the protein can be treated as a multi-chain. tleap will
 automatically treat the protein as multi-chain if in the input PDB file
 the TER line is inserted in the missing region.
 
-#### [ 2. Multi-chain protein]{#2_Multi-chain_protein}
+##  2. Multi-chain protein
 
 Here we show how to create `prmtop` and `crd` files for proteins made up
-of several chains. We use the NMR-resolved [PDB ID:
-1AFO](https://www.rcsb.org/structure/1afo){target="_blank"
-rel="noopener noreferrer"} structure. This protein is a homo-dimer
+of several chains. We use the NMR-resolved [PDB ID: 1AFO](https://www.rcsb.org/structure/1afo) structure. This protein is a homo-dimer
 consisting of chains A and B. The PDB file contains several models of
 the protein structure, here we use Model 1, which corresponds to frame 0
 when opening the file in VMD. In the original PDB file, all histidine
@@ -148,31 +139,35 @@ automatically separate the main chain before and after that line.
 However here, we prepare a separate PDB file for each chain and use the
 "combine" command in tleap for combining them.
 
-    # Download the PDB file
-    $ cd Sec2
-    $ wget https://files.rcsb.org/download/1AFO.pdb
 
-    # Use VMD to create separate PDB files for each chain, A and B
-    $ vmd -dispdev text 1AFO.pdb
-    vmd > set sel1 [atomselect top "chain A" frame 0]
-    vmd > set sel2 [atomselect top "chain B" frame 0]
-    vmd > $sel1 writepdb proa.pdb
-    vmd > $sel2 writepdb prob.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec2
+$ wget https://files.rcsb.org/download/1AFO.pdb
 
-    # Change all HIS residue names in the PDB to HID
-    $ sed -e "s/HIS/HID/g" proa.pdb > proa_mod.pdb
-    $ sed -e "s/HIS/HID/g" prob.pdb > prob_mod.pdb
+# Use VMD to create separate PDB files for each chain, A and B
+$ vmd -dispdev text 1AFO.pdb
+vmd > set sel1 [atomselect top "chain A" frame 0]
+vmd > set sel2 [atomselect top "chain B" frame 0]
+vmd > $sel1 writepdb proa.pdb
+vmd > $sel2 writepdb prob.pdb
+vmd > exit
 
-    # Create prmtop and crd files using tleap
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > mol1 = loadpdb proa_mod.pdb
-    > mol2 = loadpdb prob_mod.pdb
-    > dimer = combine {mol1 mol2}
-    > saveamberparm dimer test.prmtop test.crd
-    > savepdb dimer test.pdb
-    > quit
+# Change all HIS residue names in the PDB to HID
+$ sed -e "s/HIS/HID/g" proa.pdb > proa_mod.pdb
+$ sed -e "s/HIS/HID/g" prob.pdb > prob_mod.pdb
+
+# Create prmtop and crd files using tleap
+$ tleap
+> source leaprc.protein.ff14SB
+> mol1 = loadpdb proa_mod.pdb
+> mol2 = loadpdb prob_mod.pdb
+> dimer = combine {mol1 mol2}
+> saveamberparm dimer test.prmtop test.crd
+> savepdb dimer test.pdb
+> quit
+
+```
 
 As in the previous section, verify that the content of the `test.pdb`
 file is displayed correctly. The residues in this protein were
@@ -188,7 +183,7 @@ automatically executed, it is better to use the "combine" command for
 creating prmtop and crd files while carefully inspecting the structure
 of each chain. This may reduce the chances of errors in modeling.
 
-#### [ 3. Changing the protonation states of side-chains ]{#3_Changing_the_protonation_states_of_side-chains}
+##  3. Changing the protonation states of side-chains 
 
 The side-chains of aspartatic acid (ASP) and glutamatic acid (GLU) are
 usually deprotonatd under a neutral pH of 7. However, when such charged
@@ -196,12 +191,9 @@ residues are buried inside the hydrophobic core of a protein, the
 charged state is unstable, and the side-chains often become protonated.
 Protonation states can be predicted by estimating the pKa values using
 well-known software such as
-[PROPKA](https://github.com/jensengroup/propka-3.1){target="_blank"
-rel="noopener noreferrer"},
-[MCCE](https://gunnerlab.github.io/Stable-MCCE/){target="_blank"
-rel="noopener noreferrer"}, or
-[MEAD](https://rtullmann.de/index.php?name=extended-mead){target="_blank"
-rel="noopener noreferrer" wplink-edit="true"}.
+[PROPKA](https://github.com/jensengroup/propka-3.1),
+[MCCE](https://gunnerlab.github.io/Stable-MCCE/), or
+[MEAD](https://rtullmann.de/index.php?name=extended-mead).
 
 As explained in sections 1 and 2, the positions of the added hydrogen
 atoms are determined by tleap upon reading the residue names from the
@@ -227,14 +219,12 @@ and verify that the residue has indeed been protonated.
 group in Cys often appear in the S^−^ form and coordinated with Zn^2+^.
 In such cases, make sure to use the CYM form.
 
-#### [ 4. Adding disulfide bonds]{#4_Adding_disulfide_bonds}
+##  4. Adding disulfide bonds
 
 **4.1 Single-chain protein**
 
 We show how to create disulfide bonds between proximate cysteine
-residues in a protein. Here we use the single-chain protein [PDB ID:
-3EAC](https://www.rcsb.org/structure/3EAC){target="_blank"
-rel="noopener noreferrer"} as an example. In the original PDB file,
+residues in a protein. Here we use the single-chain protein [PDB ID: 3EAC](https://www.rcsb.org/structure/3EAC) as an example. In the original PDB file,
 cysteine residues are named CYS. In order to generate a disulfide bond
 between two cyteine residues, we first change their names to CYX. CYX is
 a cysteine residue in which the H atom is deleted from the S-H group in
@@ -243,28 +233,32 @@ between residues 122 and 164. Here, we use the "sed" command to change
 the residue names, and then execute the "bond" command in tleap to
 create a covalent bond between the SG atoms of CYX122 and CYX164.
 
-    # Download the PDB file
-    $ cd Sec4.1
-    $ wget https://files.rcsb.org/download/3EAC.pdb
 
-    # Use VMD to create a PDB file for chain A
-    $ vmd -dispdev text 3EAC.pdb
-    vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
-    vmd > $sel writepdb proa.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec4.1
+$ wget https://files.rcsb.org/download/3EAC.pdb
 
-    # Change the residue names of the cysteine residues
-    # for which we wish to create the disulfide bond to CYX
-    $ sed -e "s/CYS A 122/CYX A 122/g" proa.pdb | sed -e "s/CYS A 164/CYX A 164/g" > proa_mod.pdb
+# Use VMD to create a PDB file for chain A
+$ vmd -dispdev text 3EAC.pdb
+vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
+vmd > $sel writepdb proa.pdb
+vmd > exit
 
-    # Create prmtop and crd files using tleap
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > mol = loadpdb proa_mod.pdb
-    > bond mol.122.SG mol.164.SG
-    > saveamberparm mol test.prmtop test.crd
-    > savepdb mol test.pdb
-    > quit
+# Change the residue names of the cysteine residues
+# for which we wish to create the disulfide bond to CYX
+$ sed -e "s/CYS A 122/CYX A 122/g" proa.pdb | sed -e "s/CYS A 164/CYX A 164/g" > proa_mod.pdb
+
+# Create prmtop and crd files using tleap
+$ tleap
+> source leaprc.protein.ff14SB
+> mol = loadpdb proa_mod.pdb
+> bond mol.122.SG mol.164.SG
+> saveamberparm mol test.prmtop test.crd
+> savepdb mol test.pdb
+> quit
+
+```
 
 Open the obtained `test.prmtop` and `test.crd` files in VMD and verify
 that the disulfide bonds were properly created. Just in case, check the
@@ -277,9 +271,7 @@ disulfide bonds.
 **4.2 Multi-chain protein**
 
 Next, we show how to create `prmtop` and `crd` files for a multi-chain
-protein containing a disulfide bond between chains. We use Insulin ([PDB
-ID: 3I40](https://www.rcsb.org/structure/3I40){target="_blank"
-rel="noopener noreferrer"}) as an example. Insulin contains two chains,
+protein containing a disulfide bond between chains. We use Insulin ([PDB ID: 3I40](https://www.rcsb.org/structure/3I40)) as an example. Insulin contains two chains,
 A and B, with one intra-chain disulfide bond (A: Cys6-A: Cys11), and two
 inter-chain (A: Cys7-B: Cys7 and A: Cys20-B: Cys19) disulfide bonds.
 Similarly to the previous section, we use a patch to create the bonds.
@@ -293,100 +285,103 @@ which we wish to form the disulfide bonds. In the second step, we use
 the `bond` command in tleap to create a covalent bond between the SG
 atoms of the CYX residues whose numbers we obtained in the first step.
 
-    # Download the PDB file
-    $ cd Sec4.2
-    $ wget https://files.rcsb.org/download/3I40.pdb
 
-    # Use VMD to create a separate PDB file for each chain, A and B
-    $ vmd -dispdev text 3I40.pdb
-    vmd > set sel1 [atomselect top "(chain A and protein) and not altloc B"]
-    vmd > set sel2 [atomselect top "chain B and protein"]
-    vmd > $sel1 writepdb proa.pdb
-    vmd > $sel2 writepdb prob.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec4.2
+$ wget https://files.rcsb.org/download/3I40.pdb
 
-    # Change the residue names of cysteine residues
-    # for which we wish to create a disulfide bond to CYX
-    $ sed -e "s/CYS/CYX/g" proa.pdb > proa_mod.pdb
-    $ sed -e "s/CYS/CYX/g" prob.pdb > prob_mod.pdb
+# Use VMD to create a separate PDB file for each chain, A and B
+$ vmd -dispdev text 3I40.pdb
+vmd > set sel1 [atomselect top "(chain A and protein) and not altloc B"]
+vmd > set sel2 [atomselect top "chain B and protein"]
+vmd > $sel1 writepdb proa.pdb
+vmd > $sel2 writepdb prob.pdb
+vmd > exit
 
-    # Using tleap, create PDB files with residues numbered from 1
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > mol1 = loadpdb proa_mod.pdb
-    > mol2 = loadpdb prob_mod.pdb
-    > complex = combine {mol1 mol2}
-    > savepdb complex tmp.pdb
-    > quit
+# Change the residue names of cysteine residues
+# for which we wish to create a disulfide bond to CYX
+$ sed -e "s/CYS/CYX/g" proa.pdb > proa_mod.pdb
+$ sed -e "s/CYS/CYX/g" prob.pdb > prob_mod.pdb
 
-    # Write down the residue numbers of the cysteine residue
-    # for which we wish to form a disulfide bond from the temp.pdb file,
-    # create the bond using the "bond" command
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > complex = loadpdb tmp.pdb
-    > bond complex.6.SG complex.11.SG
-    > bond complex.7.SG complex.28.SG
-    > bond complex.20.SG complex.40.SG
-    > saveamberparm complex test.prmtop test.crd
-    > savepdb complex test.pdb
-    > quit
+# Using tleap, create PDB files with residues numbered from 1
+$ tleap
+> source leaprc.protein.ff14SB
+> mol1 = loadpdb proa_mod.pdb
+> mol2 = loadpdb prob_mod.pdb
+> complex = combine {mol1 mol2}
+> savepdb complex tmp.pdb
+> quit
+
+# Write down the residue numbers of the cysteine residue
+# for which we wish to form a disulfide bond from the temp.pdb file,
+# create the bond using the "bond" command
+$ tleap
+> source leaprc.protein.ff14SB
+> complex = loadpdb tmp.pdb
+> bond complex.6.SG complex.11.SG
+> bond complex.7.SG complex.28.SG
+> bond complex.20.SG complex.40.SG
+> saveamberparm complex test.prmtop test.crd
+> savepdb complex test.pdb
+> quit
+
+```
 
 The reason we execute tleap in two stages is that residue numbers of the
 second chain (renumbered in stage 1), is unknown to the user beforehand.
 Therefore, it is difficult to specify residue numbers upon creating the
 covalent bond in the `bond` command.
 
-#### [ 5. Protein-DNA complex]{#5_Protein-DNA_complex}
+##  5. Protein-DNA complex
 
 Up to now, we illustrated how to create `prmtop` and `crd` files for
 systems containing only a protein. Here, we show how to deal with cases
-in which a protein is bound to DNA. We use [PDB ID:
-3LNQ](https://www.rcsb.org/structure/3LNQ){target="_blank"
-rel="noopener noreferrer"} as an example. We follow the same procedure
+in which a protein is bound to DNA. We use [PDB ID: 3LNQ](https://www.rcsb.org/structure/3LNQ) as an example. We follow the same procedure
 as before, by creating separate PDB files for each chain and using tleap
 to combine them. The `leaprc.protein.ff14SB` file does not contain
 parameters for DNA, thus we additionally read either `leaprc.DNA.bsc1`
-\[1\] or `leaprc.DNA.OL15` \[2\]. Recently, Galindo-Murillo et al
+[^1] or `leaprc.DNA.OL15` [^2]. Recently, Galindo-Murillo et al
 provided useful information regarding which of the two parameter sets to
-be chosen \[3\]. Here, we use the latter parameter set.
+be chosen [^3]. Here, we use the latter parameter set.
 
-    # Download the PDB file
-    $ cd Sec5
-    $ wget https://files.rcsb.org/download/3LNQ.pdb
 
-    # Use VMD to create a PDB file containing only chain A
-    $ vmd -dispdev text 3LNQ.pdb
-    vmd > set sel1 [atomselect top "chain A and protein"]
-    vmd > set sel2 [atomselect top "chain B and nucleic"]
-    vmd > set sel3 [atomselect top "chain C and nucleic"]
-    vmd > $sel1 writepdb proa.pdb
-    vmd > $sel2 writepdb dna1.pdb
-    vmd > $sel3 writepdb dna2.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec5
+$ wget https://files.rcsb.org/download/3LNQ.pdb
 
-    # Create prmtop and crd files using tleap
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > source leaprc.DNA.OL15
-    > mol1 = loadpdb proa.pdb
-    > mol2 = loadpdb dna1.pdb
-    > mol3 = loadpdb dna2.pdb
-    > complex = combine {mol1 mol2 mol3}
-    > saveamberparm complex test.prmtop test.crd
-    > savepdb complex test.pdb
-    > quit
+# Use VMD to create a PDB file containing only chain A
+$ vmd -dispdev text 3LNQ.pdb
+vmd > set sel1 [atomselect top "chain A and protein"]
+vmd > set sel2 [atomselect top "chain B and nucleic"]
+vmd > set sel3 [atomselect top "chain C and nucleic"]
+vmd > $sel1 writepdb proa.pdb
+vmd > $sel2 writepdb dna1.pdb
+vmd > $sel3 writepdb dna2.pdb
+vmd > exit
 
-#### [ 6. Including crystal structure water and ions]{#6_Including_crystal_structure_water_and_ions}
+# Create prmtop and crd files using tleap
+$ tleap
+> source leaprc.protein.ff14SB
+> source leaprc.DNA.OL15
+> mol1 = loadpdb proa.pdb
+> mol2 = loadpdb dna1.pdb
+> mol3 = loadpdb dna2.pdb
+> complex = combine {mol1 mol2 mol3}
+> saveamberparm complex test.prmtop test.crd
+> savepdb complex test.pdb
+> quit
+
+```
+
+##  6. Including crystal structure water and ions
 
 Here we show how to create `prmtop` and `crd` files for systems
 containing water molecules which were resolved in the X-ray crystal
 structure, internal water molecules predicted using programs such as
-[DOWSER](http://muralab.org/%7Ecmura/DOWSER/){target="_blank"
-rel="noopener noreferrer"}, or ions coordinated with the protein. Here,
-we present a simple example for creating a PSF file for [PDB:
-2I5M](https://www.rcsb.org/structure/2I5M){target="_blank"
-rel="noopener noreferrer"}, which contains water and a magnesium ion.
+[DOWSER](http://muralab.org/%7Ecmura/DOWSER/), or ions coordinated with the protein. Here,
+we present a simple example for creating a PSF file for [PDB: 2I5M](https://www.rcsb.org/structure/2I5M), which contains water and a magnesium ion.
 Recently it is being increasingly recommended that the TIP4P water model
 should be used when using the AMBER force field. Here, assuming that
 electrostatic interactions are calculated using the Ewald method, tleap
@@ -396,30 +391,34 @@ parameter is used, whereas for 2-4 valent ions, the 12-6 Lennard-Jones
 potential form is used. These parameters were optimized to be used
 together with TIP4Pew.
 
-    # Download the PDB file
-    $ cd Sec6
-    $ wget https://files.rcsb.org/download/2I5M.pdb
 
-    # Create separate PDB files for the protein, water, and ions
-    $ vmd -dispdev text 2I5M.pdb
-    vmd > set sel1 [atomselect top "protein and not altloc B"]
-    vmd > set sel2 [atomselect top "water"]
-    vmd > set sel3 [atomselect top "resname MG"]
-    vmd > $sel1 writepdb proa.pdb
-    vmd > $sel2 writepdb water.pdb
-    vmd > $sel3 writepdb mg.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec6
+$ wget https://files.rcsb.org/download/2I5M.pdb
 
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > source leaprc.water.tip4pew
-    > mol1 = loadpdb proa.pdb
-    > mol2 = loadpdb water.pdb
-    > mol3 = loadpdb mg.pdb
-    > complex = combine {mol1 mol2 mol3}
-    > saveamberparm complex test.prmtop test.crd
-    > savepdb complex test.pdb
-    > quit
+# Create separate PDB files for the protein, water, and ions
+$ vmd -dispdev text 2I5M.pdb
+vmd > set sel1 [atomselect top "protein and not altloc B"]
+vmd > set sel2 [atomselect top "water"]
+vmd > set sel3 [atomselect top "resname MG"]
+vmd > $sel1 writepdb proa.pdb
+vmd > $sel2 writepdb water.pdb
+vmd > $sel3 writepdb mg.pdb
+vmd > exit
+
+$ tleap
+> source leaprc.protein.ff14SB
+> source leaprc.water.tip4pew
+> mol1 = loadpdb proa.pdb
+> mol2 = loadpdb water.pdb
+> mol3 = loadpdb mg.pdb
+> complex = combine {mol1 mol2 mol3}
+> saveamberparm complex test.prmtop test.crd
+> savepdb complex test.pdb
+> quit
+
+```
 
 When we open the resulting `test.prmtop` and `test.crd` in VMD, we
 notice that there is a covalent bond between the two hydrogen atoms of
@@ -434,7 +433,7 @@ oxygen atoms is required. Let's verify the content of the `test.pdb`
 file. Residue names for water molecules were changed from HOH to WAT,
 and because TIP4P is used, a dummy atom named EPW was added.
 
-#### [ 7. Ligand-containing system]{#7_Ligand-containing_system}
+##  7. Ligand-containing system
 
 For systems containing small molecules such as drugs that bind to
 proteins (ligands), the Generalized Amber Force Field (GAFF) is widely
@@ -446,23 +445,26 @@ performed. Here, we use PDB ID: 1OV5 as an example for a ligand-bound
 protein system. First, similarly to previous sections, we create PDB
 files separately for the protein and for the ligand (residue name 2LP).
 
-    # Download the PDB file
-    $ cd Sec7
-    $ wget https://files.rcsb.org/download/1OV5.pdb
 
-    # Use VMD to create separate PDB files for chain A
-    # of the protein and for the ligand
-    $ vmd -dispdev text 1OV5.pdb
-    vmd > set sel1 [atomselect top "chain A and protein"]
-    vmd > set sel2 [atomselect top "chain A and resname 2LP"]
-    vmd > $sel1 writepdb proa.pdb
-    vmd > $sel2 writepdb 2LP.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec7
+$ wget https://files.rcsb.org/download/1OV5.pdb
+
+# Use VMD to create separate PDB files for chain A
+# of the protein and for the ligand
+$ vmd -dispdev text 1OV5.pdb
+vmd > set sel1 [atomselect top "chain A and protein"]
+vmd > set sel2 [atomselect top "chain A and resname 2LP"]
+vmd > $sel1 writepdb proa.pdb
+vmd > $sel2 writepdb 2LP.pdb
+vmd > exit
+
+```
 
 The resulting `2LP.pdb` file does not contain hydrogen atoms, thus they
 need to be added. One simple option, which we use here, is using the
-[MolProbity](http://molprobity.biochem.duke.edu/){target="_blank"
-rel="noopener noreferrer"} web server to add the hydrogen atoms. We
+[MolProbity](http://molprobity.biochem.duke.edu/) web server to add the hydrogen atoms. We
 upload the `2LP.pdb` file to the server and use the "Add hydrogen"
 function to add the atoms. Download the output file (`2LPFH.pdb`) and
 verify using VMD that hydrogen atoms were added correctly. As an
@@ -473,23 +475,26 @@ GAFF does not support all ligand types. For those ligands, we need to
 perform quantum chemical calculations in order to obtain the parameters
 which are missing from GAFF. This procedure can be easily performed
 using the antechamber and parmchk2 tools, which are included in Amber
-Tools. Upon providing the PDB file of the ligand (after adding hydrogen
-atoms) and executing antechamber, a quantum chemical calculation is
+Tools. Upon providing the PDB file of the ligand (after adding hydrogen atoms) and executing antechamber, a quantum chemical calculation is
 performed, resulting in a mol2 output file. Upon further providing the
 mol2 as an input for the parmchk2 tool, parameters missing from GAFF are
 identified and obtained in the form of a frcmod file. Here, we show the
 procedure for GAFF2, which is the latest version of GAFF.
 
-    # Create a directory for the antechamber calculation
-    # and copy the hydrogen-included ligand file
-    $ mkdir Antechamber
-    $ cd Antechamber
-    $ cp ~/Download/2LPFH.pdb ./
 
-    # Execute antechamber and obtain the parameters
-    # missing from gaff using the prmchk2 command
-    $ antechamber -i 2LPFH.pdb -fi pdb -o ligand.mol2 -fo mol2 -c bcc -at gaff2
-    $ parmchk2 -i ligand.mol2 -f mol2 -o ligand.frcmod -s gaff2
+```
+# Create a directory for the antechamber calculation
+# and copy the hydrogen-included ligand file
+$ mkdir Antechamber
+$ cd Antechamber
+$ cp ~/Download/2LPFH.pdb ./
+
+# Execute antechamber and obtain the parameters
+# missing from gaff using the prmchk2 command
+$ antechamber -i 2LPFH.pdb -fi pdb -o ligand.mol2 -fo mol2 -c bcc -at gaff2
+$ parmchk2 -i ligand.mol2 -f mol2 -o ligand.frcmod -s gaff2
+
+```
 
 The desired calculation method for charges can be specified by the -c
 option in antechamber. Here, we used the AM1-BCC method. In case we wish
@@ -504,20 +509,24 @@ are the parameters which are missing in GAFF. Finally, we read all
 output files obtained so far to tleap and generate the prmtop and crd
 files.
 
-    # Create prmtop and crd files using tleap
-    $ cd ../
-    $ tleap
-    > source leaprc.protein.ff14SB
-    > source leaprc.gaff2
-    > mol1 = loadpdb proa.pdb
-    > mol2 = loadmol2 ./Antechamber/ligand.mol2
-    > loadamberparams ./Antechamber/ligand.frcmod
-    > complex = combine{mol1 mol2}
-    > saveamberparm complex test.prmtop test.crd
-    > savepdb complex test.pdb
-    > quit
 
-#### [ 8. Solvating the system ]{#8_Solvating_the_system}
+```
+# Create prmtop and crd files using tleap
+$ cd ../
+$ tleap
+> source leaprc.protein.ff14SB
+> source leaprc.gaff2
+> mol1 = loadpdb proa.pdb
+> mol2 = loadmol2 ./Antechamber/ligand.mol2
+> loadamberparams ./Antechamber/ligand.frcmod
+> complex = combine{mol1 mol2}
+> saveamberparm complex test.prmtop test.crd
+> savepdb complex test.pdb
+> quit
+
+```
+
+##  8. Solvating the system 
 
 In the above sections, we have learned how to create input files for
 proteins in the absence of bulk water. However, in most cases, we
@@ -537,29 +546,33 @@ protein to the origin using VMD, and add water with a given box size
 using tLeap. **\
 **
 
-    # Download the PDB file
-    $ cd Sec8
-    $ wget https://files.rcsb.org/download/3MP9.pdb
 
-    # Create PDB file that contains the protein only
-    # At the same time, center of mass is shifted
-    $ vmd -dispdev text 3MP9.pdb
-    vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
-    vmd > set com [measure center $sel weight mass]
-    vmd > $sel moveby [vecscale -1.0 $com]
-    vmd > $sel writepdb proa.pdb
-    vmd > exit
+```
+# Download the PDB file
+$ cd Sec8
+$ wget https://files.rcsb.org/download/3MP9.pdb
 
-    # Add water by specifying the box size
-    $ tleap 
-    > source leaprc.protein.ff14SB 
-    > source leaprc.water.tip4pew 
-    > mol = loadpdb proa.pdb
-    > set mol box {80 80 80}
-    > solvatebox mol TIP4PEWBOX 0
-    > saveamberparm mol test.prmtop test.crd 
-    > savepdb mol test.pdb 
-    > quit
+# Create PDB file that contains the protein only
+# At the same time, center of mass is shifted
+$ vmd -dispdev text 3MP9.pdb
+vmd > set sel [atomselect top "(chain A and protein) and not altloc B"]
+vmd > set com [measure center $sel weight mass]
+vmd > $sel moveby [vecscale -1.0 $com]
+vmd > $sel writepdb proa.pdb
+vmd > exit
+
+# Add water by specifying the box size
+$ tleap 
+> source leaprc.protein.ff14SB 
+> source leaprc.water.tip4pew 
+> mol = loadpdb proa.pdb
+> set mol box {80 80 80}
+> solvatebox mol TIP4PEWBOX 0
+> saveamberparm mol test.prmtop test.crd 
+> savepdb mol test.pdb 
+> quit
+
+```
 
 **Add water and ions**
 
@@ -587,78 +600,105 @@ molecules in the system, we add 42 Cl^--^ and (42 + 5) K^+^. These ions
 are randomly placed in the system. Total charge of the system can be
 check with the `charge` command.
 
-    $ tleap 
-    > source leaprc.protein.ff14SB 
-    > source leaprc.water.tip4pew 
-    > mol = loadpdb proa.pdb
-    > charge mol
-    Total unperturbed charge: -5.000000
-    Total perturbed charge: -5.000000
-    > set mol box {80 80 80}
-    > solvatebox mol TIP4PEWBOX 0
-      Added 15519 residues.
-    > addionsrand mol Cl- 42
-    > addionsrand mol K+ 47
-    > charge mol
-    Total unperturbed charge: 0.000000
-    Total perturbed charge: 0.000000
-    > saveamberparm mol test.prmtop test.crd 
-    > savepdb mol test.pdb 
-    > quit
+
+```
+$ tleap 
+> source leaprc.protein.ff14SB 
+> source leaprc.water.tip4pew 
+> mol = loadpdb proa.pdb
+> charge mol
+Total unperturbed charge: -5.000000
+Total perturbed charge: -5.000000
+> set mol box {80 80 80}
+> solvatebox mol TIP4PEWBOX 0
+  Added 15519 residues.
+> addionsrand mol Cl- 42
+> addionsrand mol K+ 47
+> charge mol
+Total unperturbed charge: 0.000000
+Total perturbed charge: 0.000000
+> saveamberparm mol test.prmtop test.crd 
+> savepdb mol test.pdb 
+> quit
+
+```
 
 We can see the box size of the system in the 1st line of the obtained
 PDB file (`test.pdb`). This is an input information to be specified in
 the `[BOUNDARY]` section of the GENESIS control file.
 
-#### [ Appendix. Executing tleap using a script]{#Appendix_Executing_tleap_using_a_script}
+##  Appendix. Executing tleap using a script
 
 In this tutorial, we illustrated how to set up a system by executing the
 commands one by one. It will be convenient to collect all the commands
 into a single script file and execute it using VMD or tleap. For
-example, here we create VMD and tleap script files (`vmd.tcl` and
-`tleap.inp`, respectively) for the command sequence introduced in
+example, here we create VMD and tleap script files (`vmd.tcl` and `tleap.inp`, respectively) for the command sequence introduced in
 section 1.
 
 **vmd.tcl:**
 
-    mol load pdb 3MP9.pdb
-    set sel [atomselect top "(chain A and protein) and not altloc B"] 
-    $sel writepdb proa.pdb
-    exit
+
+```
+mol load pdb 3MP9.pdb
+set sel [atomselect top "(chain A and protein) and not altloc B"] 
+$sel writepdb proa.pdb
+exit
+
+```
 
 **tleap.inp:**
 
-    source leaprc.protein.ff14SB 
-    mol = loadpdb proa.pdb 
-    saveamberparm mol test.prmtop test.crd 
-    savepdb mol test.pdb 
-    quit
+
+```
+source leaprc.protein.ff14SB 
+mol = loadpdb proa.pdb 
+saveamberparm mol test.prmtop test.crd 
+savepdb mol test.pdb 
+quit
+
+```
 
 Next, we execute the two script files using the following command.
 
-    $ vmd -dispdev text -e vmd.tcl > vmd.log
-    $ tleap -f tleap.inp > tleap.log
+
+```
+$ vmd -dispdev text -e vmd.tcl > vmd.log
+$ tleap -f tleap.inp > tleap.log
+
+```
 
 When done this way, an execution log file can be written, making error
 tracking easy.
 
-#### [ References ]{#References}
+##  References 
 
 1.  I. Ivani *et al.*, *Nat. Methods*, **13**, 55-58 (2016).
-    [](https://www.nature.com/articles/nmeth.3658){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+[](https://www.nature.com/articles/nmeth.3658)
+```
+
 2.  M. Zgarbova *et al.*, *J. Chem. Theory Comput.,* **11**, 5723-5736
-    (2015).
-    [](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.5b00716){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+(2015).
+[](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.5b00716)
+```
+
 3.  R. Galindo-Murillo *et al.*, *J. Chem. Theory Comput.,* **12**,
-    4114-4127 (2016).
-    [](https://pubs.acs.org/doi/full/10.1021/acs.jctc.6b00186){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+4114-4127 (2016).
+[](https://pubs.acs.org/doi/full/10.1021/acs.jctc.6b00186)
+```
+
 4.  S. Joung and T. E. Chetham, *J. Phys. Chem. B*, **112**, 9020-9041
-    (2008).
-    [](https://pubs.acs.org/doi/10.1021/jp8001614){target="_blank"
-    rel="noopener noreferrer"}
+
+```
+(2008).
+[](https://pubs.acs.org/doi/10.1021/jp8001614)
+
+```
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory
 (Original Japanese document)\

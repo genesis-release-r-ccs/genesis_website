@@ -19,8 +19,8 @@ directory `GENESIS_Tutorials-2022`, followed by three sub-directories
 `Programs`, `Data`, and `Works`.  `Programs` is where we will put the
 main software used in this project, i.e. the GENESIS program. `Data` is where
 we will put external data that will be commonly used throughout this project,
-such as PDB files (see [Tutorial 2.1](genesis_tutorial_2.1_2022.md) and force
-field parameter files (see [Tutorials 2.2](genesis_tutorial_2.2_2022.md).
+such as PDB files (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/) and force
+field parameter files (see [Tutorials 2.2](/tutorials/genesis_tutorial_2.2_2022/).
 Thus, we would like to make two sub-directories `PDB` and `Parameters` under
 `Data` beforehand. `Works` is where we will run the MD simulation of the
 tutorial (see Tutorial 3 and later). Here, we also make a `TRASH` directory

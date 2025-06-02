@@ -53,7 +53,7 @@ available resources.
     - [2.3 Building the initial structure for MD simulation](/tutorials/genesis_tutorial_2.3_2022/)
 - \\(3.\\) MD simulations of peptides and proteins with the all-atom CHARMM force field
     - [3.1 Ala-dipeptide in the gas-phase](/tutorials/genesis_tutorial_3.1_2022/) <i class="fas fa-laptop"></i>
-    - [3.2 (Ala)\\(_3\\) in water](/tutorials/genesis_tutorial_3.2_2022/) <i class="fas fa-computer"></i>
+    - [3.2 (Ala)<sub>3</sub> in water](/tutorials/genesis_tutorial_3.2_2022/) <i class="fas fa-computer"></i>
     - [3.3 Protein G in NaCl solution](/tutorials/genesis_tutorial_3.3_2022/) <i class="fas fa-computer"></i>
 - \\(4.\\) Analysis of the MD trajectories
     - [4.1 Analysis of DCD file by the user's Fortran programming](/tutorials/genesis_tutorial_4.1_2022/)

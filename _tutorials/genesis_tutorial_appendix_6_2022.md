@@ -1,132 +1,133 @@
-### Removing ring penetrations and chirality errors
+---
+title: "GENESIS Tutorial Appendix 6 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:57+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
-
--   [Preparation](genesis_tutorial_appendix_6_2022.md#Preparation)
--   [Energy minimization](genesis_tutorial_appendix_6_2022.md#Energy_minimization)
-    -   [Step1: Run basic
-        minimization](genesis_tutorial_appendix_6_2022.md#Step1_Run_basic_minimization)
-    -   [Step2: Run minimization to remove
-        errors](genesis_tutorial_appendix_6_2022.md#Step2_Run_minimization_to_remove_errors)
-    -   [Step3: Second trial to remove the remaining
-        errors](genesis_tutorial_appendix_6_2022.md#Step3_Second_trial_to_remove_the_remaining_errors)
--   [References](genesis_tutorial_appendix_6_2022.md#References)
+# Removing ring penetrations and chirality errors
 
 In this page, we explain how to remove ring penetrations and chirality
 errors in a protein using GENESIS. Here, we use spdyn. The same scheme
 is available in atdyn. The scheme in the below figure will be performed
-\[1\]. For details, please read the GENESIS user manual (`[MINIMIZE]`
-chapter).
+[^1]. For details, please read the GENESIS user manual (`[MINIMIZE]` chapter).
 
-![](assets/images/2022_06_checkstructure.png){.aligncenter
-.wp-image-24572 fetchpriority="high" decoding="async" width="550"
-height="308"
-srcset="wp-content/uploads/2022/06/checkstructure-300x168.png 300w, wp-content/uploads/2022/06/checkstructure-768x430.png 768w, wp-content/uploads/2022/06/checkstructure-20x11.png 20w, wp-content/uploads/2022/06/checkstructure-30x17.png 30w, wp-content/uploads/2022/06/checkstructure-40x22.png 40w, wp-content/uploads/2022/06/checkstructure-128x72.png 128w, wp-content/uploads/2022/06/checkstructure.png 990w"
-sizes="(max-width: 550px) 100vw, 550px"}
+![](/assets/images/2022_06_checkstructure.png)
 
-#### [[Preparation]{#Preparation}]{#Preparation}
+## [Preparation]
 
 Let's download the tutorial file
-([tutorial22-A.6.tar.gz](assets/tutorial_files/2022_06_tutorial22-A.6.tar.gz){.mtli_attachment
-.mtli_zip}). This tutorial is mainly composed of two steps: 1) system
+([tutorial22-A.6.tar.gz](/assets/tutorial_files/2022_06_tutorial22-A.6.tar.gz)). This tutorial is mainly composed of two steps: 1) system
 setup and 2) energy minimization. The energy minimization is further
 composed of three steps to remove ring penetrations and chirality
 errors. Control files for GENESIS are already included in the download
 file. Since we use the CHARMM36m force field parameters, we make a
-symbolic link to the CHARMM toppar directory (see [Tutorial
-2.2](genesis_tutorial_2.2_2022.md){target="_blank" rel="noopener"}).
+symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
-    # Put the tutorial file in the Works directory
-    $ cd ~/GENESIS_Tutorials-2022/Works
-    $ mv ~/Downloads/tutorial22-A.6.zip ./
-    $ unzip tutorial22-A.6.zip
 
-    # Let's clean up the directory
-    $ mv tutorial22-A.6.zip TRASH
+```
+# Put the tutorial file in the Works directory
+$ cd ~/GENESIS_Tutorials-2022/Works
+$ mv ~/Downloads/tutorial22-A.6.zip ./
+$ unzip tutorial22-A.6.zip
 
-    # Let's take a note
-    $ echo "tutorial-A.6: Remove ring penetration and chirality errors" >> README
+# Let's clean up the directory
+$ mv tutorial22-A.6.zip TRASH
 
-    # Check the contents in Appendix 6
-    $ cd tutorial-A.6
-    $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
-    $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
-    $ ls 
-    INP1  INP2  INP3  bin  setup  toppar
+# Let's take a note
+$ echo "tutorial-A.6: Remove ring penetration and chirality errors" >> README
 
-    # Setup the initial PDB and PSF files
-    $ cd setup
-    $ ls
-    build.tcl  proa.pdb
+# Check the contents in Appendix 6
+$ cd tutorial-A.6
+$ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
+$ ln -s ../../Programs/genesis-2.0.0/bin ./bin
+$ ls 
+INP1  INP2  INP3  bin  setup  toppar
 
-    $ vmd -e build.tcl
-    $ ls
-    build.tcl    ionized.psf  protein.pdb  wbox.log  wbox.psf
-    ionized.pdb  proa.pdb     protein.psf  wbox.pdb
+# Setup the initial PDB and PSF files
+$ cd setup
+$ ls
+build.tcl  proa.pdb
 
-    $ cd ../
+$ vmd -e build.tcl
+$ ls
+build.tcl    ionized.psf  protein.pdb  wbox.log  wbox.psf
+ionized.pdb  proa.pdb     protein.psf  wbox.pdb
 
-#### [[ Energy minimization]{#Preparation}]{#Energy_minimization}
+$ cd ../
 
-##### [Step1: Run basic minimization]{#Step1_Run_basic_minimization}
+```
+
+## [ Energy minimization]
+
+### Step1: Run basic minimization
 
 First, we carry out a basic energy minimization for this system.
 
-    # Check the control file
-    $ less INP1
 
-    [MINIMIZE] 
-    method        = SD     # [SD]
-    nsteps        = 5000   # number of minimization steps
-    crdout_period = 1000
-    rstout_period = 5000
+```
+# Check the control file
+$ less INP1
 
-    # Run minimization
-    $ export OMP_NUM_THREADS=4
-    $ mpirun -np 8 ./bin/spdyn INP1 > log1
-    $ ls
-    INP1  INP2  INP3  log1  min1.dcd  min1.rst  bin  setup  toppar
+[MINIMIZE] 
+method        = SD     # [SD]
+nsteps        = 5000   # number of minimization steps
+crdout_period = 1000
+rstout_period = 5000
 
-    $ less log1
+# Run minimization
+$ export OMP_NUM_THREADS=4
+$ mpirun -np 8 ./bin/spdyn INP1 > log1
+$ ls
+INP1  INP2  INP3  log1  min1.dcd  min1.rst  bin  setup  toppar
+
+$ less log1
+
+```
 
 However, in the log message you can see that there are several residues
 that may have ring penetrations or chirality errors in the energy
 minimized structure.
 
-    Check_Ring_Structure> Check ring structure
 
-      suspicious ring group id = 12 : TRP 68 (atom = 1011) max_bond_length = 1.921
+```
+Check_Ring_Structure> Check ring structure
 
-      WARNING!
-      Some suspicious residues were detected. Minimization might be too short, or "ring penetration"
-      might happen in the above residues. Check the structure of those residues very carefully.
-      If you found a ring penetration, try to perform an energy minimization again 
-      with the options "check_structure = YES" and "fix_ring_error = YES" in [MINIMIZE].
-      The energy minimization should be restarted from the restart file obtained in "this" run.
-      For more information, see the chapter on [MINIMIZE] in the user manual.
+  suspicious ring group id = 12 : TRP 68 (atom = 1011) max_bond_length = 1.921
 
-    Check_Chirality> Check chirality
+  WARNING!
+  Some suspicious residues were detected. Minimization might be too short, or "ring penetration"
+  might happen in the above residues. Check the structure of those residues very carefully.
+  If you found a ring penetration, try to perform an energy minimization again 
+  with the options "check_structure = YES" and "fix_ring_error = YES" in [MINIMIZE].
+  The energy minimization should be restarted from the restart file obtained in "this" run.
+  For more information, see the chapter on [MINIMIZE] in the user manual.
 
-      suspicious chiral group id = 5  : GLU 5  (atom = 62)  angle = 178.549
-      suspicious chiral group id = 32 : PRO 32 (atom = 488) angle = 85.871
+Check_Chirality> Check chirality
 
-      WARNING!
-      Some suspicious residues were detected. Minimization might be too short, or "chirality error"
-      might happen in the above residues. Check the structure of those residues very carefully.
-      If you found a chirality error, try to perform an energy minimization again
-      with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
-      The energy minimization should be restarted from the restart file obtained in "this" run.
-      For more information, see the chapter on [MINIMIZE] in the user manual.
+  suspicious chiral group id = 5  : GLU 5  (atom = 62)  angle = 178.549
+  suspicious chiral group id = 32 : PRO 32 (atom = 488) angle = 85.871
+
+  WARNING!
+  Some suspicious residues were detected. Minimization might be too short, or "chirality error"
+  might happen in the above residues. Check the structure of those residues very carefully.
+  If you found a chirality error, try to perform an energy minimization again
+  with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
+  The energy minimization should be restarted from the restart file obtained in "this" run.
+  For more information, see the chapter on [MINIMIZE] in the user manual.
+
+```
 
 Let's check the corresponding residues carefully using a molecular
 viewer software.
 
-![](assets/images/2022_06_appendix6-fig1.png){.alignnone
-.wp-image-24557 decoding="async" width="600" height="191"
-srcset="wp-content/uploads/2022/06/appendix6-fig1-300x95.png 300w, wp-content/uploads/2022/06/appendix6-fig1-1024x325.png 1024w, wp-content/uploads/2022/06/appendix6-fig1-768x244.png 768w, wp-content/uploads/2022/06/appendix6-fig1-20x6.png 20w, wp-content/uploads/2022/06/appendix6-fig1-30x10.png 30w, wp-content/uploads/2022/06/appendix6-fig1-40x13.png 40w, wp-content/uploads/2022/06/appendix6-fig1.png 1136w"
-sizes="(max-width: 600px) 100vw, 600px"}
+![](/assets/images/2022_06_appendix6-fig1.png)
 
-##### [ Step2: Run minimization to remove errors]{#Step2_Run_minimization_to_remove_errors}
+###  Step2: Run minimization to remove errors
 
 In order to remove the ring penetrations and chirality errors, we
 restart the energy minimization using `min1.rst`. Let's take a look at
@@ -135,7 +136,7 @@ restart the energy minimization using `min1.rst`. Let's take a look at
 be added **only when** the error was found **in the energy minimized
 structure**.
 
-``` {style="text-align: justify;"}
+``` 
 [INPUT] 
 topfile = ./toppar/top_all36_prot.rtf
 parfile = ./toppar/par_all36m_prot.prm
@@ -155,59 +156,71 @@ fix_chirality_error = YES
 
 Run the energy minimization again using `INP2`.
 
-    # Run minimization
-    $ mpirun -np 8 ./bin/spdyn INP2 > log2
-    $ less log2
+
+```
+# Run minimization
+$ mpirun -np 8 ./bin/spdyn INP2 > log2
+$ less log2
+
+```
 
 However, unfortunately, we could not fix the chirality error in Pro32 in
 this run.
 
-    Check_Ring_Structure> Check ring structure
 
-      No suspicious residue was detected.
+```
+Check_Ring_Structure> Check ring structure
 
-    Check_Chirality> Check chirality
+  No suspicious residue was detected.
 
-      suspicious chiral group id = 32 : PRO 32 (atom = 488) angle = 171.247
+Check_Chirality> Check chirality
 
-      WARNING!
-      Some suspicious residues were detected. Minimization might be too short, or "chirality error"
-      might happen in the above residues. Check the structure of those residues very carefully.
-      If you found a chirality error, try to perform an energy minimization again
-      with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
-      The energy minimization should be restarted from the restart file obtained in "this" run.
-      For more information, see the chapter on [MINIMIZE] in the user manual.
+  suspicious chiral group id = 32 : PRO 32 (atom = 488) angle = 171.247
 
-##### [ Step3: Second trial to remove the remaining errors]{#Step3_Second_trial_to_remove_the_remaining_errors}
+  WARNING!
+  Some suspicious residues were detected. Minimization might be too short, or "chirality error"
+  might happen in the above residues. Check the structure of those residues very carefully.
+  If you found a chirality error, try to perform an energy minimization again
+  with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
+  The energy minimization should be restarted from the restart file obtained in "this" run.
+  For more information, see the chapter on [MINIMIZE] in the user manual.
+
+```
+
+###  Step3: Second trial to remove the remaining errors
 
 So, we run the energy minimization again using `INP3`, in which
 `fix_chirality_error = YES` is specified.
 
-    [INPUT] 
-    topfile = ./toppar/top_all36_prot.rtf
-    parfile = ./toppar/par_all36m_prot.prm
-    strfile = ./toppar/toppar_water_ions.str
-    psffile = ./setup/ionized.psf
-    pdbfile = ./setup/ionized.pdb
-    rstfile = min2.rst
 
-    [MINIMIZE]  
-    method              = SD    # [SD]
-    nsteps              = 5000  # number of minimization steps
-    crdout_period       = 1000
-    rstout_period       = 5000
-    fix_chirality_error = YES
+```
+[INPUT] 
+topfile = ./toppar/top_all36_prot.rtf
+parfile = ./toppar/par_all36m_prot.prm
+strfile = ./toppar/toppar_water_ions.str
+psffile = ./setup/ionized.psf
+pdbfile = ./setup/ionized.pdb
+rstfile = min2.rst
 
-    # Run minimization
-    $ mpirun -np 8 ./bin/spdyn INP3 > log3
-    $ less log3
+[MINIMIZE]  
+method              = SD    # [SD]
+nsteps              = 5000  # number of minimization steps
+crdout_period       = 1000
+rstout_period       = 5000
+fix_chirality_error = YES
+
+# Run minimization
+$ mpirun -np 8 ./bin/spdyn INP3 > log3
+$ less log3
+
+```
 
 Now, you can see that there are no suspicious residues. Please take a
 look at Trp68, Glu5, and Pro32 to check whether the errors were actually
 removed. Then, you can use the obtained restart file (`min3.rst`) for
 the subsequent MD simulation.
 
-``` {style="text-align: justify;"}
+``` 
 Check_Ring_Structure> Check ring structure
 
   No suspicious residue was detected.
@@ -217,7 +230,7 @@ Check_Chirality> Check chirality
   No suspicious residue was detected.
 ```
 
-#### [ References]{#References}
+##  References
 
 1.  T. Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021).
 

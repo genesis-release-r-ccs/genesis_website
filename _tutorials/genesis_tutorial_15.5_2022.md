@@ -1,28 +1,21 @@
-### 15.5 The enzyme reaction 1: Reaction path search {#the-enzyme-reaction-1-reaction-path-search .wp-block-heading}
+---
+title: "GENESIS Tutorial 15.5 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:57+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
+# 15.5 The enzyme reaction 1: Reaction path search 
 
--   [1. Introduction](genesis_tutorial_15.5_2022.md#1_Introduction)
--   [2. System
-    preparation](genesis_tutorial_15.5_2022.md#2_System_preparation)
--   [3. Locate the reactant and
-    product](genesis_tutorial_15.5_2022.md#3_Locate_the_reactant_and_product)
--   [4. MEP search](genesis_tutorial_15.5_2022.md#4_MEP_search)
-    -   [4.1. The initial
-        path](genesis_tutorial_15.5_2022.md#41_The_initial_path)
-    -   [4.2. The string
-        calculation](genesis_tutorial_15.5_2022.md#42_The_string_calculation)
-    -   [4.3. Analysis](genesis_tutorial_15.5_2022.md#43_Analysis)
--   [5. Concluding
-    remarks](genesis_tutorial_15.5_2022.md#5_Concluding_remarks)
--   [References](genesis_tutorial_15.5_2022.md#References)
-
-#### [1. Introduction]{#1_Introduction} {#introduction .wp-block-heading}
+## 1. Introduction 
 
 In this section, QM/MM calculation is carried out using the string
-method \[1\] to search for the minimum energy path (MEP) and
-[QSimulate-QM](https://qsimulate.com/academic){target="_blank"
-rel="noreferrer noopener"} for the QM program. In the string method, the
+method [^1] to search for the minimum energy path (MEP) and
+[QSimulate-QM](https://qsimulate.com/academic) for the QM program. In the string method, the
 reaction path is discretely represented by a number of images, which
 propagates along the gradient component perpendicular to the path
 tangent. Starting from an initial path connecting the reactant and
@@ -32,7 +25,7 @@ with different MPI processes. Furthermore, QSimulate-QM features
 excellent scaling with respect to the number of computing nodes. The
 combination of the string method and QSimulate-QM is highly
 parallelizable, and thus suitable for supercomputers. For further
-details, see Ref. \[2\].
+details, see Ref. [^2].
 
 Here, we simulate a proton transfer reaction of dihyroxyacetone
 phosphate (DHAP) catalyzed by an enzyme, triosephosphate isomerase
@@ -56,16 +49,13 @@ One of the proton (H31) of DHAP is transferred to Glu165 of TIM. Note
 that the proton transfer accompanies a charge transfer of the electron
 from Glu165 to O2 of DHAP (red in Fig. 1), where His95 donates a
 hydrogen bond. Therefore, the reaction coordinate involves not only r~1~
-/ r~2~ but also several intermolecular degrees of freedom (e.g., r~3~,
-r~4~, r~6~). In fact, HE2 of His95 is transferred to O2 in a later
+/ r~2~ but also several intermolecular degrees of freedom (e.g., r~3~, r~4~, r~6~). In fact, HE2 of His95 is transferred to O2 in a later
 stage, though the process is beyond the scope of this tutorial.
 
-#### [2. System preparation]{#2_System_preparation} {#system-preparation .wp-block-heading}
+## 2. System preparation 
 
 Download the tutorial file
-([tutorial22-15.5b.tar.gz](fundamental/2024_07_tutorial22-15.5b.tar.gz "tutorial-15.5.zip"){.mtli_attachment
-.mtli_zip} or
-[github](https://github.com/yagikiyoshi/QMMMtutorial "github")), unzip
+([tutorial22-15.5b.tar.gz](fundamental/2024_07_tutorial22-15.5b.tar.gz "tutorial-15.5.zip") or [github](https://github.com/yagikiyoshi/QMMMtutorial "github")), unzip
 it, and proceed to tutorial-15.5/1.tim. This directory contains five
 sub-directories.
 
@@ -77,16 +67,13 @@ $ ls
 ```
 
 `0.build`, `1.pre_equil`, and `2.equil` are the setup and equilibration
-of the system prior to QM/MM calculations. Since relevant files (pdb,
-psf, and rst) are retained, you can skip these steps and go directly to
+of the system prior to QM/MM calculations. Since relevant files (pdb, psf, and rst) are retained, you can skip these steps and go directly to
 QM/MM calculations in `3.min`. Nonetheless, let us give a brief
 description of these steps.
 
 The protein structure was based on a X-ray crystal structure,
-[7TIM](https://www.rcsb.org/structure/7TIM){target="_blank"
-rel="noreferrer noopener"}, obtained from the protein data
-bank.[CHARMM-GUI](https://www.charmm-gui.org/ "CHARMM-GUI"){target="_blank"
-rel="noreferrer noopener"} was used to setup the system, namely, add
+[7TIM](https://www.rcsb.org/structure/7TIM), obtained from the protein data
+bank.[CHARMM-GUI](https://www.charmm-gui.org/ "CHARMM-GUI") was used to setup the system, namely, add
 hydrogen atoms, set the protonation states, add water molecules and
 ions, and so on. `0.build` contains the resulting pdb and psf files.
 
@@ -152,8 +139,7 @@ steps.
 </table>
 </figure>
 
-The positional restraints are added to the backbone (with k = 10
-kcal/mol/Å^2^) and the sidechain, ligand, and crystal water molecules
+The positional restraints are added to the backbone (with k = 10 kcal/mol/Å^2^) and the sidechain, ligand, and crystal water molecules
 (with k = 2 kcal/mol/Å^2^).
 
 ``` wp-block-preformatted
@@ -169,7 +155,7 @@ to run the job. `crd_convert.inp` wraps the final trajectory,
 `step3.4_nvt.dcd`, in the simulation box. `toppar` contains the force
 field parameters. Note that the parameters of DHAP,
 `toppar/toppar_dhap.3.str`, were generated with the force field toolkit
-(ffTK) utility \[10\] of VMD.
+(ffTK) utility [^10] of VMD.
 
 In `2.equil`, the final snapshot structure of step3.4 is first cut out
 to a non-periodic system using qmmm_generator. 15 Å around the TIM dimer
@@ -314,10 +300,9 @@ toppar
 are the input files of GENESIS, `qsimulate.json` is a control file of
 QSimulate-QM (details are given below), and `run.sh` is a script to run
 all jobs. As a result, we obtain the files shown in red,
-`step4_nvt_100.* `(by qmmm_generator) and `step4.11_qmmm_nvt.rst` (by
-MD). These files are used in the subsequent QM/MM calculations
+`step4_nvt_100.* `(by qmmm_generator) and `step4.11_qmmm_nvt.rst` (by MD). These files are used in the subsequent QM/MM calculations
 
-#### [3. Locate the reactant and product]{#3_Locate_the_reactant_and_product} {#locate-the-reactant-and-product .wp-block-heading}
+## 3. Locate the reactant and product 
 
 We first obtain the reactant and product. Proceed to 3.min,
 
@@ -377,8 +362,7 @@ qmatm_select_index = 1
 exclude_charge     = group
 
 [SELECTION]
-group1 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \
-         and not (an:CA |an:C |an:O |an:N |an:HN |an:HA))  # QM region
+group1 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \          and not (an:CA |an:C |an:O |an:N |an:HN |an:HA))  # QM region
 group2 = not (sid:DHA or sid:DHA around_res:6.0) # fixed atoms during minimization
 ```
 

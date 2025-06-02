@@ -1,11 +1,15 @@
-### 15.3 How to create a cluster system {#how-to-create-a-cluster-system .wp-block-heading}
+---
+title: "GENESIS Tutorial 15.3 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:57+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
-
--   [1. Alanine tripeptide
-    (Ala3)](genesis_tutorial_15.3_2022.md#1_Alanine_tripeptide_Ala3)
--   [2. Triosephosphate isomerase
-    (TIM)](genesis_tutorial_15.3_2022.md#2_Triosephosphate_isomerase_TIM)
+# 15.3 How to create a cluster system 
 
 In many cases, classical MD (CMD) simulations are carried out for an
 initial relaxation of the target system prior to QM/MM calculations. The
@@ -17,8 +21,7 @@ create a cluster system from a MD trajectory (a dcd file) using
 qmmm_generator.
 
 Let's download the tutorial file
-([tutorial22-15.3.tar.gz](assets/tutorial_files/2022_02_tutorial22-15.3.tar.gz){.mtli_attachment
-.mtli_zip target="_blank" rel="noreferrer noopener"}). There are two
+([tutorial22-15.3.tar.gz](/assets/tutorial_files/2022_02_tutorial22-15.3.tar.gz)). There are two
 directories, `1_ala3` and `2_tim`, which contain the data for alanine
 tripeptide (Ala~3~) and triosephosphate isomerate (TIM), respectively.
 
@@ -29,7 +32,7 @@ $ ls
 1_ala3/ 2_tim/
 ```
 
-#### [1. Alanine tripeptide (Ala~3~)]{#1_Alanine_tripeptide_Ala3} {#alanine-tripeptide-ala3 .wp-block-heading}
+## 1. Alanine tripeptide (Ala~3~) 
 
 Let's move to a directory, `1_ala3`,
 
@@ -101,8 +104,7 @@ for the analysis. `trj_type = COOR+BOX` means the dcd file includes the
 information of both coordinates and a box size. `trj_natom = 0` takes
 the number of atoms from a reffile of \[INPUT\]. For more details about
 this section, see
-[FAQ](tutorial/faq/faq2.html){rel="noreferrer noopener"
-target="_blank"}.
+[FAQ](tutorial/faq/faq2.html).
 
 ``` wp-block-preformatted
 [SELECTION]
@@ -170,13 +172,13 @@ sizes="(max-width: 392px) 100vw, 392px" width="392" height="376" />
 </figure>
 
 Then, we may use the resulting psf/pdb files for QM/MM calculations. In
-[Section 16.2](genesis_tutorial_16.2.md), we set a spherical potential
+[Section 16.2](/tutorials/genesis_tutorial_16.2/), we set a spherical potential
 with a radius of 20 Å and a fixed layer of 1 Å. This means that the
 water molecules in a range of 19 -- 22 Å are fixed to the initial
 position, and the pulling force is switched on when a flexible water
 molecule goes beyond 20 Å.
 
-#### [2. Triosephosphate isomerase (TIM)]{#2_Triosephosphate_isomerase_TIM} {#triosephosphate-isomerase-tim .wp-block-heading}
+## 2. Triosephosphate isomerase (TIM) 
 
 Let us illustrate another example for an enzyme, TIM. Let's move to a
 directory 2_tim,
@@ -195,14 +197,10 @@ You can visualize them using VMD,
 $ vmd -psf solvator.psf -dcd tim.dcd
 ```
 
-![](assets/images/2022_02_tim_snapshot1-2.png){.wp-image-19030
-decoding="async" width="350" height="315" style="width: 350px;"
-srcset="wp-content/uploads/2022/02/tim_snapshot1-2.png 1048w, wp-content/uploads/2022/02/tim_snapshot1-2-300x270.png 300w, wp-content/uploads/2022/02/tim_snapshot1-2-1024x922.png 1024w, wp-content/uploads/2022/02/tim_snapshot1-2-768x692.png 768w, wp-content/uploads/2022/02/tim_snapshot1-2-20x18.png 20w, wp-content/uploads/2022/02/tim_snapshot1-2-30x27.png 30w, wp-content/uploads/2022/02/tim_snapshot1-2-40x36.png 40w"
-sizes="(max-width: 350px) 100vw, 350px"}
+![](/assets/images/2022_02_tim_snapshot1-2.png)
 
 The enzyme is in the middle, which is a homo dimer taken from
-PDBID:[7TIM](https://www.rcsb.org/structure/7TIM){target="_blank"
-rel="noreferrer noopener"}. The water molecules are diffusing out of the
+PDBID:[7TIM](https://www.rcsb.org/structure/7TIM). The water molecules are diffusing out of the
 simulation box as before. We use `qmmm_generator` to wrap & cut the
 water molecules.
 
@@ -212,11 +210,13 @@ is almost the same as before. The different part is the following,
 ``` wp-block-preformatted
 [SELECTION]
 group1 = sid:TIMA or sid:TIMB
-group2 = (sid:TIMA or sid:TIMB or \
-         ((sid:TIMA or sid:TIMB) around_res:15.0)) \
-         and not sid:POT
-group3 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \
-         and not (an:CA | an:C | an:O | an:N | an:HN | an:HA))
+group2 = (sid:TIMA or sid:TIMB or \          ((sid:TIMA or sid:TIMB) around_res:15.0)) \
+
+```
+     and not sid:POT
+```
+
+group3 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \          and not (an:CA | an:C | an:O | an:N | an:HN | an:HA))
 
 [OPTION]
 origin_atom_index   = 1   # atom groups
@@ -227,8 +227,7 @@ frame_number        = 10
 
 The `origin_atom_index` is set to the center of mass of the two enzymes,
 TIMA and TIMB (group1), and the `qmmm_atom_index` is set to be 15
-angstrom around TIMA or TIMB (group 2). Note that potasium ions (segment
-name POT), which were added to neutralize the system in the preceding
+angstrom around TIMA or TIMB (group 2). Note that potasium ions (segment name POT), which were added to neutralize the system in the preceding
 calculations, are now removed.
 
 `qm_atom_index` is an optional parameter, which prints the specified
@@ -258,11 +257,7 @@ check the created system using VMD,
 $ vmd tim_10.pdb
 ```
 
-![](assets/images/2022_02_tim_snapshot2.png){.wp-image-19044
-loading="lazy" decoding="async" width="350" height="278"
-style="width: 350px;"
-srcset="wp-content/uploads/2022/02/tim_snapshot2.png 822w, wp-content/uploads/2022/02/tim_snapshot2-300x239.png 300w, wp-content/uploads/2022/02/tim_snapshot2-768x611.png 768w, wp-content/uploads/2022/02/tim_snapshot2-20x16.png 20w, wp-content/uploads/2022/02/tim_snapshot2-30x24.png 30w, wp-content/uploads/2022/02/tim_snapshot2-40x32.png 40w"
-sizes="(max-width: 350px) 100vw, 350px"}
+![](/assets/images/2022_02_tim_snapshot2.png)
 
 We will use these files (tim_10.pdb, tim_10.psf) in Section 15.6 to
 compute the enzymatic reactions.

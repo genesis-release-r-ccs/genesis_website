@@ -1,24 +1,20 @@
-### 15.2 My first QM/MM job {#my-first-qmmm-job .wp-block-heading}
+---
+title: "GENESIS Tutorial 15.2 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:57+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
 
-Contents
-
--   [1. DFTB+](genesis_tutorial_15.2_2022.md#1_DFTB)
--   [2. Ala3 in a
-    water-sphere](genesis_tutorial_15.2_2022.md#2_Ala3_in_a_water-sphere)
--   [3. QM/MM calculation](genesis_tutorial_15.2_2022.md#3_QMMM_calculation)
-    -   [3.1. Setting up a QM/MM
-        potential](genesis_tutorial_15.2_2022.md#31_Setting_up_a_QMMM_potential)
-    -   [3.2. Setting up a spherical
-        potential](genesis_tutorial_15.2_2022.md#32_Setting_up_a_spherical_potential)
-    -   [3.3. Running a QM/MM
-        job](genesis_tutorial_15.2_2022.md#33_Running_a_QMMM_job)
--   [4. Analysis](genesis_tutorial_15.2_2022.md#4_Analysis)
+# 15.2 My first QM/MM job 
 
 In this section, we illustrate a QM/MM MD simulation of alanine
 tripeptide (Ala~3~) in solution using density functional tight binding
 (DFTB). Let's download the tutorial file
-([tutorial22-15.2b.tar.gz](assets/tutorial_files/2023_10_tutorial22-15.2b.tar.gz){.mtli_attachment
-.mtli_zip}). This tutorial contains five directories.
+([tutorial22-15.2b.tar.gz](/assets/tutorial_files/2023_10_tutorial22-15.2b.tar.gz)). This tutorial contains five directories.
 
 ``` wp-block-preformatted
 $ unzip tutorial22-15.2b.zip 
@@ -33,23 +29,17 @@ Let's make a link to GENESIS,
 $ ln -s ../../Programs/genesis-2.0/bin ./bin
 ```
 
-#### [1. DFTB+]{#1_DFTB} {#dftb .wp-block-heading}
+## 1. DFTB+ 
 
-We will use [DFTB+](https://dftbplus.org/){rel="noreferrer noopener"
-aria-label=" (opens in a new tab)" target="_blank"} in this tutorial.
+We will use [DFTB+](https://dftbplus.org/) in this tutorial.
 The program is available free of charge from the website,
-[dftbplus.org](https://dftbplus.org/){rel="noreferrer noopener"
-aria-label="https://dftbplus.org/ (opens in a new tab)"
-target="_blank"}. DFTB calculations require a set of parameters for each
+[dftbplus.org](https://dftbplus.org/). DFTB calculations require a set of parameters for each
 atoms, which are stored in the so-called Slater-Koster (SK) files. The
 files are available from
-[dftb.org](https://dftb.org/){rel="noreferrer noopener"
-aria-label=" (opens in a new tab)" target="_blank"}. Note that some
+[dftb.org](https://dftb.org/). Note that some
 parameters are suitable for organic/bio molecules (3ob), whereas others
 are developed for materials science (matsci). Also, the available
-elements are different among the parameter sets. See the [download
-page](https://dftb.org/parameters/download){rel="noreferrer noopener"
-target="_blank"} for more details. Here, we will use the 3ob parameters
+elements are different among the parameter sets. See the [download page](https://dftb.org/parameters/download) for more details. Here, we will use the 3ob parameters
 and carry out DFTB3 calculations for Ala~3~. We assume that you have
 installed DFTB+ and downloaded the 3ob files in you computer.
 
@@ -61,8 +51,7 @@ $ ls
 dftb_01.hsd  runDFTB.sh
 ```
 
-These files correspond to `qmcnt` and `qmexe` illustrated in [Section
-15.1](genesis_tutorial_15.1_2022.md#interface). `dftb_01.hsd` is a template
+These files correspond to `qmcnt` and `qmexe` illustrated in [Section 15.1](/tutorials/genesis_tutorial_15.1_2022/#interface). `dftb_01.hsd` is a template
 file to create an input file for DFTB+, and `runDFTB.sh` is a file to
 invoke DFTB+. Let's look into these files in more details.
 
@@ -71,39 +60,9 @@ except for the Geometry section (QM coordinates) and the ElectricField
 section (MM coordinates), which are supplemented by GENESIS in runtime.
 
 ``` wp-block-preformatted
-Hamiltonian = DFTB {
-   SCC                = Yes                        (1)
-   ThirdOrderFull     = Yes
-   Charge             = 0.0                        (2)
-   ReadInitialCharges = Yes                        (3)
-   SlaterKosterFiles  = Type2FileNames {
-     Prefix = "/path/to/dftb/slako/3ob-3-1/"       (4)
-     Separator = "-"
-     Suffix = ".skf"
-   }
-   HubbardDerivs {
-     H = -0.1857
-     C = -0.1492
-     N = -0.1535
-     O = -0.1575
-   }
-   HCorrection = Damping {
-     Exponent = 4.05
-   }
-   MaxAngularMomentum {
-     H = "s"                                       (5)
-     C = "p"
-     N = "p"
-     O = "p"
-   }
-   Filling = Fermi {
-     Temperature [Kelvin] = 0.0
-   }
- }
+Hamiltonian = DFTB {    SCC                = Yes                        (1)    ThirdOrderFull     = Yes    Charge             = 0.0                        (2)    ReadInitialCharges = Yes                        (3)    SlaterKosterFiles  = Type2FileNames {      Prefix = "/path/to/dftb/slako/3ob-3-1/"       (4)      Separator = "-"      Suffix = ".skf"    }    HubbardDerivs {      H = -0.1857      C = -0.1492      N = -0.1535      O = -0.1575    }    HCorrection = Damping {      Exponent = 4.05    }    MaxAngularMomentum {      H = "s"                                       (5)      C = "p"      N = "p"      O = "p"    }    Filling = Fermi {      Temperature [Kelvin] = 0.0    }  }
 
- Analysis = {
-   CalculateForces = Yes                           (6)
- }
+ Analysis = {    CalculateForces = Yes                           (6)  }
 ```
 
 \(1\) Perform self-consistent charge (SCC) DFTB.\
@@ -136,7 +95,7 @@ in this file.
 The rest of the file can be used as is, unless you have special reasons
 to make a change.
 
-#### [2. Ala~3~ in a water-sphere]{#2_Ala3_in_a_water-sphere} {#ala3-in-a-water-sphere .wp-block-heading}
+## 2. Ala~3~ in a water-sphere 
 
 `2_system` directory contains the pdb/crd and psf of a system, i.e.,
 Ala~3~ in water.
@@ -165,11 +124,10 @@ You will find a cluster system, where the solute, Ala~3~, is located in
 the center of a sphere surrounded by a layer of water molecules of 20 Å
 thickness. The current version of GENESIS does not support periodic
 boundary condition (PBC) for QM/MM, and thus QM/MM must be carried out
-in noBC using a cluster system. In [Section
-16.3](genesis_tutorial_16.3.md), we will illustrate how to prepare such
+in noBC using a cluster system. In [Section 16.3](/tutorials/genesis_tutorial_16.3/), we will illustrate how to prepare such
 systems.
 
-#### [3. QM/MM calculation]{#3_QMMM_calculation} {#qmmm-calculation .wp-block-heading}
+## 3. QM/MM calculation 
 
 Let's move into a directory of QM/MM calculations:
 
@@ -181,13 +139,10 @@ qmmm_min.inp  qmmm_nvt.inp  qmmm_nvt.vmd  script.sh
 
 `qmmm_min.inp `and `qmmm_nvt.inp` are control files to perform
 minimization and MD, respectively. The control parameters are the same
-as the previous ones (see [tutorial
-3.2](genesis_tutorial_3.2_2019.md){rel="noreferrer noopener"
-aria-label="tutorial 3.2 (opens in a new tab)" target="_blank"}, for
-example), so we only describe the parameters that are specific to QM/MM
+as the previous ones (see [tutorial 3.2](/tutorials/genesis_tutorial_3.2_2019/), for example), so we only describe the parameters that are specific to QM/MM
 calculations. There are two important points.
 
-##### [3.1. Setting up a QM/MM potential]{#31_Setting_up_a_QMMM_potential} {#setting-up-a-qmmm-potential .wp-block-heading}
+### 3.1. Setting up a QM/MM potential 
 
 The first is, of course, to specify a QM/MM potential. The potential is
 controlled by \[ENERGY\] and \[QMMM\] sections. The \[ENERGY\] section
@@ -244,14 +199,13 @@ group2  = atomno:19
 (8) When the QM job fails, GENESIS restarts the job up to this number of
 iteration.
 
-In the above example, DFTB calculations are carried out for Ala~3~ (42
-atoms) surrounded by point charges (MM atoms). The input and output
+In the above example, DFTB calculations are carried out for Ala~3~ (42 atoms) surrounded by point charges (MM atoms). The input and output
 files of DFTB+ are created in a directory specified by `workdir`.
 Because DFTB is fast, it is recommended to use a fast disk, such as RAM
 disk, NVMe-SSD, etc, so as to avoid file I/O bottleneck. The DFTB+ files
 are then copied and saved in a directory `savedir` every 10 steps.
 
-##### [3.2. Setting up a spherical potential]{#32_Setting_up_a_spherical_potential} {#setting-up-a-spherical-potential .wp-block-heading}
+### 3.2. Setting up a spherical potential 
 
 Secondly, we setup a spherical potential. This is needed for simulations
 in noBC, since otherwise the (water) molecules at the boundary may
@@ -259,9 +213,7 @@ evaporate and run away to infinity. The spherical potential has no
 effect on atoms that are inside of the sphere, but pulls back those that
 went out of the sphere. The functional form of the potential reads,
 
-\\( \\displaystyle V\_{sph} = k\_{const} \\left( r -- r_b \\right )\^n
-\\ (r \\geq r_b), \\\\ \\displaystyle \\hspace{16pt} = 0 \\ (r \< r_b),
-\\)
+\\( \\displaystyle V\_{sph} = k\_{const} \\left( r -- r_b \\right )\^n \\ (r \\geq r_b), \\\\ \\displaystyle \\hspace{16pt} = 0 \\ (r \< r_b), \\)
 
 where \\( r \\) is a distance from the center, and \\( k\_{const}\\) and
 \\( r_b \\) are the force constant and the radius of the sphere,
@@ -303,8 +255,7 @@ example, the atoms that are farther than 19 Å from the center are kept
 fixed.
 
 The information of the potential and the fixed atoms is written in a
-restart file. Thus, in the subsequent calculations (e.g.,
-`qmmm_nvt.inp`), the same potential is applied by reading a restart file
+restart file. Thus, in the subsequent calculations (e.g., `qmmm_nvt.inp`), the same potential is applied by reading a restart file
 in the \[INPUT\] section and setting `spherical_pot = yes` in the
 \[BOUNDARY\] section.
 
@@ -318,7 +269,7 @@ rstfile = qmmm_min.rst
  restart       = yes
 ```
 
-##### [3.3. Running a QM/MM job]{#33_Running_a_QMMM_job} {#running-a-qmmm-job .wp-block-heading}
+### 3.3. Running a QM/MM job 
 
 We are now ready to run the job. `script.sh` is a bash script to run the
 job. Here, we assume that the computer has 16 cores per node, and that
@@ -333,8 +284,7 @@ export  QM_NUM_THREADS=16
 `OMP_NUM_THREADS` is for GENESIS/atdyn and `QM_NUM_THREADS` is for a QM
 program. Usually, they are set to be the same number.
 
-In [OpenMPI](https://www.open-mpi.org/){rel="noreferrer noopener"
-aria-label=" (opens in a new tab)" target="_blank"} (since around 1.10),
+In [OpenMPI](https://www.open-mpi.org/) (since around 1.10),
 the process is bound to a single core by default when the number of MPI
 processes is ≤ 2. Therefore, a simple command
 
@@ -353,14 +303,12 @@ mpirun -np 1 --map-by node:pe=${QM_NUM_THREADS} atdyn qmmm_min.inp >& qmmm_min.o
 mpirun -np 1 --map-by node:pe=${QM_NUM_THREADS} atdyn qmmm_nvt.inp >& qmmm_nvt.out
 ```
 
-There are alternatives such as `-bind-to socket` (to run the job using 1
-CPU); consult the manual of OpenMPI for further details. It is a good
+There are alternatives such as `-bind-to socket` (to run the job using 1 CPU); consult the manual of OpenMPI for further details. It is a good
 practice to add `-display-map` to monitor the mapping of cores to each
 MPI processes.
 
 In
-[IntelMPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html){rel="noreferrer noopener"
-aria-label="IntelMPI (opens in a new tab)" target="_blank"}, there is no
+[IntelMPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html), there is no
 such complexity, and the following command should work.
 
 ``` wp-block-preformatted
@@ -415,11 +363,9 @@ You will see that Ala~3~ and water molecules in the central region
 propagate in time, while the water molecules in the outlayer are kept
 fixed.
 
-#### [4. Analysis]{#4_Analysis} {#analysis .wp-block-heading}
+## 4. Analysis 
 
-The analysis can be done in the same was as in the previous section (see
-[tutorial 3.2](genesis_tutorial_3.2_2019.md){rel="noreferrer noopener"
-target="_blank"}, for example). In 4_analysis directory, there are two
+The analysis can be done in the same was as in the previous section (see [tutorial 3.2](/tutorials/genesis_tutorial_3.2_2019/), for example). In 4_analysis directory, there are two
 script files,
 
 ``` wp-block-preformatted

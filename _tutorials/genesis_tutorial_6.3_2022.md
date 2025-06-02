@@ -1,4 +1,15 @@
-### 6.3 N-glycan Dynamics in Water {#n-glycan-dynamics-in-water .title .toc-ignore}
+---
+title: "GENESIS Tutorial 6.3 (2022)"
+excerpt: ""
+last_modified_at: 2025-06-03T00:00:56+09:00
+layout: single
+toc: true
+toc_sticky: true
+sidebar:
+  nav: sidebar-basic
+---
+
+# 6.3 N-glycan Dynamics in Water 
 
 Glycans (carbohydrates) are a major group of biopolymers with structural
 and functional importance in biology. Protein glycosylation is a
@@ -28,7 +39,7 @@ conformers is high. While enhanced sampling methods may be important for
 accurately simulating the dynamics of glycan systems, we will perform
 conventional molecular dynamics (MD) simulation for this tutorial.
 
-#### Setup System in CHARMM-GUI
+## Setup System in CHARMM-GUI
 
 [CHARMM-GUI](https://charmm-gui.org/) offers a Glycan Reader & Modeler
 convenient for setting up simulations of glycan systems using the CHARMM
@@ -39,20 +50,10 @@ From the *Input Generator* column of CHARMM-GUI, select *Glycan Reader &
 Modeler*. Because our system is glycan only, select "Glycan Only System"
 from the bottom of the page.
 
-##### Building the Structure
+### Building the Structure
 
 Let us build the glycan molecule from its sequence. Specify whether the
-anomer is [[[[[α]{#MathJax-Span-3 .mi}]{#MathJax-Span-2
-.mrow}]{#MathJax-Span-1 .math}]{#MathJax-Element-1-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>α</mi></math>"}]{.math
-.inline} or [[[$\beta$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-2-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>β</mi></math>"}]{.math
-.inline}, select the monosaccharide, and define the positions of the
+anomer is [[[[[α]]]]]{.math .inline} or [[[$\beta$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}, select the monosaccharide, and define the positions of the
 glycosidic bonds. If branches are present, click the `+` button of the
 unit from which branching occurs. No trouble if you make a mistake in
 entering the structures, just click the `–` button to delete a unit.
@@ -60,28 +61,17 @@ Confirm the structure displayed in Sequence Graph is consistent with the
 reference structure. Once complete, select "Next Step: Generate
 PDB/PSF".
 
-![](assets/images/2022_02_build_glycan.png){.alignnone
-.wp-image-19091 .size-full fetchpriority="high" decoding="async"
-width="461" height="842"
-srcset="wp-content/uploads/2022/02/build_glycan.png 461w, wp-content/uploads/2022/02/build_glycan-164x300.png 164w, wp-content/uploads/2022/02/build_glycan-11x20.png 11w, wp-content/uploads/2022/02/build_glycan-16x30.png 16w, wp-content/uploads/2022/02/build_glycan-22x40.png 22w"
-sizes="(max-width: 461px) 100vw, 461px"}
+![](/assets/images/2022_02_build_glycan.png)
 
-##### Solvation
+### Solvation
 
 The built molecule is embedded in three dimensional coordinates. This
 model is subsequently solvated in a waterbox. Let us select "Fit
 Waterbox Size to Protein Size" from the *Waterbox Size Options* section.
-Specify the edge distance to be [[[[[17.0]{#MathJax-Span-9
-.mn}[[[Å]{#MathJax-Span-12 .mo}]{#MathJax-Span-11
-.mrow}]{#MathJax-Span-10 .texatom}]{#MathJax-Span-8
-.mrow}]{#MathJax-Span-7 .math}]{#MathJax-Element-3-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>17.0</mn><mrow class=\"MJX-TeXAtom-ORD\"><mo>Å</mo></mrow></math>"}]{.math
-.inline} for a rectangular box. We deselect "Include Ions". Select "Next
+Specify the edge distance to be [[[[[17.0][[[Å]]]]]]]{.math .inline} for a rectangular box. We deselect "Include Ions". Select "Next
 Step: Solvate Molecule".
 
-##### Periodic Boundary Condition
+### Periodic Boundary Condition
 
 The glycan model is now solvated in a waterbox with no ions. Let us
 simply fit the grid information for particle-mesh Ewald (PME) fast
@@ -90,22 +80,17 @@ Boundary Condition Options* section, select "Generate grid information
 for PME FFT automatically", and move to next section by clicking "Next
 Step: Setup Periodic Boundary Condition".
 
-##### Input File Generation
+### Input File Generation
 
 The simulation system has been set up. We select the input files for
 equilibration and production. Let us use the *CHARMM36m* force field in
 the *Force Field Options*. Select "GENESIS" from the *Input Generation
 Options*. We will modify these files later, but for now, select "NVT
 Ensemble" for both equilibration and dynamics inputs. Finally, set the
-temperature to [[[$300.0K$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-4-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>300.0</mn><mi>K</mi></math>"}]{.math
-.inline}. Complete the selections by selecting "Next Step: Generate
+temperature to [[[$300.0K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Complete the selections by selecting "Next Step: Generate
 Equilibration and Dynamics inputs".
 
-##### Download
+### Download
 
 The input files are now ready to download. Select "download.tgz" from
 the right to obtain files as a compressed directory. Transfer the
@@ -137,10 +122,9 @@ output
 
 The input scripts can be modified for our use. Consider downloading the
 input scripts
-[here](assets/tutorial_files/2022_06_tutorial22-6.3.tar.gz){.mtli_attachment
-.mtli_zip}, or modify them yourself.
+[here](/assets/tutorial_files/2022_06_tutorial22-6.3.tar.gz), or modify them yourself.
 
-#### Minimization
+## Minimization
 
 We first perform energy minimization to the system to obtain a
 representative starting structure to simulation. The downloaded script,
@@ -267,9 +251,7 @@ df = pd.read_csv("results/step4.0_minimization.csv")
 
 # Format the figure. Here we use a white background, 
 # colorblind-friendly palette, and remove the line on the right and top
-sns.set_theme(style= 'white', palette='colorblind', 
-              rc={"axes.spines.right": False,  "axes.spines.top": False, 
-              'xtick.bottom': True, 'ytick.left': True})
+sns.set_theme(style= 'white', palette='colorblind',                rc={"axes.spines.right": False,  "axes.spines.top": False,                'xtick.bottom': True, 'ytick.left': True})
 
 # define the figure, plot a line from the data, and show figure
 plt.figure()
@@ -281,28 +263,20 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig1.png){.alignnone
-.wp-image-19126 .size-large decoding="async" width="1024" height="731"
-srcset="wp-content/uploads/2022/02/fig1-1024x731.png 1024w, wp-content/uploads/2022/02/fig1-300x214.png 300w, wp-content/uploads/2022/02/fig1-768x549.png 768w, wp-content/uploads/2022/02/fig1-20x14.png 20w, wp-content/uploads/2022/02/fig1-30x21.png 30w, wp-content/uploads/2022/02/fig1-40x29.png 40w, wp-content/uploads/2022/02/fig1.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig1.png)
 
 We confirm the potential energy is decreasing at each step as expected.
 Because the potential energy is plateauing, we observe the minimization
 is sufficiently converged.
 
-#### Equilibration
+## Equilibration
 
 We need to equilibrate the system in preparation to a production run. We
 first perform equilibration in the NPT ensemble to determine the system
-volume at [[[$1.0atm$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-5-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>1.0</mn><mi>a</mi><mi>t</mi><mi>m</mi></math>"}]{.math
-.inline} pressure. Then we let the system equilibrate with the NVT
+volume at [[[$1.0atm$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} pressure. Then we let the system equilibrate with the NVT
 ensemble.
 
-##### NPT Equilibration
+### NPT Equilibration
 
 Let us use the downloaded file, `step4.1_equilibration.inp` as a
 template and write `step4.1_equilibrationNPT.inp`.
@@ -428,18 +402,10 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig2.png){.alignnone
-.wp-image-19129 .size-large decoding="async" width="1024" height="731"
-srcset="wp-content/uploads/2022/02/fig2-1024x731.png 1024w, wp-content/uploads/2022/02/fig2-300x214.png 300w, wp-content/uploads/2022/02/fig2-768x549.png 768w, wp-content/uploads/2022/02/fig2-20x14.png 20w, wp-content/uploads/2022/02/fig2-30x21.png 30w, wp-content/uploads/2022/02/fig2-40x29.png 40w, wp-content/uploads/2022/02/fig2.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig2.png)
 
 The pressure is initially very negative. It approaches
-[[[$1.0atm$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-7-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>1.0</mn><mi>a</mi><mi>t</mi><mi>m</mi></math>"}]{.math
-.inline} and oscillates around the target value. The pressure is
+[[[$1.0atm$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} and oscillates around the target value. The pressure is
 maintained by adjusting the volume of the system. Observe the change
 over time of the edge length of the simulation box.
 
@@ -452,32 +418,13 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig3.png){.alignnone
-.wp-image-19131 .size-large loading="lazy" decoding="async" width="1024"
-height="731"
-srcset="wp-content/uploads/2022/02/fig3-1024x731.png 1024w, wp-content/uploads/2022/02/fig3-300x214.png 300w, wp-content/uploads/2022/02/fig3-768x549.png 768w, wp-content/uploads/2022/02/fig3-20x14.png 20w, wp-content/uploads/2022/02/fig3-30x21.png 30w, wp-content/uploads/2022/02/fig3-40x29.png 40w, wp-content/uploads/2022/02/fig3.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig3.png)
 
 We observe the edge length approaches a value between
-[[[$65.5Å$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-8-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>65.5</mn><mrow class=\"MJX-TeXAtom-ORD\"><mo>Å</mo></mrow></math>"}]{.math
-.inline} and [[[$66.0Å$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-9-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>66.0</mn><mrow class=\"MJX-TeXAtom-ORD\"><mo>Å</mo></mrow></math>"}]{.math
-.inline} over time. While the fluctuation in the pressure may appear
+[[[$65.5Å$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} and [[[$66.0Å$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} over time. While the fluctuation in the pressure may appear
 large, we observe the change in volume to maintain the pressure is quite
 small. Let us also confirm the system has approached the target
-temperature of [[[$300.K$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-10-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>300.</mn><mi>K</mi></math>"}]{.math
-.inline}.
+temperature of [[[$300.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}.
 
 ``` python
 plt.figure()
@@ -489,12 +436,9 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig4.png){.alignnone .size-medium
-.wp-image-19132 loading="lazy" decoding="async" width="300" height="214"
-srcset="wp-content/uploads/2022/02/fig4-300x214.png 300w, wp-content/uploads/2022/02/fig4-1024x731.png 1024w, wp-content/uploads/2022/02/fig4-768x549.png 768w, wp-content/uploads/2022/02/fig4-20x14.png 20w, wp-content/uploads/2022/02/fig4-30x21.png 30w, wp-content/uploads/2022/02/fig4-40x29.png 40w, wp-content/uploads/2022/02/fig4.png 1344w"
-sizes="(max-width: 300px) 100vw, 300px"}
+![](/assets/images/2022_02_fig4.png)
 
-##### NVT Equilibration
+### NVT Equilibration
 
 Let us take the last frame from the NPT equilibration and use it as the
 input for the NVT equilibration. The control file,
@@ -502,15 +446,12 @@ input for the NVT equilibration. The control file,
 `step4.1_equilibration.inp` as the template. Let us view the control
 file.
 
-<div>
 
 ``` bash
 more step4.2_equilibrationNVT.inp
 ```
 
-</div>
 
-<div>
 
 output
 
@@ -577,7 +518,6 @@ output
  select_index1   = 1
 ```
 
-</div>
 
 We modified the file I/O, and changed the ensemble to NVT. Run the
 equilibration.
@@ -624,11 +564,7 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig5.png){.alignnone
-.wp-image-19134 .size-large loading="lazy" decoding="async" width="1024"
-height="731"
-srcset="wp-content/uploads/2022/02/fig5-1024x731.png 1024w, wp-content/uploads/2022/02/fig5-300x214.png 300w, wp-content/uploads/2022/02/fig5-768x549.png 768w, wp-content/uploads/2022/02/fig5-20x14.png 20w, wp-content/uploads/2022/02/fig5-30x21.png 30w, wp-content/uploads/2022/02/fig5-40x29.png 40w, wp-content/uploads/2022/02/fig5.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig5.png)
 
 
 ``` python
@@ -640,42 +576,19 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig6.png){.alignnone
-.wp-image-19135 .size-large loading="lazy" decoding="async" width="1024"
-height="731"
-srcset="wp-content/uploads/2022/02/fig6-1024x731.png 1024w, wp-content/uploads/2022/02/fig6-300x214.png 300w, wp-content/uploads/2022/02/fig6-768x549.png 768w, wp-content/uploads/2022/02/fig6-20x14.png 20w, wp-content/uploads/2022/02/fig6-30x21.png 30w, wp-content/uploads/2022/02/fig6-40x29.png 40w, wp-content/uploads/2022/02/fig6.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig6.png)
 
-##### Production
+### Production
 
 The N-glycan is now ready for a productive run. Let us simulate the
-system at [[[$300K$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-11-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>300</mn><mi>K</mi></math>"}]{.math
-.inline} for [[[[[1]{#MathJax-Span-57 .mn}]{#MathJax-Span-56
-.mrow}]{#MathJax-Span-55 .math}[$.0ns$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-12-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>1.0</mn><mi>n</mi><mi>s</mi></math>"}]{.math
-.inline} using step size of [[[$2.5fs$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-13-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>2.0</mn><mi>f</mi><mi>s</mi></math>"}]{.math
-.inline}. The input script is as follows.
+system at [[[$300K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} for [[[[[1]]][$.0ns$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} using step size of [[[$2.5fs$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. The input script is as follows.
 
-<div>
 
 ``` bash
 more step5.0_productionNVT.inp
 ```
 
-</div>
 
-<div>
 
 output
 
@@ -731,7 +644,6 @@ output
  group1          = (sid:CARB) and not hydrogen
 ```
 
-</div>
 
 Submit the calculation
 
@@ -739,16 +651,10 @@ Submit the calculation
 mpirun -np 8 {params.bin_path}spdyn step5.0_productionNVT.inp > step5.0_productionNVT.log
 ```
 
-#### Analysis
+## Analysis
 
 Let us confirm the simulation was performed at the target temperature of
-[[[[[3]{#MathJax-Span-67 .mn}]{#MathJax-Span-66 .mrow}]{#MathJax-Span-65
-.math}[$00.K$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-14-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>300.</mn><mi>K</mi></math>"}]{.math
-.inline}. Extract the temperature and time from the log file.
+[[[[[3]]][$00.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Extract the temperature and time from the log file.
 
 ``` bash
 # save the log to csv
@@ -784,21 +690,12 @@ plt.show()
 
 plot
 
-![](assets/images/2022_02_fig7.png){.alignnone
-.wp-image-19137 .size-large loading="lazy" decoding="async" width="1024"
-height="731"
-srcset="wp-content/uploads/2022/02/fig7-1024x731.png 1024w, wp-content/uploads/2022/02/fig7-300x214.png 300w, wp-content/uploads/2022/02/fig7-768x549.png 768w, wp-content/uploads/2022/02/fig7-20x14.png 20w, wp-content/uploads/2022/02/fig7-30x21.png 30w, wp-content/uploads/2022/02/fig7-40x29.png 40w, wp-content/uploads/2022/02/fig7.png 1344w"
-sizes="(max-width: 1024px) 100vw, 1024px"}
+![](/assets/images/2022_02_fig7.png)
 
 As expected, the trajectory fluctuates near the target temperature of
-[[[$300.K$]{.MJX_Assistive_MathML
-role="presentation"}]{#MathJax-Element-15-Frame .MathJax
-style="display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 16px; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px;"
-role="presentation"
-mathml="<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mn>300.</mn><mi>K</mi></math>"}]{.math
-.inline}. Let us also visualize the trajectory.
+[[[$300.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Let us also visualize the trajectory.
 
-[http://localhost/assets/images/2022_06_nglycan_simulation.mp4](assets/images/2022_06_nglycan_simulation.mp4)
+[http://localhost/assets/images/2022_06_nglycan_simulation.mp4](/assets/images/2022_06_nglycan_simulation.mp4)
 
 It may be useful to record the number of intramolecular hydrogen bonds
 over time, as a change in conformation must overcome existing hydrogen
