@@ -35,7 +35,6 @@ $ ls
 
 This tutorial is composed of three steps:
 
-
 1.  system setup
 2.  production run
 3.  trajectory analysis
@@ -44,17 +43,15 @@ This tutorial is composed of three steps:
 
 ## 1. Setup the system
 
-Firstly, you need to install SMOG2 \[3-5\], a software to generate
-coarse-grained model of biomolecules, on your local machine. You can
-download both source codes and user manual of SMOG2 from [[its website](https://smog-server.org/smog2/)].
-Installation and configuration of SMOG2 is described from page 3 to page
-5 on the user manual. Before installation of SMOG2, you have to verify
-an availability of some prerequisites such as Perl, Perl Data Language
-(PDL), and various modules. You can install these modules by using `yum`
-(Red-Hat), `apt-get` (Debian), and so on depending your operating
-system. Here are examples in Ubuntu:
-
-
+Firstly, you need to install SMOG2 [^3] [^4] [^5], a software to generate
+coarse-grained model of biomolecules, on your local machine. You can download
+both source codes and user manual of SMOG2 from [its website](https://smog-server.org/smog2/).  
+Installation and configuration of SMOG2 is described from page 3 to page 5 on
+the user manual. Before installation of SMOG2, you have to verify an
+availability of some prerequisites such as Perl, Perl Data Language (PDL), and
+various modules. You can install these modules by using `yum` (Red-Hat),
+`apt-get` (Debian), and so on depending your operating system. Here are examples
+on Ubuntu:
 ```
 $ sudo apt-get install -y perl # Perl
 $ sudo apt-get install -y libxml-parser-perl libxml-simple-perl libxml-perl \
@@ -69,13 +66,14 @@ $ sudo apt-get install -y pdl libpdl-stats-perl # PDL
 $ sudo apt-get install -y libgetopt-long-descriptive-perl # Getopt module
 $ sudo apt-get install -y libscalar-util-numeric-perl \
                           libscalar-list-utils-perl # Scalar module
-
 ```
 
-
-Once you have installed SMOG2 on your machine, you can generate input files for MD simulation, a coordinate file (.gro) and a topology/parameter file (.top), from X-ray crystallographic structure by using SMOG2. The X-ray structure of HIV-1 reverse transcriptase, containing RNase-H, is available from the [RCSB Protein Data Bank](https://www.rcsb.org/) (PDB). You can download the PDB file (PDB ID: 1r0a) on a web browser, or with running the following commands:
-
-
+Once you have installed SMOG2 on your machine, you can generate input files for
+MD simulation, a coordinate file (.gro) and a topology/parameter file (.top),
+from X-ray crystallographic structure by using SMOG2. The X-ray structure of
+HIV-1 reverse transcriptase, containing RNase-H, is available from the [RCSB
+Protein Data Bank](https://www.rcsb.org/) (PDB). You can download the PDB file
+(PDB ID: 1r0a) on a web browser, or with running the following commands:
 
 ```
 # change to the setup directory
@@ -89,7 +87,6 @@ $ wget https://files.rcsb.org/download/1r0a.pdb
 You have to extract RNase-H from the PDB file by trimming off the other
 part:
 
-
 ```
 # extract RNase-H from 1r0a.pdb
 $ head -n6198 1r0a.pdb | tail -n932 > 1r0a_mod.pdb
@@ -99,12 +96,10 @@ $ echo END >> 1r0a_mod.pdb
 
 ```
 
-![](/assets/images/2022_04_fig1.png)
+![](/assets/images/2022_04_fig1.png){: width="400"}
 
  
-
 Then we perform SMOG2 with `1r0a_mod.pdb`:
-
 
 ```
 # adjust format of the input PDB file
@@ -116,7 +111,7 @@ $ smog2 -i adjusted.pdb -AA > setup.log
 ```
 
 After running SMOG2, you can see four output files
-(`smog.gro, .top, .ndx, and .contacts`). Among them, you will use `.gro`
+(`smog.gro`, `.top`, `.ndx`, and `.contacts`). Among them, you will use `.gro`
 and `.top` files in the following MD simulation.
 
  
@@ -126,7 +121,7 @@ and `.top` files in the following MD simulation.
 Just same as Tutorial 7.3, we are going to perform a production run
 without energy minimization or equilibration.
 
-The following commands perform a 1.0 x 10\^7 steps (20 ns) simulation
+The following commands perform a 1.0 x 10<sup>7</sup> steps (20 ns) simulation
 with `atdyn`:
 
 
@@ -142,18 +137,34 @@ $ mpirun 8 -np 8 atdyn run.inp | tee run.out
 
 ```
 
-The control file ]{lang="EN-US"}[`run.inp`]{lang="EN-US"}[ contains several sections, such as[ ]{.apple-converted-space}]{lang="EN-US"}[`[INPUT]`]{lang="EN-US"}[,[ ]{.apple-converted-space}]{lang="EN-US"}[`[OUTPUT]`]{lang="EN-US"}[, and]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[`[ENERGY]`]{lang="EN-US"}[, where we can specify the control parameters for the simulation. In the]{lang="EN-US"}[ ]{lang="EN-US"}[`[INPUT]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section, we set the file names for the initial coordinate file (]{lang="EN-US"}[`.gro`]{lang="EN-US"}[) and the topology/parameter file (]{lang="EN-US"}[`.top`]{lang="EN-US"})[(see[ ]{.apple-converted-space}[[section 4.1 of the GENESIS manual]]{.problematic} for an explanation of each input file). ]{lang="EN-US"}[ 
+The control file `run.inp` contains several sections, such as
+`[INPUT]`, `[OUTPUT]`, and  `[ENERGY]` , where we can specify the control
+parameters for the simulation. In the `[INPUT]` section, we set the file names
+for the initial coordinate file (`.gro`) and the topology/parameter file
+(`.top`)(see section 4.1 of the GENESIS manual for an explanation of each input
+file).   
 
-In the ]{lang="EN-US"}[`[OUTPUT]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section, output filenames are set.[ ]{.apple-converted-space}]{lang="EN-US"}[`Atdyn`]{lang="EN-US"}[ does not create any output file unless we explicitly specify their names. Here in our example, the restart file]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[(]{lang="EN-US"}[`.rst`]{lang="EN-US"}[) and the binary trajectory file]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[(]{lang="EN-US"}[`.dcd`]{lang="EN-US"}[) are set (see section 4.2 of the GENESIS manual for an explanation of each output file).
+In the  `[OUTPUT]` section, output filenames are set. `Atdyn`  does not create
+any output file unless we explicitly specify their names. Here in our example,
+the restart file (`.rst`) and the binary trajectory file (`.dcd`) are set
+(see section 4.2 of the GENESIS manual for an explanation of each output file).
 
-In the ]{lang="EN-US"}[`[ENERGY]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section, we specify the parameters related to the energy and force evaluation. ]{lang="EN-US"}[`AAGO`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[is the name for the AA Go-model in GENESIS. We set large values for the cutoff (]{lang="EN-US"}[`switchdist=45, cutoffdist=50, pairlistdist=55`]{lang="EN-US"}[) to perform a nearly "non-cutoff" simulation. The user can consider a different value to balance computational efficiency and accuracy, in case of large biomolecular systems.
+In the `[ENERGY]` section, we specify the parameters related to the energy and
+force evaluation.  `AAGO` is the name for the AA Go-model in GENESIS. We set
+large values for the cutoff (`switchdist=45, cutoffdist=50, pairlistdist=55`) to
+perform a nearly "non-cutoff" simulation. The user can consider a different
+value to balance computational efficiency and accuracy, in case of large
+biomolecular systems.
 
-The[ ]{.apple-converted-space}]{lang="EN-US"}[`[DYNAMICS]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section sets up the parameters for the MD engine of[ ]{.apple-converted-space}]{lang="EN-US"}[`atdyn`]{lang="EN-US"}[. In this tutorial, time step can be set to 2 fs without SHAKE constraints, by specifying ]{lang="EN-US"}[`rigid_bond=NO`]{lang="EN-US"}[ in the ]{lang="EN-US"}[`[CONSTRAINTS]`]{lang="EN-US"}[ section.
+The `[DYNAMICS]` section sets up the parameters for the MD engine of `atdyn`. In
+this tutorial, time step can be set to 2 fs without SHAKE constraints, by
+specifying `rigid_bond=NO` in the `[CONSTRAINTS]` section.
 
-In the ]{lang="EN-US"}[`[ENSEMBLE]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section, the]{lang="EN-US"}[ ]{lang="EN-US"}[`LANGEVIN`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[thermostat is chosen for an isothermal simulation with the friction constant of 0.1 ps^-1^.]{lang="EN-US"}[ 
+In the `[ENSEMBLE]` section, the `LANGEVIN` thermostat is chosen for an
+isothermal simulation with the friction constant of 0.1 ps<sup>-1</sup>.  
 
-Finally, in the ]{lang="EN-US"}[`[BOUNDARY]`]{lang="EN-US"}[[ ]{lang="EN-US"}]{.apple-converted-space}[section, we set the boundary condition for the system, which is no boundary condition (]{lang="EN-US"}[`NOBC`]{lang="EN-US"}[) here.
-
+Finally, in the `[BOUNDARY]` section, we set the boundary condition for the
+system, which is no boundary condition ( `NOBC` ) here.
 
 ```
 [INPUT] 
@@ -191,14 +202,13 @@ gamma_t        = 0.1 # friction (ps-1) # in [LANGEVIN]
 [BOUNDARY] 
 type           = NOBC # [PBC, NOBC]
 
- 
-
 ```
 
 ## 3. Trajectory analysis
 
-As an example for the analysis, we use the `rg_analysis`, which
-calculates a radius of gyration [(*R*~g~) for each snapshot in the trajectory. You can perform `rg_analysis` with following commands:]{lang="EN-US"}
+As an example for the analysis, we use the `rg_analysis`, which calculates a
+radius of gyration (*R*~g~) for each snapshot in the trajectory. You can
+perform `rg_analysis` with following commands:
 
 
 ```
@@ -269,22 +279,18 @@ gnuplot> plot “run.rg” w lp
 
 ![](/assets/images/2022_04_fig2.png)
 
+---
+
+*Written By Mao Oide @ RIKEN Theoretical molecular science laboratory\ June 18, 2022*
+{: .notice}
+
 ## References
 
-1.  L. Wang *et al.*, *J. Chem. Phys.*, **128**, 235103 (2008).
-2.  S. Yadahalli and S. Gosavi, *Phys. Chem. Chem. Phys.*, **19**,
+[^1]: L. Wang *et al.*, *J. Chem. Phys.*, **128**, 235103 (2008).
+[^2]: S. Yadahalli and S. Gosavi, *Phys. Chem. Chem. Phys.*, **19**, 9164-9173 (2017).
+[^3]: J. K. Noel *et al.*, *PLoS Comput. Biol.*, **12**, e1004794 (2016).
+[^4]: P. C. Whitford *et al.*, [*Proteins: Structure, Function,     Bioinformatics*, **75**, 430-441 (2009).]
+[^5]: J. K. Noel *et al.*, *J. Phys. Chem. B* **116**, 8692-8702 (2012). 
 
-```
-9164-9173 (2017).
-```
 
-3.  J. K. Noel *et al.*, *PLoS Comput. Biol.*, **12**, e1004794 (2016).
-4.  P. C. Whitford *et al.*, [*Proteins: Structure, Function,     Bioinformatics*, **75**, 430-441 (2009).]
-5.  J. K. Noel *et al.*, *J. Phys. Chem. B* **116**, 8692-8702 (2012). 
-
-------------------------------------------------------------------------
-
-*Written By Mao Oide @ RIKEN Theoretical molecular science laboratory\
-June 18, 2022\
-*
 

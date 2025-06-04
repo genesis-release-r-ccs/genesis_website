@@ -1,7 +1,7 @@
 ---
 title: "GENESIS Tutorial 12.3 (2022)"
 excerpt: ""
-last_modified_at: 2025-06-03T00:00:56+09:00
+last_modified_at: 2025-06-04T17:44:36+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -31,7 +31,9 @@ When the temperature of the system (= target temperature) and the solute
 temperature are \\(T_0\\) and \\(T_m\\), respectively, the energy in
 gREST is modified as follows:
 
-\\( \\displaystyle \\beta_0 U\_{m} = \\beta_0 \\left\[ \\frac{\\beta_m}{\\beta_0} U\_{uu} + \\left( \\frac{\\beta_m}{\\beta_0} \\right)\^{l/n} U\_{uv} + U\_{vv} \\right\]\\),
+\\( \\displaystyle \\beta_0 U\_{m} = \\beta_0 \\left\[
+\\frac{\\beta_m}{\\beta_0} U\_{uu} + \\left( \\frac{\\beta_m}{\\beta_0}
+\\right)\^{l/n} U\_{uv} + U\_{vv} \\right\]\\),
 
 where \\(\\beta_0\\) and \\(\\beta_m\\) are the inverse temperatures,
 \\(u\\) and \\(v\\) in the subscript represent the solute and solvent
@@ -50,7 +52,8 @@ file([tutorial22-12.3](/assets/tutorial_files/2022_09_tutorial22-12.3.tar.gz)). 
 energy minimization and pre-equilibration, 3) equilibration,  4)
 production run, and 5) trajectory analysis. Control files for GENESIS
 are already included in the download file. Since we use the CHARMM force
-field, we make a symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+field, we make a symbolic link to the CHARMM toppar directory (see
+[Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
 
 ```
@@ -72,7 +75,8 @@ $ export GENESIS_BIN_DIR=../../../GENESIS_Tutorials-2022/Programs/genesis-2.0/bi
 
 ##  1. Setup
 
-To setup the system, please follow the steps in the basic tutorial (see [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/)). We use the same input PDB and PSF files as
+To setup the system, please follow the steps in the basic tutorial (see
+[Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/)). We use the same input PDB and PSF files as
 in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/).
 
 
@@ -301,11 +305,11 @@ $ mpirun -np 8 $GENESIS_BIN_DIR/spdyn step2.4.inp > step2.4.out
 ### [2.5. Equilibration with 3.5 fs time step]
 
 Finally we run an additional 105-ps pre-equilibration simulation in NPT
-ensemble. In this step, we equilibrate the system with the[ multiple time step integrator, r-RESPA (VRES, timestep of 3.5 fs). ]The integration with the
+ensemble. In this step, we equilibrate the system with the [ multiple time step integrator, r-RESPA (VRES, timestep of 3.5 fs).]The integration with the
 longer time step requires HMR and group T/P options. The following is
 the important options in the control file (`step2.5.inp`).
 
-``` p1
+```toml
 [DYNAMICS]
 integrator        =   VRES  # [LEAP,VVER,VRES]
 nsteps            =  30000  # number of MD steps (105 ps)
@@ -359,22 +363,27 @@ difference is that gREST needs `select_indexN` and `param_typeN` to
 specify the "solute" region. The rest of system is regarded as
 "solvent". In this example, we define the the LJ and dihedral angle of
 potential energy terms in Ala3 molecule as the solute region
-(`param_type1 = D L` in `[REMD]` section and `group1 = ai:1-42` in `[SELECTION]` section).  In default, all of
+(`param_type1 = D L` in `[REMD]` section and
+`group1 = ai:1-42` in `[SELECTION]` section).  In default, all of
 potential energy terms are treated as the solute
 (`param_type1 = ALL `in `[REMD]` section). If you want to treat other
 parts of potential energy terms as the solute, `param_typeN` parameter
-may be modified (e.g. `param_type1 = C CM` to specify only charge and CMAP terms as solute.).
+may be modified (e.g. `param_type1 = C CM` to specify only charge and
+CMAP terms as solute.).
 
 ![](/assets/images/2022_09_grest_fig1.png)
 
 We here use four replicas with the solute temperature range of 300.00 K
--- 351.26 K (`parameters1 = 300.00 318.12 337.14 351.26` in `[REMD]` section) as a example. If you apply gREST to your system, you must
+-- 351.26 K (`parameters1 = 300.00 318.12 337.14 351.26` in `[REMD]`
+section) as a example. If you apply gREST to your system, you must
 determine the number and the temperatures of replicas. To find the
-number of replicas and temperatures, please refer to the appendix ((see [Automatic Parameter Tuning for REMD, REUS, REST](automatic_parameter_tuning_for_remd__reus__rest.md))). Each replica must be equilibrated at
+number of replicas and temperatures, please refer to the appendix ((see
+[Automatic Parameter Tuning for REMD, REUS, REST](automatic_parameter_tuning_for_remd__reus__rest.md))). Each replica must be equilibrated at
 the selected temperature just like conventional MD simulations. Note
 that in this step as well as the next step (production run) we use *NVT*
 ensemble. The r-RESPA integrator is combined with HMR and group T/P in
-order to use 3.5 fs time step. [The following is the important options in the control file (]`step3.inp`[).]
+order to use 3.5 fs time step. [The following is the important options
+in the control file (]`step3.inp`[).]
 
 
 ```
@@ -557,7 +566,8 @@ Parameter ID. For example, in the 1st column, `3` is written, which
 means that the temperature of Replica 1 is set to 337.140 K. The
 `ParmIDtoRepID` line also represents the permutation function that
 converts Parameter ID to Replica ID. For example, in the 3th column, 1
-is written, which means that Parameter 3 (corresponding to the replica temperature, 337.140 K) is located in Replica 1.
+is written, which means that Parameter 3 (corresponding to the replica
+temperature, 337.140 K) is located in Replica 1.
 
 Now, please change the directory to  analysis and proceed with the
 following steps:
@@ -718,7 +728,8 @@ $ grep "Parameter    :" ../../4_production/step4.out | sed 's/Parameter    :/ /'
 
 ```
 
-As previous step, we can use gunplot script to plot the parameter IDs (= replica temperatures)  in each snapshot.
+As previous step, we can use gunplot script to plot the parameter IDs (=
+replica temperatures)  in each snapshot.
 
 
 ```
@@ -775,5 +786,322 @@ $ $GENESIS_BIN_DIR/remd_convert remd_convert.inp | tee remd_convert.out
 ```
 
 This example sorts the trajectory of the solute temperature of 300.00 K
-(parameterID = 1) (convert_type = PARAMETER, convert_ids = 1 in `[OPTION]` section). The system is aligned to the backbone of central
-alanine during the sorting (fitting_atom = 2 in `[FITTING]` section, group2 = resno:2 and (an:N or an:CA or an:C or an:O in `[SELECTION]` section), and the water molecules are removed from the sorted trajectory (trjout_atom = 1 in `[OPTION]` section, group1 = ai:1-42 in `[SELECTION]` section). The control file "`remd_convert.inp`" is as follows:      [INPUT]     psffile = ../../1_setup/wbox.psf     reffile = ../../1_setup/wbox.pdb     dcdfile = ../../4_production/step4_rep{}.dcd    # see remd_conv.sh     remfile = ../../4_production/step4_rep{}.rem    # see remd_conv.sh     enefile = ../../4_production/step4_rep{}.ene  # enefile of gREST      [OUTPUT]     pdbfile         = param.pdb    # pdbfile     trjfile         = param{}.dcd  # sorted dcdfile     enefile         = param{}.ene  # sorted enefile      [SELECTION]     group1          = ai:1-42   # only tri-alanine     group2          = resno:2 and (an:N or an:CA or an:C or an:O) # backbone of 2nd ALA      [FITTING]     fitting_method  = TR+ROT    # center-of-mass translation + rotation fitting     fitting_atom    = 2         # fitting to backbone of central alanine     mass_weight     = YES       # mass-weighted fitting      [OPTION]     check_only      = NO     convert_type    = PARAMETER     convert_ids     =           # only lowest T replicas     num_replicas    = 4     nsteps          = 3000000     exchange_period = 3000     crdout_period   = 300       # trjectory output frequency in REMD     eneout_period   = 300       # energy output frequency in REMD     trjout_format   = DCD     trjout_type     = COOR+BOX     trjout_atom     = 1         # output only tri-alanine moiety     pbc_correct     = NO        # nothing will happen when water mols excluded  Now we have sorted temperature log, ene and DCD file which will be used in the following analysis steps.  One can check the sorted trajectory by following commands:  ``` wp-block-preformatted # Check the sorted dcd file for ParameterID 1 (300.00 K) $ vmd ./param.pdb ./param1.dcd ```  "`param*.ene`" files contain the energies at different solute temperatures at the snapshots of each replica. For example, `param1.ene` is shown below.  The second column represents the potential energy at 300.00 K. The third, fourth, and fifth columns represent the potential energies, which are estimated at [318.12 K, 337.14 K, and 351.26 K, respectively, using the trajectory of 300.00 K.]  ``` wp-block-preformatted  300       -38420.8021     -38420.7701     -38420.6700     -38420.5615  600       -38437.8129     -38437.7333     -38437.5876     -38437.4485  900       -38454.1105     -38454.6977     -38455.1828     -38455.4708 1200       -38523.4070     -38523.3613     -38523.2382     -38523.1079 1500       -38452.2631     -38452.5241     -38452.6885     -38452.7519 1800       -38472.7160     -38472.7599     -38472.7295     -38472.6667 ```  ##### [ 5.4. Calculating end to end distance]  In order to calculate the potential of the mean force (PMF) of the end-to-end distance distribution, in the current subsection we calculate the distance between the two terminal alanine `(OY_HNT)`.      # change directory     $ cd ../4_calc_distance     $ ls     calc_dist.sh      # make the file executable and execute the script     $ chmod u+x calc_dist.sh     $ ./calc_dist.sh  In the script "calc_dist.sh", we use GENESIS analysis tool `trj_analysis` as follow:  ``` p1 for i in 1 2 3 4; do  # Make input files for each Parameter ID. cat << EOF > inp${i} [INPUT] reffile = ../3_sort/param.pdb  [OUTPUT] disfile = param${i}.dis  [TRAJECTORY] trjfile1      = ../3_sort/param${i}.dcd md_step1      = 3000000         # number of MD steps mdout_period1 = 300             # MD output period ana_period1   = 300             # analysis period repeat1       = 1 trj_format    = DCD             # (PDB/DCD) trj_type      = COOR+BOX        # (COOR/COOR+BOX) trj_natom     = 0               # (0:uses reference PDB atom count)  [OPTION] check_only    = NO              # (YES/NO) distance1     = PROA:1:ALA:OY PROA:3:ALA:HNT EOF  # Execute trj_analysis trj_analysis ./inp${i}  done ```  ##### [5.5. MBAR analysis]  In order to use conformers from temperatures higher than the target temperature (300K), we use the MBAR method. MBAR reweights each snapshot of each replica into the target temperature and provide the unbiased weight for each snapshot:  \\( \\displaystyle W\_{jn} = \\frac{1}{c} \\frac{\\exp \[-\\beta_0 U_0(x\_{jn})\]}{\\sum_k N_k \\exp \[\\beta_0 (f_k -- U_k(x\_{jn}))\]},\\)  where \\(x\_{jn}\\) is a configuration of snapshot \\(n\\) at replica \\(j\\), \\(f_k\\) is the free energy of replica \\(k\\), and \\(c\\) is a normalization constant. \\(U_0\\) is the potential energy function at \\(\\beta_0\\). \\(U_k(x\_{jn})\\) corresponds to energies in `param*.ene` files. Please note that the values of the solute temperatures are not required for reweighting because their information is already included in \\(U_k(x\_{jn})\\).  We apply GENESIS `mbar_analysis` tool where we use our sorted energy files as cv.      # change directory     $ cd ../5_mbar     $ ls     mbar_analysis.inp       # We run the analysis using the following command.     $ $GENESIS_BIN_DIR/mbar_analysis mbar_analysis.inp | tee mbar_analysis.log   The control file " `mbar_analysis.inp`" is as follows:  ``` p1 [INPUT] cvfile             = ../3_sort/param{}.ene # input cv file  [OUTPUT] fenefile           = fene.dat weightfile         = weight{}.dat  [MBAR] nreplica           = 4 input_type         = REST dimension          = 1 nblocks            = 1 temperature        = 300.00 target_temperature = 300.00 ```  `input_type` is set to `REST` to reweight gREST trajectories. `temperature` and `target_temperature` are set to 300.00. As explained above, the information about solute temperatures are not needed for reweighting. `mbar_analysis` produces "`fene.dat`" file containing the evaluated relative free energies  and 4 "`weight*.dat`" files containing the weights of each snapshot for each replica, which are reweighted to 300.00 K. For example, `weight1.dat` is shown below. The first line corresponds to the weight of the first snapshot in `param1.dcd`. Each weight represents the probability of each snapshot at 300.00 K.      $ head weight1.dat              300  1.836119160862883E-005              600  1.962571423551713E-005              900  4.720421550879687E-006             1200  1.883861114197157E-005             1500  1.100339116123613E-005             1800  1.636948804025372E-005             2100  1.812549281313518E-005             2400  2.113452205982935E-005             2700  8.409791663698055E-006             3000  1.536017798686323E-005  ![](/assets/images/2022_09_grest_fig4.png)  ##### [ 5.6. Calculating PMF of distance distribution]  The final step of this tutorial is to use the calculated distances in 5.4. and weight files from MBAR analysis (5.5.) to calculate the PMF of the end-to-end distance distribution in Ala3. We use another tool in GENESIS (pmf_analysis) as follow:      # change directory     $ cd ../6_pmf     $ ls     pmf_analysis.inp plot_pmf.sh      # We run the analysis using the following command:      $ $GENESIS_BIN_DIR/pmf_analysis pmf_analysis.inp | tee pmf_analysis.log   The control file " `pmf_analysis.inp`" is as follows:      [INPUT]     cvfile       = ../4_calc_dist/param{}.dis     weightfile   = ../5_mbar/weight{}.dat      [OUTPUT]     pmffile      = dist.pmf      [OPTION]     nreplica     = 4             # number of replicas     dimension    = 1             # dimension of cv space     temperature  = 300.0     grids1       = 0 15 101      # (min max num_of_bins)     band_width1  = 0.1     is_periodic1 = NO            # periodicity of cv1  We plot the PMF using the provided script, "plot_pmf.sh".      # make the file executable and plot PMF     $ chmod u+x plot_pmf.sh     $ ./plot_pmf.sh  ![](/assets/images/2022_09_grest_fig5.png)  [We can see that there is the global energy minimum around r = 10 Å and a local energy minimum around r = 2.8 Å. The latter corresponds to the α-helix conformation, where the hydrogen bond between OY and HNT is formed. These results suggest that in water the alanine tripeptide tends to form an extended conformation rather than α-helix. ]  #### [[References]]  1.  P. Liu, B. Kim, R. A. Friesner, B. J. Berne, Replica exchange with     solute tempering: A method for sampling biological systems in     explicit water. *Proc. Natl. Acad. Sci. U.S.A.***102**, 13749--13754     (2005).     [](https://www.pnas.org/content/102/39/13749) 2.  L. Wang, R. A. Friesner, B. J. Berne, Replica exchange with solute     scaling: A more 683efficient version of replica exchange with solute     tempering (REST2). *J. Phys. Chem. B* **115**, 9431--9438 (2011).     [](https://pubs.acs.org/doi/abs/10.1021/jp204407d) 3.  M. Kamiya, Y. Sugita, Flexible selection of the solute region in     replica exchange with solute tempering: Application to     protein-folding simulations. *J. Chem. Phys.* **149**, 072304 (2018)     [](https://aip.scitation.org/doi/10.1063/1.5016222) 4.  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).     [](https://aip.scitation.org/doi/full/10.1063/1.2978177)  ------------------------------------------------------------------------  *Written Mar 1, 2018 by Motoshi Kamiya@RIKEN Computational biophysics research team*  *Updated Feb 25, 2019 by Yasuhiro Matsunaga@RIKEN R-CCS*  *Updated Aug 31, 2019 by Suyong Re@RIKEN BDR*  *Updated Jul 2, 2020 by Chigusa Kobayashi@RIKEN R-CCS*  *Updated Jul 1, 2022 by Hisham Dokainish@RIKEN CPR*  *Updated Sep 14, 2022 by Hiraku Oshima@RIKEN BDR*  **\ ** 
+(parameterID = 1) (convert_type = PARAMETER, convert_ids = 1 in `[OPTION]` section). The system is aligned to the backbone of central alanine during the sorting (fitting_atom = 2 in `[FITTING]` section, group2 = resno:2 and (an:N or an:CA or an:C or an:O in `[SELECTION]` section), and the water molecules are removed from the sorted trajectory (trjout_atom = 1 in `[OPTION]` section, group1 = ai:1-42 in `[SELECTION]` section). The control file "`remd_convert.inp`" is as follows:
+
+
+```
+[INPUT]
+psffile = ../../1_setup/wbox.psf
+reffile = ../../1_setup/wbox.pdb
+dcdfile = ../../4_production/step4_rep{}.dcd    # see remd_conv.sh
+remfile = ../../4_production/step4_rep{}.rem    # see remd_conv.sh
+enefile = ../../4_production/step4_rep{}.ene  # enefile of gREST
+
+[OUTPUT]
+pdbfile         = param.pdb    # pdbfile
+trjfile         = param{}.dcd  # sorted dcdfile
+enefile         = param{}.ene  # sorted enefile
+
+[SELECTION]
+group1          = ai:1-42   # only tri-alanine
+group2          = resno:2 and (an:N or an:CA or an:C or an:O) # backbone of 2nd ALA
+
+[FITTING]
+fitting_method  = TR+ROT    # center-of-mass translation + rotation fitting
+fitting_atom    = 2         # fitting to backbone of central alanine
+mass_weight     = YES       # mass-weighted fitting
+
+[OPTION]
+check_only      = NO
+convert_type    = PARAMETER
+convert_ids     =           # only lowest T replicas
+num_replicas    = 4
+nsteps          = 3000000
+exchange_period = 3000
+crdout_period   = 300       # trjectory output frequency in REMD
+eneout_period   = 300       # energy output frequency in REMD
+trjout_format   = DCD
+trjout_type     = COOR+BOX
+trjout_atom     = 1         # output only tri-alanine moiety
+pbc_correct     = NO        # nothing will happen when water mols excluded
+
+```
+
+Now we have sorted temperature log, ene and DCD file which will be used
+in the following analysis steps.
+
+One can check the sorted trajectory by following commands:
+
+``` wp-block-preformatted
+# Check the sorted dcd file for ParameterID 1 (300.00 K)
+$ vmd ./param.pdb ./param1.dcd
+```
+
+"`param*.ene`" files contain the energies at different solute
+temperatures at the snapshots of each replica. For example, `param1.ene`
+is shown below.  The second column represents the potential energy at
+300.00 K. The third, fourth, and fifth columns represent the potential
+energies, which are estimated at [318.12 K, 337.14 K, and 351.26 K,
+respectively, using the trajectory of 300.00
+K.]
+
+``` wp-block-preformatted
+ 300       -38420.8021     -38420.7701     -38420.6700     -38420.5615
+ 600       -38437.8129     -38437.7333     -38437.5876     -38437.4485
+ 900       -38454.1105     -38454.6977     -38455.1828     -38455.4708
+1200       -38523.4070     -38523.3613     -38523.2382     -38523.1079
+1500       -38452.2631     -38452.5241     -38452.6885     -38452.7519
+1800       -38472.7160     -38472.7599     -38472.7295     -38472.6667
+```
+
+###  5.4. Calculating end to end distance
+
+In order to calculate the potential of the mean force (PMF) of the
+end-to-end distance distribution, in the current subsection we calculate
+the distance between the two terminal alanine `(OY_HNT)`.
+
+
+```
+# change directory
+$ cd ../4_calc_distance
+$ ls
+calc_dist.sh
+
+# make the file executable and execute the script
+$ chmod u+x calc_dist.sh
+$ ./calc_dist.sh
+
+```
+
+In the script "calc_dist.sh", we use GENESIS analysis tool
+`trj_analysis` as follow:
+
+``` p1
+for i in 1 2 3 4; do
+
+# Make input files for each Parameter ID.
+cat << EOF > inp${i}
+[INPUT]
+reffile = ../3_sort/param.pdb
+
+[OUTPUT]
+disfile = param${i}.dis
+
+[TRAJECTORY]
+trjfile1      = ../3_sort/param${i}.dcd
+md_step1      = 3000000         # number of MD steps
+mdout_period1 = 300             # MD output period
+ana_period1   = 300             # analysis period
+repeat1       = 1
+trj_format    = DCD             # (PDB/DCD)
+trj_type      = COOR+BOX        # (COOR/COOR+BOX)
+trj_natom     = 0               # (0:uses reference PDB atom count)
+
+[OPTION]
+check_only    = NO              # (YES/NO)
+distance1     = PROA:1:ALA:OY PROA:3:ALA:HNT
+EOF
+
+# Execute trj_analysis
+trj_analysis ./inp${i}
+
+done
+```
+
+### 5.5. MBAR analysis
+
+In order to use conformers from temperatures higher than the target
+temperature (300K), we use the MBAR method. MBAR reweights each snapshot
+of each replica into the target temperature and provide the unbiased
+weight for each snapshot:
+
+\\( \\displaystyle W\_{jn} = \\frac{1}{c} \\frac{\\exp \[-\\beta_0
+U_0(x\_{jn})\]}{\\sum_k N_k \\exp \[\\beta_0 (f_k --
+U_k(x\_{jn}))\]},\\)
+
+where \\(x\_{jn}\\) is a configuration of snapshot \\(n\\) at replica
+\\(j\\), \\(f_k\\) is the free energy of replica \\(k\\), and \\(c\\) is
+a normalization constant. \\(U_0\\) is the potential energy function at
+\\(\\beta_0\\). \\(U_k(x\_{jn})\\) corresponds to energies in
+`param*.ene` files. Please note that the values of the solute
+temperatures are not required for reweighting because their information
+is already included in \\(U_k(x\_{jn})\\).
+
+We apply GENESIS `mbar_analysis` tool where we use our sorted energy
+files as cv.
+
+
+```
+# change directory
+$ cd ../5_mbar
+$ ls
+mbar_analysis.inp
+
+
+# We run the analysis using the following command.
+$ $GENESIS_BIN_DIR/mbar_analysis mbar_analysis.inp | tee mbar_analysis.log 
+
+```
+
+The control file " `mbar_analysis.inp`" is as follows:
+
+``` p1
+[INPUT]
+cvfile             = ../3_sort/param{}.ene # input cv file
+
+[OUTPUT]
+fenefile           = fene.dat
+weightfile         = weight{}.dat
+
+[MBAR]
+nreplica           = 4
+input_type         = REST
+dimension          = 1
+nblocks            = 1
+temperature        = 300.00
+target_temperature = 300.00
+```
+
+`input_type` is set to `REST` to reweight gREST trajectories.
+`temperature` and `target_temperature` are set to 300.00. As explained
+above, the information about solute temperatures are not needed for
+reweighting. `mbar_analysis` produces "`fene.dat`" file containing the
+evaluated relative free energies  and 4 "`weight*.dat`" files containing
+the weights of each snapshot for each replica, which are reweighted to
+300.00 K. For example, `weight1.dat` is shown below. The first line
+corresponds to the weight of the first snapshot in `param1.dcd`. Each
+weight represents the probability of each snapshot at 300.00 K.
+
+
+```
+$ head weight1.dat
+         300  1.836119160862883E-005
+         600  1.962571423551713E-005
+         900  4.720421550879687E-006
+        1200  1.883861114197157E-005
+        1500  1.100339116123613E-005
+        1800  1.636948804025372E-005
+        2100  1.812549281313518E-005
+        2400  2.113452205982935E-005
+        2700  8.409791663698055E-006
+        3000  1.536017798686323E-005
+
+```
+
+![](/assets/images/2022_09_grest_fig4.png)
+
+###  5.6. Calculating PMF of distance distribution
+
+The final step of this tutorial is to use the calculated distances in
+5.4. and weight files from MBAR analysis (5.5.) to calculate the PMF of
+the end-to-end distance distribution in Ala3. We use another tool in
+GENESIS (pmf_analysis) as follow:
+
+
+```
+# change directory
+$ cd ../6_pmf
+$ ls
+pmf_analysis.inp plot_pmf.sh
+
+# We run the analysis using the following command: 
+$ $GENESIS_BIN_DIR/pmf_analysis pmf_analysis.inp | tee pmf_analysis.log 
+
+```
+
+The control file " `pmf_analysis.inp`" is as follows:
+
+
+```
+[INPUT]
+cvfile       = ../4_calc_dist/param{}.dis
+weightfile   = ../5_mbar/weight{}.dat
+
+[OUTPUT]
+pmffile      = dist.pmf
+
+[OPTION]
+nreplica     = 4             # number of replicas
+dimension    = 1             # dimension of cv space
+temperature  = 300.0
+grids1       = 0 15 101      # (min max num_of_bins)
+band_width1  = 0.1
+is_periodic1 = NO            # periodicity of cv1
+
+```
+
+We plot the PMF using the provided script, "plot_pmf.sh".
+
+
+```
+# make the file executable and plot PMF
+$ chmod u+x plot_pmf.sh
+$ ./plot_pmf.sh
+
+```
+
+![](/assets/images/2022_09_grest_fig5.png)
+
+[We can see that there is the global energy minimum around r = 10 Å and
+a local energy minimum around r = 2.8 Å. The latter corresponds to the
+α-helix conformation, where the hydrogen bond between OY and HNT is
+formed. These results suggest that in water the alanine tripeptide tends
+to form an extended conformation rather than
+α-helix. ]
+
+## [[References]]
+
+1.  P. Liu, B. Kim, R. A. Friesner, B. J. Berne, Replica exchange with
+
+```
+solute tempering: A method for sampling biological systems in
+explicit water. *Proc. Natl. Acad. Sci. U.S.A.***102**, 13749--13754
+(2005).
+[](https://www.pnas.org/content/102/39/13749){target="_blank"
+rel="noopener noreferrer"}
+```
+
+2.  L. Wang, R. A. Friesner, B. J. Berne, Replica exchange with solute
+
+```
+scaling: A more 683efficient version of replica exchange with solute
+tempering (REST2). *J. Phys. Chem. B* **115**, 9431--9438 (2011).
+[](https://pubs.acs.org/doi/abs/10.1021/jp204407d){target="_blank"
+rel="noopener noreferrer"}
+```
+
+3.  M. Kamiya, Y. Sugita, Flexible selection of the solute region in
+
+```
+replica exchange with solute tempering: Application to
+protein-folding simulations. *J. Chem. Phys.* **149**, 072304 (2018)
+[](https://aip.scitation.org/doi/10.1063/1.5016222){target="_blank"
+rel="noopener noreferrer"}
+```
+
+4.  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).
+
+```
+[](https://aip.scitation.org/doi/full/10.1063/1.2978177){target="_blank"
+rel="noopener noreferrer"}
+
+```
+
+------------------------------------------------------------------------
+
+*Written Mar 1, 2018 by Motoshi Kamiya@RIKEN Computational biophysics
+research team*
+
+*Updated Feb 25, 2019 by Yasuhiro Matsunaga@RIKEN R-CCS*
+
+*Updated Aug 31, 2019 by Suyong Re@RIKEN BDR*
+
+*Updated Jul 2, 2020 by Chigusa Kobayashi@RIKEN R-CCS*
+
+*Updated Jul 1, 2022 by Hisham Dokainish@RIKEN CPR*
+
+*Updated Sep 14, 2022 by Hiraku Oshima@RIKEN BDR*
+
+**\
+**
+

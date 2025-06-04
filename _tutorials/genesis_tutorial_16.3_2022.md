@@ -19,13 +19,14 @@ learn how to fix local structural errors such as chirality errors, ring
 penetrations, and cis peptide bonds in the full-atom model. We
 additionally use external programs like
 [VMD](https://www.ks.uiuc.edu/Research/vmd/),
-[PULCHRA](https://www.pirx.com/pulchra/), and [MMTSB toolset](http://www.mmtsb.org) for the structure modeling. In addition,
+[PULCHRA](https://www.pirx.com/pulchra/), and [MMTSB toolset](http://www.mmtsb.org) 
+for the structure modeling. In addition,
 parameter files for the EEF1 implicit solvent model are utilized, which
 are currently available in the
 [CHARMM](https://www.charmm.org) program package. Please download and install
 these programs in advance (installation of CHARMM is not required). This
-tutorial is related to our recent publication [^3].\
-\
+tutorial is related to our recent publication [^3].
+
 
 ## Preparation
 
@@ -231,7 +232,7 @@ mpirun -np 8 -x OMP_NUM_THREADS=3 ../bin/atdyn INPMODELID > logMODELID
 ```
 
 Important control parameters are highlighted below. If
-`check_structure` in the \[MINIMIZE\] section is turned on, the
+`check_structure` in the `MINIMIZE` section is turned on, the
 chirality errors and ring penetrations are checked in the
 energy-minimized structure. If suspicious chiral centers or ring
 residues are detected, the warning message will be shown in the GENESIS
@@ -476,23 +477,23 @@ demonstrated a new protocol for the best model selection, where the
 model is selected based on c.c., RWplus score, and MolProbity score from
 multiple flexible fitting runs using different force constants. 
 
-##  References
-
-1.  G. Terashi and D. Kihara, *Nat. Commun.*, **9**, 1618 (2018).
-2.  M. Y. Chen *et al.*, *J. Struct. Biol.*, **196**, 289-298 (2016).
-3.  Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021)..
 
 ##  Acknowledgement 
 
 The original Cα-model PDB and density map files used in this tutorial
 were provided from Kihara laboratory at Purdue University, which are
-also distributed as a part of  the publication data of Reference 3 (for details, see [here](https://github.com/RikenSugitaLab/flexible-fitting-refinement-for-de-novo-modeling)).\
-**\
-**
+also distributed as a part of  the publication data of Reference 3 (for details, see [here](https://github.com/RikenSugitaLab/flexible-fitting-refinement-for-de-novo-modeling)).
 
-------------------------------------------------------------------------
+---
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
-April 10, 2022*
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\ April 10, 2022*
+{: .notice}
+
+
+##  References
+
+[^1]: G. Terashi and D. Kihara, *Nat. Commun.*, **9**, 1618 (2018).
+[^2]: M. Y. Chen *et al.*, *J. Struct. Biol.*, **196**, 289-298 (2016).
+[^3]: Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021)..
+
 

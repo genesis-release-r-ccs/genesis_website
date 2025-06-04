@@ -27,14 +27,20 @@ The potential energy is a pre-requisite to perform molecular
 simulations. In the MM force field, the potential energy is divided into
 bonded and non-bonded contribution,
 
-\\( \\displaystyle V\^{MM} = V\_{bonded} + V\_{non-bonded}. \\)
+\\[  V^{MM} = V_{bonded} + V_{non-bonded}. \\]
 
 Although the precise functional forms are different in every MM force
 fields, the former is often represented as a function of bond distances
 (*r*), bond angles (\\( \\theta \\)), and torsion angles(\\( \\phi \\))
 as,
 
-\\( \\displaystyle V\_{bonded} = \\sum\_{bond (r)} \\frac{k_r}{2} (r -- r_0)\^2  + \\sum\_{angle(\\theta)} \\frac{k\_\\theta}{2}(\\theta -- \\theta_0)\^2 + \\sum\_{torsion(\\phi)} k\_\\phi\[1-\\cos(n\\phi+\\delta)\], \\)
+\\[ 
+\begin{aligned} 
+V_{bonded}  &=  \sum_{bond(r)} \frac{k_r}{2} (r - r_0)^2 \\\\ 
+&+\sum_{angle(\theta)} \frac{k_{\theta}}{2}(\theta - \theta_0)^2 \\\\ 
+&+ \sum_{torsion(\phi)} k _\phi [1-\cos(n\phi+\delta)], 
+\end{aligned} 
+\\]
 
 and the latter is a sum of the Coulomb interaction between atomic
 charges and the van der Waals interaction,
