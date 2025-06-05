@@ -73,14 +73,15 @@ GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal 
 and run the following command:
 ```bash
+$ cd ~/GENESIS_Tutorials-2022
 $ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+$ cd genesis_tutorial_materials/tutorial-11.1
 ```
 
 This tutorial is divided into three major steps:
 1) System Setup; 2) MD Simulation; and 3) Trajectory Analysis.
 
 ```bash
-$ cd genesis_tutorial_materials/tutorial-11.1
 $ ls
 01_setup 02_simulation 03_analysis
 ```
