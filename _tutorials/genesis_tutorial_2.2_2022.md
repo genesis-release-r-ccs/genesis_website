@@ -9,68 +9,98 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 2.2 Force field parameters of biological molecules
+# Force field parameters of biological molecules
 
-##  What is needed to run simulations? 
+## What is needed to run simulations? 
 
 In the MD simulation, potential energy of the system is calculated by
 
-![](/assets/images/2019_06_Eq3.jpg)
+\\[
+\begin{aligned}
+U &= \sum_{\textrm{bonds}} k_b (r - r_0)^2 + \sum_{\textrm{angles}}k_a(\theta - \theta_0)^2 \\\\ 
+&+ \sum_{\textrm{dihedrals}}\frac{V_n}{2}\left[ 1 + \cos(n\phi - \delta) \right] \\\\ 
+&+ \sum_{i > j} 4\varepsilon \left[ \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{12} - \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{6} \right] + 
+\sum_{i>j} \frac{q_i q_j}{r_{ij}}
+\end{aligned}
+\\]
 
-This equation is called the "force field". We can see many empirical
-parameters such as force constants (*k~b~* and *k~a~*), equilibrium bond
-length (*r*~0~), depth of the dihedral angle potential energy (*V~n~*),
-atomic charge (q), and so on. In fact, these physical parameters are not
-included in any PDB file. They are also not included in most MD
-programs. Therefore, in order to perform MD simulations, the **force
-field parameters** need to be prepared and loaded as input to the MD
-program. In addition, we need information about the "topology" of the
-target molecular system. Topology refers to the "atom connectivity" in a
-molecule, i.e., "which atoms are connected by covalent bonds. Such
-information is essential to calculate the sum of each term in the
-equation. However, most MD programs cannot automatically create topology
-from PDB coordinates due to the complexity of the process. Therefore,
-before starting the MD simulation, the **topology information of the
-target system** should also be prepared.
 
-##  Download the force field parameters 
+This equation is commonly referred to as the force field. It includes many
+empirical parameters, such as force constants (e.g. \\(k_b\\) and \\(k_a,\\) for
+bonds and angles), equilibrium bond lengths (\\(r_0\\)), the depth of the
+dihedral potential (\\(V_n\\)), atomic charges (\\(q\\)), and more. These
+physical parameters are not stored in PDB files, nor are they typically bundled
+with most MD simulation programs. Therefore, to perform molecular dynamics
+simulations, the appropriate **force field parameters** must be prepared and
+provided as input.
 
-[One of the most commonly used parameters for biomolecules is the CHARMM force field [^1], which was originally developed by the Karplus group at Harvard University. In particular, the Alex Mackerell group at the University of Maryland has been actively developing the CHARMM force field parameters. Let's go to [the Mackerell's website](http://mackerell.umaryland.edu/charmm_ff.shtml) and search for the latest version of the parameters. ]
+In addition, we need the topology of the target molecular system, which
+describes how atoms are connected—i.e., which atoms are bonded covalently. This
+information is essential for evaluating each term in the force field equation.
+However, due to the complexity of molecular structures, most MD programs cannot
+automatically infer topology from PDB coordinates alone. As a result, the
+topology file must also be prepared before starting the simulation.
+
+
+## Download the force field parameters 
+
+One of the most widely used force fields for biomolecular simulations is CHARMM
+[^1], originally developed by the Karplus group at Harvard University. Over the
+years, the Mackerell group at the University of Maryland has played a leading
+role in extending and maintaining the CHARMM force field parameters. You can
+visit [the Mackerell group's website](http://mackerell.umaryland.edu/charmm_ff.shtml) 
+to find and download the latest versions of these parameters.
 
 ![](/assets/images/2021_12_charmm_toppar_website.png)
 
-[As you can see, the CHARMM force field has been updated every July for the past several years. Since we are writing this tutorial in December 2021, we would like to select "`toppar_c36_jul21.tgz`". This file contains the CHARMM C36m parameters [^2], which is the latest version of the CHARMM force field at this time. **Please check this page regularly for your research.** There might be an important update that improves the accuracy of the MD simulation. ]
+As you can see, the CHARMM force field has been updated annually in July for the
+past several years. Since this tutorial was written in December 2021, we will
+use the `toppar_c36_jul21.tgz` archive, which contains the CHARMM C36m parameters
+[^2] — the most recent version available at that time. We recommend *checking this
+page regularly* in your research, as future updates may significantly improve the
+accuracy and reliability of your MD simulations.
 
-[Let's move to the "`Data`" directory, and then "`Parameters`" directory. We would like to put the downloaded file here.]**\
-**
 
+Let’s create a new `Data` directory, and within it, a `Parameters` subdirectory
+to store the downloaded file. 
 
-```
+This directory structure will be used consistently throughout the remaining
+sections of the tutorial.  You may choose a different location if you prefer,
+but please remember to update the corresponding paths accordingly in later
+steps.
+{: .notice--info}
+
+```bash
 # Move to the directory where save the parameter files
 $ cd ~/GENESIS_Tutorials-2022
-$ cd Data
-$ cd Parameters
+$ mkdir -p Data/Parameters
+$ cd Data/Parameters
 
 $ mv ~/Downloads/toppar_c36_jul21.tgz ./
 $ tar -zxvf toppar_c36_jul21.tgz
 $ ls
 toppar  toppar_c36_jul21  toppar_c36_jul21.tgz
-
 ```
 
-There are a lot of files in the `toppar_c36_jul21` directory. So, in
-this page we would like to introduce some important or frequently used
-files. The `.prm` and `.rtf` files are the "parameter" and "residue
-topology" files, respectively. "`prot`", "`na`", and "`lipid`" mean
-protein, nucleic acid, and lipid, respectively. "`all`" means the
-all-atom model. Thus, for example, `par_all36m_prot.prm` is related to
-the CHARMM C36m force field parameters of protein (or amino acid residue) for the all-atom model, while `top_all36_prot.rtf` is related
-to the topology information of protein (or amino acid residue) for the
-all-atom model. Note that `top_all36_prot.rtf` is common to both CHARMM
-C36 and C36m.
+The `toppar_c36_jul21` directory contains many files. In this section, we will
+introduce some of the most important and frequently used ones.
+
+Files with the `.prm` extension are parameter files, while those with `.rtf` are
+residue topology files.
+
+The prefixes in the filenames indicate their target molecule types:
+- `prot` – protein (amino acid residues)
+- `na` – nucleic acids
+- `lipid` – lipids
+- `all` – all-atom models
+
+For example:
+- `par_all36m_prot.prm` contains the CHARMM C36m force field parameters for proteins in the all-atom model.
+- `top_all36_prot.rtf` provides the topology information for proteins, used in both CHARMM C36 and C36m.
+Note that `top_all36_prot.rtf` is shared by both CHARMM C36 and C36m versions.
 
 
-```
+```bash
 # Check the contents 
 $ cd toppar_c36_jul21
 $ ls
@@ -86,15 +116,19 @@ openmm_gbsaobc2           silicates                  toppar_all.his
 par_all22_prot.prm        stream                     toppar_water_ions.str
 par_all35_ethers.prm      tamdfff
 par_all36_carb.prm        top_all22_prot.rtf
-
 ```
 
-##  What is contained in the parameter and topology files?
+## What is contained in the parameter and topology files?
 
-[Let's take a look at the contents of `par_all36m_prot.prm`. The following shows a part of the parameters for the bond energy term. In this section, we can find bond force constants (3rd column) and equilibrium bond lengths (4th column) for each atom type or atom pair in the amino acids. Let's find the parameters for other energy terms such as angle, dihedral angle, van der Waals, and so on.\ ]
+Let’s take a look at the contents of `par_all36m_prot.prm`.  The example below
+shows a portion of the parameters for the bond energy term.  In this section,
+you can find the bond force constants (3rd column) and equilibrium bond lengths
+(4th column) for each atom type or atom pair in amino acids.  
 
+Try browsing the file further to locate parameters for other energy terms, such as:
+angle terms, dihedral angles, and Van der Waals interactions, etc.
 
-```
+```bash
 # Take a look at the parameter file for proteins
 $ less par_all36m_prot.prm 
 
@@ -112,22 +146,25 @@ CPT  CA    300.000     1.3600 ! atm, methylindole, fit CCDSS
 CPT  CAI   300.000     1.3600 ! atm, methylindole, fit CCDSS
 CPT  CPT   360.000     1.3850 ! atm, methylindole, fit CCDSS
 :
-
 ```
 
-[[[ ]]For detailed description of the parameter files, see the [CHARMM manual](https://www.charmm.org/archive/charmm/documentation/) ([parmfile](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/parmfile/)).]
+For detailed description of the parameter files, refer to the [CHARMM manual](https://www.charmm.org/archive/charmm/documentation/)
+([parmfile](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/parmfile/)).
 
-[Next, let's take a look at the contents of `top_all36_prot.rtf`. The main information contained in this file is the atom connectivity (topology), mass, and charge of the amino acids. ]
+Next, let’s examine the contents of `top_all36_prot.rtf`.
+This file primarily defines the topology, mass, and partial charges of amino acids.
 
-Below are definitions for the atomic mass and topology of alanine (ALA).
-The mass of each atom is defined in the lines beginning with "MASS"
-(red). For the topology information, covalent bonds are defined in the
-lines starting with "BOND", where adjacent atom names (blue or green pairs) are connected by covalent bonds. The partial charge of each atom
-is defined in the fourth row (purple). For example, the partial change
-of hydrogen is +0.09 *e*. [For detailed description of the topology files, see the [CHARMM manual](https://www.charmm.org/archive/charmm/documentation/) ([rtop](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/rtop/)).]
+Below is an example of how alanine (ALA) is defined:
+- Lines beginning with `MASS` specify the atomic mass.
+- Lines starting with `BOND` describe the covalent bond connectivity between atoms—each adjacent atom pair indicates a covalent bond.
+- The partial charge of each atom is provided in the fourth column. For instance, the hydrogen atom has a partial charge of `+0.09 e`.
+
+For a more detailed explanation of the topology file format, refer to the
+[CHARMM manual](https://www.charmm.org/archive/charmm/documentation/)
+and the [rtop](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/rtop/) documentation.
 
 
-```
+```bash
 # Take a look at the topology file for proteins
 $ less top_all36_prot.rtf
 
@@ -158,26 +195,44 @@ BOND CB CA  N  HN  N  CA
 BOND C  CA  C  +N  CA HA  CB HB1  CB HB2  CB HB3 
 DOUBLE O  C
 :
-
 ```
 
-[We can also find `.str` file in the directory. This is called "stream file", in which the topology and parameters are defined together. `toppar_water_ions.str` contains the information about topology and parameters of water and ions.\ ]
+We can also find several `.str` files in the directory. These are called stream
+files, which combine both topology and parameter definitions. For example,
+`toppar_water_ions.str` contains the necessary topology and parameter information
+for water molecules and ions.
 
-
-```
+```bash
 # Take a look at the stream file for water and ions
 $ less toppar_water_ions.str
-
 ```
 
-[In our tutorials, we will mainly use `par_all36m_prot.prm`, `top_all36_prot.rtf`, and `toppar_water_ions.str`. These three files are essential to perform MD simulations of proteins in water with the CHARMM C36m force field. For the MD simulation of membrane proteins, `par_all36_lipid.prm` and `top_all36_lipid.rtf` are additionally needed, since they contain information about lipid molecules. ]
+In our tutorials, we will primarily use the following three files:
+`par_all36m_prot.prm`, `top_all36_prot.rtf`, and `toppar_water_ions.str`. These
+are essential for performing MD simulations of proteins in water using the
+CHARMM C36m force field. For simulations involving membrane proteins, two
+additional files—`par_all36_lipid.prm` and `top_all36_lipid.rtf`—are required,
+as they provide the necessary parameters and topology for lipid molecules.
 
-##  Let's clean up the directory 
 
-[Now, once again, let's do a short exercise in organizing the files and directories. Please take a look inside the `Parameters` directory. We have `toppar`, `toppar_c36_jul21`, and `toppar_c36_jul21.tgz`. Here, `toppar_c36_jul21.tgz` is the original file downloaded from the website, which is important but no longer needed. The `toppar` file is also not needed, since this is generated probably due to a mistake the author made when he/she compressed the file. Thus, we can delete these files with the `rm` command. Here, ][instead of deleting them, we would like to create a directory "`TRASH`", and move `toppar` and `toppar_c36_jul21.tgz` there. This procedure makes it easy to see which files in the directory are important and which are not. Since `rm` is one of the commands that must be executed carefully, this technique is useful to clean up files in a cluttered directory without using `rm`. Of course, if you don't really need those files, you can delete them to save disk space.]
+## Let's clean up the directory 
 
+Now, let’s do a short exercise to organize the files and directories. In the
+`Parameters` directory, you may find three items: `toppar`, `toppar_c36_jul21`,
+and `toppar_c36_jul21.tgz`.
 
-```
+- `toppar_c36_jul21.tgz` is the original archive downloaded from the CHARMM website. While important as a backup, it is no longer needed after extraction.
+- `toppar` is likely an extra file or directory mistakenly included during compression and can be safely ignored.
+
+Rather than deleting them outright with the `rm` command (which should always be
+used with caution), we recommend creating a directory called `TRASH` and moving
+these unnecessary files there.
+
+This approach helps keep the working directory tidy while preserving files just
+in case you need them later. Of course, if disk space is a concern and you are
+confident they are no longer needed, feel free to delete them.
+
+```bash
 # Find unnecessary files
 $ cd ../
 $ ls
@@ -188,14 +243,11 @@ $ mkdir TRASH
 $ mv toppar toppar_c36_jul21.tgz ./TRASH
 $ ls
 toppar_c36_jul21  TRASH
-
 ```
 
-[Now, the CHARMM force field parameter files are ready. In summary, we have constructed ]the following directory
-structure for this project.
+Now that the CHARMM force field parameter files are ready, we have the following directory structure prepared:
 
-
-```
+```bash
 /home/user
        + GENESIS_Tutorials-2022      # Project name
             |
@@ -213,30 +265,21 @@ structure for this project.
             |
             + Works                  # All simulations will be done here
                + TRASH
-
 ```
 
-[In the next Tutorial, we will learn how to setup the initial structure of the target system using the topology file.]
+In the next Tutorial, we will learn how to setup the initial structure of the
+target system using the topology file.
+
+---
+
+*Written by Takaharu Mori@RIKEN Theoretical molecular science
+laboratory\ Dec. 17, 2021*
+{: .notice}
+
 
 ##  References
 
-1.  A. D. MacKerell, Jr. *et al.*, *J. Phys. Chem. B*, **102**, 3586
+[^1]: A. D. MacKerell, Jr. *et al.*, *J. Phys. Chem. B*, **102**, 3586 (1998). [<i class="fas fa-link"></i>](https://pubs.acs.org/doi/10.1021/jp973084f)
+[^2]: J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017). [<i class="fas fa-link"></i>](https://www.nature.com/articles/nmeth.4067)
 
-```
-(1998).
-[](https://pubs.acs.org/doi/10.1021/jp973084f)
-```
-
-2.  J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).
-
-```
-[](https://www.nature.com/articles/nmeth.4067)
-
-```
-
-------------------------------------------------------------------------
-
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
-Dec. 17, 2021*
 
