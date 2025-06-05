@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 6.1 POPC lipid bilayers with the CHARMM force field 
+# POPC lipid bilayers with the CHARMM force field 
 
 One of the widely used models for biological membranes is a bilayer of
 POPC (1-palmitoyl-2-oleoyl-*sn*-glycero-3-phosphocholine) lipids. The
@@ -18,7 +18,9 @@ groups and hydrophilic head groups. In POPC, one of the fatty acid tails
 has a double bond with a *cis* conformation, and there is a stereocenter
 in the middle (both indicated in red in the figure). Because of its
 amphiphilic character, POPC lipids self-assemble to form a bilayer
-structure.![](/assets/images/2019_08_popc_formula.png)
+structure.
+
+![](/assets/images/2019_08_popc_formula.png)
 
 The aim of this tutorial is to learn:
 
@@ -28,36 +30,30 @@ The aim of this tutorial is to learn:
 
 In this tutorial, we carry out all-atom MD simulations of a lipid
 bilayer with GENESIS and CHARMM-GUI using the CHARMM36 force field
-[[^1]](/tutorials/genesis_tutorial_6.1_2022/#klauda2010).
+[^1].
 
 ## 1. Preparation
 
-Let's download the tutorial file
-([tutorial-6.1.tar.gz](/assets/tutorial_files/2022_07_tutorial22-6.1.tar.gz)). This tutorial consists of four steps: 1) system setup using
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+
+If you haven't downloaded the files yet, open your terminal
+and run the following command:
+```bash
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+
+This tutorial consists of four steps: 1) system setup using
 CHARMM-GUI, 2) energy minimization and equilibration, 3) production run,
 and 4) trajectory analysis. Since we use the CHARMM force field, we make
 a symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
-
-```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-6.1.zip ./
-$ unzip tutorial22-6.1.zip
-$ cd tutorial-6.1
-
-# Clean up the working directory
-$ mv tutorial22-6.1.zip ./TRASH
-
-# Let's take a note
-$ echo "tutorial-6.1: MD simulation of a POPC lipid bilayer" >> README
-
-# Make a symbolic link to the CHARMM toppar directory
-$ cd tutorial22-6.1
+```bash
+$ cd genesis_tutorial_materials/tutorial-6.1
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls
 1_charmm-gui  2_min_equil  3_production  4_analysis  toppar
-
 ```
 
 ##  2. Setup initial structure with CHARMM-GUI
@@ -68,13 +64,14 @@ equilibrate the whole system, if one starts the simulation from an
 ordered structure.
 [CHARMM-GUI](http://www.charmm-gui.org) is one of the useful tools to generate
 initial structures of a lipid bilayer for MD simulations
-[[^2]](/tutorials/genesis_tutorial_6.1_2022/#jo2007). It provides an automatic
+[^2]. It provides an automatic
 membrane builder not only for lipid bilayers but also for
 protein-membrane systems.
 
  In case the server is down, you can skip this
 section and use the files included in the folder `1_charmm-gui`, which
 we obtained from CHARMM-GUI.
+{: .notice}
 
 Click
 \[[here](http://www.charmm-gui.org/?doc=input/membrane.bilayer)\] to access CHARMM-GUI top page. You will
@@ -83,13 +80,15 @@ builder can be accessed from the top page, Input Generator, Membrane
 Builder, and then Bilayer Builder. At the first step of the bilayer
 builder, we choose "Membrane Only System":
 
-[![tutorial1.2-step1](/assets/images/2016_06_tutorial1.2-step1.png)](/assets/images/2016_06_tutorial1.2-step1.png)In the next step, we decide the number of
+[![tutorial1.2-step1](/assets/images/2016_06_tutorial1.2-step1.png)](/assets/images/2016_06_tutorial1.2-step1.png)
+
+In the next step, we decide the number of
 lipids and water molecules to be added to the system. Here, we put 40
 POPC and 40 POPC lipids in the upper and lower leaflets, respectively
 (Note that these numbers might be a lower limit for stable MD simulations with `spdyn`). Because each lipid molecule has a certain
-area per lipid (*A*~exp~ = 68.3Å^2^ for POPC), the initial box size
+area per lipid ( A<sub>exp</sub> = 68.3 Å<sup>2</sup>) for POPC), the initial box size
 (*X*, *Y*) = (52.27Å, 52.27Å) can be estimated from \\(X=Y=\\sqrt{n \\times A}\\), where \\(n\\) is the number of lipids in one leaflet and
-\\(A\\) is the area per lipid in Å^2^ (assuming both leaflets have the same composition and the same number of lipids).
+\\(A\\) is the area per lipid in Å<sup>2</sup> (assuming both leaflets have the same composition and the same number of lipids).
 
 ![](/assets/images/2022_01_screenshot_01.png)
 
@@ -103,7 +102,7 @@ cellular environment, with the Monte Carlo method for ion placing. Then,
 we click "Next Step" and continue to Step5. We check "GENESIS" in "Input
 Generation Options" and select the NPT ensemble at *T* = 303.15 K in
 "Equilibration Options". At this temperature, the POPC bilayer is in the
-liquid phase rather than the gel phase (*T~m~*[ = 271 K). After clicking "Next Step", we can download a set of input files for minimization, equilibration, and production runs at the final step of the membrane builder. The download begins when you click a "download.tgz" button in the upper right corner.\ ]
+liquid phase rather than the gel phase (*T*<sub>m</sub> = 271 K). After clicking "Next Step", we can download a set of input files for minimization, equilibration, and production runs at the final step of the membrane builder. The download begins when you click a "download.tgz" button in the upper right corner.
 
 ![](/assets/images/2022_01_screenshot_02.png)
 
@@ -111,7 +110,7 @@ After the download, let's check the structure of the downloaded PDB file
 using VMD:
 
 
-```
+```bash
 # move the downloaded tar file and untar
 $ mv ~/Download/charmm-gui.tgz ./
 $ tar -xzf charmm-gui.tgz
@@ -122,7 +121,6 @@ $ ls
 # Check the final pdb file
 $ cd charmm-gui-XXXXXXXXXXXX
 $ vmd step5_assembly.pdb
-
 ```
 
 ![tutorial1.2-vmd](/assets/images/2016_06_tutorial1.2-vmd.png)
@@ -138,7 +136,7 @@ simulation, respectively. Rename the downloaded folder to
 `1_charmm-gui`,
 
 
-```
+```bash
 # Save the original folder, and rename the new one 
 $ cd ..
 $ mv 1_charmm-gui 1_charmm-gui.org
@@ -146,20 +144,18 @@ $ mv charmm-gui-XXXXXXXXXXXX 1_charmm-gui
 $ ls
 1_charmm-gui/ 1_charmm-gui.org/ 3_production/ 
 2_min_equil/ 4_analysis/ charmm-gui.tgz
-
 ```
 
 Auto-generated control files for GENESIS are also contained in
 `1_charmm-gui/genesis`:
 
 
-```
+```bash
 $ ls ./1_charmm-gui/genesis
 restraints/        step6.0_minimization.inp     step6.4_equilibration.inp    sysinfo.dat
 step5_input.crd    step6.1_equilibration.inp    step6.5_equilibration.inp
 step5_input.pdb    step6.2_equilibration.inp    step6.6_equilibration.inp
 step5_input.psf    step6.3_equilibration.inp    step7_production.inp
-
 ```
 
 However, in this tutorial, we will use a slightly modified version of
@@ -171,28 +167,26 @@ Let's move to `2_min_equil` and find control files for minimization
 (step6.0) and equilibration (step6.1 -- 6.6),
 
 
-```
+```bash
 $ cd ./2_min_equil
 $ ls
 equil.vmd        restraints/                step6.1_equilibration.inp  step6.4_equilibration.inp
 equil_area.gpi   run.sh                     step6.2_equilibration.inp  step6.5_equilibration.inp
 equil_temp.gpi   step6.0_minimization.inp   step6.3_equilibration.inp  step6.6_equilibration.inp
-
 ```
 
 Note that `psffile`, `pdbfile`, and `reffile` are set to the files in
 `1_charmm-gui`,
 
 
-```
+```bash
 psffile = ../1_charmm-gui/step5_assembly.psf  # protein structure file
 pdbfile = ../1_charmm-gui/step5_assembly.pdb  # PDB file
 reffile = ../1_charmm-gui/step5_assembly.pdb  # reference PDB file for restraint
-
 ```
 
 The control files for minimization and equilibration are almost the same
-as before \[see [Sec. 3.2](/tutorials/genesis_tutorial_3.2_2019/)\]. The difference is in the way restraints
+as before \[see [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). The difference is in the way restraints
 are applied.
 
 ### 3.1. The restraints for POPC
@@ -202,13 +196,13 @@ to keep the stereoisomer and the *cis*-isomer. Furthermore, the position
 of a phosphate atom, (shown in purple), is also restrained in the Z
 direction to keep the thickness of the bilayer.
 
-![](/assets/images/2019_08_popc_restraint.png)
+![](/assets/images/2019_08_popc_restraint.png){: width="300"}
 
 The dihedral angles are restrained using `localresfile` in the \[INPUT\]
 section. For example, step6.0_minimization.inp is as follows,
 
 
-```
+```toml
 [INPUT]
 topfile = ../toppar/top_all36_lipid.rtf             # topology file
 parfile = ../toppar/par_all36_lipid.prm             # parameter file
@@ -217,18 +211,16 @@ psffile = ../1_charmm-gui/step5_assembly.psf        # protein structure file
 pdbfile = ../1_charmm-gui/step5_assembly.pdb        # PDB file
 reffile = ../1_charmm-gui/step5_assembly.pdb        # reference PDB file for restraint
 localresfile = restraints/step6.0_minimization.dihe # local restraint file
-
 ```
 
 `localresfile` lists the dihedral angles in the following format,
 
 
-```
+```toml
 DIHEDRAL 60 63 65 67 250 0.0
 DIHEDRAL 36 25 28 30 250 120.0
 DIHEDRAL 194 197 199 201 250 0.0
 ...
-
 ```
 
 The first line means that a dihedral angle of atom index, 60-63-65-67,
@@ -241,7 +233,7 @@ The positional restraint of phosphate atoms is specified in the control
 file by \[RESTRAINTS\] and \[SELECTION\] sections,
 
 
-```
+```toml
 [SELECTION]
 group1           = sid:MEMB and ((rnam:POPC and (an:P)))  # restriant group 1
 
@@ -251,7 +243,6 @@ function1        = POSI    # restraint function type
 direction1       = Z       # direction [ALL,X,Y,Z]
 constant1        = 2.5     # force constant
 select_index1    = 1       # restrained groups
-
 ```
 
 Note that the direction is set along the Z axis. Thus, POPC can move
@@ -262,16 +253,15 @@ membrane normal.
 
 The setting of each step is summarized in the following table:
 
-  ------ ---------- ------------ -------- --------- ----------- ------------- ----------
-  Step   Ensemble   Integrator   Step     dt / fs   Time / ps   k \[dihed\]   k \[Pz\]
-  0      Min        --           2,000    --        --          250           2.5
-  1      NVT        VVER         25,000   1         25          250           2.5
-  2      NVT        VVER         25,000   1         25          100           2.5
-  3      NPT        VVER         25,000   1         25          50            1.0
-  4      NPT        VVER         50,000   2         100         50            0.5
-  5      NPT        VVER         50,000   2         100         25            0.1
-  6      NPT        VRES         40,000   2.5       100         0             0
-  ------ ---------- ------------ -------- --------- ----------- ------------- ----------
+ | Step | Ensemble | Integrator |  Step  | dt / fs | Time / ps | k \[dihed\] | k \[Pz\] |
+ |:----:|:--------:|:----------:|-------:|--------:|----------:|------------:|---------:|
+ |0     | Min      |  --        | 2,000  |  --     |   --      |    250      |     2.5  |
+ |1     | NVT      |  VVER      | 25,000 |  1      |   25      |    250      |     2.5  |
+ |2     | NVT      |  VVER      | 25,000 |  1      |   25      |    100      |     2.5  |
+ |3     | NPT      |  VVER      | 25,000 |  1      |   25      |    50       |     1.0  |
+ |4     | NPT      |  VVER      | 50,000 |  2      |   100     |    50       |     0.5  |
+ |5     | NPT      |  VVER      | 50,000 |  2      |   100     |    25       |     0.1  |
+ |6     | NPT      |  VRES      | 40,000 |  2.5    |   100     |    0        |     0    |
 
 Note that the force constants (k \[dihed\] and k\[Pz\]) are gradually
 reduced. Also, the timestep, which is initially set to 1 fs, is
@@ -282,20 +272,19 @@ The simulation with NPT is carried out with the semi-iso option, which
 keeps the ratio of the box size in the x and y directions,
 
 
-```
+```toml
 [ENSEMBLE]
 ensemble         = NPT      # [NVE,NVT,NPT]
 tpcontrol        = BUSSI    # thermostat and barostat
 temperature      = 303.15   # initial and target temperature (K)
 pressure         = 1.0      # atm
 isotropy         = SEMI-ISO # keep the ratio of X and Y
-
 ```
 
 Let's execute GENESIS. `run.sh` is a script to run SPDYN for all steps:
 
 
-```
+```bash
 $ cat run.sh
 #!/bin/bash
 
@@ -340,10 +329,9 @@ mpirun -np 16 $spdyn step6.6_equilibration.inp >& log6.6
 Execute this script. This may take about an hour or so.
 
 
-```
+```bash
 # Run all steps
 $ ./run.sh
-
 ```
 
 When the calculation is done, it is a good practice to check the status
@@ -352,9 +340,8 @@ before moving on to the production step.
 ### 3.3. Check the status: Visualization
 
 
-```
+```bash
 $ vmd -e equil.vmd
-
 ```
 
 ![](/assets/images/2019_08_popc_equil.png)
@@ -372,17 +359,16 @@ in the console of VMD. The console of VMD opens by choosing "Extensions
 Extract the "INFO" lines from output files to individual files,
 
 
-```
+```bash
 $ for i in 1 2 3 4 5 6; do
 grep INFO log6.${i} > energy6.${i}.log
 done
-
 ```
 
 Then, plot the temperature data using gnuplot,
 
 
-```
+```bash
 $ cat equil_temp.gpi
 set terminal jpeg size 600,400
 set output 'equil_temp.jpg'
@@ -402,17 +388,16 @@ plot 'energy6.1.log' using 3:16 w l t 'equil6.1', \
 
 $ gnuplot equil_temp.gpi
 $ eog equil_temp.jpg
-
 ```
 
 ![](/assets/images/2022_01_equil_temp.jpg)
 
-A~L~ is obtained by L~x~ \* L~y~ / n~L~, where L~x~ and L~y~ are the
-simulation box size in the x and y dimension, respectively, and *n*~L~
+A<sub>L</sub> is obtained by L<sub>x</sub> \* L<sub>y</sub> / n<sub>L</sub>, where L<sub>x</sub> and L<sub>y</sub> are the
+simulation box size in the x and y dimension, respectively, and n<sub>L</sub>
 is the number of lipids in one of the leaflets.
 
 
-```
+```bash
 $ cat equil_area.gpi
 set terminal jpeg size 600,400
 set output 'equil_area.jpg'
@@ -444,7 +429,7 @@ Let's move to `3_production`. In this section, we carry out a NPT
 simulation for 1 ns. `run.sh` is a script to run SPDYN:
 
 
-```
+```bash
 $cd ../3_production
 $ cat run.sh
 #!/bin/bash
@@ -454,28 +439,25 @@ spdyn=../../../Programs/genesis-2.0/bin/spdyn
 # 1000ps MD in the NPT ensemble using VRES
 export OMP_NUM_THREADS=1
 mpirun -np 16 $spdyn step7_production.inp >& log7
-
 ```
 
 Although the script uses 1 OpenMP thread x 16 MPI processes, it may not
 be optimal for your computing system. It is highly recommended to
-benchmark the cost before starting the production run. See [Sec. 3.3](/tutorials/genesis_tutorial_3.3_2019/#Benchmark_test) for more details.
+benchmark the cost before starting the production run. See [Tutorial 3.3](/tutorials/genesis_tutorial_3.3_2022/) for more details.
 
 Execute this script. This may take several hours.
 
 
-```
+```bash
 # Run all steps
 $ ./run.sh
-
 ```
 
 The trajectory can be visualized by,
 
 
-```
+```bash
 $ vmd -e prod.vmd
-
 ```
 
 ![](/assets/images/2019_08_popc_prod.png)
@@ -485,20 +467,19 @@ $ vmd -e prod.vmd
 Let's analyze the resulting trajectory. Move to the `4_analysis` folder,
 
 
-```
+```bash
 $ cd ../4_analysis
 $ ls
 prod_area.gpi  thickness.gpi  thickness.inp
-
 ```
 
 ### 5.1. Area per lipid (A~L~) 
 
-A~L~ is obtained as before by first extracting the "INFO" lines from the
-output, and calculating and plotting L~x~ \* L~y~ / n~L~ with gnuplot,
+A<sub>L</sub> is obtained as before by first extracting the "INFO" lines from the
+output, and calculating and plotting L<sub>x</sub> \* L<sub>y</sub> / n<sub>L</sub> with gnuplot,
 
 
-```
+```bash
 $ grep INFO ../3_production/log7 > energy7.log
 $ cat prod_area.gpi
 set terminal jpeg size 800,400
@@ -514,15 +495,14 @@ plot 'energy7.log' using 3:($17*$18/40) w l t 'energy7'
 
 $ gnuplot prod_area.gpi
 $ eog prod_area.jpg
-
 ```
 
 ![](/assets/images/2022_01_prod_area.jpg)
 
 Although the calculated A~L~ is slightly smaller than the experimental
-value (*A*~exp~ = 68.3Å^2^ for POPC), GENESIS reproduces the averaged
-area per lipid of 64.7Å^2^ reported in the CHARMM36 paper
-[[^1]](/tutorials/genesis_tutorial_6.1_2022/#klauda2010).
+value (*A*<sub>exp</sub> = 68.3Å<sup>2</sup> for POPC), GENESIS reproduces the averaged
+area per lipid of 64.7Å<sup>2</sup> reported in the CHARMM36 paper
+[^1].
 
 ### 5.2. Bilayer thickness 
 
@@ -532,7 +512,7 @@ as a different between the two. The input file, `thickness.inp`, looks
 as follows,
 
 
-```
+```toml
 [INPUT]
 psffile = ../1_charmm-gui/step5_assembly.psf
 reffile = ../1_charmm-gui/step5_assembly.pdb
@@ -554,21 +534,19 @@ group1        = resname:POPC and an:P
 [OPTION]
 check_only    = NO
 membrane_atom = 1     # atom group representing lipid bilayer
-
 ```
 
 - output file is set to thickness.log
 - membrane_atom = 1 of \[OPTION\] and group1 of \[SELECTION\] specify
 
-```
+```bash
 the phosphate atoms of POPC lipid molecules to be analyzed.
-
 ```
 
 The analysis program is invoked by the following command,
 
 
-```
+```bash
 $ ../../../Programs/genesis-2.0/bin/lipidthick_analysis thickness.inp >& thickness.out
 $ cat thickness.log
      1    38.718    19.377   -19.341
@@ -576,7 +554,6 @@ $ cat thickness.log
      3    38.815    19.454   -19.361
      ...
      500  39.758    19.947   -19.811
-
 ```
 
 The numbers in each column are the step number, the membrane thickness,
@@ -585,7 +562,7 @@ respectively. These data are plotted using gnuplot by the following
 script,
 
 
-```
+```bash
 $ cat thickness.gpi
 set terminal jpeg size 800,400
 set output 'thickness.jpg'
@@ -600,42 +577,35 @@ plot "thickness.log" u ($1*2):2 w l t "POPC"
 
 $ gnuplot thickness.gpi
 $ eog thickness.jpg
-
 ```
 
 ![](/assets/images/2022_01_thickness.jpg)
 
 ##  6. References
-
-1.  []J. B. Klauda *et al.*, *J. Phys. Chem.*, **114**,
-
-```
-7830-7843 (2010).
-[](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
-```
-
-2.  []S. Jo, T. Kim, and W. Im, *PLoS ONE*, **2**, e880 (2007).
-
-```
-[](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
-
-```
-
-------------------------------------------------------------------------
+[^1]: [J. B. Klauda *et al.*, **2010**, *J. Phys. Chem.*, 114, 7830--7843.](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
+[^2]: [S. Jo, T. Kim, and W. Im, **2008**, *PLoS ONE*, 2, e880.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory*\
 *June, 30, 2016*
+{: .notice}
 
 *Written by Kiyoshi Yagi @ RIKEN, CPR, Theoretical molecular science
 laboratory*\
 *October, 7, 2019*
+{: .notice}
 
 *Updated by Kiyoshi Yagi @ RIKEN, CPR, Theoretical molecular science
 laboratory*\
 *February, 16, 2022*
+{: .notice}
 
 *Updated by Diego Ugarte @ RIKEN, R-CCS, Computational Biophysics
 Research Team*\
 *February, 16, 2022*
+{: .notice}
 
+*Updated by Jaewoon Jung @ RIKEN, R-CCS, Computational Biophysics
+Research Team*\
+*June, 5, 2026*
+{: .notice}
