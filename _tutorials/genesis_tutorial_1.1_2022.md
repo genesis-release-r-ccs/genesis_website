@@ -13,38 +13,40 @@ sidebar:
 
 ## Preparation of the directory
 
-First of all, let's create a directory for the GENESIS tutorials under the home
-directory (`/home/user`) by executing the following commands. We create a main
-directory `GENESIS_Tutorials-2022`, followed by three sub-directories
-`Programs`, `Data`, and `Works`.  `Programs` is where we will put the
-main software used in this project, i.e. the GENESIS program. `Data` is where
-we will put external data that will be commonly used throughout this project,
-such as PDB files (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/) and force
-field parameter files (see [Tutorials 2.2](/tutorials/genesis_tutorial_2.2_2022/).
-Thus, we would like to make two sub-directories `PDB` and `Parameters` under
-`Data` beforehand. `Works` is where we will run the MD simulation of the
-tutorial (see Tutorial 3 and later). Here, we also make a `TRASH` directory
-under `Works`. The role of `TRASH` will be explained later.
+
+First, let’s create a working directory for the GENESIS tutorials under your
+home directory (`/home/username/`) by executing the following commands. We will
+set up a main directory named `GENESIS_Tutorials-2022`, and inside it, create two
+subdirectories: `Programs` and `Data`.
+- `Programs` will store the main software used in this project, such as the GENESIS executable.
+- `Data` will store external resources that are commonly used throughout the tutorials, including PDB files (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)) and force field parameter files (see [Tutorials 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+
+Therefore, within the `Data` directory, we will also create two subdirectories:
+`PDB` and `Parameters`.  
+
+For downloading the actual tutorial materials, we will use Git to clone the
+repository into a subdirectory named `genesis_tutorial_materials` (starting from
+Tutorial 3 onward).
 
 ```bash
 # Move to the home directory 
 $ cd
 $ pwd
-/home/user
+/home/username
 
 # Create a directory for this project
 $ mkdir GENESIS_Tutorials-2022
 $ cd GENESIS_Tutorials-2022
 
 # Create main directories
-$ mkdir Programs Data Works
+$ mkdir Programs Data
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 $ ls
-Data  Programs  Works
+Data  Programs  genesis_tutorial_materials
 
 # Create sub-directories
 $ mkdir Data/PDB
 $ mkdir Data/Parameters
-$ mkdir Works/TRASH
 ```
 
 ## Download GENESIS
@@ -55,148 +57,132 @@ We put the GENESIS source code in `Programs`.
 ```bash
 # Put the source code of GENESIS in the "Programs" directory 
 $ cd Programs
-$ mv ~/Downloads/genesis-2.0.0.tar.bz2 ./ 
-$ bzip2 -d genesis-2.0.0.tar.bz2 
-$ tar -xvf genesis-2.0.0.tar 
-$ cd genesis-2.0.0
-$ ls
-AUTHORS         INSTALL      README      configure.ac  missing
-COPYING         Makefile.am  aclocal.m4  depcomp       src
-COPYING.LESSER  Makefile.in  compile     fortdep.py
-ChangeLog       NEWS         configure   install-sh
+$ git clone https://github.com/genesis-release-r-ccs/genesis.git
+$ cd genesis
+$ git checkout v2.0.0
 ```
+
 
 ## Install GENESIS
 
-Let's run the configure command. This `configure` is a script that checks your
-computing environment, and automatically create a `Makefile` that includes
-suitable compile options. If you have some troubles, please check the GENESIS
-user manual or [Installation](/docs/installation/) page. Next, run the `make`
-and `make install` commands, which will create a `bin` directory in the
-current directory, and install the program there. After the compilation, you
-will find many programs in the `bin` directory. Here, `atdyn` and `spdyn` are
-the MD programs, and the others are mostly trajectory analysis tools. In
-Tutorial 3 and later, we will run each of these programs.
+
+Now, let’s run the `configure` command. This script automatically checks your
+computing environment and generates a `Makefile` with appropriate compilation
+options for your system.
+
+If you encounter any issues during this process, please refer to the GENESIS
+user manual or visit the [Installation](/docs/installation/) guide for
+troubleshooting tips.
+
+Once configure completes successfully, compile and install the program using
+`make` and `make install`.
+
+This will create a `bin` directory in your current location and install the
+compiled programs there. After installation, you will find several executables
+in the `bin` directory. Among them, `atdyn` and `spdyn` are the main MD
+programs. The rest are auxiliary tools for trajectory analysis.
+
+Starting from Tutorial 3, we will use many of these tools throughout our
+simulations and analyses.
 
 ```bash
 # Install GENESIS
 $ ./configure
-$ ls
-AUTHORS         Makefile     aclocal.m4     configure.ac  src
-COPYING         Makefile.am  compile        depcomp
-COPYING.LESSER  Makefile.in  config.log     fortdep.py
-ChangeLog       NEWS         config.status  install-sh
-INSTALL         README       configure      missing
-
 $ make
 $ make install
-$ ls
-AUTHORS         Makefile     aclocal.m4     configure     missing
-COPYING         Makefile.am  bin            configure.ac  src
-COPYING.LESSER  Makefile.in  compile        depcomp
-ChangeLog       NEWS         config.log     fortdep.py
-INSTALL         README       config.status  install-sh
-
-# Check the contents
-$ ls ./bin
-atdyn               hb_analysis          qval_residcg_analysis
-avecrd_analysis     hbond_analysis       rdf_analysis
-cg_convert          kmeans_clustering    remd_convert
-comcrd_analysis     lipidthick_analysis  rg_analysis
-contact_analysis    mbar_analysis        ring_analysis
-crd_convert         meanforce_analysis   rmsd_analysis
-density_analysis    morph_generator      rpath_generator
-diffusion_analysis  msd_analysis         rst_convert
-distmat_analysis    pathcv_analysis      rst_upgrade
-drms_analysis       pcavec_drawer        sasa_analysis
-dssp_interface      pcrd_convert         spdyn
-eigmat_analysis     pmf_analysis         tilt_analysis
-emmap_generator     prjcrd_analysis      trj_analysis
-flccrd_analysis     qmmm_generator       wham_analysis
-fret_analysis       qval_analysis
 ```
 
 Here, we did not add any options to the `configure` command. This simple command
 will install GENESIS running on a CPU. In fact, most tutorials are designed to
 use the CPU version. If you want to run the tutorials using CPU+GPU, please add
 the [options for GPU](/docs/installation/). However, note that in this case only
-`spdyn` will be installed, and some tutorials cannot be run with `spdyn`
-alone.
+`spdyn` will be installed, and some tutorials cannot be run with `spdyn` alone.
 
-## Let's clean up the directory
 
-Now, let's do a short exercise in organizing the files and
-directories. Please take a look inside
-the `Programs` directory. We have `genesis-2.0.0.tar` and
-`genesis-2.0.0`. In fact, we don't need the `genesis-2.0.0.tar` anymore,
-and we can delete it with the `rm` command. Here, instead of deleting
-the file, we would like to make a `Source` directory, compress the tar
-file, and keep it there. This is because we can quickly reinstall the
-program without downloading it again, and also we can install other
-software in the `Programs` directory later.
+In the example above, we did not specify any options with the `configure` command.
+This default setup installs the CPU version of GENESIS, which is sufficient for
+most of the tutorials in this series.
+
+If you wish to run GENESIS using both CPU and GPU, please refer to the 
+[GPU installation options](/docs/installation/) and add the appropriate flags 
+during configuration.
+
+**Note**: When using the GPU option, only the `spdyn` program will be installed.
+Some tutorials in this series require the `atdyn` program and therefore cannot
+be completed with `spdyn` alone. Be sure to choose the installation method that
+matches your needs.
+{: .notice--warning}
+
+
+## Let's check the directory
+
+Now, we have constructed the following directory structure:
 
 ```bash
-# Find unnecessary files
-$ cd ../
-$ ls
-genesis-2.0.0  genesis-2.0.0.tar
-
-# Clean up the directory
-$ mkdir Source
-$ gzip genesis-2.0.0.tar
-$ mv genesis-2.0.0.tar.gz Source
-$ ls
-Source  genesis-2.0.0
-```
-
-Now, we have constructed the following directory structure for this
-project.
-
-```
 /home/user
 + GENESIS_Tutorials-2022  # Project name
     |
     + Programs           # Main software for this project
-    |  + Source
-    |  + genesis-2.0.0
+    |  + genesis
     |     + src          # Source code of GENESIS 2.0.0
     |     + bin          # Binary code of GENESIS 2.0.0
+    |     + doc          # User manual of GENESIS 2.0.0
+    |     + tests        # Regression tests
+    |     + ...
     |
     + Data               # External data of this project
     |  + PDB
     |  + Parameters
     |
-    + Works              # All simulations will be done here
-        + TRASH
+    + genesis_tutorial_materials  # Simulations
+    |  + tutorial_2.3
+    |  + tutorial_3.1
+    |  + tutorial_3.2
+    |  + ...
 ```
 
-Some people may want to install programs in a common directory, such as
-`/usr/local/bin`. However, this can make it difficult to know where the original
-source code is. To avoid such situation, we would like to install the main
-programs locally, i.e., under the project's directory.
 
- We made the `Data` directory to put external data, which allows us to easily
- understand what were used as the input data in the project. In the actual
- research project, such data might include unpublished PDB files you received
- from an experimental group. The external data should always maintain the
- integrity. In order to avoid accidental update of the original external data,
- we would like to keep them in a specific directory, namely, `Data` directory.
- 
+### A Note on Installation and Directory Organization
 
-As demonstrated above, in our tutorial we will also show you some techniques for
-cleaning up directories.  In computational research, many files and directories
-are generated or created. If you do not carefully organize the directory
-structure in your research, the files and directories can become cluttered or
-messy, causing mistakes, affecting the research efficiency, report writing,
-publication, and data management. Such cluttered directories may also hinder a
-smooth handover of the project to other members of the lab, which in turn leads
-to the loss of your chance to increase the number of publications. We hope that
-our tutorial will also inspire you to get into a good habit of cleaning up the
-directories in your actual research project. 
+Some users may wish to install programs in system-wide directories such as
+`/usr/local/bin`. However, this approach can make it difficult to trace where
+the original source code resides, especially in large collaborative projects.
+To avoid such confusion, we recommend installing all software locally, within
+the project directory.
 
-------------------------------------------------------------------------
+In our tutorial, we created a `Data` directory to store all external input
+files. This includes files such as PDB structures, force field parameters, and
+other reference data. Keeping these files in a dedicated `Data` directory helps
+to clearly distinguish input data from the results and ensures that you can
+easily track what was used during simulations. In real research scenarios, this
+could include unpublished PDB files provided by collaborators — and it’s
+especially important to preserve their integrity. Storing them in a dedicated
+location helps avoid accidental overwrites or modifications.
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
-Dec. 16, 2021*
+
+### Why Good Directory Hygiene Matters
+
+Throughout this tutorial series, we will also introduce simple techniques to
+keep your project directory clean and well-organized. In computational research,
+large numbers of files are often generated automatically. Without a clear and
+consistent directory structure, it's easy for things to get messy — leading to:
+
+- Confusion and mistakes in simulation or analysis steps
+- Difficulty in writing reports or publications
+- Poor reproducibility and data traceability
+- Frustration when handing the project off to other team members
+
+A cluttered directory is not just inconvenient — it can also hinder your ability
+to publish results effectively.
+
+By following the practices shown in this tutorial, we hope you will develop good
+habits for managing your research data and code, helping to maintain both
+scientific rigor and collaborative efficiency.
+
+---
+
+*Written by Takaharu Mori@RIKEN Theoretical Molecular Science
+Laboratory, Dec. 16, 2021* \\
+*Edited by Cheng Tan@RIKEN Center for Computational Science, Jun. 05, 2025*
+{: .notice}
 

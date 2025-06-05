@@ -74,7 +74,10 @@ If you haven't downloaded the files yet, open your terminal
 and run the following command:
 ```bash
 $ cd ~/GENESIS_Tutorials-2022
+
+# if not yet
 $ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+
 $ cd genesis_tutorial_materials/tutorial-11.1
 ```
 
