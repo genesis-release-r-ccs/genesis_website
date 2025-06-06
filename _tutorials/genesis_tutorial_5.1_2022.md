@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 5.1 Creating input files for the CHARMM force field
+# Creating input files for the CHARMM force field
 
 In this tutorial, we show how to create PSF and PDB files using VMD, for
 performing an MD simulation using the CHARMM force field. Such files can
@@ -30,20 +30,25 @@ used as input files for GENESIS.
 
 ##  Preparations
 
-Let's download the tutorial file
-([tutorial22-5.1.tar.gz](/assets/tutorial_files/2022_03_tutorial22-5.1.tar.gz)), and make a symbolic link to the CHARMM `toppar` directory.
+All the files required for this tutorial are hosted in the 
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+
+If you haven't downloaded the files yet, open your terminal 
+and run the following command:
+
+```bash
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+
+Then, make a symbolic link to the CHARMM `toppar` directory.
 In the directory, there are a lot of files that are separated according
 to molecule type. We use these files to build complex systems.
 
-
-```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-5.1.zip ./
-$ unzip tutorial22-5.1.zip
-
-# Let's clean up the directory
-$ mv tutorial22-5.1.zip TRASH
+```bash
+# If you already have the tutorial materials, let's go to our working directory:
+$ cd genesis_tutorial_materials
 
 # Let's take a note
 $ echo "tutorial-5.1: Creating input files for CHARMM" >> README
@@ -53,7 +58,6 @@ $ cd tutorial-5.1
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls
 System1  System2  System3  System4  System5  System6  toppar
-
 ```
 
 ##  1. Single-chain protein
@@ -68,7 +72,7 @@ and create a PSF file. The VMD script for the procedure is presented
 below.
 
 
-```
+```bash
 # Change directory and download the PDB file of the target protein
 $ cd System1
 $ ls 
@@ -79,7 +83,6 @@ $ vmd -dispdev text -e build1.tcl
 $ vmd -dispdev text -e build2.tcl 
 $ ls 
 1ERT.pdb  build1.tcl  build2.tcl  proa.pdb  protein.pdb  protein.psf
-
 ```
 
 Looking at the content of the `../toppar/top_all36_prot.rtf` file, we
@@ -97,7 +100,7 @@ in which the sidechain has two possible orientations. In such case not B
 **build1.tcl:**
 
 
-```
+```toml
 # 1) Load the PDB file
 mol load pdb 1ERT.pdb
 
@@ -114,7 +117,6 @@ mol load pdb 1ERT.pdb
 set sel1 [atomselect top "protein and not altloc B"]
 $sel1 writepdb proa.pdb
 exit
-
 ```
 
 The PSF file contains information regarding atoms' charges, masses and
@@ -130,7 +132,7 @@ PDB file are guessed and added.
 **build2.tcl:**
 
 
-```
+```toml
 # 1) Load the psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf
@@ -149,10 +151,9 @@ guesscoord
 writepdb protein.pdb
 writepsf protein.psf
 exit
-
 ```
 
-[ ]Upon executing the `guesscoord` command,
+Upon executing the `guesscoord` command,
 numerous "`psfgen) Warning: poorly guessed coordinate for atom`" warning
 messages will appear. If these messages refer to hydrogen atoms or to
 the c-terminus carbonyl oxygen, no special care should be taken.
@@ -168,14 +169,13 @@ is an error during the making of the PSF file, bonds will be displayed
 incorrectly.
 
 
-```
+```toml
 # Check the obtained PDB and PSF files using VMD
 $ vmd protein.pdb -psf protein.psf
 vmd > mol load pdb 1ERT.pdb
-
 ```
 
-[ ]In this section, we used a single-chain
+In this section, we used a single-chain
 protein with no missing amino acid residues. Within the structures
 deposited in the PDB, there are some in which parts such as loop regions
 are missing. In such cases, residue numbers are not consecutive and
@@ -195,12 +195,12 @@ and B. The overall procedure is similar to the above. However, one point
 of caution is that a separate PDB file should be prepared for each
 chain. Here, chains A and B were given the segment names PROA and PROB,
 respectively. We use the first model (frame 0) out of the 10 NMR model
-structures. Segment names appear on the 12^th^ column in the
+structures. Segment names appear on the 12<sup>th</sup> column in the
 `protein.pdb` file.
 
 **build1.tcl:**
 
-``` 
+``` toml
 # 4) Output the PDB file of each segment
 set sel1 [atomselect top "protein and chain A" frame 0]
 set sel2 [atomselect top "protein and chain B" frame 0]
@@ -211,7 +211,7 @@ $sel2 writepdb prob.pdb
 **build2.tcl:**
 
 
-```
+```toml
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 segment PROB {pdb prob.pdb}
@@ -219,15 +219,13 @@ segment PROB {pdb prob.pdb}
 # 3) Read the coordinates of the atoms in each chain
 coordpdb proa.pdb PROA
 coordpdb prob.pdb PROB
-
 ```
 
 ##  3. Including crystal structure water and ions 
 
 There are cases in which we want the PSF file to include water molecules
 which were resolved in the crystal structure (will be referred to as "crystal water") or internal water molecules which were predicted using
-programs such as
-[DOWSER](http://muralab.org/~cmura/DOWSER/), or ions coordinated with the protein.
+programs such as dowser, or ions coordinated with the protein.
 Topology information for water and ions is included in the
 `toppar_water_ions.str` file. Here, we show a simple example for
 creating a PSF file for [PDB: 3B32](https://www.rcsb.org/structure/3B32), which contains crystal water and calcium
@@ -244,7 +242,7 @@ simulation constraining them to oxygen atoms is required.
 **build1.tcl:**
 
 
-```
+```toml
 # 2) Rename "PDB general name" to "CHARMM-specific name"
 [atomselect top "resname ILE and name CD1"] set name CD
 [atomselect top "resname HIS"             ] set resname HSD
@@ -260,13 +258,12 @@ set sel3 [atomselect top "resname CAL"]
 $sel1 writepdb proa.pdb
 $sel2 writepdb water.pdb
 $sel3 writepdb cal.pdb
-
 ```
 
 **build2.tcl:**
 
 
-```
+```toml
 # 1) Load psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf
@@ -282,10 +279,9 @@ segment CAL  {pdb cal.pdb  }
 coordpdb proa.pdb  PROA 
 coordpdb water.pdb SOLV
 coordpdb cal.pdb   CAL
-
 ```
 
-[ ]If we look at `protein.pdb` with
+If we look at `protein.pdb` with
 `protein.psf` in VMD, there is a covalent bond between the two hydrogen
 atoms of each water molecule. This is due to the fact that water
 molecules are treated as rigid. When using the SHAKE method, the H-H
@@ -302,8 +298,8 @@ charged state is unstable, and they often become protonated. Protonation
 states can be predicted by estimating the pKa values using well-known
 software such as
 [PROPKA](https://github.com/jensengroup/propka-3.1),
-[MCCE](http://www.sci.ccny.cuny.edu/~mcce/index.php), or
-[MEAD](http://www.bisb.uni-bayreuth.de/People/ullmannt/index.php?name=extended-mead). If the pKa of a charged amino acid
+[MCCE](https://sites.google.com/site/mccewiki/home?authuser=0), or
+[MEAD](https://rtullmann.de/index.php?name=extended-mead). If the pKa of a charged amino acid
 side-chain was predicted to be high, and we wish to perform an MD
 simulation using the protonated state, we can perform the protonation by
 applying a patch upon creating the PSF file. Here, as an example, we
@@ -321,7 +317,7 @@ directions.
 **build2.tcl:**
 
 
-```
+```toml
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 
@@ -331,12 +327,11 @@ regenerate angles dihedrals
 
 # 4) Read the coordinates of the atoms in each chain
 coordpdb proa.pdb PROA
-
 ```
 
-[ ]In proteins containing metal ions such as
-Zn^2+^, the SH groups of cysteine residues will become S^--^ and might
-attach to Zn^2+^. In such cases, the CYM patch in `top_all36_prot.rtf`
+In proteins containing metal ions such as
+Zn<sup>2+</sup>, the SH groups of cysteine residues will become S<sup>-</sup> and might
+attach to Zn<sup>2+</sup>. In such cases, the CYM patch in `top_all36_prot.rtf`
 can be used for deprotonating the cysteine residues.
 
 ##  5. Adding disulfide bonds
@@ -353,19 +348,18 @@ execute the `regenerate angles dihedrals` command after applying the
 patch.
 
 
-```
+```bash
 # Confirm the sites of the disulfide bonds
 $ grep SSBOND 3I40.pdb
 SSBOND  1  CYS A   6  CYS  A  11        1555 1555 2.03 
 SSBOND  2  CYS A   7  CYS  B   7        1555 1555 2.04 
 SSBOND  3  CYS A  20  CYS  B  19        1555 1555 2.04
-
 ```
 
 **build2.tcl:**
 
 
-```
+```toml
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 segment PROB {pdb prob.pdb}
@@ -379,7 +373,6 @@ regenerate angles dihedrals
 # 4) Read the coordinates of the atoms in each chain
 coordpdb proa.pdb PROA
 coordpdb prob.pdb PROB
-
 ```
 
 ##  6. Protein-DNA complex 
@@ -406,7 +399,7 @@ properly, the resulting structure will be of an RNA.
 **build1.tcl:**
 
 
-```
+```toml
 # 1) Load the PDB file
 mol load pdb 3LNQ.pdb
 
@@ -428,13 +421,12 @@ set sel3 [atomselect top "chain C and nucleic"]
 $sel1 writepdb proa.pdb
 $sel2 writepdb dna1.pdb
 $sel3 writepdb dna2.pdb
-
 ```
 
 **build2.tcl:**
 
 
-```
+```toml
 # 1) Load psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf
@@ -457,7 +449,6 @@ regenerate angles dihedrals
 coordpdb proa.pdb PROA
 coordpdb dna1.pdb DNA1
 coordpdb dna2.pdb DNA2
-
 ```
 
 ##  Appendix 
@@ -466,9 +457,8 @@ The following is a command to calculate the total net charge of the
 system in the PSF file.
 
 
-```
+```bash
 awk '/NATOM/,/NBOND/' system.psf | awk '{sum+=$7} END {print sum}'
-
 ```
 
 ------------------------------------------------------------------------
@@ -477,4 +467,4 @@ awk '/NATOM/,/NBOND/' system.psf | awk '{sum+=$7} END {print sum}'
 (Original Japanese document)\
 Translated by Ai Shinobu@RIKEN Computational Biophysics Research Team\
 March 23, 2022*
-
+{: .notice}

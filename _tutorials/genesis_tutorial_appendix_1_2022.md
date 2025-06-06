@@ -19,7 +19,7 @@ snapshots, respectively. For example, `run1.dcd` was obtained from the
 following the MD simulation:
 
 
-```
+```toml
 [OUTPUT]
 dcdfile = run1.dcd         # DCD file
 
@@ -30,7 +30,6 @@ timestep         = 0.002   # timestep (ps)
 eneout_period    = 50      # energy output period
 crdout_period    = 50      # coordinates output period
 nbupdate_period  = 10      # nonbond update period
-
 ```
 
 We show some examples of the `[TRAJECTORY]` section in the control file
@@ -46,7 +45,7 @@ specify `ana_period1 = 100`, snapshots are analyzed every 2 steps,
 namely, 500 snapshots are analyzed.
 
 
-```
+```toml
 [TRAJECTORY]
 trjfile1      = run1.dcd
 md_step1      = 50000
@@ -55,7 +54,6 @@ ana_period1   = 50
 repeat1       = 1
 trj_format    = DCD
 trj_type      = COOR+BOX     
-
 ```
 
 ### Case 2: Analyze run1.dcd (same with Case 1)
@@ -65,7 +63,7 @@ analyzed. If we specify `ana_period1 = 2`, snapshots are analyzed every
 2 steps, namely, 500 snapshots are analyzed.
 
 
-```
+```toml
 [TRAJECTORY]
 trjfile1      = run1.dcd
 md_step1      = 1000
@@ -74,7 +72,6 @@ ana_period1   = 1
 repeat1       = 1
 trj_format    = DCD
 trj_type      = COOR+BOX         
-
 ```
 
 ### Case 3: Analyze run1.dcd and run2.dcd sequentially
@@ -82,7 +79,7 @@ trj_type      = COOR+BOX         
 In this control file, we analyze `run1.dcd` and `run2.dcd` sequentially:
 
 
-```
+```toml
 [TRAJECTORY]
 trjfile1      = run1.dcd
 trjfile2      = run2.dcd
@@ -96,7 +93,6 @@ repeat1       = 1
 repeat2       = 1
 trj_format    = DCD 
 trj_type      = COOR+BOX 
-
 ```
 
 Because `run1.dcd` and `run2.dcd` contain same number of snapshots, we
@@ -104,7 +100,7 @@ can set `repeat1 = 2`, and omit `md_srtep2`, `mdout_period2`,
 `ana_period2`, and `repeat2`:
 
 
-```
+```toml
 [TRAJECTORY]
 trjfile1      = run1.dcd
 trjfile2      = run2.dcd
@@ -114,7 +110,6 @@ ana_period1   = 1      
 repeat1       = 2           # for trjfile1 and trjfile2
 trj_format    = DCD
 trj_type      = COOR+BOX 
-
 ```
 
 ### Case 4: Analyze run1.dcd to run5.dcd sequentially
@@ -125,7 +120,7 @@ parameters (`md_step`, `mdout_period`, `ana_period`, and `repeat`)
 should be sequential from **1** to **n** (Do not skip any number).
 
 
-```
+```toml
 [TRAJECTORY]
 trjfile1      = run1.dcd
 trjfile2      = run2.dcd
@@ -146,7 +141,6 @@ repeat2       = 1          # for trjfile3
 repeat3       = 2          # for trjfile4 and trjfile5
 trj_format    = DCD
 trj_type      = COOR+BOX
-
 ```
 
 ------------------------------------------------------------------------
@@ -154,4 +148,5 @@ trj_type      = COOR+BOX
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory\
 March 27, 2022*
+{: .notice}
 

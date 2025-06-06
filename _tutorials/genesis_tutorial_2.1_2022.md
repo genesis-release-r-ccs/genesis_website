@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 2.1 3D structure of biological molecules 
+# 3D structure of biological molecules 
 
 ##  Download 3D structure of protein 
 
@@ -43,14 +43,13 @@ on "PDB format" to download the file.
 Let's put the downloaded file in the "`Data/PDB`" directory.
 
 
-```
+```bash
 # Download the PDB file to the Data/PDB directory
 $ cd ~/GENESIS_Tutorials-2022
 $ cd Data
 $ cd PDB
 
 $ mv ~/Downloads/3i40.pdb ./
-
 ```
 
 Alternatively, you can quickly download the PDB file using the `wget`
@@ -59,10 +58,9 @@ address" from the menu to copy the URL, and then run the `wget` command
 for the copied URL as follows:
 
 
-```
+```bash
 # Download the PDB file using the wget command
 $ wget https://files.rcsb.org/download/3I40.pdb
-
 ```
 
 ##  Take a look at the PDB file
@@ -81,7 +79,7 @@ respectively. For more information about PDB format, please refer to
 [this page](http://www.wwpdb.org/documentation/file-format). 
 
 
-```
+```bash
 # Take a look at the PDB file using the less command
 $ less 3I40.pdb
 
@@ -117,7 +115,6 @@ HETATM  414  O   HOH A  22     -29.500  -7.696  -14.149   1.00 50.68           O
 HETATM  415  O   HOH A  23     -11.374  10.214  -16.391   1.00 40.62           O 
 HETATM  416  O   HOH A  24     -11.187   9.560  -19.007   1.00 44.09           O
 :
-
 ```
 
 Then, let's take a look at the PDB structure using VMD. We can see that
@@ -125,10 +122,9 @@ the protein is composed of two chains, which are connected through three
 disulfide bonds (Cys6(A)-Cys11(A), Cys7(A)-Cys7(B), and Cys20(A)-Cys19(B)).
 
 
-```
+```bash
 # Take a look at the PDB structure using VMD
 $ vmd 3I40.pdb
-
 ```
 
 ![](/assets/images/2022_06_tutorial-2-1-fig4.png)
@@ -164,7 +160,7 @@ conformers have a value of 0.5, in the other cases the conformer with a
 higher value may be chosen. For detailed treatment, see Tutorial 5.
 
 
-```
+```bash
 :
 ATOM     89  CD1 LEU A  13     -11.104  -1.386  -12.388   1.00 18.06           C
 ATOM     90  CD2 LEU A  13      -9.522  -1.530  -14.308   1.00 15.25           C
@@ -191,7 +187,6 @@ ATOM    110  OH BTYR A  14     -13.938   8.561  -17.922   0.50 32.79           O
 ATOM    111  N   GLN A  15     -15.837   2.584  -14.969   1.00 21.27           N
 ATOM    112  CA  GLN A  15     -16.962   3.129  -14.222   1.00 21.51           C
 :
-
 ```
 
 ![](/assets/images/2022_06_tutorial-2-1-fig5.png)
@@ -201,15 +196,15 @@ Multiple conformers in the PDB structure
 ##  Download PDB files for GENESIS tutorial 
 
 In Tutorial 3 and later, we will perform MD simulations for several
-selected biomolecules ([Protein G](https://www.rcsb.org/structure/2QMT), alanine-dipeptide, Ala3, etc.) as the common targets. Let's download
+selected biomolecules ([Protein G](https://www.rcsb.org/structure/2QMT), alanine-dipeptide, (Ala)<sub>3</sub>, etc.) as the common targets. Let's download
 these PDB files from the PDB website to the "`Data/PDB`" directory by
-executing the following commands. Here, alanine-dipeptide and (Ala)~3~
+executing the following commands. Here, alanine-dipeptide and (Ala)<sub>3</sub>
 are small peptides, whose PDB files are actually not available on the
 PDB website. You can download them from the GENESIS website, which were
 created by us for the purpose of running GENESIS tutorial.
 
 
-```
+```bash
 # Move to the Data/PDB directory
 $ cd ~/GENESIS_Tutorials-2022
 $ cd Data
@@ -223,12 +218,11 @@ $ wget http://localhost/wp-content/uploads/2019/06/ala2.pdb
 
 # Download (Ala)3
 $ wget http://localhost/wp-content/uploads/2019/06/ala3.pdb
-
 ```
 
 Before moving on to the next tutorial, let's check the structure of
-these proteins using VMD.\
-\
+these proteins using VMD.
+
 
 ## What is needed to run simulations? 
 
@@ -242,11 +236,10 @@ modeling protocol will be explained in [Tutorial 2.3](/tutorials/genesis_tutoria
 
 ![](/assets/images/2019_06_basic_scheme.jpg)
 
- 
 
 ------------------------------------------------------------------------
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory\
 Dec. 20, 2021*
-
+{: .notice}

@@ -9,26 +9,32 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 3.3 MD simulation of Protein G in NaCl solution 
+# MD simulation of Protein G in NaCl solution 
 
 ##  Preparation
 
-If you are ready, let's download the tutorial file
-([tutorial22-3.3.tar.gz](/assets/tutorial_files/2022_04_tutorial22-3.3.tar.gz)). This tutorial consists of five steps: 1) system setup, 2)
+All the files required for this tutorial are hosted in the 
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+
+If you haven't downloaded the files yet, open your terminal 
+and run the following command:
+
+```bash
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+
+This tutorial consists of five steps: 1) system setup, 2)
 energy minimization, 3) equilibration, 4) production run, and 5)
 trajectory analysis. The control files for GENESIS are already included
 in the download file. To use the CHARMM36m force field parameters [^1],
 we create a symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
 
-```
-# Put the tutorial file in the Works directory
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-3.3.zip ./
-$ unzip tutorial22-3.3.zip
-
-# Let's clean up the directory
-$ mv tutorial22-3.3.zip TRASH
+```bash
+# If you already have the tutorial materials, let's go to our working directory:
+$ cd genesis_tutorial_materials
 
 # Let's take a note
 $ echo "tutorial-3.3: MD simulation of Protein G in NaCl solution" >> README
@@ -40,7 +46,6 @@ $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
 $ ls 
 1_setup     3_equilibrate  5_analysis  bin
 2_minimize  4_production   benchmark   toppar
-
 ```
 
 One of the aims of this tutorial is to help you think about how to
@@ -51,7 +56,7 @@ on the computer. You can use the following command (or the `lscpu` command) to k
 in one physical CPU, and number of logical processors.
 
 
-```
+```bash
 # Check the CPU model
 $ grep 'model name' /proc/cpuinfo | uniq
 model name : Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz
@@ -67,7 +72,6 @@ cpu cores : 8
 # Check the number of logical processors
 $ grep processor /proc/cpuinfo | wc -l
 16
-
 ```
 
 This example shows that the computer is equipped with an Intel [Intel Xeon E5-2670](https://ark.intel.com/content/www/us/en/ark/products/64595/intel-xeon-processor-e5-2670-20m-cache-2-60-ghz-8-00-gt-s-intel-qpi.html) processor. There are two physical CPUs, each of which
@@ -99,7 +103,7 @@ as large as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/), there will
 simulation.
 
 
-```
+```bash
 # Change directory for the system setup
 $ cd 1_setup
 $ ln -s ../../tutorial-2.3/* ./
@@ -108,12 +112,9 @@ $ ls
 
 $ ls ./5_ionize
 build.tcl  ionized.pdb  ionized.psf  log
-
 ```
 
 ![](/assets/images/2019_07_setup_figure5.jpg)
-
-ionized.pdb
 
 ##  2. Minimization
 
@@ -126,7 +127,7 @@ MPI processors and 4 OpenMP threads, that is, a total of 16 CPU cores.
 It will take about 1 minute to finish the calculation.
 
 
-```
+```bash
 # Change directory for the energy minimization 
 $ cd ../2_minimize
 
@@ -136,7 +137,6 @@ $ mpirun -np 4 ../bin/spdyn INP > log
 
 # Check the log output
 $ less log
-
 ```
 
 Now, let's check the `log` file. At the end of the file, you will
@@ -150,7 +150,7 @@ GENESIS checks those errors in general amino acids and nucleic acids.
 For details, see the user manual (`[MINIMIZE]` section) or [Tutorial Appendix 6](/tutorials/genesis_tutorial_appendix_6_2022/).
 
 
-```
+```toml
 :
 
 Check_Ring_Structure> Check ring structure
@@ -162,17 +162,16 @@ Check_Chirality> Check chirality
   No suspicious residue was detected.
 
 :
-
 ```
 
 ##  3. Equilibration
 
 The system is gradually equilibrated in three steps as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). First, we
 perform a 50-ps MD simulation with positional constraints on the heavy
-atoms of the protein (force constant = 1.0 kcal/mol/Å^2^) in the NVT
+atoms of the protein (force constant = 1.0 kcal/mol/Å<sup>2</sup>) in the NVT
 ensemble at *T* = 298.15 K. The equations of motion are integrated with
 a time step of 2 fs with the velocity Verlet algorithm, in which the
-SHAKE/RATTLE \[3,4\] and SETTLE [^5] algorithms are used for the bond
+SHAKE/RATTLE [^3] [^4] and SETTLE [^5] algorithms are used for the bond
 constraint. The temperature is controlled with the Bussi thermostat
 [^6]. Then, we perform a 50-ps MD simulation in the NPT ensemble at *T*
 = 298.15 K and *P* = 1 atm with the Bussi thermostat and the barostat
@@ -185,7 +184,7 @@ integrator, the PME calculation is performed every 2 steps and the
 thermostat and ballostat momenta are updated every 10 steps.
 
 
-```
+```bash
 # Change directory for equilibration
 $ cd ../3_equilibrate
 
@@ -198,7 +197,6 @@ $ mpirun -np 4 ../bin/spdyn INP2 > log2
 
 # Step3: NPT-MD with positional restraints on protein backbone heavy atoms
 $ mpirun -np 4 ../bin/spdyn INP3 > log3
-
 ```
 
 ##  4. Production
@@ -212,20 +210,19 @@ give you detailed information in advance on how many hours or days the
 simulation will take to finish.
 
 
-```
+```bash
 # Change directory for benchmark check
 $ cd ../benchmark
 $ ls
 INP
-
 ```
 
 In the benchmark test, we measure the simulation time by changing the
 number of CPU cores. Our computer has 16 CPU cores as shown above.
 Therefore, in the following commands, we measure the time using 1, 2, 4,
 8, and 16 CPU cores with various combinations of the number of MPI
-processors and OpenMP threads. For example, in the case of 2MPI x
-2OpenMP, 4 CPU cores are used, and in the case of 4MPI x 4OpenMP, 16 CPU
+processors and OpenMP threads. For example, in the case of 2 MPI x
+2 OpenMP, 4 CPU cores are used, and in the case of 4 MPI x 4 OpenMP, 16 CPU
 cores are used. Here, OpenMP is a thread-parallel computing scheme, in
 which shared memory-based calculation is carried out. It performs well
 within one physical CPU. Thus, the number of OpenMP threads
@@ -235,7 +232,7 @@ according to your computer environment. Each run is just a 1,000-steps
 MD (2.5 ps), which is long enough to check the performance.
 
 
-```
+```bash
 $ export OMP_NUM_THREADS=1
 $ mpirun -np  1 ../bin/spdyn INP >  1MPIx1OpenMP
 $ mpirun -np  2 ../bin/spdyn INP >  2MPIx1OpenMP
@@ -253,18 +250,16 @@ $ export OMP_NUM_THREADS=4
 $ mpirun -np  1 ../bin/spdyn INP >  1MPIx4OpenMP
 $ mpirun -np  2 ../bin/spdyn INP >  2MPIx4OpenMP
 $ mpirun -np  4 ../bin/spdyn INP >  4MPIx4OpenMP
-
 ```
 
  When using 16 MPI processors, the simulation
 was interrupted and the following error message was displayed:
 
 
-```
+```toml
 Setup_Processor_Number> Cannot define domains and cells. 
 Smaller or adjusted MPI processors, or shorter pairlistdist, 
 or larger boxsize should be used.
-
 ```
 
 This message indicates that 16 MPI processors cannot be used for this
@@ -285,7 +280,7 @@ all log files. Timers are in seconds. On our computer, we found that the
 best performance is achieved with 8 MPI processors and 2 OpenMP threads.
 
 
-```
+```bash
 # Gather the timing from all log files
 $ grep "dynamics      =" * | sort -g -r -k 4 > timer.out
 $ tail -4 timer.out
@@ -293,14 +288,13 @@ $ tail -4 timer.out
 4MPIx2OpenMP:    dynamics      =      44.069
 4MPIx4OpenMP:    dynamics      =      24.393
 8MPIx2OpenMP:    dynamics      =      24.318
-
 ```
 
 Since we ran a 2.5 ps MD simulation for each job, the timings (s/2.5 ps)
 are converted to ns/day with the following command.
 
 
-```
+```bash
 # Convert sec/2.5ps to ns/day
 $ awk '{print $1, 24*60*60*2.5*0.001/$4}' timer.out > benckmark.out
 $ tail -4 benckmark.out
@@ -308,7 +302,6 @@ $ tail -4 benckmark.out
 4MPIx2OpenMP: 4.9014
 4MPIx4OpenMP: 8.855
 8MPIx2OpenMP: 8.88231
-
 ```
 
 To summarize, let's plot the timings with the number of CPU cores on the
@@ -336,12 +329,11 @@ this scheme, let us estimate the file size of the trajectory data
 generated in the subsequent production runs.
 
 
-```
+```bash
 $ du -h ../3_equilibrate/*.dcd
 15M ../3_equilibrate/eq1.dcd
 15M ../3_equilibrate/eq2.dcd
 15M ../3_equilibrate/eq3.dcd
-
 ```
 
 ### Production run
@@ -354,7 +346,7 @@ sequentially for `INP1`--`INP5`, each corresponding to a 100-ps MD
 simulation. In total, we will get 500-ps MD trajectories.
 
 
-```
+```bash
 # Change directory for production run
 $ cd ../4_production
 $ ls
@@ -370,7 +362,6 @@ $ mpirun -np 8 ../bin/spdyn INP5 > log5
 
 # View the MD trajectories using VMD
 $ vmd ../1_setup/5_ionize/ionized.pdb -psf ../1_setup/5_ionize/ionized.psf -dcd md{1..5}.dcd
-
 ```
 
 Looking at the trajectory, you will observe that the protein is very
@@ -386,12 +377,11 @@ root-mean-square deviation (RMSD) of the protein using the processed DCD
 files.
 
 
-```
+```bash
 # Change directory for analysis
 $ cd ../5_analysis
 $ ls
 1_crd_convert_wrap  2_crd_convert_pro  3_rmsd
-
 ```
 
 ### 5.1 Make a trajectory file with PBC wrapping 
@@ -419,7 +409,7 @@ crdout_period (purple option). Thus, the new DCD file contains a total
 of 250 snapshots.
 
 
-```
+```toml
 [INPUT]
 psffile = ../../1_setup/5_ionize/ionized.psf  # protein structure file
 reffile = ../../1_setup/5_ionize/ionized.pdb  # PDB file
@@ -449,7 +439,6 @@ pbc_correct    = MOLECULE        # (NO/MOLECULE)
 trjout_format  = DCD             # (PDB/DCD)
 trjout_type    = COOR+BOX        # (COOR/COOR+BOX)
 trjout_atom    = 2               # atom group
-
 ```
 
 Let's run `crd_convert` and check the resulting DCD file in VMD. This
@@ -460,7 +449,7 @@ which water molecules are interacting with the protein. But with this
 new DCD, it is obvious at a glance.
 
 
-```
+```bash
 # Convert the trajectory (wrap molecules)
 $ ../../bin/crd_convert INP > log
 $ ls
@@ -468,7 +457,6 @@ INP  log  output.pdb  output.dcd
 
 # Check the trajectory using VMD
 $ vmd output.pdb -dcd output.dcd
-
 ```
 
 ### 5.2 Make a trajectory file containing protein only 
@@ -489,7 +477,7 @@ DCD files were analyzed, each of which contains 200 snapshots, the
 resulting new DCD file contains 1,000 snapshots.
 
 
-```
+```toml
 [SELECTION]
 group1         = an:CA            # selection group 1
 group2         = sid:PROA         # selection group 2
@@ -502,7 +490,6 @@ fitting_atom   = 1                # atom group
 trjout_format  = DCD              # (PDB/DCD)
 trjout_type    = COOR+BOX         # (COOR/COOR+BOX)
 trjout_atom    = 2                # atom group
-
 ```
 
 Let's run `crd_convert` and check the resulting DCD file in VMD. This
@@ -525,7 +512,7 @@ initial structure (`../2_crd_convert_pro/output.pdb`) using rigid body
 translation and rotation (`TR+ROT`).
 
 
-```
+```toml
 [INPUT]
 reffile        = ../2_crd_convert_pro/output.pdb  # PDB file
  
@@ -546,7 +533,6 @@ fitting_atom   = 1               # atom group
  
 [OPTION]
 analysis_atom  = 1               # atom group
-
 ```
 
 During 500 ps, the RMSD is less than 1 Å, indicating that this protein
@@ -555,61 +541,27 @@ increasing and may require longer simulation runs to converge.
 
 ![](/assets/images/2019_08_figure_rmsd.jpg)
 
-##  References
-
-1.  J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).
-
-```
-[](https://www.nature.com/articles/nmeth.4067)
-```
-
-2.  T. Darden *et al.*, *J. Chem. Phys.*, **98**, 10089-10092 (1993).
-
-```
-[](https://aip.scitation.org/doi/abs/10.1063/1.464397)
-```
-
-3.  J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).
-
-```
-[](https://www.sciencedirect.com/science/article/pii/0021999177900985)
-```
-
-4.  H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).
-
-```
-[](https://www.sciencedirect.com/science/article/pii/0021999183900141)
-```
-
-5.  S. Miyamoto and P. A. Kollman, *J. Comput. Chem.*, **13**, 952-962
-
-```
-(1992).
-[](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.540130805)
-```
-
-6.  G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).
-
-```
-[](https://aip.scitation.org/doi/10.1063/1.2408420)
-```
-
-7.  G. Bussi *et al.*, *J. Chem. Phys.*, **130**, 074101 (2009).
-
-```
-[](https://aip.scitation.org/doi/10.1063/1.3073889)
-```
-
-8.  M. Tuckerman *et al.*, *J. Chem. Phys.*, **97**, 1990-2001 (1992).
-
-```
-[](https://aip.scitation.org/doi/10.1063/1.463137)
-
-```
-
-------------------------------------------------------------------------
+---
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory\
 March 8, 2022*
+{: .notice}
 
+##  References
+
+[^1]:  Huang, J., *et al.*, **2017**, *Nat. Methods*, 14, 71-73.
+
+[^2]:  Darden, T., *et al.*, **1993**, *J. Chem. Phys.*, 98, 10089-10092.
+
+[^3]:  Ryckaert, J. P., *et al.*, **1977**, *J. Comput. Phys.*, 23, 327-341.
+
+[^4]:  Andersen, H. C., **1983**, *J. Comp. Phys.*, 52, 24-34.
+
+[^5]:  Miyamoto, S., Kollman, P. A., **1992**, *J. Comput. Chem.*, 13, 952-962.
+
+[^6]:  Bussi, G., *et al.*, **2007**, *J. Chem. Phys.*, 126, 014101.
+
+[^7]:  Bussi, G., *et al.*, **2009**, *J. Chem. Phys.*, 130, 074101.
+
+[^8]:  Tuckerman, M., *et al.*, **1992**, *J. Chem. Phys.*, 97, 1990-2001.
