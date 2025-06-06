@@ -36,7 +36,7 @@ command to download the file.
 
 ![](/assets/images/2022_03_Figure16.1.2.png)
 
-```
+```bash
 # Download the PDB file of the closed form
 $ cd ~/GENESIS_Tutorials-2022/Data
 $ wget https://files.rcsb.org/download/6NQ1.pdb
