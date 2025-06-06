@@ -19,7 +19,7 @@ home directory (`/home/username/`) by executing the following commands. We will
 set up a main directory named `GENESIS_Tutorials-2022`, and inside it, create two
 subdirectories: `Programs` and `Data`.
 - `Programs` will store the main software used in this project, such as the GENESIS executable.
-- `Data` will store external resources that are commonly used throughout the tutorials, including PDB files (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)) and force field parameter files (see [Tutorials 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+- `Data` will store external resources that are commonly used throughout the tutorials, including PDB files (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)) and force field parameter files (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
 Therefore, within the `Data` directory, we will also create two subdirectories:
 `PDB` and `Parameters`.  
@@ -119,7 +119,7 @@ matches your needs.
 Now, we have constructed the following directory structure:
 
 ```bash
-/home/user
+/home/username
 + GENESIS_Tutorials-2022  # Project name
     |
     + Programs           # Main software for this project
@@ -134,7 +134,7 @@ Now, we have constructed the following directory structure:
     |  + PDB
     |  + Parameters
     |
-    + genesis_tutorial_materials  # Simulations
+    + genesis_tutorial_materials  # Simulation materials
     |  + tutorial_2.3
     |  + tutorial_3.1
     |  + tutorial_3.2
