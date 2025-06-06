@@ -89,6 +89,9 @@ $ vmd -ccp4 ./EMmap/emd_0477.map -pdb ./PDB/6NQ1.pdb
 
 All the files required for this tutorial are hosted in the 
 [GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal and 
+run the follwing command (see mo in [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/))
+
 In this tutorial, we use the CHARMM36m force field
 parameters, and we make a symbolic link to the CHARMM toppar directory
 (for details, see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
