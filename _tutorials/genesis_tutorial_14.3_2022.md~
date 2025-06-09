@@ -332,9 +332,9 @@ parameters for the initial state (i.e., L8), the rightmost column
 corresponds to the parameters for the final state (i.e., L9), and the
 remaining columns correspond to the parameters for the intermediate
 states. In this tutorial, LJ, electrostatic, and bonded interactions are
-simultaneously and linearly changed along replica IDs as shown in Figure 5. 
-`sc_alpha` and `sc_beta` are the parameters for the LJ and electrostatic soft-core potentials [^3],[^4], respectively.
-When the LJ and electrostatic interactions are simultaneously changed, the electrostatic soft-core
+simultaneously and linearly changed along replica IDs as shown in Figure
+5. [`sc_alpha` and `sc_beta` are the parameters for the LJ and electrostatic soft-core potentials [^3],[^4], respectively. ]When the LJ and electrostatic
+interactions are simultaneously changed, the electrostatic soft-core
 potential is required, because the electrostatic interactions sometimes
 become very large when the repulsive interaction in LJ are weakened (due to the distance between two atoms becomes too short). Here we set
 `sc_beta` to 5.0.

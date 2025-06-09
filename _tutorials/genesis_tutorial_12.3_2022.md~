@@ -73,7 +73,7 @@ $ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 If you already have the tutorial materials, let's go to our working directory:
 
 ```bash
-$ cd genesis_tutorial_materials/tutorial-12.3
+$ cd genesis_tutorial_materials/tutorial-14.3
 ```
 
 
