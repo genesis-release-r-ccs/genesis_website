@@ -1,7 +1,7 @@
 ---
 title: "GENESIS Tutorial 6.3 (2022)"
 excerpt: ""
-last_modified_at: 2025-06-03T00:00:56+09:00
+last_modified_at: 2025-06-09T11:36:46+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -788,3 +788,119 @@ The output text file contains the number of hydrogen bonds observed. Let
 us extract the information for analysis.
 
 ``` bash
+# skip lines with comments, and get the lines containing data
+# save to CSV
+echo 'H-bond_count,atom_ana,residue_ana,res_ana_num,atom_tar,residue_tar,res_tar_num' > step6.0_hbondAnalysis.csv
+
+grep -v '#' step6.0_hbondAnalysis/hbond_analysis.txt | grep '\.\.' | awk '{print $1,$3,$4,$5,$8,$9,$10}' | sed 's/ /,/g' >> step6.0_hbondAnalysis.csv
+
+head step6.0_hbondAnalysis.csv
+```
+
+output
+
+``` hljs
+ ##H-bond_count,atom_ana,residue_ana,res_ana_num,atom_tar,residue_tar,res_tar_num
+ 4,O,BGLCNA,1,O3,BGLCNA,1
+ 4,O3,BGLCNA,1,O,BGLCNA,1
+ 4,O3,BGLCNA,1,O5,BGLCNA,2
+ 1,O3,BGLCNA,1,O6,BGLCNA,2
+ 4,O5,BGLCNA,2,O3,BGLCNA,1
+ 2,O,BGLCNA,2,O3,BGLCNA,2
+ 3,O,BGLCNA,2,O6,AMAN,8
+ 2,O3,BGLCNA,2,O,BGLCNA,2
+ 11,O3,BGLCNA,2,O5,BMAN,3
+```
+
+While the hydrogen bond count over the trajectory is given by atom, let
+us get the values by glycan subunit. Read the data to a DataFrame and
+record the hydrogen bond count by subunit.
+
+``` python
+df = pd.read_csv('step6.0_hbondAnalysis.csv')
+# sum the number of hydrogen bonds by interacting residues
+df = df.groupby(by = ['res_ana_num', 'res_tar_num'], as_index = False)['H-bond_count'].agg('sum')
+# convert the DataFrame from long to wide format
+df_wide = df.pivot_table(index='res_ana_num', columns='res_tar_num', values='H-bond_count')
+# Also, there are 100 frames considered. Let us get the average number 
+# of hydrogen bonds between residues by dividing by the number of frames.
+df_wide /= 100.
+
+plt.figure()
+fig = sns.heatmap(data = df_wide)
+fig.set(xlabel ="subunit index", ylabel = "subunit index")
+plt.show()
+```
+
+plot\
+![](/assets/images/2022_06_44c23b6b15d70994d766716b66bcaf1c.png)
+
+We observe each subunit engage in some degree of hydrogen bonding
+interactions over the trajectory. The subunits 3
+([[[$\beta$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}-D-mannose) exhibited the highest hydrogen bonding count on
+average, having [[[[[0.44]]]]]{.math .inline} bond with subunit 2 ([[[[[β]]]]]{.math .inline}-D-*N*-acetylglucosamine) and [[[[[0.38]]]]]{.math .inline} bond with subunit 10 ([[[$\alpha$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}-D-mannose).
+
+## Summary
+
+We simulated a core *N*-glycan in water for 1.0 ns. The system was
+equilibrated to the expected temperature and pressure. We may pursue a
+longer simulation time or enhanced sampling methods to ensure the
+conformational space has been sufficiently explored.
+
+## Bibliography
+
+\(1\) Schwarz, F.; Aebi, M. Mechanisms and Principles of n-Linked
+Protein Glycosylation. *Current opinion in structural biology* **2011**,
+*21* (5), 576--582.
+
+\(2\) Apweiler, R.; Hermjakob, H.; Sharon, N. On the Frequency of
+Protein Glycosylation, as Deduced from Analysis of the SWISS-PROT
+Database. *Biochimica et Biophysica Acta (BBA)-General Subjects*
+**1999**, *1473* (1), 4--8.
+
+\(3\) Dwek, R. A. Biological Importance of Glycosylation. In *Molecular
+recognition and inclusion*; Springer, 1998; pp 1--6.
+
+\(4\) Krasnova, L.; Wong, C.-H. Understanding the Chemistry and Biology
+of Glycosylation with Glycan Synthesis. *Annual review of biochemistry*
+**2016**, *85*, 599--630.
+
+\(5\) Park, S.-J.; Lee, J.; Qi, Y.; Kern, N. R.; Lee, H. S.; Jo, S.;
+Joung, I.; Joo, K.; Lee, J.; Im, W. CHARMM-GUI Glycan Modeler for
+Modeling and Simulation of Carbohydrates and Glycoconjugates.
+*Glycobiology* **2019**, *29* (4), 320--331.
+
+\(6\) McKinney, W.; others. Data Structures for Statistical Computing in
+Python. In *Proceedings of the 9th python in science conference*;
+Austin, TX, 2010; Vol. 445, pp 51--56.
+
+\(7\) Waskom, M.; Botvinnik, O.; O'Kane, D.; Hobson, P.; Lukauskas, S.;
+Gemperline, D. C.; Augspurger, T.; Halchenko, Y.; Cole, J. B.;
+Warmenhoven, J.; Ruiter, J. de; Pye, C.; Hoyer, S.; Vanderplas, J.;
+Villalba, S.; Kunter, G.; Quintero, E.; Bachant, P.; Martin, M.; Meyer,
+K.; Miles, A.; Ram, Y.; Yarkoni, T.; Williams, M. L.; Evans, C.;
+Fitzgerald, C.; Brian; Fonnesbeck, C.; Lee, A.; Qalieh, A.
+*Mwaskom/Seaborn: V0.8.1 (September 2017)*; Zenodo, 2017.
+https://doi.org/[10.5281/zenodo.883859](https://doi.org/10.5281/zenodo.883859).
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+*Written by Kiyoto Aramis Tanemura @ Michigan State University*
+
+
+
+*June 18, 2022*
+
+
+
+*Updated by Chigusa Kobayashi@RIKEN Center for Computational Science*
+
+
+
+*May 30, 2024*
+
