@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 15.5 The enzyme reaction 1: Reaction path search 
+# The enzyme reaction 1: Reaction path search 
 
 ## 1. Introduction 
 
@@ -34,22 +34,18 @@ reaction has been extensively studied since the early 2000 \[3-8\], and
 is a well known benchmark system \[2,9\]. We calculate the MEP of the
 following reaction:
 
-<figure class="aligncenter size-large is-resized">
-<img src="wp-content/uploads/2022/04/tim_scheme-1024x285.png"
-class="wp-image-21128" style="width:768px;height:214px"
-data-fetchpriority="high" decoding="async"
-srcset="wp-content/uploads/2022/04/tim_scheme-1024x285.png 1024w, wp-content/uploads/2022/04/tim_scheme-300x84.png 300w, wp-content/uploads/2022/04/tim_scheme-768x214.png 768w, wp-content/uploads/2022/04/tim_scheme-20x6.png 20w, wp-content/uploads/2022/04/tim_scheme-30x8.png 30w, wp-content/uploads/2022/04/tim_scheme-40x11.png 40w, wp-content/uploads/2022/04/tim_scheme.png 1389w"
-sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="285" />
-<figcaption>Fig. 1. Schematic illustration of the proton transfer
+![](/assets/images/2022_04_tim_scheme.png){: width="800" .center-image }
+<figcaption style="font-size: 1.0em;">
+Fig. 1. Schematic illustration of the proton transfer
 reaction from DHAP to Glu165 of TIM. r<sub>1</sub> – r<sub>7</sub>
-indicate relevant atomic distances.</figcaption>
-</figure>
+indicate relevant atomic distances.  
+</figcaption>
 
 One of the proton (H31) of DHAP is transferred to Glu165 of TIM. Note
 that the proton transfer accompanies a charge transfer of the electron
 from Glu165 to O2 of DHAP (red in Fig. 1), where His95 donates a
-hydrogen bond. Therefore, the reaction coordinate involves not only r~1~
-/ r~2~ but also several intermolecular degrees of freedom (e.g., r~3~, r~4~, r~6~). In fact, HE2 of His95 is transferred to O2 in a later
+hydrogen bond. Therefore, the reaction coordinate involves not only r<sub>1</sub>
+/ r<sub>2</sub> but also several intermolecular degrees of freedom (e.g., r<sub>3</sub>, r<sub>4</sub>, r<sub>6</sub>). In fact, HE2 of His95 is transferred to O2 in a later
 stage, though the process is beyond the scope of this tutorial.
 
 ## 2. System preparation 
@@ -59,7 +55,7 @@ Download the tutorial file
 it, and proceed to tutorial-15.5/1.tim. This directory contains five
 sub-directories.
 
-``` wp-block-preformatted
+```bash
 $ unzip tutorial22-15.5.zip 
 $ cd tutorial-15.5/1.tim
 $ ls  
@@ -77,7 +73,7 @@ bank.[CHARMM-GUI](https://www.charmm-gui.org/ "CHARMM-GUI") was used to setup th
 hydrogen atoms, set the protonation states, add water molecules and
 ions, and so on. `0.build` contains the resulting pdb and psf files.
 
-``` wp-block-preformatted
+``` bash
 $ ls 0.build
 step2_solvator.pdb  step2_solvator.psf
 ```
@@ -86,13 +82,10 @@ The PDB file is visualized in Fig. 2. Note that TIM is a homo-dimer
 (segment name TIMA and TIMB), and that the reaction site of both
 proteins contains the ligand.
 
-<figure class="aligncenter size-medium">
-<img src="wp-content/uploads/2022/04/tim_overall-300x300.png"
-class="wp-image-21228" decoding="async"
-srcset="wp-content/uploads/2022/04/tim_overall-300x300.png 300w, wp-content/uploads/2022/04/tim_overall-150x150.png 150w, wp-content/uploads/2022/04/tim_overall-20x20.png 20w, wp-content/uploads/2022/04/tim_overall-30x30.png 30w, wp-content/uploads/2022/04/tim_overall-40x40.png 40w, wp-content/uploads/2022/04/tim_overall.png 837w"
-sizes="(max-width: 300px) 100vw, 300px" width="300" height="300" />
-<figcaption>Fig. 2. The overall structure of the system.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_overall.png){: width="400" .center-image }
+<figcaption style="font-size: 1.0em;text-align: center;">
+Fig. 2. The overall structure of the system.  
+</figcaption>
 
 In `1.pre_equil`, the system is equilibrated in the following four MD
 steps.
@@ -139,10 +132,10 @@ steps.
 </table>
 </figure>
 
-The positional restraints are added to the backbone (with k = 10 kcal/mol/Å^2^) and the sidechain, ligand, and crystal water molecules
-(with k = 2 kcal/mol/Å^2^).
+The positional restraints are added to the backbone (with k = 10 kcal/mol/Å<sup>2</sup>) and the sidechain, ligand, and crystal water molecules
+(with k = 2 kcal/mol/Å<sup>2</sup>).
 
-``` wp-block-preformatted
+```bash
 $ cd 1.pre_equil
 $ ls
 crd_convert.inp       step3.1_minimization.inp 
@@ -161,14 +154,11 @@ In `2.equil`, the final snapshot structure of step3.4 is first cut out
 to a non-periodic system using qmmm_generator. 15 Å around the TIM dimer
 is extracted.
 
-<figure class="aligncenter size-large is-resized">
-<img src="wp-content/uploads/2022/04/tim_cut-1024x404.png"
-class="wp-image-21278" style="width:512px;height:202px" decoding="async"
-srcset="wp-content/uploads/2022/04/tim_cut-1024x404.png 1024w, wp-content/uploads/2022/04/tim_cut-300x118.png 300w, wp-content/uploads/2022/04/tim_cut-768x303.png 768w, wp-content/uploads/2022/04/tim_cut-20x8.png 20w, wp-content/uploads/2022/04/tim_cut-30x12.png 30w, wp-content/uploads/2022/04/tim_cut-40x16.png 40w, wp-content/uploads/2022/04/tim_cut.png 1279w"
-sizes="(max-width: 1024px) 100vw, 1024px" width="1024" height="404" />
-<figcaption>Fig. 3. Cut 15 Å around the TIM dimer from a periodic system
-(left) to create a non-periodic system (right).</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_cut.png){: width="800" .center-image }
+<figcaption style="font-size: 1.0em;">
+Fig. 3. Cut 15 Å around the TIM dimer from a periodic system
+(left) to create a non-periodic system (right)
+</figcaption>
 
 Then, the system is equilibrated by NVT-MD at 300K. The positional
 restraints of the backbone (bb), sidechain (sc) and crystal water (cw)
@@ -281,7 +271,7 @@ for the QM calculations.
 
 The files in `2.equil` are as follows:
 
-``` wp-block-preformatted
+``` bash
 $ cd 2.equil
 $ ls
 qmmm_generator.inp          qsimulate.json
@@ -306,7 +296,7 @@ all jobs. As a result, we obtain the files shown in red,
 
 We first obtain the reactant and product. Proceed to 3.min,
 
-``` wp-block-preformatted
+```bash
 $ cd 3.min
 $ ls
 min.vmd          qmmm_min2a.inp   qsimulate.json   run.sh*
@@ -315,7 +305,7 @@ qmmm_min1.inp    qmmm_min2b.inp   rst_convert.inp  toppar
 
 `qmmm_min1.inp` is an input file to find the reactant,
 
-``` wp-block-preformatted
+```bash
 [INPUT]
 topfile = toppar/top_all36_prot.rtf, toppar/top_all36_cgenff.rtf
 parfile = toppar/par_all36_prot.prm, toppar/par_all36_cgenff.prm
