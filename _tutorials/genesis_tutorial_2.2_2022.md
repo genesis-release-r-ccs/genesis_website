@@ -273,7 +273,7 @@ target system using the topology file.
 ---
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\ Dec. 17, 2021*
+laboratory, Dec. 17, 2021*
 {: .notice}
 
 

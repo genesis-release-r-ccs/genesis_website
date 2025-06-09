@@ -25,7 +25,7 @@ setup to basic analysis of the simulation results.
 
 ## 0. Preparations
 
-### 0.1. Download GENESIS-CG-tool for Preparing CG Simulation Files
+### 0.1. Download GENESIS-cg-tool for Preparing CG Simulation Files
 
 To begin, we need a set of scripts that assist in generating the topology and
 coordinate files required for CG MD simulations in GENESIS.
@@ -33,11 +33,11 @@ This collection of scripts is referred to as the GENESIS-cg-tool[^3].
 
 The tool is included in the GENESIS package and can be found in the
 `src/analysis/cg_tools` subdirectory. Alternatively, it is available on
-[GitHub](https://github.com/noinil/genesis_cg_tool),
+[GitHub](https://github.com/genesis-release-r-ccs/genesis_cg_tool),
 and can be downloaded using `git`:
 
 ```bash
-$ git clone https://github.com/noinil/genesis_cg_tool.git
+$ git clone https://github.com/genesis-release-r-ccs/genesis_cg_tool 
 ```
 
 This tool is developed using the [Julia](https://julialang.org/) programming language.
@@ -129,7 +129,7 @@ The main topology file, `1PGB_cg.top`, incorporates these parameters using
 parameter files.
 
 For a detailed explanation of the topology file format, please refer to the
-[GENESIS-cg-tool wiki](https://github.com/noinil/genesis_cg_tool/wiki/File-formats).
+[GENESIS-CG-tool wiki](https://github.com/genesis-release-r-ccs/genesis_cg_tool/wiki).
 
 You can add more options to the `aa_2_cg.jl` command:
 ```bash
