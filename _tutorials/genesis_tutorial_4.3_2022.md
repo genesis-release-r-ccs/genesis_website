@@ -9,31 +9,38 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 4.3 Statistical analysis of the trajectory data by Python 
+# Statistical analysis of the trajectory data by Python 
 
-Note: this tutorial is a simple introduction to using python (version 3.x) and packages such as [NumPy](https://numpy.org/) and [matplotlib](https://matplotlib.org/) to do some fundamental statistical analysis of simulation results. If you want to use python to parse MD trajectories, please try specific libraries such as ]{preserver-spaces="true"}[[MDTraj]{preserver-spaces="true"}](https://www.mdtraj.org/1.9.5/index.html){.editor-rtfLink target="_blank" rel="noopener"}[ and ]{preserver-spaces="true"}[[MDAnalysis]{preserver-spaces="true"}](https://www.mdanalysis.org/){.editor-rtfLink target="_blank" rel="noopener"}[, which are beyond the scope of the current tutorial. Please refer to [the website of python](https://www.python.org/) for a basic programming guide and get help from [PyPI](https://pypi.org/) or [anaconda](https://www.anaconda.com/) about how to install packages.
+Note: this tutorial is a simple introduction to using python (version 3.x) and packages such as [NumPy](https://numpy.org/) and [matplotlib](https://matplotlib.org/) to do some fundamental statistical analysis of simulation results.
+If you want to use python to parse MD trajectories, please try specific libraries such as [MDTraj](https://www.mdtraj.org/1.9.5/index.html) and [MDAnalysis](https://www.mdanalysis.org/), which are beyond the scope of the current tutorial.
+Please refer to [the website of python](https://www.python.org/) for a basic programming guide and get help from [PyPI](https://pypi.org/) or [anaconda](https://www.anaconda.com/) about how to install packages.
 
 ##  Preparation 
 
-Please download the [files for tutorial-4.3](/assets/tutorial_files/2022_03_tutorial22-4.3.tar.gz).
+All the files required for this tutorial are hosted in the 
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 
+If you haven't downloaded the files yet, open your terminal 
+and run the following command (see more in 
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-4.3.zip ./
-$ unzip tutorial22-4.3.zip
 
-# Let's clean up the directory
-$ mv tutorial22-4.1.zip ./TRASH
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials
 
 # Let's take a note
 $ echo "tutorial-4.3: Trajectory analysis using python" >> README
 
-$ cd ./tutorial-4.3
+$ cd tutorial-4.3
 $ ls
 Analysis1 Analysis2.1 Analysis2.2 
-
 ```
 
 ## 1. Basic statistics 
@@ -44,29 +51,25 @@ maximum/minimum values. These tasks can be easily accomplished by
 writing python scripts. In the following examples, we will analyze the
 energy data obtained in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/).
 
-
-```
+```bash
 # Change directory for statistics analysis
 $ cd Analysis1
 $ ls
 energy.log 01_list.py 02_numpy.py
-
 ```
 
-### 1.1 Using the "`list`" data structure 
+### 1.1 Using the `list` data structure 
 
 
 In this part, we show how to use the basic `list` structure to store
 data read from a file and how to compute the average and standard
 deviation.
 
-
-
 We use the script `01_list.py` to do everything. You can take a look at
 the file by running `cat 01_list.py`:
 
 
-```
+```python
 #!/usr/bin/env python3
 
 # analyze the 5th column
@@ -94,46 +97,23 @@ print("Average of column {0:>2d}: {1:>12.4f}".format(i_col, ene_ave))
 # calculate the standard deviation
 ene_std = (sum((e - ene_ave)**2 for e in ene_data) / len_ene_data)**0.5
 print("Standard deviation of column {0:>2d}: {1:>12.4f}".format(i_col, ene_std))
-
 ```
 
 - `i_col` is an integer variable to specify the column of interest.
 - `ene_data` is the list we use to store energy data.
-- all the data is read from `"./energy.log"` within the `for` loop:
-
-```
-- `line` is a "string" variable to store every line in the file;
-- `line.split()` simply splits the line into a list of words;
-- `float()` is a function to convert a "string" into a "float";
-- `append()` is a function to add new values to the end of the
-    `ene_data` list.
-```
-
+- all the data is read from `./energy.log` within the `for` loop:
+    - `line` is a "string" variable to store every line in the file;
+    - `line.split()` simply splits the line into a list of words;
+    - `float()` is a function to convert a "string" into a "float";
+    - `append()` is a function to add new values to the end of the `ene_data` list.
 - `len()` is a function used to get the length of a list.
-- `max()` and `min()` are the functions used to find out the maximum
-
-```
-and minimum values from the list, respectively.
-```
-
+- `max()` and `min()` are the functions used to find out the maximum and minimum values from the list, respectively.
 - `sum()` is a function used to calculate the sum of a list.
-- in the calculation of the standard deviation, we use a python tactic
-
-```
-called "[list     comprehension](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)" to quickly construct a new
-list: `(e - ene_ave)**2 for e in ene_data`, whose elements are the
-squared deviations from the average.
-```
-
-- `format()` inserts the values saved in a variable to the message to
-
-```
-be printed out.
-
-```
+- in the calculation of the standard deviation, we use a python tactic called "[list comprehension](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)" to quickly construct a new list:
+`(e - ene_ave)**2 for e in ene_data`, whose elements are the squared deviations from the average.
+- `format()` inserts the values saved in a variable to the message to be printed out.
 
 Now let's execute the script:
-
 
 ```
 $ ./01_list.py         # or: python3 01_list.py
@@ -142,10 +122,9 @@ Maximum of column 5: 7.3745
 Minimum of column 5: -10.2807
 Average of column 5: -1.5140
 Standard deviation of column 5: 2.8306
-
 ```
 
-### 1.2 Using the "`numpy.ndarray`" data structure 
+### 1.2 Using the `numpy.ndarray` data structure 
 
 
 In this part, we show an alternative way to get the maximum/minimum,
@@ -159,7 +138,7 @@ operations on arrays.
 The program is in the `02_numpy.py` file:
 
 
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -185,7 +164,6 @@ print("Average of column {0:>2d}: {1:>12.4f}".format(i_col, ene_ave))
 # calculate the standard deviation
 ene_std = ene_data.std()
 print("Standard deviation of column {0:>2d}: {1:>12.4f}".format(i_col, ene_std))
-
 ```
 
 
@@ -194,29 +172,14 @@ Actually, in many cases, `numpy` can simplify the development of
 programs. We list out the main differences between the two versions in
 the following:
 
-
-
 - `import numpy as np` is used to declare the usage of `numpy`.
-- `np.loadtxt()` is a function used to read formatted data from file;
-
-```
-the return value is an array ("`ene_data`").
-```
-
+- `np.loadtxt()` is a function used to read formatted data from file; the return value is an array (`ene_data`).
 - `size` of an array is the number of elements (be aware that     `size` is not a function).
-- `max()` and `min()` are now used as member functions of the
-
-```
-array `ene_data`.
-```
-
+- `max()` and `min()` are now used as member functions of the array `ene_data`.
 - `mean()` calculates the average of an array.
 - `std()` directly computes the standard deviation.
 
-
-
 Let's run this new script:
-
 
 ```
 $ ./02_numpy.py         # or: python3 02_numpy.py
@@ -225,7 +188,6 @@ Maximum of column 5: 7.3745
 Minimum of column 5: -10.2807
 Average of column 5: -1.5140
 Standard deviation of column 5: 2.8306
-
 ```
 
 As can be seen, the results are the same as the ones we computed with
@@ -233,12 +195,10 @@ the `01_list.py`.
 
 ## 2. Histogram analysis 
 
-
 A histogram is an approximate representation of the distribution of
 numerical data. In section 2, we are going to compute and plot
 one-dimensional (1D) and two-dimensional (2D) histograms from the MD
 simulation results.
-
 
 
 ### 2.1 1D-Histogram 
@@ -255,18 +215,17 @@ counting the number of data in each predefined bin. Here we show the
 simplest way with the `matplotlib.pyplot.hist` function.
 
 
-```
+```bash
 # Change directory to 1d-histogram analysis
 $ cd ../Analysis2.1
 $ ls
 hist1d.py output.dis
-
 ```
 
 The program is in the file `hist1d.py`:
 
 
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -288,55 +247,28 @@ plt.ylabel("frequency")
 
 # save figure to png file
 plt.savefig("distance_histogram.png", dpi=150)
-
 ```
 
 
-- we first load the packages
-
-```
-`numpy` and `matplotlib.pyplot` using `import`.
-```
-
+- we first load the packages `numpy` and `matplotlib.pyplot` using `import`.
 - we then read data from "output.dis" using the `np.loadtxt` function.
-
-```
 Our purpose is to get the distribution of the distance, so we only
 have to load the second column of the data (`usecols=(1)`).
-```
-
 - `plt.hist()` is a function used to directly calculate and draw a
-
-```
 histogram, with options `bins` for the number of bins and `range`
 for the lower and upper limit of the data.
-```
-
 - `plt.xlim()` and `plt.ylim()` set the range of the x and y-axis in
-
-```
 the figure, respectively.
-```
-
-- `plt.xlabel()` and `plt.ylabel()` set the label of the x and y-axis,
-
-```
-respectively.
-```
-
+- `plt.xlabel()` and `plt.ylabel()` set the label of the x and y-axis, respectively.
 - `plt.savefig()` is used to output the figure to a file.
-
-
 
 We can now go to the subdirectory `Analysis2.1` and execute our script:
 
-
-```
+```bash
 $ ./hist1d.py
 
 # or
 $ python3 hist1d.py
-
 ```
 
 The script generates a figure named `distance_histogram.png` as shown
@@ -355,18 +287,17 @@ one method to make a 2D histogram plot. Here, we simply utilize the
 `matplotlib.pyplot.hist2d` function.
 
 
-```
+```bash
 # Change directory to 2d-histogram analysis
 $ cd ../Analysis2.2
 $ ls
 hist2d.py output.tor
-
 ```
 
 The program can be found in the file `hist2d.py`:
 
 
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -394,60 +325,31 @@ plt.colorbar(label="frequency")
 
 # save figure to file
 plt.savefig("Ramachandran_plot.png", dpi=150)
-
 ```
 
 - `np.loadtxt` is used to load data from a file. Here we use the 2nd
-
-```
 and 3rd columns of "output.tor" (`usecols=(1, 2)`) and store them in
 different arrays (`unpack=True`).
-```
-
 - `plt.hist2d()` is a function that calculates and draws the 2D
-
-```
 histogram. We specify the number of bins (`72`) and range
 (`[-180, 180]`) in each dimension, respectively.
-```
-
 - `plt.gca()` is a method to "Get the Current Axis". We then set the
-
-```
 aspect ratio of the current axis to "equal" and fix it to the "box",
 which generates a square frame of the plot, instead of a rectangle
 by default.
-```
-
-- `plt.xticks()` and `plt.yticks()` set the ticks of the x and y-axis,
-
-```
-respectively.
-```
-
-- `plt.xlabel()` and `plt.ylabel()` set the labels of the x and
-
-```
-y-axis, respectively.
-```
-
-- `plt.colorbar()` add a color bar to explain the color map of the
-
-```
-histogram plot.
-```
-
+- `plt.xticks()` and `plt.yticks()` set the ticks of the x and y-axis, respectively.
+- `plt.xlabel()` and `plt.ylabel()` set the labels of the x and y-axis, respectively.
+- `plt.colorbar()` add a color bar to explain the color map of the histogram plot.
 - `plt.savefig()` saves the current plot to a png file.
 
 By running the following commands in the subdirectory `Analysis2.2`:
 
 
-```
+```bash
 $ ./hist2d.py
 
 # or
 $ python3 hist2d.py
-
 ```
 
 we get the figure in the file `Ramachandran_plot.png` as shown in the
@@ -458,12 +360,7 @@ following:
 In this figure, the intensity of the red color represents the frequency
 of the dihedral angle pair (φ, ψ).
 
-------------------------------------------------------------------------
-
-*[Written by Cheng Tan@RIKEN Center for Computational Science, Computational Biophysics Research Team\ October, 2021]*
-
-
-
-
-
+*Written by Cheng Tan@RIKEN Center for Computational Science, Computational Biophysics Research Team\
+October, 2021*
+{: .notice}
 

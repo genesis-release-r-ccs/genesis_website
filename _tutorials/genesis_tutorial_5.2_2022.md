@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 5.2 Creating initial files for the AMBER force field
+# Creating initial files for the AMBER force field
 
 In this tutorial, we provide a guide for preparing parameter files,
 topology files (`prmtop` file), and coordinate files (`crd` file) for
@@ -27,20 +27,22 @@ for GENESIS.
 ##  Preparations
 
 In this tutorial, we use
-[[AmberTools18](http://ambermd.org/doc12/Amber18.pdf) as an example, which is available free of charge. Of course, you can use the latest version of AmberTools. First, download the program from the webpage. We assume that you install the AMBER tools in `$HOME/GENESIS_Tutorials-2022/Programs`. Then, add the following commands in the `.bashrc` or the `.bash_profile` file with respect to your installation path. Or alternatively, execute the commands directly in the command line. ]
+[AmberTools18](http://ambermd.org/doc12/Amber18.pdf) as an example, which is available free of charge. Of course, you can use the latest version of AmberTools.
+First, download the program from the webpage.
+We assume that you install the AMBER tools in `$HOME/GENESIS_Tutorials-2022/Programs`.
+Then, add the following commands in the `.bashrc` or the `.bash_profile` file with respect to your installation path.
+Or alternatively, execute the commands directly in the command line. 
 
-
-```
+```bash
 source ~/GENESIS_Tutorials-2022/Programs/amber18/amber.sh
 export AMBERHOME="~/GENESIS_Tutorials-2022/Programs/amber18"
-
 ```
 
 This tutorial consists of 8 sections, create a directory for each
 section.
 
 
-```
+```bash
 # Preparation of Tutorial 5.2
 $ cd ~/GENESIS_Tutorials-2022/Works
 
@@ -50,7 +52,6 @@ $ echo "tutorial-5.2: Creating input files for AMBER" >> README
 $ mkdir tutorial-5.2
 $ cd tutorial-5.2
 $ mkdir Sec1 Sec2 Sec3 Sec4.1 Sec4.2 Sec5 Sec6 Sec7 Sec8
-
 ```
 
 A large number of files will be created during the execution of the
@@ -71,7 +72,7 @@ obtained `proa.pdb` file is read by tleap, and prmtop and crd files are
 created using the ff14SB the force field.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec1
 $ wget https://files.rcsb.org/download/3MP9.pdb
@@ -89,7 +90,6 @@ $ tleap
 > saveamberparm mol test.prmtop test.crd
 > savepdb mol test.pdb
 > quit
-
 ```
 
 This protein contains several histidine residues. Histidines can exist
@@ -101,9 +101,8 @@ locations. Open the `test.prmtop` and `test.crd` output files in VMD and
 confirm that the structure is correctly displayed.
 
 
-```
+```bash
 $ vmd -parm7 test.prmtop -rst7 test.crd
-
 ```
 
 Also look at the `test.pdb` file and verify its content. In the original
@@ -112,7 +111,7 @@ start with 1. This feature is specific to LEaP, and the user should be
 careful upon referencing residue numbers when performing trajectory
 analysis.
 
-[ ]In this section, we used a single-chain
+Note: In this section, we used a single-chain
 protein with no missing amino acid residues. Within the structures
 deposited in the PDB, there are some in which parts such as loop regions
 are missing. In such cases, residue numbers are not consecutive and care
@@ -140,7 +139,7 @@ However here, we prepare a separate PDB file for each chain and use the
 "combine" command in tleap for combining them.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec2
 $ wget https://files.rcsb.org/download/1AFO.pdb
@@ -166,7 +165,6 @@ $ tleap
 > saveamberparm dimer test.prmtop test.crd
 > savepdb dimer test.pdb
 > quit
-
 ```
 
 As in the previous section, verify that the content of the `test.pdb`
@@ -207,16 +205,15 @@ may independently try to execute the procedure. Use the protein from
 section 1, and change the residue name of one of the ASP or GLU residues
 and verify that the residue has indeed been protonated.
 
-  --------------------- -------------------------------------------------------------------------------------------
-  Amino acid            Residue name in AMBER
-  Aspartic acid (ASP)   ASP (deprotonated), ASH (protonated)
-  Glutamic acid (Glu)   GLU (deprotonated), GLH (protonated)
-  Histidine (His)       HID (H in the δ-position N), HIE (H in the ε-position N), HIP (both sites are protonated)
-  Cysteine (Cys)        CYS, CYX (in SS bonds), CYM (coordinated with a metal)
-  --------------------- -------------------------------------------------------------------------------------------
+  |Amino acid          |  Residue name in AMBER |
+  |----|----|
+  |Aspartic acid (ASP) |  ASP (deprotonated), ASH (protonated) |
+  |Glutamic acid (Glu) |  GLU (deprotonated), GLH (protonated) |
+  |Histidine (His)     |  HID (H in the δ-position N), HIE (H in the ε-position N), HIP (both sites are protonated) |
+  |Cysteine (Cys)      |  CYS, CYX (in SS bonds), CYM (coordinated with a metal) |
 
- In zinc containing metalloproteins, The SH
-group in Cys often appear in the S^−^ form and coordinated with Zn^2+^.
+Note: In zinc containing metalloproteins, The SH
+group in Cys often appear in the S<sup>−</sup> form and coordinated with Zn<sup>2+</sup>.
 In such cases, make sure to use the CYM form.
 
 ##  4. Adding disulfide bonds
@@ -234,7 +231,7 @@ the residue names, and then execute the "bond" command in tleap to
 create a covalent bond between the SG atoms of CYX122 and CYX164.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec4.1
 $ wget https://files.rcsb.org/download/3EAC.pdb
@@ -257,7 +254,6 @@ $ tleap
 > saveamberparm mol test.prmtop test.crd
 > savepdb mol test.pdb
 > quit
-
 ```
 
 Open the obtained `test.prmtop` and `test.crd` files in VMD and verify
@@ -286,7 +282,7 @@ the `bond` command in tleap to create a covalent bond between the SG
 atoms of the CYX residues whose numbers we obtained in the first step.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec4.2
 $ wget https://files.rcsb.org/download/3I40.pdb
@@ -325,7 +321,6 @@ $ tleap
 > saveamberparm complex test.prmtop test.crd
 > savepdb complex test.pdb
 > quit
-
 ```
 
 The reason we execute tleap in two stages is that residue numbers of the
@@ -346,7 +341,7 @@ provided useful information regarding which of the two parameter sets to
 be chosen [^3]. Here, we use the latter parameter set.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec5
 $ wget https://files.rcsb.org/download/3LNQ.pdb
@@ -372,7 +367,6 @@ $ tleap
 > saveamberparm complex test.prmtop test.crd
 > savepdb complex test.pdb
 > quit
-
 ```
 
 ##  6. Including crystal structure water and ions
@@ -380,7 +374,7 @@ $ tleap
 Here we show how to create `prmtop` and `crd` files for systems
 containing water molecules which were resolved in the X-ray crystal
 structure, internal water molecules predicted using programs such as
-[DOWSER](http://muralab.org/%7Ecmura/DOWSER/), or ions coordinated with the protein. Here,
+[DOWSER](https://www.ks.uiuc.edu/Research/vmd/plugins/dowser/), or ions coordinated with the protein. Here,
 we present a simple example for creating a PSF file for [PDB: 2I5M](https://www.rcsb.org/structure/2I5M), which contains water and a magnesium ion.
 Recently it is being increasingly recommended that the TIP4P water model
 should be used when using the AMBER force field. Here, assuming that
@@ -392,7 +386,7 @@ potential form is used. These parameters were optimized to be used
 together with TIP4Pew.
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec6
 $ wget https://files.rcsb.org/download/2I5M.pdb
@@ -417,7 +411,6 @@ $ tleap
 > saveamberparm complex test.prmtop test.crd
 > savepdb complex test.pdb
 > quit
-
 ```
 
 When we open the resulting `test.prmtop` and `test.crd` in VMD, we
@@ -446,7 +439,7 @@ protein system. First, similarly to previous sections, we create PDB
 files separately for the protein and for the ligand (residue name 2LP).
 
 
-```
+```bash
 # Download the PDB file
 $ cd Sec7
 $ wget https://files.rcsb.org/download/1OV5.pdb
@@ -459,7 +452,6 @@ vmd > set sel2 [atomselect top "chain A and resname 2LP"]
 vmd > $sel1 writepdb proa.pdb
 vmd > $sel2 writepdb 2LP.pdb
 vmd > exit
-
 ```
 
 The resulting `2LP.pdb` file does not contain hydrogen atoms, thus they
@@ -482,7 +474,7 @@ identified and obtained in the form of a frcmod file. Here, we show the
 procedure for GAFF2, which is the latest version of GAFF.
 
 
-```
+```bash
 # Create a directory for the antechamber calculation
 # and copy the hydrogen-included ligand file
 $ mkdir Antechamber
@@ -493,7 +485,6 @@ $ cp ~/Download/2LPFH.pdb ./
 # missing from gaff using the prmchk2 command
 $ antechamber -i 2LPFH.pdb -fi pdb -o ligand.mol2 -fo mol2 -c bcc -at gaff2
 $ parmchk2 -i ligand.mol2 -f mol2 -o ligand.frcmod -s gaff2
-
 ```
 
 The desired calculation method for charges can be specified by the -c
@@ -510,7 +501,7 @@ output files obtained so far to tleap and generate the prmtop and crd
 files.
 
 
-```
+```bash
 # Create prmtop and crd files using tleap
 $ cd ../
 $ tleap
@@ -523,7 +514,6 @@ $ tleap
 > saveamberparm complex test.prmtop test.crd
 > savepdb complex test.pdb
 > quit
-
 ```
 
 ##  8. Solvating the system 
@@ -537,17 +527,14 @@ neutralize the net charge of the system to utilize the Ewald method. In
 this section, we first explain the basic scheme to add water, and then
 add ions to make 150 mM KCl solution.
 
-**Add water\
-**
+### Add water
 
 In the following example, we solvate the protein used in Section 1 with
 the TIP4P-EW water model. Here, we shift the center of mass of the
 protein to the origin using VMD, and add water with a given box size
-using tLeap. **\
-**
+using tLeap.
 
-
-```
+```bash
 # Download the PDB file
 $ cd Sec8
 $ wget https://files.rcsb.org/download/3MP9.pdb
@@ -571,37 +558,36 @@ $ tleap
 > saveamberparm mol test.prmtop test.crd 
 > savepdb mol test.pdb 
 > quit
-
 ```
 
-**Add water and ions**
+### Add water and ions
 
 Now, we explain how to add ions in the system to solvate the protein in
 150 mM KCl solution. Remember basic chemistry. In 150 mM solution, the
 number of moles of solute in 1 litter (L) solution should be 150 mmol.
-The Avogadro number is 6.02 × 10^23^. Accordingly, there are 150 ×
-10^-3^ × 6.02 × 10^23^ = 9.03 × 10^22^ KCl molecules in the 1 L KCl
+The Avogadro number is 6.02 × 10<sup>23</sup>. Accordingly, there are 150 ×
+10<sup>-3</sup> × 6.02 × 10<sup>23</sup> = 9.03 × 10<sup>22</sup> KCl molecules in the 1 L KCl
 solution. Here, we assume that the density of KCl solution is almost
-same with that of solvent. The density of water is \~0.997 g/cm^3^ at
+same with that of solvent. The density of water is \~0.997 g/cm<sup>3</sup> at
 the room temperature, and thus, the weight of 1 L water is \~997 g.
-Since the weight of 1 mol H~2~O is \~18.02 g, the 1 L water is composed
-of \~3.33 × 10^25^ H~2~O molecules (55.3 mol). According to these
+Since the weight of 1 mol H<sub>2</sub>O is \~18.02 g, the 1 L water is composed
+of \~3.33 × 10<sup>25</sup> H<sub>2</sub>O molecules (55.3 mol). According to these
 relationships, when there are *N* water molecules in the system, we
-should add (9.03 × 10^22^)/(3.33 ×10^25^) × *N* = **0.002712 × *N*** KCl
+should add (9.03 × 10<sup>22</sup>)/(3.33 ×10<sup>25</sup>) × *N* = **0.002712 × *N*** KCl
 molecules in the system to make 150 mM KCl solution. For instance, in
-the case of *N* = 10,000, we add 27 K^+^ and 27 Cl^--^.
+the case of *N* = 10,000, we add 27 K<sup>+</sup> and 27 Cl<sup>-</sup>.
 
 Since we usually use the Ewald method in the MD simulations, the total
 charge of the system must be zero. In tLeap, we specify the number of
 ions manually so as to neutralize the system. In the following example,
-we add K^+^ and Cl^--^ to make 150 mM solution with charge neutrality.
+we add K<sup>+</sup> and Cl<sup>-</sup> to make 150 mM solution with charge neutrality.
 Since the total charge of the protein is -5, and there are 15,519 water
-molecules in the system, we add 42 Cl^--^ and (42 + 5) K^+^. These ions
+molecules in the system, we add 42 Cl<sup>-</sup> and (42 + 5) K<sup>+</sup>. These ions
 are randomly placed in the system. Total charge of the system can be
 check with the `charge` command.
 
 
-```
+```bash
 $ tleap 
 > source leaprc.protein.ff14SB 
 > source leaprc.water.tip4pew 
@@ -620,7 +606,6 @@ Total perturbed charge: 0.000000
 > saveamberparm mol test.prmtop test.crd 
 > savepdb mol test.pdb 
 > quit
-
 ```
 
 We can see the box size of the system in the 1st line of the obtained
@@ -638,67 +623,34 @@ section 1.
 **vmd.tcl:**
 
 
-```
+```bash
 mol load pdb 3MP9.pdb
 set sel [atomselect top "(chain A and protein) and not altloc B"] 
 $sel writepdb proa.pdb
 exit
-
 ```
 
 **tleap.inp:**
 
 
-```
+```bash
 source leaprc.protein.ff14SB 
 mol = loadpdb proa.pdb 
 saveamberparm mol test.prmtop test.crd 
 savepdb mol test.pdb 
 quit
-
 ```
 
 Next, we execute the two script files using the following command.
 
 
-```
+```bash
 $ vmd -dispdev text -e vmd.tcl > vmd.log
 $ tleap -f tleap.inp > tleap.log
-
 ```
 
 When done this way, an execution log file can be written, making error
 tracking easy.
-
-##  References 
-
-1.  I. Ivani *et al.*, *Nat. Methods*, **13**, 55-58 (2016).
-
-```
-[](https://www.nature.com/articles/nmeth.3658)
-```
-
-2.  M. Zgarbova *et al.*, *J. Chem. Theory Comput.,* **11**, 5723-5736
-
-```
-(2015).
-[](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.5b00716)
-```
-
-3.  R. Galindo-Murillo *et al.*, *J. Chem. Theory Comput.,* **12**,
-
-```
-4114-4127 (2016).
-[](https://pubs.acs.org/doi/full/10.1021/acs.jctc.6b00186)
-```
-
-4.  S. Joung and T. E. Chetham, *J. Phys. Chem. B*, **112**, 9020-9041
-
-```
-(2008).
-[](https://pubs.acs.org/doi/10.1021/jp8001614)
-
-```
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory
 (Original Japanese document)\
@@ -706,4 +658,11 @@ Translated by Ai Shinobu@RIKEN Computational Biophysics Research Team
 March 23, 2022*\
 *Updated links by Chigusa Kobayashi@RIKEN Computational Biophysics
 Research Team May 30, 2024*
+{: .notice}
 
+##  References 
+
+[^1]: [I. Ivani *et al.*, *Nat. Methods*, **13**, 55-58 (2016).](https://www.nature.com/articles/nmeth.3658)
+[^2]: [M. Zgarbova *et al.*, *J. Chem. Theory Comput.,* **11**, 5723-5736 (2015).](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.5b00716)
+[^3]: [R. Galindo-Murillo *et al.*, *J. Chem. Theory Comput.,* **12**, 4114-4127 (2016).](https://pubs.acs.org/doi/full/10.1021/acs.jctc.6b00186)
+[^4]: [S. Joung and T. E. Chetham, *J. Phys. Chem. B*, **112**, 9020-9041 (2008).](https://pubs.acs.org/doi/10.1021/jp8001614)
