@@ -99,8 +99,7 @@ the upper leaflet and lower leaflet are 56 and 55, respectively (Figure 7).
 Figure 6. Addition of lipid to the system. Input lengths of X and Y and
 ratios of POPC in upper and lower leaflets.
 
-
-![](/assets/images/2022_02_gpcr_fig7.jpg)
+![](/assets/images/2022_02_gpcr_fig7.jpg){: width="400"}
 
 Figure 7. Number of lipid molecules added to the system.
 
@@ -639,6 +638,7 @@ Figure 16. The RMSF of each residue of GPCR.
 
 From Figure 16, the residues around 150 largely fluctuate compared to
 other residues. These residues are loop on the outside of membrane.
+
  
 *Written by Hiraku Oshima@RIKEN BDR\
 February 18, 2022*

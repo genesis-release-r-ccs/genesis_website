@@ -354,7 +354,7 @@ simluation box by typing,
 in the console of VMD. The console of VMD opens by choosing "Extensions
 -\> Tk Console" in the VMD Main window.
 
-### 3.4. Check the status: Temperature and Area per lipid (A~L~)
+### 3.4. Check the status: Temperature and Area per lipid (A<sub>L</sub>)
 
 Extract the "INFO" lines from output files to individual files,
 
@@ -473,7 +473,7 @@ $ ls
 prod_area.gpi  thickness.gpi  thickness.inp
 ```
 
-### 5.1. Area per lipid (A~L~) 
+### 5.1. Area per lipid (A<sub>L</sub>) 
 
 A<sub>L</sub> is obtained as before by first extracting the "INFO" lines from the
 output, and calculating and plotting L<sub>x</sub> \* L<sub>y</sub> / n<sub>L</sub> with gnuplot,
@@ -581,10 +581,6 @@ $ eog thickness.jpg
 
 ![](/assets/images/2022_01_thickness.jpg)
 
-##  6. References
-[^1]: [J. B. Klauda *et al.*, **2010**, *J. Phys. Chem.*, 114, 7830--7843.](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
-[^2]: [S. Jo, T. Kim, and W. Im, **2008**, *PLoS ONE*, 2, e880.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
-
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory*\
 *June, 30, 2016*
@@ -609,3 +605,9 @@ Research Team*\
 Research Team*\
 *June, 5, 2026*
 {: .notice}
+
+
+##  6. References
+[^1]: [J. B. Klauda *et al.*, **2010**, *J. Phys. Chem.*, 114, 7830--7843.](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
+[^2]: [S. Jo, T. Kim, and W. Im, **2008**, *PLoS ONE*, 2, e880.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
+

@@ -9,23 +9,23 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 6.3 N-glycan Dynamics in Water 
+# N-glycan Dynamics in Water 
 
 Glycans (carbohydrates) are a major group of biopolymers with structural
 and functional importance in biology. Protein glycosylation is a
 post-translational modification observed in all domains of
-life.[^1^]{.citation} It is estimated that most proteins in nature are
+life.[^1] It is estimated that most proteins in nature are
 glycosylated, and the most abundant type of protein glycosylation is
-*N*-glycosylation.[^2^]{.citation} Studying glycans and glycoconjugates
+*N*-glycosylation.[^2] Studying glycans and glycoconjugates
 are important to understand the many processes for which they are
 involved, including protein folding, solvation, trafficking, protease
-protection, and more.[^3^]{.citation}
+protection, and more.[^3]
 
 Experimental identification of glycans are particularly challenging
 compared to proteins or nucleic acids because they can exhibit extensive
 branching. Their synthesis is not explicitly encoded in genes, but
 rather result from the differential expression of carbohydrate
-enzymes.[^4^]{.citation} Furthermore, there exist many structural and
+enzymes.[^4] Furthermore, there exist many structural and
 stereochemical isomers for each monomer, producing an enormous space for
 possible glycan structures. Simulation of glycans is therefore of
 particular importance to provide a theoretical reference to experimental
@@ -39,21 +39,21 @@ conformers is high. While enhanced sampling methods may be important for
 accurately simulating the dynamics of glycan systems, we will perform
 conventional molecular dynamics (MD) simulation for this tutorial.
 
-## Setup System in CHARMM-GUI
+## 1. Setup System in CHARMM-GUI
 
 [CHARMM-GUI](https://charmm-gui.org/) offers a Glycan Reader & Modeler
 convenient for setting up simulations of glycan systems using the CHARMM
-force field.[^5^]{.citation} Let us use this tool to obtain the initial
+force field.[^5] Let us use this tool to obtain the initial
 coordinates and parameter files for the simulation.
 
 From the *Input Generator* column of CHARMM-GUI, select *Glycan Reader &
 Modeler*. Because our system is glycan only, select "Glycan Only System"
 from the bottom of the page.
 
-### Building the Structure
+### 1.1. Building the Structure
 
 Let us build the glycan molecule from its sequence. Specify whether the
-anomer is [[[[[α]]]]]{.math .inline} or [[[$\beta$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}, select the monosaccharide, and define the positions of the
+anomer is \\( \alpha \\) or \\( \beta \\), select the monosaccharide, and define the positions of the
 glycosidic bonds. If branches are present, click the `+` button of the
 unit from which branching occurs. No trouble if you make a mistake in
 entering the structures, just click the `–` button to delete a unit.
@@ -63,15 +63,15 @@ PDB/PSF".
 
 ![](/assets/images/2022_02_build_glycan.png)
 
-### Solvation
+### 1.2. Solvation
 
 The built molecule is embedded in three dimensional coordinates. This
 model is subsequently solvated in a waterbox. Let us select "Fit
 Waterbox Size to Protein Size" from the *Waterbox Size Options* section.
-Specify the edge distance to be [[[[[17.0][[[Å]]]]]]]{.math .inline} for a rectangular box. We deselect "Include Ions". Select "Next
+Specify the edge distance to be  17.0 Å for a rectangular box. We deselect "Include Ions". Select "Next
 Step: Solvate Molecule".
 
-### Periodic Boundary Condition
+### 1.3. Periodic Boundary Condition
 
 The glycan model is now solvated in a waterbox with no ions. Let us
 simply fit the grid information for particle-mesh Ewald (PME) fast
@@ -80,22 +80,32 @@ Boundary Condition Options* section, select "Generate grid information
 for PME FFT automatically", and move to next section by clicking "Next
 Step: Setup Periodic Boundary Condition".
 
-### Input File Generation
+### 1.4. Input File Generation
 
 The simulation system has been set up. We select the input files for
 equilibration and production. Let us use the *CHARMM36m* force field in
 the *Force Field Options*. Select "GENESIS" from the *Input Generation
 Options*. We will modify these files later, but for now, select "NVT
 Ensemble" for both equilibration and dynamics inputs. Finally, set the
-temperature to [[[$300.0K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Complete the selections by selecting "Next Step: Generate
+temperature to 300.0 K. Complete the selections by selecting "Next Step: Generate
 Equilibration and Dynamics inputs".
 
-### Download
+### 1.5. Download
 
-The input files are now ready to download. Select "download.tgz" from
-the right to obtain files as a compressed directory. Transfer the
-compressed directory to a project folder to perform simulation with
-GENESIS.
+The input files are now ready to download from [GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials). 
+
+This tutorial consists of four steps: 1) system setup using
+CHARMM-GUI, 2) energy minimization and equilibration, 3) production run,
+and 4) trajectory analysis. Since we use the CHARMM force field, we make
+a symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+
+```bash
+$ cd genesis_tutorial_materials/tutorial-6.1
+$ ln -s ../Data/Parameters/toppar_c36_jul21 ./toppar
+$ ls
+1_charmm-gui  2_min_equil  3_production  4_analysis  toppar
+```
 
 Extract the directory and navigate to the `genesis/` subdirectory.
 
@@ -107,9 +117,7 @@ cd charmm-gui-4212660946/genesis/
 ls
 ```
 
-output
-
-``` hljs
+``` bash
  restraints
  step3_input.crd
  step3_input.pdb
@@ -122,9 +130,9 @@ output
 
 The input scripts can be modified for our use. Consider downloading the
 input scripts
-[here](/assets/tutorial_files/2022_06_tutorial22-6.3.tar.gz), or modify them yourself.
+[here](https://github.com/noinil/genesis_tutorial_materials/tree/main/tutorial-6.3), or modify them yourself.
 
-## Minimization
+## 2. Minimization
 
 We first perform energy minimization to the system to obtain a
 representative starting structure to simulation. The downloaded script,
@@ -135,9 +143,7 @@ inspect the input script.
 more step4.0_minimization.inp
 ```
 
-output
-
-``` hljs
+``` toml
  [INPUT]
  topfile = ../toppar/top_all36_prot.rtf, ../toppar/top_all36_na.rtf, ../toppar/top_all36_carb.rtf, ../toppar/top_all36_lipid.rtf, ../toppar/top_all36_cgenff.rtf, ../toppar/top_interface.rtf 
  parfile = ../toppar/par_all36m_prot.prm, ../toppar/par_all36_na.prm, ../toppar/par_all36_carb.prm, ../toppar/par_all36_lipid.prm, ../toppar/par_all36_cgenff.prm, ../toppar/par_interface.prm 
@@ -221,9 +227,7 @@ grep 'INFO:' step4.0_minimization.log | awk '{print $2,$3}' | sed 's/ /,/g' > re
 head results/step4.0_minimization.csv
 ```
 
-output
-
-``` hljs
+``` bash
  ##STEP,POTENTIAL_ENE
  0,-111631.6654
  10,-111672.9057
@@ -237,7 +241,7 @@ output
 ```
 
 Visualize the time dependent potential energy. Let us use the Python
-packages Pandas[^6^]{.citation} and Seaborn[^7^]{.citation} for this
+packages Pandas[^6] and Seaborn[^7] for this
 tutorial.
 
 ``` python
@@ -261,22 +265,20 @@ fig.set(xlabel ="step", ylabel = "potential energy")
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig1.png)
 
 We confirm the potential energy is decreasing at each step as expected.
 Because the potential energy is plateauing, we observe the minimization
 is sufficiently converged.
 
-## Equilibration
+## 3. Equilibration
 
 We need to equilibrate the system in preparation to a production run. We
 first perform equilibration in the NPT ensemble to determine the system
-volume at [[[$1.0atm$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} pressure. Then we let the system equilibrate with the NVT
+volume at 1.0 atm pressure. Then we let the system equilibrate with the NVT
 ensemble.
 
-### NPT Equilibration
+### 3.1. NPT Equilibration
 
 Let us use the downloaded file, `step4.1_equilibration.inp` as a
 template and write `step4.1_equilibrationNPT.inp`.
@@ -285,9 +287,7 @@ template and write `step4.1_equilibrationNPT.inp`.
 more step4.1_equilibrationNPT.inp
 ```
 
-output
-
-``` hljs
+``` toml
  [INPUT]
  topfile = ../toppar/top_all36_prot.rtf, ../toppar/top_all36_na.rtf, ../toppar/top_all36_carb.rtf, ../toppar/top_all36_lipid.rtf, ../toppar/top_all36_cgenff.rtf, ../toppar/top_interface.rtf 
  parfile = ../toppar/par_all36m_prot.prm, ../toppar/par_all36_na.prm, ../toppar/par_all36_carb.prm, ../toppar/par_all36_lipid.prm, ../toppar/par_all36_cgenff.prm, ../toppar/par_interface.prm 
@@ -371,9 +371,7 @@ grep 'INFO:' step4.1_equilibrationNPT.log | awk '{print $3,$16,$17,$18,$22}' | s
 head results/step4.1_equilibrationNPT.csv
 ```
 
-output
-
-``` hljs
+``` bash
  ##TIME,TEMPERATURE,VOLUME,BOXX,PRESSURE
  0.0000,300.2294,300763.0000,67.0000,-782.1020
  1.0000,242.9415,281611.6217,65.5466,95.1258
@@ -400,12 +398,10 @@ fig.axhline(1.0, alpha = 0.5, linestyle ='--')
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig2.png)
 
 The pressure is initially very negative. It approaches
-[[[$1.0atm$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} and oscillates around the target value. The pressure is
+1.0 atm and oscillates around the target value. The pressure is
 maintained by adjusting the volume of the system. Observe the change
 over time of the edge length of the simulation box.
 
@@ -416,15 +412,13 @@ fig.set(xlabel ="time (ps)", ylabel = "edge length (Å)")
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig3.png)
 
 We observe the edge length approaches a value between
-[[[$65.5Å$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} and [[[$66.0Å$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} over time. While the fluctuation in the pressure may appear
+65.5 Å and 66.0 Å over time. While the fluctuation in the pressure may appear
 large, we observe the change in volume to maintain the pressure is quite
 small. Let us also confirm the system has approached the target
-temperature of [[[$300.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}.
+temperature of 300.0 K.
 
 ``` python
 plt.figure()
@@ -434,11 +428,9 @@ fig.axhline(300., alpha = 0.5, linestyle ='--')
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig4.png)
 
-### NVT Equilibration
+### 3.2. NVT Equilibration
 
 Let us take the last frame from the NPT equilibration and use it as the
 input for the NVT equilibration. The control file,
@@ -446,16 +438,11 @@ input for the NVT equilibration. The control file,
 `step4.1_equilibration.inp` as the template. Let us view the control
 file.
 
-
 ``` bash
 more step4.2_equilibrationNVT.inp
 ```
 
-
-
-output
-
-``` hljs
+``` toml
  [INPUT]
  topfile = ../toppar/top_all36_prot.rtf, ../toppar/top_all36_na.rtf, ../toppar/top_all36_carb.rtf, ../toppar/top_all36_lipid.rtf, ../toppar/top_all36_cgenff.rtf, ../toppar/top_interface.rtf 
  parfile = ../toppar/par_all36m_prot.prm, ../toppar/par_all36_na.prm, ../toppar/par_all36_carb.prm, ../toppar/par_all36_lipid.prm, ../toppar/par_all36_cgenff.prm, ../toppar/par_interface.prm 
@@ -536,9 +523,7 @@ grep 'INFO:' step4.2_equilibrationNVT.log | awk '{print $3,$16,$17}' | sed 's/ /
 head results/step4.2_equilibrationNVT.csv
 ```
 
-output
-
-``` hljs
+``` toml
  ##TIME,TEMPERATURE,VOLUME
  1.0000,298.4705,283222.3930
  2.0000,299.3117,283222.3930
@@ -551,7 +536,6 @@ output
  9.0000,301.2478,283222.3930
 ```
 
-
 ``` python
 equilibrationNVT = pd.read_csv('results/step4.2_equilibrationNVT.csv')
 
@@ -562,10 +546,7 @@ fig.axhline(300., alpha = 0.5, linestyle ='--')
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig5.png)
-
 
 ``` python
 plt.figure()
@@ -574,25 +555,18 @@ fig.set(xlabel ="time (ps)", ylabel = "volume (Å^3)")
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig6.png)
 
-### Production
+## 4. Production
 
 The N-glycan is now ready for a productive run. Let us simulate the
-system at [[[$300K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} for [[[[[1]]][$.0ns$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline} using step size of [[[$2.5fs$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. The input script is as follows.
-
+system at 300 K for 1.0 ns using step size of 2.5 fs. The input script is as follows.
 
 ``` bash
 more step5.0_productionNVT.inp
 ```
 
-
-
-output
-
-``` hljs
+``` toml
  [INPUT]
  topfile = ../toppar/top_all36_prot.rtf, ../toppar/top_all36_na.rtf, ../toppar/top_all36_carb.rtf, ../toppar/top_all36_lipid.rtf, ../toppar/top_all36_cgenff.rtf, ../toppar/top_interface.rtf 
  parfile = ../toppar/par_all36m_prot.prm, ../toppar/par_all36_na.prm, ../toppar/par_all36_carb.prm, ../toppar/par_all36_lipid.prm, ../toppar/par_all36_cgenff.prm, ../toppar/par_interface.prm 
@@ -643,18 +617,15 @@ output
  [SELECTION]
  group1          = (sid:CARB) and not hydrogen
 ```
-
-
 Submit the calculation
 
 ``` bash
 mpirun -np 8 {params.bin_path}spdyn step5.0_productionNVT.inp > step5.0_productionNVT.log
 ```
-
-## Analysis
+## 5. Analysis
 
 Let us confirm the simulation was performed at the target temperature of
-[[[[[3]]][$00.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Extract the temperature and time from the log file.
+300 K. Extract the temperature and time from the log file.
 
 ``` bash
 # save the log to csv
@@ -663,9 +634,7 @@ grep 'INFO:' step5.0_productionNVT.log | awk '{print $3,$16}' | sed 's/ /,/g' > 
 head results/step5.0_productionNVT.csv
 ```
 
-output
-
-``` hljs
+``` bash
  ##TIME,TEMPERATURE
  2.0000,298.4089
  4.0000,301.4387
@@ -688,12 +657,10 @@ fig.axhline(300., alpha = 0.5, linestyle ='--')
 plt.show()
 ```
 
-plot
-
 ![](/assets/images/2022_02_fig7.png)
 
 As expected, the trajectory fluctuates near the target temperature of
-[[[$300.K$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}. Let us also visualize the trajectory.
+300 K. Let us also visualize the trajectory.
 
 [http://localhost/assets/images/2022_06_nglycan_simulation.mp4](/assets/images/2022_06_nglycan_simulation.mp4)
 
@@ -707,9 +674,7 @@ the input file.
 more step6.0_hbondAnalysis.inp
 ```
 
-output
-
-``` hljs
+``` toml
  # control parameters in hbond_analysis
   
  [INPUT]
@@ -744,7 +709,6 @@ output
  num_cells_x   = 8         # number of cells (x)
  num_cells_y   = 8         # number of cells (x)
  num_cells_z   = 8         # number of cells (x)
- 
   
  [SELECTION]
   group1         = atomno:1-246             # selection group 1
@@ -797,9 +761,7 @@ grep -v '#' step6.0_hbondAnalysis/hbond_analysis.txt | grep '\.\.' | awk '{print
 head step6.0_hbondAnalysis.csv
 ```
 
-output
-
-``` hljs
+``` bash
  ##H-bond_count,atom_ana,residue_ana,res_ana_num,atom_tar,residue_tar,res_tar_num
  4,O,BGLCNA,1,O3,BGLCNA,1
  4,O3,BGLCNA,1,O,BGLCNA,1
@@ -832,75 +794,43 @@ fig.set(xlabel ="subunit index", ylabel = "subunit index")
 plt.show()
 ```
 
-plot\
 ![](/assets/images/2022_06_44c23b6b15d70994d766716b66bcaf1c.png)
 
 We observe each subunit engage in some degree of hydrogen bonding
 interactions over the trajectory. The subunits 3
-([[[$\beta$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}-D-mannose) exhibited the highest hydrogen bonding count on
-average, having [[[[[0.44]]]]]{.math .inline} bond with subunit 2 ([[[[[β]]]]]{.math .inline}-D-*N*-acetylglucosamine) and [[[[[0.38]]]]]{.math .inline} bond with subunit 10 ([[[$\alpha$]{.MJX_Assistive_MathML role="presentation"}]]{.math .inline}-D-mannose).
+\\( \beta \\)-D-mannose) exhibited the highest hydrogen bonding count on
+average, having 0.44 bond with subunit 2 \\( \beta \\)-D-*N*-acetylglucosamine) and 0.38 bond with subunit 10 \\( \alpha \\)-D-mannose).
 
-## Summary
+## 6. Summary
 
 We simulated a core *N*-glycan in water for 1.0 ns. The system was
 equilibrated to the expected temperature and pressure. We may pursue a
 longer simulation time or enhanced sampling methods to ensure the
 conformational space has been sufficiently explored.
 
-## Bibliography
-
-\(1\) Schwarz, F.; Aebi, M. Mechanisms and Principles of n-Linked
-Protein Glycosylation. *Current opinion in structural biology* **2011**,
-*21* (5), 576--582.
-
-\(2\) Apweiler, R.; Hermjakob, H.; Sharon, N. On the Frequency of
-Protein Glycosylation, as Deduced from Analysis of the SWISS-PROT
-Database. *Biochimica et Biophysica Acta (BBA)-General Subjects*
-**1999**, *1473* (1), 4--8.
-
-\(3\) Dwek, R. A. Biological Importance of Glycosylation. In *Molecular
-recognition and inclusion*; Springer, 1998; pp 1--6.
-
-\(4\) Krasnova, L.; Wong, C.-H. Understanding the Chemistry and Biology
-of Glycosylation with Glycan Synthesis. *Annual review of biochemistry*
-**2016**, *85*, 599--630.
-
-\(5\) Park, S.-J.; Lee, J.; Qi, Y.; Kern, N. R.; Lee, H. S.; Jo, S.;
-Joung, I.; Joo, K.; Lee, J.; Im, W. CHARMM-GUI Glycan Modeler for
-Modeling and Simulation of Carbohydrates and Glycoconjugates.
-*Glycobiology* **2019**, *29* (4), 320--331.
-
-\(6\) McKinney, W.; others. Data Structures for Statistical Computing in
-Python. In *Proceedings of the 9th python in science conference*;
-Austin, TX, 2010; Vol. 445, pp 51--56.
-
-\(7\) Waskom, M.; Botvinnik, O.; O'Kane, D.; Hobson, P.; Lukauskas, S.;
-Gemperline, D. C.; Augspurger, T.; Halchenko, Y.; Cole, J. B.;
-Warmenhoven, J.; Ruiter, J. de; Pye, C.; Hoyer, S.; Vanderplas, J.;
-Villalba, S.; Kunter, G.; Quintero, E.; Bachant, P.; Martin, M.; Meyer,
-K.; Miles, A.; Ram, Y.; Yarkoni, T.; Williams, M. L.; Evans, C.;
-Fitzgerald, C.; Brian; Fonnesbeck, C.; Lee, A.; Qalieh, A.
-*Mwaskom/Seaborn: V0.8.1 (September 2017)*; Zenodo, 2017.
-https://doi.org/[10.5281/zenodo.883859](https://doi.org/10.5281/zenodo.883859).
-
-
-
-
 ------------------------------------------------------------------------
-
-
-
 *Written by Kiyoto Aramis Tanemura @ Michigan State University*
-
-
-
 *June 18, 2022*
-
-
+{: .notice}
 
 *Updated by Chigusa Kobayashi@RIKEN Center for Computational Science*
-
-
-
 *May 30, 2024*
+{: .notice}
+
+
+## References
+
+[^1]: [F. Schwarz, M. Aebi, **2011**, *Curr. Opin. Struct. Biol.*, 21, 576--582.]
+
+[^2]: [R. Apweiler, H. Hermjakob, N. Sharon. **1999**, *BBA-General Subjects*, 1473, 4--8]
+
+[^3]: [R. A. Dwek, **1998**,  *Molecular recognition and inclusion*; Springer, pp 1--6]
+
+[^4]: [L. Krasnova, G.H. Wong, **2016**, *Annual review of biochemistry*, 85, 599--638]
+
+[^5]: [S. J. Park, J. Lee, Y. Qi, N. R. Kern, H. S. Lee, S. Jo, I. Joung, K. Joo, J. Lee, W. Im, W. **2019**, *Glycobiology*, 29, 320--331]
+
+[^6]: [W. McKinney et al, **2010**,  In *Proceedings of the 9th python in science conference*, Vol. 445, pp 51--56.]
+
+[^7]: [M. Waskom et al, **2017**, *Mwaskom/Seaborn: V0.8.1*, https://doi.org/10.5281/zenodo.883859](https://doi.org/10.5281/zenodo.883859)
 

@@ -82,10 +82,10 @@ $ ./configure --enable-single –with-cuda={your path of CUDA library}
 ### 2.2. Download Tutorial
 
 The input files in this tutorial cover from minimization to production
-run. After downloading the tutorial file from our github site, you can see five directories and two files.
+run. After downloading the tutorial file from our [github site](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials), you can see five directories and two files.
 
 ``` bash
-$ cd tutorial-10.1
+$ cd cd genesis_tutorial_materials/tutorial-10.1
 $ ls
 1.min 3.equil_hmr step3_pbcsetup.pdb toppar
 2.equil 4.production step3_pbcsetup.psf
@@ -413,9 +413,17 @@ temperature and pressure evaluations by writing `group_tp=yes` in the
 `[ENSEMBLE]` section.
 
 
-*Written by Jaewoon Jung@RIKEN R-CCS. March, 2022*
-*Updated by Jaewoon Jung@RIKEN R-CCS. June, 23, 2022*
-*Updated by Jaewoon Jung@RIKEN R-CCS. June, 10, 2025*
+*Written by Jaewoon Jung@RIKEN R-CCS. \
+March, 2022*
+{: .notice}
+
+*Updated by Jaewoon Jung@RIKEN R-CCS. \
+June, 23, 2022*
+{: .notice}
+
+*Updated by Jaewoon Jung@RIKEN R-CCS. \
+June, 10, 2025*
+{: .notice}
 
 ## 4. References
 

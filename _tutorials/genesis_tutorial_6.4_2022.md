@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 6.4 RNA in water 
+# RNA in water 
 
 In this tutorial, we will perform a short simulation of a synthetic
 riboswitch called N1 [^1]. It is a small RNA fragment, containing 27
@@ -18,29 +18,24 @@ expression of genes located in the same mRNA. Its dynamics was
 thoroughly investigated using molecular dynamics simulations, both with
 and without various ligands \[2,3\]. For the simulations of the
 riboswitch, we are going to use Amber force field, which is considered
-to work well for the simulations of various RNA systems \[2,3,4\].  
+to work well for the simulations of various RNA systems [^2] [^3] [^4].  
 
-The tutorial files are available for download in this link:
-[tutorial22-6.4](/assets/tutorial_files/2022_05_tutorial22-6.4.tar.gz). This tutorial consists of five steps: 1) system setup, 2)
+The input files are now ready to download from [GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+
+This tutorial consists of five steps: 1) system setup, 2)
 energy minimization, 3) equilibration, 4) production run, and 5)
 trajectory analysis. All control files for GENESIS are already included
 in the tutorial files.
 
 
-```
-# Download the tutorial file and confirm its content 
-$ cd /home/user/GENESIS/Tutorials
-$ mv ~/Downloads/tutorial22-6.4.zip ./ 
-$ unzip tutorial22-6.4.zip
-$ cd tutorial22-6.4
+``` bash
+$ cd genesis_tutorial_materials/tutorial-6.1
 $ ls
 1_setup 2_minimize 3_equilibrate 4_production 5_analysis
-
 ```
 
 ## 1. Setup
-
-------------------------------------------------------------------------
 
 The Amber force field contains the parameters for multiple water models,
 proteins, nucleic acids, lipids, glycans etc. All the information and
@@ -70,27 +65,24 @@ in the tutorial 5.2. If you wish to skip this step, the output files
 in the tutorial files.
 
 
-```
+``` bash
 # Change directory
 $ cd 1_setup
 $ ls
 2mxs_RNA-only.pdb leap.inp md.pdb md.prm
 # View the initial structure in VMD
 $ vmd md.pdb -parm7 md.prm
-
 ```
 
 ![](/assets/images/2022_05_fig1_version2.png)
 
-[ ]If we look closely, we can see that there is
+If we look closely, we can see that there is
 a covalent bond between the hydrogens in the water molecules. This is
 because water molecules are treated as rigid in the SHAKE algorithm so
 the distance betweeen the hydrogens is kept fixed. There is no need to
 worry about this.  
 
 ## 2. Minimization
-
-------------------------------------------------------------------------
 
 The energy minimization will be performed using the steepest descent
 (SD) algorithm for 5000 time steps. At this stage, the positions of the
@@ -107,14 +99,14 @@ for the simulations with the Amber force field. This parameter is set
 automatically, so we do not need to add it in the input file.  
 
 
-```
+``` bash
 # Change directory
 $ cd ../2_minimize
 # View the contents of the control file
 $ less INP
-
+``` 
    
-
+``` toml
 [INPUT]
 prmtopfile      = ../1_setup/md.prm  # AMBER parameter topology file
 pdbfile         = ../1_setup/md.pdb  # AMBER coordinate file
@@ -157,7 +149,6 @@ nfunctions      = 1  # number of functions
 function1       = POSI  # restraint function type
 constant1       = 10.0  # force constant
 select_index1   = 1  # restraint group
-
 ```
 
 Here, we will use 8 MPI processors
@@ -170,7 +161,7 @@ and plot the potential energy, as shown in the previous tutorials. 
 Now, let's run the minimization (the run should take \~5 minutes): 
 
 
-```
+``` bash
 # Set the number of OpenMP threads
 $ export OMP_NUM_THREADS=1
 
@@ -179,12 +170,9 @@ $ mpirun -np 8 /home/usr/GENESIS/bin/spdyn INP > log
 
 # Visualize the trajectory in VMD 
 $ vmd ../1_setup/md.pdb -dcd min.dcd
-
 ```
 
 ## 3. Equilibration
-
-------------------------------------------------------------------------
 
 Before the final production simulation we will perform equilibration.
 The equilibration will be performed in two steps, first in the canonical
@@ -194,13 +182,11 @@ is the temperature that was used for the experimental studies of the
 riboswitch. The directory for equilibration contains two control
 files:  
 
-
-```
+``` bash
 # Change directory
 $ cd ../3_equilibrate
 $ ls
 INP1 INP2
-
 ```
 
 ### 3.1 NVT-MD with positional restraints
@@ -214,10 +200,9 @@ The equations of motion are integrated using the velocity verlet
 integrator with the time step of 2 fs using the SHAKE algorithm [^10]
 for the bonds involving hydrogen atoms. The Bussi thermostat is applied
 to control the temperature
-[^11].[ ]
+[^11].
 
-
-```
+``` toml
 [INPUT]
 prmtopfile      = ../1_setup/md.prm  # AMBER parameter topology file
 pdbfile         = ../1_setup/md.pdb  # AMBER coordinate file
@@ -268,13 +253,12 @@ nfunctions      = 1  # number of functions
 function1       = POSI  # restraint function type
 constant1       = 1.0  # force constant
 select_index1   = 1  # restraint group
-
 ```
 
 Let's run the equilibration MD step1 (the run should take \~30 minutes): 
 
 
-```
+``` bash
 # Set the number of OpenMP threads
 $ export OMP_NUM_THREADS=4
 
@@ -283,7 +267,6 @@ $ mpirun -np 8 /home/usr/GENESIS/bin/spdyn INP1 > log1
 
 # Visualize the trajectory in VMD 
 $ vmd ../1_setup/md.pdb -dcd eq1.dcd
-
 ```
 
 ### 3.2 NPT-MD with positional restraints
@@ -296,10 +279,10 @@ setting for the simulations for the NPT ensemble, so we do not need to
 specify it in the input file. The Bussi barostat is applied to control
 the pressure [^11]. All the parameters are printed in the output log
 file, so it is always possible to confirm them after the
-simulation.[ ]
+simulation.
 
 
-```
+``` toml
 [INPUT]
 prmtopfile      = ../1_setup/md.prm  # AMBER parameter topology file
 pdbfile         = ../1_setup/md.pdb  # AMBER coordinate file
@@ -351,13 +334,12 @@ nfunctions      = 1  # number of functions
 function1       = POSI  # restraint function type
 constant1       = 1.0  # force constant
 select_index1   = 1  # restraint group
-
 ```
 
 Let's run the equilibration MD step2 (the run should take \~30 minutes): 
 
 
-```
+``` bash
 # Set the number of OpenMP threads
 $ export OMP_NUM_THREADS=4
 
@@ -366,13 +348,10 @@ $ mpirun -np 8 /home/usr/GENESIS/bin/spdyn INP2 > log2
 
 # Visualize the trajectory in VMD 
 $ vmd ../1_setup/md.pdb -dcd eq2.dcd
-
 ```
 
 It is also a good practice to observe the time course of the box size
 and pressure, as was demonstrated in previous tutorials.
-
-  
 
 ## 4. Production
 
@@ -384,19 +363,17 @@ divide this simulation in two parts, using the input files
 [`INP2`].
 
 
-```
+``` bash
 # Change directory
 $ cd ../4_production
 $ ls
 INP1 INP2
-
 ```
 
 The contents of the  [`INP1`]
-file are shown below.[ ]
+file are shown below.
 
-
-```
+``` toml
 [INPUT]
 prmtopfile      = ../1_setup/md.prm  # AMBER parameter topology file
 pdbfile         = ../1_setup/md.pdb  # AMBER coordinate file
@@ -439,18 +416,14 @@ ensemble        = NPT  # NVE, NVT, NPT
 tpcontrol       = BUSSI  # thermostat and barostat
 temperature     = 310.15  # initial and target temperature (K)
 pressure        = 1.0  # target pressure (atm)
-
 ```
-
 Let's execute the two production runs (run [`INP2`] after [`INP1`] finishes ):
 
-
-```
+``` bash
 # Production run for 0-200 ps (restart from eq2.rst)
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP1 > log1
 # Production run for 200-400 ps (restart from md1.rst)
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP2 > log2
-
 ```
 
 Since this simulation is run using periodic boundary conditions, water
@@ -463,17 +436,14 @@ Watson-Crick hydrogen bonds. In the next section we will look closer at
 the RNA flexibility.:
 
 
-```
+``` bash
 # View the trajectory using VMD
 $ vmd ../1_setup/md.pdb -dcd md2.dcd
 vmd > pbc set {80 80 72} -all
 vmd > pbc wrap -compound fragment -center origin -all
-
 ```
 
 ![](/assets/images/2022_04_fig2-1.png)
-
-  
 
 ## 5. Analysis
 
@@ -495,7 +465,7 @@ can follow the dynamics of the bases only.
 ![](/assets/images/2022_04_fig3.png)
 
 
-```
+``` bash
 # Change directory
 $ cd ../5_analysis
 $ ls 
@@ -504,7 +474,6 @@ INP1 INP2
 $ export OMP_NUM_THREADS=1
 $ /home/user/GENESIS/bin/avecrd_analysis INP1 | tee run1.out
 $ /home/user/GENESIS/bin/flccrd_analysis INP2 | tee run2.out
-
 ```
 
 Several output files were produced during the calculation. The 4th
@@ -513,13 +482,12 @@ value in the units of Angstrom. It can be plotted with gnuplot for each
 of the 27 nucleotides:
 
 
-```
+``` bash
 # Plot the RMSF 
 $ gnuplot
 gnuplot> set xlabel "Residue number"
 gnuplot> set ylabel "RMSF [angstrom]"
 gnuplot> plot "run2.rms" using 1:4 w lp
-
 ```
 
 ![](/assets/images/2022_04_fig4.png)
@@ -527,43 +495,33 @@ gnuplot> plot "run2.rms" using 1:4 w lp
 Can you plot the same RMSF graph for the phosphorus atoms (the atoms called P) in the RNA backbone? Do you notice any differences between
 those two graphs?
 
- 
-
-## References
-
-------------------------------------------------------------------------
-
-[^1] Duchardt‐Ferner et al. *Angew. Chem. Int. Ed.* 49.35 **(2010)**:
-6216-6219.
-
-[^2] Kulik et al. *Nucleic Acids Res.* 46.19 **(2018)**: 9960-9970.
-
-[^3] Chyży et al. *Front. Mol. Biosci*. 8 **(2021)**: 12.
-
-[^4] Sponer et al. *Chem. Rev.* 118.8 **(2018)**: 4177-4338.
-
-[^5] Jorgensen et al. *J. Chem. Phys.* 79.2 **(1983)**: 926-935.
-
-[^6] Joung and Cheatham *J. Phys. Chem. B* 112.30 **(2008)**:
-9020-9041.
-
-[^7] Cornell et al. *J. Am. Chem. Soc.* 117.19 **(1995)**: 5179-5197.
-
-[^8] Pérez et al. *Biophys. J.* 92.11 **(2007)**: 3817-3829.
-
-[^9] Zgarbova et al. *J. Chem. Theory Comput* 7.9 **(2011)**:
-2886-2902.
-
-[^10] Ryckaert et al. *J. Comput. Phys.* 23.3 **(1977)**: 327-341.
-
-[^11] Bussi et al. *J. Chem. Phys.* 126.1 **(2007)**: 014101.
-
- 
-
-------------------------------------------------------------------------
 
 *Written by Marta Kulik@RIKEN Theoretical molecular science laboratory &
 University of Warsaw*
+{: .notice}
 
- 
+## References
+
+[^1]: [Duchardt‐Ferner et al. **2010**, *Angew. Chem. Int. Ed.* 49, 6216--6219].
+
+[^2]: [Kulik et al. **2018**, *Nucleic Acids Res.* 46, 9960--9970].
+
+[^3]: [Chyży et al. **2021**, *Front. Mol. Biosci*. 8, 12].
+
+[^4]: [Sponer et al. **2018**, *Chem. Rev.* 118, 4177--4338].
+
+[^5]: [Jorgensen et al. **1983**, *J. Chem. Phys.* 79, 926--935].
+
+[^6]: [Joung and Cheatham **2008**, *J. Phys. Chem. B* 112, 9020--9041].
+
+[^7]: [Cornell et al. **1995**, *J. Am. Chem. Soc.* 117, 5179--5197].
+
+[^8]: [Pérez et al. **2007**, *Biophys. J.* 92, 3817--3829].
+
+[^9]: [Zgarbova et al. **2011**, *J. Chem. Theory Comput* 7, 2886--2902].
+
+[^10]: [Ryckaert et al. **1977**, *J. Comput. Phys.* 23, 327--341].
+
+[^11]: [Bussi et al. **2007**, *J. Chem. Phys.* 126, 014101].
+
 
