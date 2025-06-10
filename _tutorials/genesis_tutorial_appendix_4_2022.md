@@ -33,16 +33,16 @@ simulations.
 
 This example is to simulate the folding/unfolding dynamics of protein G.
 In principle, for such a simple CG system, a constant temperature run is
-enough to capture the folding/unfolding events, as shown in [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/).
+enough to capture the folding/unfolding events, as shown in [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/).
 Nevertheless, we think this system is good to illustrate how to carry
 out REMD simulations in couple with the residue-level CG models. You can
-also compare the results of this section with those from [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/).
+also compare the results of this section with those from [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/).
 
 ## 0. Preparations 
 
 ### 0.1 Install necessary software 
 
-As introduced in [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we use
+As introduced in [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we use
 the [GENESIS-CG-tool](https://github.com/noinil/genesis_cg_tool) to generate CG
 MD files. Please install dependencies (programming language Julia and some packages) to run this tool.
 
@@ -56,6 +56,7 @@ If you haven't downloaded the files yet, open your terminal and run the followin
 ```bash
 $ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
+
 This tutorial consists of three parts: 1) system setup, 2)REMD simulations, and 3) trajectory analysis.
 
 ```bash
@@ -65,13 +66,13 @@ $ ls
 ```
 ## 1. Setup
 
-You can go through section 0 and 1 of [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) 
+You can go through section 0 and 1 of [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) 
 to prepare the topology and coordinate files for the following simulations.
 
 Basically, we execute the following commands to create the necessary
 files (`1PGB_cg.top`, `1PGB_cg.itp`, and `1PGB_cg.gro`):
 
-```toml
+```bash
 # download the PDB file (PDB code 1PGB)
 $ cd 01_build
 $ wget https://files.rcsb.org/download/1PGB.pdb
@@ -93,8 +94,8 @@ $ ls
 remd.inp  param/
 ```
 
-In the "`param/`" directory there are standard parameter files for the
-CG models. The file "`remd.inp`" is the control file that contains the
+In the `param/` directory there are standard parameter files for the
+CG models. The file `remd.inp` is the control file that contains the
 information for GENESIS to perform the REMD simulations:
 
 ```toml
@@ -160,18 +161,18 @@ parameters1     = 320.00 \
                   470.00
 ```
 
-Please refer to [tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/) for the
+Please refer to [Tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/) for the
 detailed explanations of the directives, especially those in the
 `[REMD]` block. The most important thing is to choose the temperature
 range and the number of replicas, which is dependent on the a priori
-knowledge. Based on the results of [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we have a
-good guess of the "folding temperature" (\\(T\_f\\), defined as the temperature where folded and unfolded states have equal probabilities), which is around 400K. Therefore, here we want
-to use a range of temperatures to cover 400K
+knowledge. Based on the results of [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we have a
+good guess of the "folding temperature" (\\(T\_f\\), defined as the temperature where folded and unfolded states have equal probabilities), which is around 400 K. Therefore, here we want
+to use a range of temperatures to cover 400 K
 (\\(\lbrack 0.8T\_{f},1.2T\_{f}\rbrack\\)).
 To determine the number of replicas, one way is to first run simulations
 at constant temperatures and estimate the overlap of energy
 distributions at the neighboring temperatures. Here we choose an
-interval of 10K. As will be shown later in this tutorial, this choice
+interval of 10 K. As will be shown later in this tutorial, this choice
 produce a good energy overlap.
 
 ```bash
@@ -189,7 +190,7 @@ the simulation.
 ## 3. Analysis
 
 In this tutorial, we aim at calculating the potential-of-mean-force
-(PMF) of the Q-value (nativeness) at 400 K. Same as [tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/), 
+(PMF) of the Q-value (nativeness) at 400 K. Same as [Tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/), 
 we are going to utilize the MBAR re-weighting method.
 
 ```bash
@@ -301,7 +302,7 @@ plt.savefig("Replica_exchange_all.png")
 
 Content of `02.2_plot_temperature_exchange.py`:
 
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -457,7 +458,7 @@ $ ls
 05_qval_residcg_analysis.inp 05_calculate_qval.sh
 ```
 
-Please refer to [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) for the
+Please refer to [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) for the
 explanation of the control file `05_qval_residcg_analysis.inp`.
 
 Don't forget to change the path of GENESIS in line 6 of the bash
@@ -558,11 +559,12 @@ $ ./02_plot_PMF_Q.py
 
 ![](/assets/images/2022_06_tutorial_A4_qval_pmf.png){: style="width:60%; display:block; margin:0 auto;"}
 
-This figure shows the PMF of Q value at 400K.
+This figure shows the PMF of Q value at 400 K.
 
 ------------------------------------------------------------------------
 
 *Written by Cheng Tan@RIKEN Center for Computational Science,
 Computational Biophysics Research Team\
 June, 2022*
+{: .notice}
 

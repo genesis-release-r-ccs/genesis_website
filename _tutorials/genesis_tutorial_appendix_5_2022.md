@@ -218,4 +218,4 @@ REMD> New parameter set: 300.00000 305.00000 314.70000 330.20000
 
 *Written by Motoshi Kamiya@RIKEN R-CCS\
 Jun. 19, 2018*
-
+{: .notice}
