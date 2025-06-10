@@ -39,7 +39,6 @@ $ echo "tutorial-4.1: Analysis of DCD by Fortran programming" >> README
 $ cd ./tutorial-4.1
 $ ls
 ionized.pdb  run.dcd  sample.f90
-
 ```
 
 ##  1. What is contained in DCD file?
@@ -54,7 +53,6 @@ the water and ions wrapped into unit cells.
 ```
 # Take a look at the trajectory using VMD
 $ vmd ionized.pdb -dcd run.dcd
-
 ```
 
 Let's take a look at the DCD file using the `less` command.
@@ -63,7 +61,6 @@ Let's take a look at the DCD file using the `less` command.
 ```
 # Take a look at the contents in the DCD file
 $ less run.dcd
-
 ```
 
 DCD files are binary data, and no human can see what is written in them.
@@ -87,7 +84,7 @@ not included.
 
 ##  2. Sample program
 
-[The directory contains a sample program (`sample.f90`) written in the Fortran language \[1, 2\]. If you are not very familiar with programming, please try to understand the program line by line. This program opens a DCD file (`run.dcd`) and reads the box size and the coordinates of the atoms in each frame, but does not calculate anything. You will see "`Analyze the snapshot here`" in the program, where you can insert equations and calculations for the analysis of physical quantities. In the next section, we will show an example of editing this sample program to calculate a distance between two atoms.]
+[The directory contains a sample program (`sample.f90`) written in the Fortran language [^1] , [^2]. If you are not very familiar with programming, please try to understand the program line by line. This program opens a DCD file (`run.dcd`) and reads the box size and the coordinates of the atoms in each frame, but does not calculate anything. You will see "`Analyze the snapshot here`" in the program, where you can insert equations and calculations for the analysis of physical quantities. In the next section, we will show an example of editing this sample program to calculate a distance between two atoms.]
 
 
 ```
@@ -125,7 +122,6 @@ program main
   close(10)
 
 end program main
-
 ```
 
  In this sample program, the box size of each
@@ -183,7 +179,6 @@ type it all in.
   end do
   close(10)
 :
-
 ```
 
 Then, compile the source code and run the program. Since we specified
@@ -204,7 +199,6 @@ a.out  ionized.pdb  run.dcd  sample.f90
 $ ./a.out
 $ ls
 a.out  fort.20  ionized.pdb  run.dcd  sample.f90
-
 ```
 
 ![](/assets/images/2019_08_sample.jpg)
@@ -220,25 +214,17 @@ shows hydrogen-bonding formation, you should suspect the program. It is
 very important to do these **double and triple checks** to confirm the
 results.
 
-##  References
-
-1.  http://www.mrao.cam.ac.uk/\~rachael/compphys/SelfStudyF95.pdf
-
-```
-(English)
-[](http://www.mrao.cam.ac.uk/~rachael/compphys/SelfStudyF95.pdf)
-```
-
-2.  https://www.nag-j.co.jp/fortran/ (Japanese)
-
-```
-[](https://www.nag-j.co.jp/fortran/)
-
-```
-
-------------------------------------------------------------------------
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory*\
 *Feb. 24, 2022*
+{: .notice}
+
+##  References
+
+[^1]:  http://www.mrao.cam.ac.uk/\~rachael/compphys/SelfStudyF95.pdf (English)
+[^2]:  https://www.nag-j.co.jp/fortran/ (Japanese)
+
+
+------------------------------------------------------------------------
 

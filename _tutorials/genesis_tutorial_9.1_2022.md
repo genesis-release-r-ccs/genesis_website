@@ -33,7 +33,6 @@ $ unzip tutorial22-9.1.zip
 $ cd tutorial-9.1
 $ ls
 1_system  2_minimize  3_equilibrate  4_MD_restraint  5_targeted_MD  6_steered_MD
-
 ```
 
 A direcotry in paramter files can be linked as shown in Tutorial 3.1.
@@ -63,7 +62,6 @@ INP
 # Energy minimization
 $ export OMP_NUM_THREADS=3
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
-
 ```
 
 ## 3. Equilibration 
@@ -88,7 +86,6 @@ $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP1 > log1
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP2 > log2
 # equilibration in NVT ensemble (w/ positional restraints, VRES 2.5 fs)
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP3 > log3
-
 ```
 
 To see the structural changes of the protein, we sometimes need to
@@ -104,7 +101,6 @@ distance between two groups from the trajectory. 
 $ cd ../2_comdist
 $ cat INP
 $ /home/user/GENESIS/bin/trj_analysis INP > log
-
 ```
 
 INP is a control file for `trj_analysis`. In the `[OUTPUT]` section, the
@@ -147,7 +143,6 @@ $ tail -n5 output.comdis
 98 29.475
 99 29.463
 100 29.437
-
 ```
 
 The COM distance at the last step is used in the next simulation.
@@ -167,7 +162,6 @@ $ cd 1_md
 $ ls
 INP
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
-
 ```
 
 To restrain the COM distance, we set keywords in `[SELECTION]` and
@@ -184,7 +178,6 @@ function1 = DISTMASS
 reference1 = 29.4
 constant1 = 1.0
 select_index1 = 1 2
-
 ```
 
 After the simulation, you can check the COM distance during the
@@ -195,7 +188,6 @@ simulation using trj_analysis.
 $ cd ../2_comdist
 $ cat INP
 $ /home/user/GENESIS/bin/trj_analysis INP > log
-
 ```
 
 ## 5. Targeted MD simulation 
@@ -213,7 +205,6 @@ $ cd 1_md
 $ ls
 INP
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
-
 ```
 
 The keywords, target_md and final_rmsd, should be set in the
@@ -256,7 +247,6 @@ function1 = RMSDMASS
 reference1 = 4.3
 constant1 = 1.0
 select_index1 = 1
-
 ```
 
 In the TMD and SMD, reffile in the `[INPUT]`  section should be a
@@ -325,7 +315,6 @@ $ cd 1_md
 $ ls
 INP
 $ mpirun -np 8 /home/user/GENESIS/bin/spdyn INP > log
-
 ```
 
 The keywords, steered_md and final_rmsd, should be set in the
@@ -360,7 +349,6 @@ function1 = RMSDMASS
 reference1 = 4.3
 constant1 = 10.0
 select_index1 = 1
-
 ```
 
 After the simulation finishes, you can check the structural change from
@@ -375,7 +363,6 @@ are also prepared.
 # mass-weighted RMSD
 $ cd ../2_rmsd_analysis
 $ /home/user/GENESIS/bin/rmsd_analysis INP > log
-
 ```
 
 We examine two FCs (10 and 100). Please notice that the behaviour of the
@@ -388,7 +375,6 @@ RMSD curve changes when [[a different value of FC is used]{.hotkey-layer .previe
 # COM distance
 $ cd ../3_trj_analysis
 $ /home/user/GENESIS/bin/trj_analysis INP > log
-
 ```
 
 As shown in the RMSD plot, the amounts of change in the COM dist are
@@ -403,7 +389,6 @@ You can select coordinates from the trajectory for making a movie.
 # Convert crd for movie 
 $ cd ../4_crd_convert 
 $ /home/user/GENESIS/bin/crd_convert INP > log
-
 ```
 
 ## 7. References
@@ -415,8 +400,3 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 *Written by Chigusa Kobayashi@RIKEN R-CCS. March, 4, 2022*
 
 *Updated by Chigusa Kobayashi@RIKEN R-CCS. May, 9, 2022*
-
- 
-
- 
-
