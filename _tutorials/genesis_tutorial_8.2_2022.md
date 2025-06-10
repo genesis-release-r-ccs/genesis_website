@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 8.2 MD simulation of TSPO in the implicit membrane model 
+# MD simulation of TSPO in the implicit membrane model 
 
 In this tutorial, we simulate the translocator protein (TSPO) in the
 IMM1 implicit membrane model. The IMM1 model was originally developed by
@@ -28,7 +28,7 @@ assume that the users downloaded CHARMM in the `~/Downloads` directory.
 The EEF1 parameter files are found in the `support/aspara` directory. 
 
 
-```
+```bash
 # Copy the EEF1 parameter files from CHARMM
 $ cd ~/GENESIS_Tutorials-2022/Data/Parameters
 $ mkdir eef1
@@ -36,7 +36,6 @@ $ cd ./eef1
 $ cp ~/Downloads/charmm/support/aspara/solvpar.inp ./
 $ cp ~/Downloads/charmm/support/aspara/toph19_eef1.1.inp ./
 $ cp ~/Downloads/charmm/support/aspara/param19_eef1.1.inp ./
-
 ```
 
 We will simulate the translocator protein (TSPO) in the IMM1 implicit
@@ -58,7 +57,7 @@ downloaded PDB file in the `Data` directory.
 ![](/assets/images/2022_06_tutorial-8-2-fig2.png)
 
 
-```
+```bash
 # Download the "reoriented PDB structure" of TSPO
 $ cd ~/GENESIS_Tutorials-2022/Data/
 $ mkdir OPM
@@ -67,25 +66,29 @@ $ wget https://opm-assets.storage.googleapis.com/pdb/4ryo.pdb
 
 # Check the structure using VMD
 $ vmd 4ryo.pdb
-
 ```
 
-Now, let's download the tutorial file
-([tutorial22-8.2.tar.gz](/assets/tutorial_files/2022_06_tutorial22-8.2.tar.gz)). The tutorial consists of five steps: 1) system setup, 2)
-energy minimization, 3) equilibration, 4) production run, and 5)
-trajectory analysis. Control files for GENESIS are already included in
-the file. 
+If you haven't downloaded the tutorial files yet, open your terminal 
+and run the following command (see more in 
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
-
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-8.2.zip ./
-$ unzip tutorial22-8.2.zip
 
-# Clean up the directory
-$ mv tutorial22-8.2.zip TRASH
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials
+```
 
+The tutorial consists of five steps: 1) system setup, 2) energy minimization, 
+3) equilibration, 4) production run, and 5)trajectory analysis.
+Control files for GENESIS are already included in the file. 
+
+
+```bash
 # Let's take a note
 $ echo "tutorial-8.2: MD simulation of TSPO in the implicit membrane" >> README
 
@@ -95,18 +98,17 @@ $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
 $ ln -s ../../Data/Parameters/eef1 ./
 $ ls 
 1_setup  2_minimize  3_equilibrate  4_production  5_analysis  bin  eef1
-
 ```
 
 ##  1. Setup
 
 We first build the input PDB and PSF files using psfgen. The script is
 already contained in the `1_setup` directory. Here, `proa.pdb` and
-`proa.psf` are obtained. In addition, we make "`memb.pdb`" that contains
+`proa.psf` are obtained. In addition, we make `memb.pdb` that contains
 the dummy atoms representing the membrane plane.
 
 
-```
+```bash
 # Change directory for the system setup
 $ cd 1_setup
 $ ln -s ../../../Data/OPM/4ryo.pdb ./
@@ -120,19 +122,18 @@ $ ls
 
 # Make a PDB file that represents membrane
 $ grep "DUM" 4ryo.pdb > memb.pdb
-
 ```
 
 ##  2. Minimization
 
 To use the IMM1 implicit membrane model in GENESIS, we specify
-`eef1file` in the `[INPUT]` section, and "`implicit_solvent = IMM1`" and
-"`imm1_memb_thick`" in the `[ENERGY]` section. Here, we specify
-"`imm1_memb_thick = 31.4`" according to the OPM database. For the other
+`eef1file` in the `[INPUT]` section, and `implicit_solvent = IMM1` and
+`imm1_memb_thick` in the `[ENERGY]` section. Here, we specify
+`imm1_memb_thick = 31.4` according to the OPM database. For the other
 options for IMM1, please see the GENESIS user manual.
 
 
-```
+```toml
 # Change directory for energy minimization
 $ cd ../2_minimize
 $ less INP
@@ -155,18 +156,16 @@ imm1_memb_thick  = 31.4     # membrane thickness
 
 [BOUNDARY] 
 type             = NOBC     # [NOBC]
-
 ```
 
 Then, we execute ATDYN. The following is an example command using 4 CPU
 cores.
 
 
-```
+```bash
 # Run ATDYN 
 $ export OMP_NUM_THREADS=1
 $ mpirun -np 4 ../bin/atdyn INP > log
-
 ```
 
 ##  3. Equilibration
@@ -180,7 +179,7 @@ We use the Langevin thermostat to consider the random effects of the
 solvent on the solute atoms. 
 
 
-```
+```bash
 # Change directory for equilibration
 $ cd ../3_equilibrate
 $ less INP
@@ -189,17 +188,15 @@ $ less INP
 ensemble         = NVT       # [NVE,NVT]
 tpcontrol        = LANGEVIN  # [NO,BERENDSEN,BUSSI,LANGEVIN]
 temperature      = 298.15    # initial and target temperature (K)
-
 ```
 
 Let's execute ATDYN. In the `log` file, the solvation free energy is
 shown in the 14th column (SOLVATION).
 
 
-```
+```bash
 # Run ATDYN 
 $ mpirun -np 4 ../bin/atdyn INP > log
-
 ```
 
 ##  4. Production run 
@@ -210,7 +207,7 @@ equilibration run. The simulation time is extended, and the positional
 restraint is now turned off.
 
 
-```
+```bash
 # Change directory for production run
 $ cd ../4_production
 
@@ -219,7 +216,6 @@ $ mpirun -np 4 ../bin/atdyn INP > log
 
 # Check the MD trajectory
 $ vmd -f ../1_setup/memb.pdb -f ../1_setup/proa.pdb -psf ../1_setup/proa.psf -dcd md.dcd
-
 ```
 
 ![](/assets/images/2022_06_tutorial-8-2-fig3.png)
@@ -229,12 +225,12 @@ $ vmd -f ../1_setup/memb.pdb -f ../1_setup/proa.pdb -psf ../1_setup/proa.psf -dc
 ### Helix tilt angle
 
 We demonstrate the analysis of the helix tilt angle using the
-"`tilt_analysis`" tool in GENESIS, which computes the angle between the
+`tilt_analysis` tool in GENESIS, which computes the angle between the
 principal axis of a specified transmembrane (TM) helix and the z-axis
 (the bilayer normal). In the example, we analyze the residues 5--24.
 
 
-```
+```bash
 # Analyze the helix tilt angle
 $ cd ../5_analysis/
 $ cd ./helix_tilt
@@ -244,22 +240,18 @@ INP
 $ ../../bin/tilt_analysis INP
 $ ls
 INP  output.out
-
 ```
 
 Let's plot the results.
 
 ![](/assets/images/2022_06_tutorial-8-2-tilt_angle.png)
 
-##  References
-
-1.  T. Lazaridis, *Proteins*, **52**, 176-192 (2003).
-
- 
-
-------------------------------------------------------------------------
-
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory\
 June 17, 2022*
+{: .notice}
+
+##  References
+
+[^1]: [T. Lazaridis, *Proteins*, **52**, 176-192 (2003).](https://doi.org/10.1002/prot.10410)
 
