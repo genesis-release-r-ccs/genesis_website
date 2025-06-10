@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 15.3 How to create a cluster system 
+# How to create a cluster system 
 
 In many cases, classical MD (CMD) simulations are carried out for an
 initial relaxation of the target system prior to QM/MM calculations. The
@@ -20,32 +20,42 @@ for subsequent QM/MM calculations. In this section, we illustrate how to
 create a cluster system from a MD trajectory (a dcd file) using
 qmmm_generator.
 
-Let's download the tutorial file
-([tutorial22-15.3.tar.gz](/assets/tutorial_files/2022_02_tutorial22-15.3.tar.gz)). There are two
-directories, `1_ala3` and `2_tim`, which contain the data for alanine
-tripeptide (Ala~3~) and triosephosphate isomerate (TIM), respectively.
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-15.3
+```
 
-``` wp-block-preformatted
-$ unzip tutorial22-15.3.zip
-$ cd tutorial-15.3 
+There are two directories, `1_ala3` and `2_tim`, which contain the data for alanine tripeptide (Ala<sub>3</sub>) and triosephosphate isomerate (TIM), respectively.
+
+``` bash
 $ ls  
 1_ala3/ 2_tim/
 ```
 
-## 1. Alanine tripeptide (Ala~3~) 
+## 1. Alanine tripeptide (Ala<sub>3</sub>) 
 
 Let's move to a directory, `1_ala3`,
 
-``` wp-block-preformatted
+```bash
 $ cd 1_ala3
 $ ls
 ala3.dcd  qmmm_generator.inp  run.sh  solvator.pdb  solvator.psf
 ```
 
-ala3.dcd is a trajectory file of alanine tripeptide (Ala~3~), which was
+ala3.dcd is a trajectory file of alanine tripeptide (Ala<sub>3</sub>), which was
 obtained from a CMD simulation. Let's visualize `ala3.dcd` using VMD,
 
-``` wp-block-preformatted
+```bash
 $ vmd -psf solvator.psf -dcd ala3.dcd
 ```
 
@@ -55,17 +65,12 @@ molecules first need to be wrapped back in a simulation box. Then, we
 cut molecules that are far away (\~20.0 Å) from the QM region.
 "qmmm_generator" helps this wrap & cut procedure.
 
-<figure class="aligncenter">
-<img src="wp-content/uploads/2019/02/wrap_and_cut.png"
-class="wp-image-7546" data-fetchpriority="high" decoding="async"
-srcset="wp-content/uploads/2019/02/wrap_and_cut.png 1006w, wp-content/uploads/2019/02/wrap_and_cut-300x101.png 300w, wp-content/uploads/2019/02/wrap_and_cut-768x259.png 768w, wp-content/uploads/2019/02/wrap_and_cut-20x7.png 20w, wp-content/uploads/2019/02/wrap_and_cut-30x10.png 30w, wp-content/uploads/2019/02/wrap_and_cut-40x13.png 40w"
-sizes="(max-width: 1006px) 100vw, 1006px" width="1006" height="339" />
-</figure>
+![wrap and cut](/assets/images/2019_02_wrap_and_cut.png)
 
 "qmmm_generator.inp" is an input file for qmmm_generator. The content is
 shown in the following.
 
-``` wp-block-preformatted
+```toml
 [INPUT]
 psffile        = solvator.psf
 reffile        = solvator.pdb
@@ -75,7 +80,7 @@ The psf and pdb files are specified in `psffile` and `reffile`,
 respectively. They need to be consistent with dcd files specified in the
 \[TRAJECTORY\] section below.
 
-``` wp-block-preformatted
+```toml
 [OUTPUT]
 qmmm_crdfile   = ala3_{}.crd
 qmmm_psffile   = ala3_{}.psf
@@ -88,7 +93,7 @@ curvy brackets "{}" will be replaced by a snapshot ID in the program.
 Note that the number of atoms may change after the cutting procedure, so
 that not only pdb/crd but also psf are generated for each snapshot.
 
-``` wp-block-preformatted
+```toml
 [TRAJECTORY]
 trjfile1       = ala3.dcd
 md_step1       = 10
@@ -106,20 +111,20 @@ the number of atoms from a reffile of \[INPUT\]. For more details about
 this section, see
 [FAQ](tutorial/faq/faq2.html).
 
-``` wp-block-preformatted
+```toml
 [SELECTION]
 group1         = segid:PROA
 group2         = atomno:19 or (atomno:19 around_mol:22.0)
 ```
 
-`group1` selects Ala~3~. `group2` selects molecules that are within 22.0
+`group1` selects Ala<sub>3</sub>. `group2` selects molecules that are within 22.0
 Å of the 19th atom (CA of the 2nd ALA). Note that the selector command,
 `A around_mol:r`, selects a molecule if one of its atoms is within r Å
 of any atom of A. Also, `A around_mol:r` selects the molecules around A,
 but **NOT** A itself. Therefore, we use `A or (A around_mol:r)` to
 select a QM/MM system.
 
-``` wp-block-preformatted
+```toml
 [OPTION]
 origin_atom_index   = 1
 qmmm_atom_index     = 2
@@ -131,8 +136,8 @@ reconcile_num_atoms = NO
 
 `origin_atom_index` and `qmmm_atom_index` specify the origin of the
 system and atoms to be included in a QM/MM system, respectively. In this
-example, the center of mass of `group1` (= Ala~3~) is set to the origin,
-and the atoms in `group2` (= Ala~3~ and water molecules around Ala~3~)
+example, the center of mass of `group1` (= Ala<sub>3</sub>) is set to the origin,
+and the atoms in `group2` (= Ala<sub>3</sub> and water molecules around Ala<sub>3</sub>)
 are selected for a QM/MM system. The snapshot ID can be specified
 through `frame_number` in two ways: either by directly writing the ID
 number with comma separator or by a format of startID:stride:endID.
@@ -144,7 +149,7 @@ much similar as possible among all snapshots.
 
 qmmm_generator is invoked by run.sh,
 
-``` wp-block-preformatted
+```bash
 #!/bin/bash
  export PATH=/path/to/genesis/bin:$PATH
  qmmm_generator qmmm_generator.inp >& qmmm_generator.out
@@ -152,27 +157,22 @@ qmmm_generator is invoked by run.sh,
 
 Now, type
 
-``` wp-block-preformatted
+```bash
 $ chmod +x run.sh
 $ ./run.sh
 ```
 
-When successful, you will find ala3_ID.psf, .pdb, .crd, for ID = 5 and
-10. You may visually check the created system using VMD,
+When successful, you will find ala3_ID.psf, .pdb, .crd, for ID = 5 and 10. You may visually check the created system using VMD,
 
-``` wp-block-preformatted
+```bash
 $ vmd ala3_5.pdb
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2019/02/cut.png" class="wp-image-7633"
-decoding="async"
-srcset="wp-content/uploads/2019/02/cut.png 690w, wp-content/uploads/2019/02/cut-300x288.png 300w, wp-content/uploads/2019/02/cut-20x20.png 20w, wp-content/uploads/2019/02/cut-30x30.png 30w, wp-content/uploads/2019/02/cut-40x38.png 40w"
-sizes="(max-width: 392px) 100vw, 392px" width="392" height="376" />
-</figure>
+
+![cut](/assets/images/2019_02_cut.png){: width="400"}
 
 Then, we may use the resulting psf/pdb files for QM/MM calculations. In
-[Section 16.2](/tutorials/genesis_tutorial_16.2/), we set a spherical potential
+[Section 15.2](/tutorials/genesis_tutorial_15.2_2022/), we set a spherical potential
 with a radius of 20 Å and a fixed layer of 1 Å. This means that the
 water molecules in a range of 19 -- 22 Å are fixed to the initial
 position, and the pulling force is switched on when a flexible water
@@ -183,7 +183,7 @@ molecule goes beyond 20 Å.
 Let us illustrate another example for an enzyme, TIM. Let's move to a
 directory 2_tim,
 
-``` wp-block-preformatted
+```bash
 $ cd 2_tim  
 $ ls  
 qmmm_generator.inp  run.sh  solvator.pdb  solvator.psf  tim.dcd
@@ -193,11 +193,11 @@ A similar set of files is prepared as before except that "tim.dcd"
 contains the trajectory. The dcd file contains 10 snapshot structures.
 You can visualize them using VMD,
 
-``` wp-block-preformatted
+```bash
 $ vmd -psf solvator.psf -dcd tim.dcd
 ```
 
-![](/assets/images/2022_02_tim_snapshot1-2.png)
+![](/assets/images/2022_02_tim_snapshot1-2.png){: width="400"}
 
 The enzyme is in the middle, which is a homo dimer taken from
 PDBID:[7TIM](https://www.rcsb.org/structure/7TIM). The water molecules are diffusing out of the
@@ -207,16 +207,14 @@ water molecules.
 "qmmm_generator.inp" is an input file for `qmmm_generator`. The content
 is almost the same as before. The different part is the following,
 
-``` wp-block-preformatted
+```toml
 [SELECTION]
 group1 = sid:TIMA or sid:TIMB
-group2 = (sid:TIMA or sid:TIMB or \          ((sid:TIMA or sid:TIMB) around_res:15.0)) \
-
-```
-     and not sid:POT
-```
-
-group3 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \          and not (an:CA | an:C | an:O | an:N | an:HN | an:HA))
+group2 = (sid:TIMA or sid:TIMB or \
+         ((sid:TIMA or sid:TIMB) around_res:15.0)) \
+         and not sid:POT
+group3 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \
+         and not (an:CA | an:C | an:O | an:N | an:HN | an:HA))
 
 [OPTION]
 origin_atom_index   = 1   # atom groups
@@ -241,7 +239,7 @@ only the 10th snapshot.
 
 Again, run.sh is the script to run `qmmm_generator`,
 
-``` wp-block-preformatted
+```bash
 $ cat run.sh
 #!/bin/bash
  export PATH=/path/to/genesis/bin:$PATH
@@ -253,11 +251,11 @@ $ ./run.sh
 When successful, you will find tim_10.psf, .pdb, .crd. You may visually
 check the created system using VMD,
 
-``` wp-block-preformatted
+```bash
 $ vmd tim_10.pdb
 ```
 
-![](/assets/images/2022_02_tim_snapshot2.png)
+![](/assets/images/2022_02_tim_snapshot2.png){: width="400"}
 
 We will use these files (tim_10.pdb, tim_10.psf) in Section 15.6 to
 compute the enzymatic reactions.
