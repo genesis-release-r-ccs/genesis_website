@@ -20,37 +20,37 @@ in REUS or REST, no general ways are available so far. This is one of
 the most annoying points in those calculations. To solve this problem,
 an intuitive parameter tuning mechanism is implemented in GENESIS (both of ATDYN and SPDYN).
 
-Assume we have *n* replica parameters (such as temperatures) \\(V\_{0}, V\_{1}, V\_{2}, \\cdot\\cdot\\cdot, V\_{n}\\). In this setup, we cave
-*n-1* deltas between adjacent values \\(X\_{0,1}, X\_{1,2}, X\_{2,3}, \\cdot\\cdot\\cdot, X\_{n-1,n}\\). Here we try to change these "X"
+Assume we have \\(n\\) replicas characterized by parameters (such as temperatures) \\(V\_{0}, V\_{1}, V\_{2}, \\cdots, V\_{n-1}\\). In this setup, we have
+\\(n-1\\) deltas between adjacent values \\(X\_{0,1}, X\_{1,2}, X\_{2,3}, \\cdots, X\_{n-2,n-1}\\). Here we try to change these \\(X\\)
 values to get a good set of parameters, while one of terminal values is
 fixed.
 
-Deviation of the exchange probability between replicas i and j,
-\\(\\Delta p\_{ij}\\), from the target exchange probability, \\(p\_{tgt}\\), can be written as:
+Deviation of the exchange probability between replicas \\(i\\) and \\(j\\),
+\\(\\Delta p\_{ij}\\), from the target exchange probability, \\(p\_\\mathrm{tgt}\\), can be written as:
 
-\\(\\displaystyle{\\Delta p\_{ij} = p\_{ij} -- p\_{{tgt}} -- {sign}(p\_{ij} -- p\_{tgt}) \\cdot {max}({abs}(p\_{ij} -- p\_{{tgt}}),p\_{{mgn}})}\\),
+\\[\\Delta p\_{ij} = p\_{ij} - p\_\\mathrm{tgt} - \\mathrm{sign}(p\_{ij} - p\_\\mathrm{tgt}) \\cdot \\mathrm{min}(\\mathrm{abs}(p\_{ij} - p\_\\mathrm{tgt}),p\_\\mathrm{mgn})\\],
 
-where \\(p\_{ij}\\) is the exchange probability between replicas i and
-j, and margin is also considered. If the exchange probability is within
-the range of \\(p\_{tgt}-p\_{mgn} \< p\_{ij} \< p\_{tgt}+p\_{mgn}\\), the exchange works fine. This formula says that
-if the exchange prob. is larger (smaller) than the target value,
+where \\(p\_{ij}\\) is the exchange probability between replicas \\(i\\) and
+\\(j\\), and margin is also considered. If the exchange probability is within
+the range of \\(p\_\\mathrm{tgt}-p\_\\mathrm{mgn} \< p\_{ij} \< p\_\\mathrm{tgt}+p\_\\mathrm{mgn}\\), the exchange works fine. This formula says that
+if the exchange probability is larger (smaller) than the target value,
 \\(\\Delta p\_{ij}\\) is large (small).
 
-\\(X\_{0:1}, X\_{1:2}, X\_{2:3}, \\cdot\\cdot\\cdot, X\_{n-1:n}\\) will
+\\(X\_{0,1}, X\_{1,2}, X\_{2,3}, \\cdots, X\_{n-2,n-1}\\) will
 be updated according to the following equation:
 
-\\(\\displaystyle{\\Delta X\_{i:j} = \\Delta p\_{ij} \\cdot 100 \\cdot v_g}\\),
+\\[\\Delta X\_{i,j} = \\Delta p\_{ij} \\cdot 100 \\cdot v\_g\\]
 
 where \\(v_g\\) is the grid size in parameter space. If the exchange
 probability deviation is large, large change will happen in the
 parameter values. Parameter set is recalculated from the fixed terminal
-value and the Xs upon update. Repeating update according to this scheme,
+value and the \\(X\\)s upon update. Repeating update according to this scheme,
 the exchange probabilities will get close to the target value.
 
 ## List of Parameters in GENESIS
 
-These parameters are available in \[REMD\] section. In the following
-list, "N" should be replaced to an integer number like other params.
+These parameters are available in **[REMD]** section. In the following
+list, **N** should be replaced to an integer number like other params.
 
 ### param_tuningN = *YES / NO (default: NO)*
 
@@ -58,30 +58,30 @@ This parameter defines whether the parameter tuning is enabled.
 
 ### tgt_exc_probN = *Real (default: 0.25)*
 
-This parameter defines target exchange probability. The valid value
-range is 0.0-1.0. (\\(p\_{tgt}\\))
+This parameter defines target exchange probability \\(p\_\\mathrm{tgt}\\). The valid value
+range is **0.0-1.0**.
 
 ### mgn_exc_probN = *Real (default: 0.05)*
 
-This parameter defines the margin for the target exchange probability.
+This parameter defines the margin for the target exchange probability \\(p\_\\mathrm{mgn}\\).
 Parameters would not change if the following condition is satisfied:
-**tgt_exc_prob -- mgn_exc_prob \< exchange probability \< tgt_exc_prob +
-mgn_exc_prob**. (\\(p\_{mgn}\\))
+**tgt_exc_prob - mgn_exc_prob \< exchange probability \< tgt_exc_prob +
+mgn_exc_prob**.
 
 ### trial_freqN = *Integer (default: 48)*
 
 Number of trials used for single update of parameter set. In the real
-calculations, update of parameter set takes place after **(trial_freqN \* 2)** exchange trials. This is because there are two exchange patterns
-in GENESIS.
+calculations, update of parameter set takes place after **(trial_freqN \* 2)** exchange trials.
+This is because there are two exchange patterns in GENESIS.
 
 ### eq_cycleN = *Integer (default: 2)*
 
 Number of equilibration cycles after the parameter set update. As
-trial_freqN above, **(eq_cycleN \* 2)** exchange trials will be ignored.
+**trial_freqN** above, **(eq_cycleN \* 2)** exchange trials will be ignored.
 
 ### param_gridN = *Real (default: 0.1)*
 
-Grid of parameter space. (\\(v_g\\))
+Grid of parameter space \\(v_g\\).
 
 ### max_param_shiftN = *Real (default: 20.0)*
 
@@ -94,29 +94,20 @@ Determines parameter value to be fixed. In case of **BOTTOM**, the first
 value in the parameter list is fixed. On the other hand, the last value
 in the parameter list is fixed if **TOP** is specified.
 
-## Samples
+## Examples
 
-- *exchange_period* must not be 0 if you perform parameter tuning.
-- *exchange_period* should be small for the first tuning stage.
-- updated parameters are not saved in restart files. You should write
-
-```
-new values in your next input file.
-```
-
-- if you wanna do fine tuning, increase *exchange_period* and
-
-```
-*trial_freqN* values.
-
-```
+### General notes
+- **exchange_period** must not be 0 if you perform parameter tuning.
+- **exchange_period** should be small for the first tuning stage.
+- Updated parameters are not saved in restart files. You should write new values in your next input file.
+- If you want to do fine tuning, increase **exchange_period** and **trial_freqN** values.
 
 ### T-REMD example
 
 (Parameter update takes place every 5,000 steps.)
 
 
-```
+```toml
 [REMD]
 dimension        = 1
 exchange_period  = 50
@@ -133,16 +124,14 @@ eq_cycle1        = 2
 param_grid1      = 0.1
 max_param_shift1 = 20.0 # virtually ignored
 fix_terminal1    = BOTTOM
-
 ```
 
 Sample log message (extracted from the main log file):
 
 
-```
+```bash
 REMD> New parameter set: 300.00000 303.00000 303.10000 311.60000
 REMD> New parameter set: 300.00000 301.00000 308.10000 314.60000
-
 ```
 
 ### REUS example
@@ -150,7 +139,7 @@ REMD> New parameter set: 300.00000 301.00000 308.10000 314.60000
 [(only reference values will change upon update.)]
 
 
-```
+```toml
 [REMD]
 dimension        = 1
 exchange_period  = 50
@@ -179,16 +168,14 @@ function1        = DIST          # restraint function type
 constant1        = 15 15 15 15   # force constants
 reference1       = 4 4.1 4.3 4.5 # references
 select_index1    = 1 2           # restrained groups
-
 ```
 
 Sample log message (extracted from the main log file):
 
 
-```
+```bash
 REMD> New parameter set: 4.00000 4.30000 4.31000 4.32000
 REMD> New parameter set: 4.00000 4.50000 4.71000 4.92000
-
 ```
 
 ### REST example
@@ -196,7 +183,7 @@ REMD> New parameter set: 4.00000 4.50000 4.71000 4.92000
 (almost the same as T-REMD)
 
 
-```
+```toml
 [REMD]
 dimension        = 1
 exchange_period  = 50
@@ -217,16 +204,14 @@ fix_terminal1    = BOTTOM
 
 [SELECTION]
 group1           = ai:1-638
-
 ```
 
 Sample log message (extracted from the main log file):
 
 
-```
+```bash
 REMD> New parameter set: 300.00000 303.00000 310.70000 319.20000
 REMD> New parameter set: 300.00000 305.00000 314.70000 330.20000
-
 ```
 
 ------------------------------------------------------------------------

@@ -25,14 +25,11 @@ Residue-level CG models embody both two features (lower resolution and implicit 
 [11.3](/tutorials/genesis_tutorial_11.3_2022/), and [11.4](/tutorials/genesis_tutorial_11.4_2022/) to
 learn how to run simulations with these CG models in GENESIS.
 
-
 Here, we show a simple example of running REMD with the residue-level CG
 models. Generally speaking, there is no big difference between CG REMD
 and all-atom REMD simulations. Therefore, we will briefly describe the
 main steps and focus on the distinctions between CG and all-atom
 simulations.
-
-
 
 This example is to simulate the folding/unfolding dynamics of protein G.
 In principle, for such a simple CG system, a constant temperature run is
@@ -41,58 +38,40 @@ Nevertheless, we think this system is good to illustrate how to carry
 out REMD simulations in couple with the residue-level CG models. You can
 also compare the results of this section with those from [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/).
 
-
- 
-
-
 ## 0. Preparations 
 
-
-
 ### 0.1 Install necessary software 
-
-
 
 As introduced in [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we use
 the [GENESIS-CG-tool](https://github.com/noinil/genesis_cg_tool) to generate CG
 MD files. Please install dependencies (programming language Julia and some packages) to run this tool.
 
-
 ### 0.2 Download the files for this tutorial 
 
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on Github](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials)
 
+If you haven't downloaded the files yet, open your terminal and run the following command:
 
-Let's download the tutorial file
-([tutorial22-A.4.tar.gz](/assets/tutorial_files/2022_06_tutorial22-A.4.tar.gz)). This tutorial consists of three parts: 1) system setup, 2)
-REMD simulations, and 3) trajectory analysis.
-
-
+```bash
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download and unarchive the tutorial files
-$ cd /home/user/GENESIS/Tutorials
-$ unzip tutorial22-A.4.zip
-$ cd tutorial-A.4
+This tutorial consists of three parts: 1) system setup, 2)REMD simulations, and 3) trajectory analysis.
+
+```bash
+$ cd genesis_tutorial_materials/tutorial-A.4
 $ ls
 01_build 02_REMD 03_analysis
-
 ```
-
-
-
 ## 1. Setup
 
-
-You can go through section 0 and 1 of [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) to prepare
-the topology and coordinate files for the following simulations.
-
-
+You can go through section 0 and 1 of [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) 
+to prepare the topology and coordinate files for the following simulations.
 
 Basically, we execute the following commands to create the necessary
 files (`1PGB_cg.top`, `1PGB_cg.itp`, and `1PGB_cg.gro`):
 
-
-
-``` 
+```toml
 # download the PDB file (PDB code 1PGB)
 $ cd 01_build
 $ wget https://files.rcsb.org/download/1PGB.pdb
@@ -100,34 +79,25 @@ $ /home/user/genesis_cg_tool/src/aa_2_cg.jl 1PGB.pdb
 $ ls  
 1PGB.pdb 1PGB_cg.gro 1PGB_cg.itp 1PGB_cg.top
 ```
-
-
 ## 2. REMD Simulations
-
 
 Since we are going to start from the native structure (global energy minimum), we don't perform energy minimization and equilibration runs in
 this tutorial. However, generally speaking, it is highly recommended to
 go through those steps.
 
-
-
 Now let's change to the REMD directory and take a look at the files:
 
-
-
-``` 
+```bash
 $ cd ../02_REMD
 $ ls
 remd.inp  param/
 ```
 
-
 In the "`param/`" directory there are standard parameter files for the
 CG models. The file "`remd.inp`" is the control file that contains the
 information for GENESIS to perform the REMD simulations:
 
-
-```
+```toml
 [INPUT] 
 grotopfile = 1PGB_cg.top
 grocrdfile = 1PGB_cg.gro
@@ -188,32 +158,29 @@ parameters1     = 320.00 \
                   450.00 \
                   460.00 \
                   470.00
-
 ```
 
 Please refer to [tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/) for the
 detailed explanations of the directives, especially those in the
-"`[REMD]`" block. The most important thing is to choose the temperature
+`[REMD]` block. The most important thing is to choose the temperature
 range and the number of replicas, which is dependent on the a priori
 knowledge. Based on the results of [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we have a
-good guess of the "folding temperature" ([$T_{f}$]{.math .math-inline .is-loaded}, defined as the temperature where folded and unfolded states have equal probabilities), which is around 400K. Therefore, here we want
+good guess of the "folding temperature" (\\(T\_f\\), defined as the temperature where folded and unfolded states have equal probabilities), which is around 400K. Therefore, here we want
 to use a range of temperatures to cover 400K
-([$\lbrack 0.8T_{f},1.2T_{f}\rbrack$]{.math .math-inline .is-loaded}).
+(\\(\lbrack 0.8T\_{f},1.2T\_{f}\rbrack\\)).
 To determine the number of replicas, one way is to first run simulations
 at constant temperatures and estimate the overlap of energy
 distributions at the neighboring temperatures. Here we choose an
 interval of 10K. As will be shown later in this tutorial, this choice
 produce a good energy overlap.
 
-
-```
+```bash
 # copy necessary files
 $ cp ../01_build/1PGB_cg.* .
 
 # Run REMD production 
 $ export OMP_NUM_THREADS=2
 $ mpirun -np 16 /home/user/GENESIS/bin/atdyn remd.inp | tee remd_master.log
-
 ```
 
 On a workstation with 32 CPU cores, it takes around 1.5 hours to finish
@@ -222,27 +189,21 @@ the simulation.
 ## 3. Analysis
 
 In this tutorial, we aim at calculating the potential-of-mean-force
-(PMF) of the Q-value (nativeness) at 400 K. Same as [tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/), we are
-going to utilize the MBAR re-weighting method.
+(PMF) of the Q-value (nativeness) at 400 K. Same as [tutorial 12.1](/tutorials/genesis_tutorial_12.1_2022/), 
+we are going to utilize the MBAR re-weighting method.
 
-
-```
+```bash
 $ cd ../03_analysis
 $ ls
 1_calc_ratio 2_plot_index 3_sort_dcd 4_plot_potential 5_q_val 6_MBAR 7_PMF
-
 ```
 
-
 ### 3.1 Calculate the acceptance ratio 
-
-
 
 Let's first calculate the acceptance ratio to get an estimation of the
 REMD efficiency:
 
-
-```
+```bash
 # change directory
 $ cd 1_calc_ratio
 $ ls 
@@ -258,34 +219,27 @@ $ ./calc_ratio.sh
 11 > 12 0.7869
 13 > 14 0.8171
 15 > 16 0.831
-
 ```
 
 As can be seen, almost all the acceptance ratio are above 0.5, showing
 quite high-efficient exchange between replicas.
 
-
 ### 3.2 Plot time courses of replica indices and temperatures 
-
-
 
 We next examine the "random-walk" of each replica in the temperature
 space by plotting the time courses of replica indices (for each temperature) and temperatures (for each replica).
 
-
-```
+```bash
 # change directory
 $ cd ../2_plot_index
 $ ls
 01_extract_index_temperature_info.sh 02.1_plot_rep_exchange.py 02.2_plot_temperature_exchange.py
-
 ```
 
 The first file `01_extract_index_temperature_info.sh` gets replica IDs
 and temperatures from the "master" log file. Its content is like this:
 
-
-```
+```bash
 #!/bin/bash -f
 
 # get replica IDs in each snapshot
@@ -303,21 +257,16 @@ paste step.log T-REMD_repID-Temperature.dat > T-REMD_repID-Temperature.log
 
 # remove tmp files
 rm -f T-REMD_parmID-repID.dat T-REMD_repID-Temperature.dat step.log
-
 ```
-
 
 We then use two python scripts to plot the time series of repclia IDs
 and temperatures. If you are not familiar with python and `matplotlib`,
 we provide a simple introduction to data analysis with python
 in [tutorial 4.3](/tutorials/genesis_tutorial_4.3_2022/).
 
-
-
 Content of `02.1_plot_rep_exchange.py`:
 
-
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -352,7 +301,6 @@ plt.savefig("Replica_exchange_all.png")
 
 Content of `02.2_plot_temperature_exchange.py`:
 
-
 ```
 #!/usr/bin/env python3
 
@@ -384,48 +332,35 @@ for i_ax in range(N_REP):
     axes[m, n].set_title(title_text, fontsize=16)
 
 plt.savefig("Temperature_exchange_all.png")
-
 ```
 
 Now, let's execute these scripts:
 
-
-```
+```bash
 $ ./01_extract_index_temperature_info.sh
 $ ./02.1_plot_rep_exchange.py
 $ ./02.2_plot_temperature_exchange.py
-
 ```
 
 These commands will create two text files
 (`T-REMD_parmID-repID.log` and `T-REMD_repID-Temperature.log`) and two
 figures (`Replica_exchange_all.png` and `Temperature_exchange_all.png`).
 
-![](/assets/images/2022_06_tutorial_A4_Replica_exchange_all.png)
-
-
-
+![](/assets/images/2022_06_tutorial_A4_Replica_exchange_all.png){: style="width:100%; display:block; margin:0 auto;"}
 
 This figure shows that each temperature visits every replica randomly.
 
-![](/assets/images/2022_06_tutorial_A4_Temperature_exchange_all.png)
+![](/assets/images/2022_06_tutorial_A4_Temperature_exchange_all.png){: style="width:100%; display:block; margin:0 auto;"}
 
 This figure shows the random walk of each replica in the temperature
 space.
 
- 
-
-
 ### 3.3 Sort coordinates in DCD trajectory files by parameters 
-
-
 
 We next use GENESIS analysis tool `remd_convert` to sort the frames in
 the trajectories based on their temperature.
 
-
-
-```
+```bash
 # change directory
 $ cd ../3_sort
 $ ls
@@ -434,34 +369,25 @@ log_convert.inp remd_convert.inp
 # Sort frames by parameters
 $ /home/user/GENESIS/bin/remd_convert log_convert.inp | tee log_convert.log
 $ /home/user/GENESIS/bin/remd_convert remd_convert.inp | tee remd_convert.log
-
 ```
 
-
-### 
-
 ### 3.4 Plot potential energy distribution for each temperature 
-
-
 
 Now we have got all the log files sorted and will next plot potential
 energy distributions to make sure that there are sufficient overlaps in
 energy between simulations at different temperatures.
 
-
-```
+```bash
 # change directory
 $ cd ../4_plot_potential
 $ ls
 01_extract_potential_energy.sh 02_plot_potential_energy_temperature.py
-
 ```
 
 The script `01_extract_potential_energy.sh` get potential energies from
 simulations at each temperature:
 
-
-```
+```bash
 #!/bin/bash
 
 # get potential energy of each replica
@@ -479,16 +405,12 @@ done
 
 # cleaning
 rm -f potential*.dat step.log
-
 ```
 
 The python script `02_plot_potential_energy_temperature.py` plot the
 energy distributions at each temperature:
 
-
-
-
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -516,42 +438,32 @@ for i_rep in range(N_REP):
     axes.set_ylabel("Probability", fontsize=16)
 
 plt.savefig("potential_energy_temperature.png")
-
 ```
 
-![](/assets/images/2022_06_tutorial_A4_potential_energy_temperature.png)
+![](/assets/images/2022_06_tutorial_A4_potential_energy_temperature.png){: style="width:60%; display:block; margin:0 auto;"}
 
 This figure shows the potential energy distribution at each temperature
 (indicated by the colors).
 
-
 ### 3.5 Calculate the Q values 
-
-
 
 We use the GENESIS analysis tool `qval_residcg_analysis` to calculate
 the nativeness (Q-value) of each simulated protein structure.
 
-
-```
+```bash
 # change directory
 $ cd ../5_q_val
 $ ls
 05_qval_residcg_analysis.inp 05_calculate_qval.sh
-
 ```
-
 
 Please refer to [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/) for the
 explanation of the control file `05_qval_residcg_analysis.inp`.
 
-
-
 Don't forget to change the path of GENESIS in line 6 of the bash
 script `05_calculate_qval.sh`:
 
-
-```
+```bash
 #!/usr/bin/bash
 
 for irep in {1..16}; do
@@ -560,83 +472,61 @@ for irep in {1..16}; do
     /home/user/GENESIS/bin/qval_residcg_analysis tmp.inp
     rm -f tmp.inp
 done
-
 ```
 
 Now, let's execute the Q-value calculations:
 
-
-
-
-```
+```bash
 $ ./05_calculate_qval.sh
-
 ```
-
-
 
 ### 3.6 MBAR analysis 
 
-
-
 Now let's carry out the MBAR analysis:
 
-
-```
+```bash
 # change directory
 $ cd ../6_MBAR
 $ ls
 mbar.inp
 
 $ /home/user/GENESIS/bin/mbar_analysis mbar.inp | tee mbar.log
-
 ```
 
-
-
 ### 3.7 Calculate PMF of Q-value 
-
-
 
 Finally, we use the GENESIS analysis tool `pmf_analysis` to get the PMF
 of Q-value:
 
-
-```
+```bash
 # change directory
 $ cd ../7_PMF
 $ ls
 pmf.inp 01_remove_first_line_of_weight_files.sh 02_plot_PMF_Q.py
-
 ```
 
 We use the script `01_remove_first_line_of_weight_files.sh` to remove
 the first line of the "weight" files, to be consistent with the CV
 (Q-value) files. The script has the following content:
 
-
-```
+```bash
 #!/bin/bash
 for j in {1..16}; do
     sed "1d" ../6_MBAR/weight$j.dat > weight$j.dat
 done
-
 ```
 
 We then calculate the PMF:
 
-
-```
+```bash
 $ /home/user/GENESIS/bin/pmf_analysis pmf.inp | tee pmf.log
-
 ```
 
 This command generates a new file, `qval.pmf`. We can now plot the PMF
 with the python script `02_plot_PMF_Q.py`. The content
 of `02_plot_PMF_Q.py` is:
 
-
-```
+```python
 #!/usr/bin/env python3
 
 import numpy as np
@@ -658,35 +548,21 @@ ax.set_ylim(-0.2, 4.2)
 ax.set_ylabel("PMF (kcal/mol)", fontsize=16)
 
 plt.savefig("qval_pmf.png", dpi=150)
-
 ```
 
 Now let's plot the PMF:
 
-
-```
+```bash
 $ ./02_plot_PMF_Q.py
-
 ```
 
-
-
-
-![](/assets/images/2022_06_tutorial_A4_qval_pmf.png)
-
-
-
+![](/assets/images/2022_06_tutorial_A4_qval_pmf.png){: style="width:60%; display:block; margin:0 auto;"}
 
 This figure shows the PMF of Q value at 400K.
 
 ------------------------------------------------------------------------
 
-
 *Written by Cheng Tan@RIKEN Center for Computational Science,
 Computational Biophysics Research Team\
 June, 2022*
-
-
-
- 
 
