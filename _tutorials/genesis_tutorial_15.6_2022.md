@@ -18,7 +18,7 @@ In this section, we demonstrate the replica-exchange umbrella sampling
 free-energy profile of an enzyme reaction. REUS [^1] is one of the
 enhanced sampling methods, in which multiple MD simulations (replicas)
 are carried out with different restraint potentials, exchanging them
-stochastically. In [tutorial 11.1](/tutorials/genesis_tutorial_11.1/), REUS has been performed with classical
+stochastically. In [tutorial 12.2](/tutorials/genesis_tutorial_12.2_2022/), REUS has been performed with classical
 MM-MD. This tutorial is similar to it but differs in:
 
 1.  The reaction coordinate is set to a pre-determined minimum energy path (MEP).
@@ -32,7 +32,7 @@ recommended to first work on [tutorial 15.5](/tutorials/genesis_tutorial_15.5_20
 where the MEP is obtained by the string method.
 
 ![](/assets/images/2022_04_tim_scheme_r_img.png){: width="600" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 1. (a) Schematic illustration of the proton transfer
 reaction (H31) from DHAP to Glu165 of TIM, and the atomic distances,
 r<sub>1</sub> – r<sub>7</sub>. (b) The variation of r<sub>1</sub> –
@@ -51,8 +51,7 @@ atomic distances as a collective variable (CV).
 ## 2. Setup of window 
 
 Download the tutorial file
-([tutorial22-15.6.tar.gz](/assets/tutorial_files/2022_05_tutorial22-15.6.tar.gz), or [github](https://github.com/yagikiyoshi/QMMMtutorial)),
-unzip it, and proceed to tutorial-15.6/1.tim. The directory contains
+([GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials "github")), and proceed to tutorial-15.6/1.tim. The directory contains
 three sub-directories.
 
 ```bash
@@ -152,7 +151,7 @@ make_window.f90  win_rr.dat       win_rr.log
 ```
 
 ![](/assets/images/2022_04_tim_window.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 2. Variation of r<sub>1</sub> – r<sub>4</sub> and
 r<sub>6</sub> along the MEP.
 </figcaption>
@@ -175,7 +174,7 @@ the next step, MDs of all windows (replicas) are carried out in parallel
 for 1 ps at the level of B3LYP-D3/MM.
 
 ![](/assets/images/2022_04_tim_reus_equil.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 3. The procedure of equilibration.
 </figcaption>
 
@@ -297,12 +296,11 @@ reference6    = R5
 select_index6 = 3  9
 ```
 
-Important options are highlighted in red with comments in blue. Note
-that:
+Note that:
 
 - **\[INPUT\]**: The files in `2.equil` are used to restart the job.
 `rstfile=../../2.equil/step4.11_qmmm_nvt.rst` is for the first
-window. Other windows restarts from the previous window .
+window. Other windows restart from the previous window.
 - **\[OUTPUT\]**, **\[QMMM\]**: "ID" is replaced by window ID.
 - **\[ENERGY\]**: The switch and cutoff distances are longer than usual.
 - **\[DYNAMICS\]**: The timestep is shorter than usual.
@@ -461,7 +459,7 @@ select_index2 = 6  10
 
 `qsimulate.json` is a control file of QSimulate-QM, which now specifies
 the B3LYP-D3/aug-cc-pVDZ level for DFT calculations. Refer to
-[tutorial-16.5](/tutorials/genesis_tutorial_16.5/) for details on the options.
+[tutorial-15.5](/tutorials/genesis_tutorial_15.5_2022/) for details on the options.
 
 Now, run `geninp2.sh` with NEWNAME and OLDNAME in the first and second
 argument, respectively,
@@ -558,7 +556,7 @@ $ gnuplot rmsd.gpi
 The command plots RMSD of each replica and yields rmsd.pdf,
 
 ![](/assets/images/2022_04_tim_rmsd.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;;">
 Fig. 4. RMSD of backbone atoms of TIM along simulation time.
 </figcaption>
 
@@ -578,7 +576,7 @@ probability of pathCV \[3,4\] (pathcv.pdf and pathcv_all.pdf). The
 results are shown in Fig. 5.
 
 ![](/assets/images/2022_04_tim_dist2.png){: width="800" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 5. (a) Distribution of r<sub>1</sub>/r<sub>2</sub>, (b) probablility distribution of pathCV for each replica along the reaction coordinate, and (c) the same as (b) but a cumulative distribution of all replicas.
 </figcaption>
 
@@ -688,7 +686,7 @@ $ gnuplot rmsd_analysis.gpi
 ```
 
 ![](/assets/images/2022_04_tim_rmsd2.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 6. RMSD of backbone atoms of TIM along simulation time.
 </figcaption>
 
@@ -722,7 +720,7 @@ $ ./acceptance_ratio.sh ../3.prod3/prod4_reus.out
 20 > 21 0.35
 ```
 
-Although there are several replicas with low acceptance ratio (in red),
+Although there are several replicas with low acceptance ratio,
 most replicas show an acceptance ratio of 0.2 -- 0.3.
 
 \(3\) Let us also check the time course of the index of replica.
@@ -739,7 +737,7 @@ as well, suggesting that the MD simulation needs to extend to achieve
 random walk in the replica space.
 
 ![](/assets/images/2022_04_tim_replica_index-1.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 7. Plots of the replica index of parameter 9 as a function of simulation time.
 </figcaption>
 
@@ -760,7 +758,7 @@ the box corresponds to the number of the directories. Also, the analysis
 tools used in each step are shown in yellow text.
 
 ![](/assets/images/2022_04_tim_workflow.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 8. Dataflow chart and their associated analysis tools
 (in yellow) to calculate the PMF along pathCV (5) and the 2-dimensional
 PMF in a section of r<sub>1</sub> / r<sub>2</sub>.
@@ -918,7 +916,7 @@ $ gnuplot dist.gpi
 ```
 
 ![](/assets/images/2022_04_tim_dist3.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 9. Distribution of r<sub>1</sub> / r<sub>2</sub> after 2 ps of REUS simulations.
 </figcaption>
 
@@ -1045,7 +1043,7 @@ set a cutoff that is 2 -- 3 times larger than the average value when
 calculating the PMF. We use cutoff=0.04 below.
 
 ![](/assets/images/2022_04_tim_pathcv2.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; ">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; ">
 Fig. 10. (a) Distribution of pathCV and (b) Path distance of one of the parameters (parameter 9).
 </figcaption>
 
@@ -1105,7 +1103,7 @@ pmf.gpi   pmf.pdf   pmf_bw15.dat ...
 ```
 
 ![](/assets/images/2022_04_tim_pmf_pathcv.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial'; text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 11. PMF along pathCV with and without Gaussian smoothing.
 </figcaption>
 
@@ -1171,7 +1169,7 @@ $ ls
 ```
 
 ![](/assets/images/2022_04_tim_2dpmf_r1r2.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 12. 2D-PMF as a function of r1 (OE2-H31) and r2 (C3-H31). The contours are drawn every 4 kcal/mol.
 </figcaption>
 
@@ -1204,46 +1202,18 @@ promising direction, since DFTB is orders of magnitude cheaper than DFT
 with DFTB and reweight the energy landscape to DFT level. Such a
 multi-level approch will be our next goal.
 
-## References 
-
-1.  Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 6042
-
-```
-(2000).
-[](https://aip.scitation.org/doi/10.1063/1.1308516)
-```
-
-2.  K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 --
-
-```
-4713 (2021).
-[](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
-```
-
-3.  D. Branduardi, F. L. Gervasio, M. Parrinello, J. Chem. Phys.
-
-```
-**126**, 054103 (2007).
-[](https://aip.scitation.org/doi/10.1063/1.2432340)
-```
-
-4.  Y. Matsunaga, Y. Komuro, C. Kobayashi, J. Jung, T. Mori, and Y.
-
-```
-Sugita, J. Phys. Chem. Lett. **7**, 1446−1451 (2016).
-[](https://pubs.acs.org/doi/10.1021/acs.jpclett.6b00317)
-```
-
-5.  M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124194
-
-```
-(2008).
-[](https://aip.scitation.org/doi/10.1063/1.2978177)
-
-```
-
-------------------------------------------------------------------------
-
 *Written by Kiyoshi Yagi@RIKEN Theoretical molecular science laboratory\
 April., 3, 2022*
+{: .notice}
 
+## References 
+
+[^1]:  [Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 604 (2000).](https://aip.scitation.org/doi/10.1063/1.1308516)
+
+[^2]:  [K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 -- 4713 (2021).](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
+
+[^3]:  [D. Branduardi, F. L. Gervasio, M. Parrinello, J. Chem. Phys. **126**, 054103 (2007).](https://aip.scitation.org/doi/10.1063/1.2432340)
+
+[^4]:  [Y. Matsunaga, Y. Komuro, C. Kobayashi, J. Jung, T. Mori, and Y. Sugita, J. Phys. Chem. Lett. **7**, 1446−1451 (2016).](https://pubs.acs.org/doi/10.1021/acs.jpclett.6b00317)
+
+[^5]:  [M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124194 (2008).](https://aip.scitation.org/doi/10.1063/1.2978177)

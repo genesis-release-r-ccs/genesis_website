@@ -30,12 +30,12 @@ details, see Ref. [^2].
 Here, we simulate a proton transfer reaction of dihyroxyacetone
 phosphate (DHAP) catalyzed by an enzyme, triosephosphate isomerase
 (TIM), which is one of the key steps in the glycolytic pathway. The
-reaction has been extensively studied since the early 2000 \[3-8\], and
-is a well known benchmark system \[2,9\]. We calculate the MEP of the
+reaction has been extensively studied since the early 2000 [^3] [^4] [^5] [^6] [^7] [^8], and
+is a well known benchmark system [^2] [^9]. We calculate the MEP of the
 following reaction:
 
 ![](/assets/images/2022_04_tim_scheme.png){: width="800" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 1. Schematic illustration of the proton transfer
 reaction from DHAP to Glu165 of TIM. r<sub>1</sub> – r<sub>7</sub>
 indicate relevant atomic distances.  
@@ -51,9 +51,7 @@ stage, though the process is beyond the scope of this tutorial.
 ## 2. System preparation 
 
 Download the tutorial file
-([tutorial22-15.5b.tar.gz](fundamental/2024_07_tutorial22-15.5b.tar.gz "tutorial-15.5.zip") or [github](https://github.com/yagikiyoshi/QMMMtutorial "github")), unzip
-it, and proceed to tutorial-15.5/1.tim. This directory contains five
-sub-directories.
+([GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials "github")), and proceed to tutorial-15.5/1.tim. This directory contains five sub-directories.
 
 ```bash
 $ unzip tutorial22-15.5.zip 
@@ -83,7 +81,7 @@ The PDB file is visualized in Fig. 2. Note that TIM is a homo-dimer
 proteins contains the ligand.
 
 ![](/assets/images/2022_04_tim_overall.png){: width="400" .center-image }
-<figcaption style="font-size: 1.0em;text-align: center;">
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 2. The overall structure of the system.  
 </figcaption>
 
@@ -289,8 +287,7 @@ toppar
 `qmmm_generator.inp` is an input file of qmmm_generator, `step4.x_*.inp`
 are the input files of GENESIS, `qsimulate.json` is a control file of
 QSimulate-QM (details are given below), and `run.sh` is a script to run
-all jobs. As a result, we obtain the files shown in red,
-`step4_nvt_100.* `(by qmmm_generator) and `step4.11_qmmm_nvt.rst` (by MD). These files are used in the subsequent QM/MM calculations
+all jobs. As a result, we obtain the files, `step4_nvt_100.* `(by qmmm_generator) and `step4.11_qmmm_nvt.rst` (by MD). These files are used in the subsequent QM/MM calculations
 
 ## 3. Locate the reactant and product 
 
@@ -355,9 +352,10 @@ exclude_charge     = group
 group1 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \          and not (an:CA |an:C |an:O |an:N |an:HN |an:HA))  # QM region
 group2 = not (sid:DHA or sid:DHA around_res:6.0) # fixed atoms during minimization
 ```
-
+<!--
 The important options are highlighted in red with comments in blue. Note
 that:
+-->
 
 - **\[INPUT\]**: The files in `2.equil` are used to restart the job.
 - **\[ENERGY\]**: The switch and cutoff distances are longer than usual.
@@ -473,8 +471,7 @@ of thread per MPI process and the number of MPI processes per node,
 respectively. The number of MPI processes is specified after "-n" of the
 mpiexec.hydra command. Thus, assuming that two 16-core nodes are
 available, the above script uses 4 thread x 8 MPI processes in total,
-allocating 4 thread x 4 MPI processes per node. Adjust the numbers in
-blue so as to fit to your computational resources.
+allocating 4 thread x 4 MPI processes per node. Adjust the numbers so as to fit to your computational resources.
 
 Now, run the job,
 
@@ -502,7 +499,7 @@ This command gives Fig. 4, which shows that the proton of DHAP is
 transferred to Glu165.
 
 ![](/assets/images/2022_04_tim_min2.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 4. Visualization of the reactant and product. The proton (H31) is indicated with yellow circle.  
 </figcaption>
 
@@ -778,7 +775,7 @@ gfortran makedat.f90 -o makedat                   ... (4)
 ```
 
 1.  Set the PATH to where GENESIS is installed.
-2.  Calculates r1 -- r7 of each replica and prints them to mep\_{}.dis
+2.  Calculates r<sub>1</sub> -- r<sub>7</sub> of each replica and prints them to mep\_{}.dis
 3.  Converts rst file to pdb file for each replica
 4.  makedat is a fortran program that reads the energy (from GENESIS     output) and the distance (from \*.dis) and prints the information to rpath_xx.dat, where xx is the count of iteration.
 
@@ -835,7 +832,7 @@ $ gnuplot rpath_OHCH.gpi
 ```
 
 ![](/assets/images/2022_04_tim_mep_conv.png){: width="800" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 5. The convergence of the energy profile (left) and the
 geometric pathway in a section of r<sub>1</sub>/r<sub>2</sub>
 (right).
@@ -843,7 +840,7 @@ geometric pathway in a section of r<sub>1</sub>/r<sub>2</sub>
 
 The command creates pdf files shown in Fig. 5. It is clear that the MEP
 is nicely converged both in terms of energy and geometry.
-`rpath_r_img.gpi` plots the variation of r~1~ -- r~7~ as a function of
+`rpath_r_img.gpi` plots the variation of r<sub>1</sub> -- r<sub>7</sub> as a function of
 the image ID,
 
 ```bash
@@ -851,9 +848,8 @@ $ gnuplot rpath_r_img.gpi
 ```
 
 ![](/assets/images/2022_04_tim_mep_r_img.png){: width="400" .center-image }
-<figcaption style="font-size: 0.8em; font-family: 'Arial';">
-Fig. 6. The variation of r<sub>1</sub> – r<sub>7</sub> along
-the MEP.
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 6. The variation of r<sub>1</sub> – r<sub>7</sub> along the MEP.
 </figcaption>
 
 The plot shown in Fig. 6 indicates that not only r<sub>1</sub>/r<sub>2</sub> but also r<sub>3</sub>
@@ -888,76 +884,28 @@ perform replica-exchange umbrella sampling (REUS) simulations using the
 MEP as a collective variable and calculate the free-energy profile along
 the MEP.
 
-## References 
-
-1.  W. E, W. Ren, and E. Vanden-Eijnden, J. Chem. Phys. **126**, 164103
-
-```
-(2007).
-[](https://aip.scitation.org/doi/10.1063/1.2720838)
-```
-
-2.  K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 --
-
-```
-4713
-(2021).[](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
-```
-
-3.  Q. Cui and M. Karplus, J. Am. Chem. Soc. **123**, 2284-2290
-
-```
-(2001).[](https://pubs.acs.org/doi/10.1021/ja002886c)
-```
-
-4.  Q. Cui and M. Karplus, J. Am. Chem. Soc. **124**, 3093--3124
-
-```
-(2002).[](https://pubs.acs.org/doi/10.1021/ja0118439)
-```
-
-5.  Q. Cui and M. Karplus, J. Phys. Chem. B **106**, 1768-1798
-
-```
-(2002).[](https://pubs.acs.org/doi/10.1021/jp012659c)
-```
-
-6.  C. Lennartz, A. Schäfer, F. Terstegen, and W. Thiel, J. Phys. Chem.
-
-```
-B **106**, 1758-1767
-(2002).[](https://pubs.acs.org/doi/10.1021/jp012658k)
-```
-
-7.  Y. Zhang, H. Liu, and W. Yang, J. Chem. Phys. **112**, 3483
-
-```
-(2000).[](https://aip.scitation.org/doi/10.1063/1.480503)
-```
-
-8.  H. Hu, Z. Lu, and W. Yang, J. Chem. Theory Comput. **3**, 390-406
-
-```
-(2007).[](https://pubs.acs.org/doi/10.1021/ct600240y)
-```
-
-9.  J. I. Mendieta-Moreno, R. C. Walker, J. P. Lewis, P.
-
-```
-Gómez-Puertas, J. Mendieta, and J. Ortega, J. Chem. Theory Comput.
-**10**, 2185-2193 (2014).
-[](https://pubs.acs.org/doi/10.1021/ct500033w)
-```
-
-10. C. G. Mayne, J. Saam, K. Schulten, E. Tajkhorshid, J. C. Gumbart, J.
-
-```
-Comput. Chem. **34**, 2757-2770 (2013).
-[](https://onlinelibrary.wiley.com/doi/10.1002/jcc.23422)
-
-```
-
-------------------------------------------------------------------------
-
 *Written by Kiyoshi Yagi@RIKEN Theoretical molecular science laboratory\
 April., 3, 2022*
+{: .notice}
+
+## References 
+
+[^1]:  [W. E, W. Ren, and E. Vanden-Eijnden, J. Chem. Phys. **126**, 164103 (2007).](https://aip.scitation.org/doi/10.1063/1.2720838)
+
+[^2]:  [K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 (2021).](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
+
+[^3]:  [Q. Cui and M. Karplus, J. Am. Chem. Soc. **123**, 2284-2290 (2001).](https://pubs.acs.org/doi/10.1021/ja002886c)
+
+[^4]:  [Q. Cui and M. Karplus, J. Am. Chem. Soc. **124**, 3093--3124 (2002).](https://pubs.acs.org/doi/10.1021/ja0118439)
+
+[^5]:  [Q. Cui and M. Karplus, J. Phys. Chem. B **106**, 1768-1798 (2002).](https://pubs.acs.org/doi/10.1021/jp012659c)
+
+[^6]:  [C. Lennartz, A. Schäfer, F. Terstegen, and W. Thiel, J. Phys. Chem. B **106**, 1758-1767 (2002).](https://pubs.acs.org/doi/10.1021/jp012658k)
+
+[^7]:  [Y. Zhang, H. Liu, and W. Yang, J. Chem. Phys. **112**, 3483 (2000).](https://aip.scitation.org/doi/10.1063/1.480503)
+
+[^8]:  [H. Hu, Z. Lu, and W. Yang, J. Chem. Theory Comput. **3**, 390-406 (2007).](https://pubs.acs.org/doi/10.1021/ct600240y)
+
+[^9]:  [J. I. Mendieta-Moreno, R. C. Walker, J. P. Lewis, P. Gómez-Puertas, J. Mendieta, and J. Ortega, J. Chem. Theory Comput. **10**, 2185-2193 (2014).](https://pubs.acs.org/doi/10.1021/ct500033w)
+
+[^10]: [C. G. Mayne, J. Saam, K. Schulten, E. Tajkhorshid, J. C. Gumbart, J. Comput. Chem. **34**, 2757-2770 (2013).](https://onlinelibrary.wiley.com/doi/10.1002/jcc.23422)
