@@ -9,16 +9,15 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 10.1. Acceleration of MD simulations using HMR and a longer time step 
+# Acceleration of MD simulations using HMR and a longer time step 
 
 Here we show an example how to apply a longer time step than usual by
-making use of the hydrogen mass repartitioning (HMR) scheme with group
-temperature/pressure. Please note that this option is only available in
-GENESIS v2.0. 
+making use of the hydrogen mass repartitioning (HMR) scheme [^1] [^2] [^3] with group
+temperature/pressure.[^4] Please note that this option is recommend with accurate temperature/pressure evaluations.[^4] [^5] [^6].
 
 ## 1. Overview of Hydrogen mass repartitioning (HMR)
 
-In hydrogen mass repartitioning (HMR), the mass of hydrogen atoms is
+In hydrogen mass repartitioning (HMR),[^1] [^2] [^3] the mass of hydrogen atoms is
 scaled by 2\~3 while the mass of the heavy atom bonded to the hydrogen
 is reduced such that the total mass is not changed. The figure below is
 an example of HMR with a scaling ratio = 3. Here, numbers in each atom
@@ -27,35 +26,32 @@ mass.![](/assets/images/2021_12_HMR1-scaled.jpg)
 
 According to our recent investigation, the HMR scaling of hydrogen atoms
 in five- or six-member rings should be 2 to increase the stability with
-a large time step, as shown in the figure below:
+a large time step, as shown in the figure below:[^3]
 
 ![](/assets/images/2021_12_HMR2-scaled.jpg)
 
 For other hydrogen atoms, we recommend using a HMR scaling ratio of 3
-and 2.5 for CHARMM and AMBER force fields, respectively. In addition, it
+and 2.5 for CHARMM and AMBER force fields, respectively.[^3] In addition, it
 is better not to apply HMR to water molecules if you are going to
 observe dynamic properties from MD. In this tutorial, we will show how
 to make use of HMR in the simulation of CI2 protein solvated in water
 molecules. All the input files used in this tutorial can be downloaded
-in
-[tutorial22-10.1.tar.gz](/assets/tutorial_files/2022_03_tutorial22-10.1.tar.gz).
+in our genesis tutorail github site.
 
 ## 2. Preparations
 
-### 2.1. Download/Compile GENESIS source code (v2.0beta)
+### 2.1. Download/Compile GENESIS source code 
 
-GENESIS v2.0beta source code can be downloaded from
-[github](https://github.com/genesis-release-r-ccs/genesis-2.0). After
+GENESIS source code can be downloaded from
+[github](https://github.com/genesis-release-r-ccs/genesis). After
 downloading it, you can compile with the following procedure.
 
-
-```
+``` bash
 $ cd genesis
 $ autoreconf
 $ ./configure --enable-single
 $ make
 $ make install
-
 ```
 
 In the case of mixed precision, you can write `–-enable-mixed` instead
@@ -66,40 +62,33 @@ conservation, we recommend to compile with mixed or double precisions.
 Open MPI or Intel MPI libraries can be chosen by writing
 
 
-```
+``` bash
 # Open MPI
 $ ./configure --enable-single FC=mpif90 CC=mpicc
 # Intel MPI
 $ ./configure --enable-single FC=mpiifort CC=mpiicc
-
 ```
 
 To compile GENESIS on Fugaku or GPU machines, please write as
 followings:
 
-
-```
+``` bash
 # Fugaku
 $ ./configure --enable-single --host=Fugaku
 # GPU
 $ ./configure --enable-single –with-cuda={your path of CUDA library}
-
 ```
 
 ### 2.2. Download Tutorial
 
 The input files in this tutorial cover from minimization to production
-run. After downloading the tutorial file
-([tutorial22-10.1.tar.gz](/assets/tutorial_files/2022_03_tutorial22-10.1.tar.gz)), you can see five directories and two files.
+run. After downloading the tutorial file from our github site, you can see five directories and two files.
 
-
-```
-$ unzip tutorial22-10.1.zip
+``` bash
 $ cd tutorial-10.1
 $ ls
 1.min 3.equil_hmr step3_pbcsetup.pdb toppar
 2.equil 4.production step3_pbcsetup.psf
-
 ```
 
 ## 3. MD simulation of CI2
@@ -114,18 +103,16 @@ Minimization is the first required step to avoid instability in the
 structure. The input file is in the [1.min]
 directory. 
 
-
-```
+``` bash
 $ cd 1.min
 $ ls
 inp
-
 ```
 
 The content of the Input file is 
 
 
-```
+``` toml
 [INPUT]
 parfile = ../toppar/par_all36m_prot.prm
 strfile = ../toppar/toppar_all36_prot_c36m_d_aminoacids.str, ../toppar/toppar_water_ions.str
@@ -175,7 +162,6 @@ select_index1   = 1
 function2       = POSI
 constant2       = 0.1
 select_index2   = 2
-
 ```
 
 In minimization, the `contact_check` option is often used to avoid
@@ -190,12 +176,10 @@ In this tutorial, we run equilibration with two steps after the
 minimization. First, let's move to the
 [2.equil] directory.
 
-
-```
+``` bash
 $ cd ../2.equil
 $ ls
 inp1 inp2
-
 ```
 
 Here, there are two input files. In inp1, we run the equilibration with
@@ -204,8 +188,7 @@ difference between inp1 and minimization input in `[INPUT]`,
 `[SELECTION]`, `[RESTRAINTS]`, and `[BOUNDARY]`. The other sections in
 inp1 are written in the following way:
 
-
-```
+``` toml
 [OUTPUT]
 rstfile = equil1.rst
 dcdfile = equil1.dcd
@@ -239,7 +222,6 @@ ensemble         = NPT
 tpcontrol        = BUSSI 
 temperature      = 303.15
 pressure         = 1.0
-
 ```
 
 In the \[ENERGY\] section, the `contact_check` option is not written
@@ -259,24 +241,21 @@ include production results for the first a few ns results. In this
 tutorial, we will follow the first approach. To make use of HMR, let's
 move to [3.equil_hmr] directory.
 
-
-```
+``` bash
 $ cd ../3.equil_hmr/
 $ ls
 inp
-
 ```
 
 The input file, inp, is similar to inp2 in
 [2.equil] directory except
 
 
-```
+``` toml
 hydrogen_mr   = yes
 hmr_ratio     = 3.0
 hmr_ratio_xh1 = 2.0
 hmr_target    = solute 
-
 ```
 
 Here, we scale the mass of hydrogen atoms in the following manner: three
@@ -295,8 +274,7 @@ AMBER program. In NAMD and AMBER, the scaled hydrogen mass should be
 written directly in the psf and prmtop files, respectively. For example,
 the psf files with and without HMR scaling are written as following:
 
-
-```
+``` toml
 #psf without HMR
  32413 !NATOM
 1 PROA 20 MET N   NH3 -0.300000 14.0070 0 0.00000 -0.301140E-02
@@ -307,7 +285,7 @@ the psf files with and without HMR scaling are written as following:
 6 PROA 20 MET HA  HB1  0.100000 1.00800 0 0.00000 -0.301140E-02
 . . .
 
-psf with HMR
+#psf with HMR
  32413 !NATOM
 1 PROA 20 MET N   NH3 -0.300000 7.95900 0 0.00000 -0.301140E-02
 2 PROA 20 MET HT1 HC   0.330000 3.02400 0 0.00000 -0.301140E-02
@@ -316,7 +294,6 @@ psf with HMR
 5 PROA 20 MET CA  CT1  0.210000 9.99500 0 0.00000 -0.301140E-02
 6 PROA 20 MET HA  HB1  0.100000 3.02400 0 0.00000 -0.301140E-02
  . . .
-
 ```
 
 In this example, the masses of hydrogen atoms with HMR become three
@@ -325,8 +302,7 @@ heavy atoms are reduced accordingly. Therefore, psf files should be
 regenerated to perform MD with HMR. Similarly, masses in an AMBER
 parameter file are changed to apply HMR:
 
-
-```
+``` toml
 # parameter without HMR
 %FLAG MASS
 %FORMAT(5E16.8)
@@ -339,7 +315,6 @@ parameter file are changed to apply HMR:
 %FORMAT(5E16.8)
 7.95900000E+00 3.02400000E+00 3.02400000E+00 3.02400000E+00 9.99500000E+00
 3.02400000E+00 7.97900000E+00 3.02400000E+00 3.02400000E+00 7.97900000E+00
-
 ```
 
 Unlike them, we do not have to change psf or parameter files. Instead we
@@ -352,12 +327,10 @@ After you equilibrate with HMR, you can run MD simulations with a large
 time step. Let's move to the directory of production runs
 ([4.production]).
 
-
-```
+``` bash
 $ cd ../4.production/
 $ ls
 inp1 inp2 inp2_nohmr
-
 ```
 
 In inp1, we perform production run with multiple time step with 3.5 fs
@@ -366,8 +339,7 @@ inp2_nohmr, we perform production run with 5 fs time step with and
 without HMR, respectively. Main differences in the control inputs are
 shown as following:
 
-
-```
+```toml
 inp1:
 
 [DYNAMICS]
@@ -414,7 +386,6 @@ rstout_period     = 100000
 nbupdate_period   = 4
 thermostat_period = 4
 barostat_period   = 4
-
 ```
 
 Here, we note that `crdout_period` (period of trajectory writing output), `rstout_period` (period of restart file writing output), 
@@ -428,9 +399,8 @@ could run inp2 without any problem. On the other hand, running
 inp2_nohmr has an error message in constraints:
 
 
-```
+``` bash
 Compute_Shake> SHAKE algorithm failed to converge: indexes 775 776 777
-
 ```
 
 In other words, the MD simulation with a large time step is not stable
@@ -442,50 +412,21 @@ evaluations require iterations when `rigid_bod=yes` is used in
 temperature and pressure evaluations by writing `group_tp=yes` in the
 `[ENSEMBLE]` section.
 
- 
-
-**Reference**
-
-1.  Jaewoon Jung, Kento Kasahara, Chigusa Kobayashi, Hiraku Oshima,
-
-```
-Takaharu Mori, Yuji Sugita, "Optimized hydrogen mass repartition
-scheme combined with accurate temperature/pressure evaluations for
-thermodynamic and kinetic properties of biological systems", J.
-Chem. Theory Comput. 17, 5312-5321 (2021)
-[\[Link\]](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.1c00185){.gsc_oci_title_link     clk="hl=ko&sa=T&ei=vMazYqewIImKmgGvwKDwCw"}
-```
-
-2.  Jaewoon Jung, Yusji Sugita, "Group-based evaluation of temperature
-
-```
-and pressure for molecular dynamics simulation with a large time
-step", J. Chem. Phys. 153, 234115 (2020)
-[\[Link\]](https://aip.scitation.org/doi/abs/10.1063/5.0027873){.gsc_oci_title_link     clk="hl=ko&sa=T&ei=XsezYsSJKKCUy9YP16i2qAw"}
-```
-
-3.  Jaewoon Jung, Chigusa Kobayashi, Yuji Sugita, "Optimal temperature
-
-```
-evaluation in molecular dynamics simulations with a large time
-step", J. Chem. Theory Copmput. 15, 84-94 (2019)
-[\[Link\]](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.8b00874){.gsc_oci_title_link     clk="hl=ko&sa=T&ei=4cezYoeLHomKmgGvwKDwCw"}
-```
-
-4.  Jaewoon Jung, Chigusa Kobayashi, Yuji Sugita, "Kinetic energy
-
-```
-definition in velocity Verlet integration for accurate pressure
-evaluation", J. Chem. Phys. 148, 164109 (2018)
-[\[Link\]](https://aip.scitation.org/doi/abs/10.1063/1.5008438){.gsc_oci_title_link     clk="hl=ko&sa=T&ei=I8izYt_yM6CUy9YP16i2qAw"}
-
- 
-
-```
 
 *Written by Jaewoon Jung@RIKEN R-CCS. March, 2022*
-
 *Updated by Jaewoon Jung@RIKEN R-CCS. June, 23, 2022*
+*Updated by Jaewoon Jung@RIKEN R-CCS. June, 10, 2025*
 
+## 4. References
 
+[^1]: [K. A. Feenstra, B. Hess, and H. J. C. Berendsen, **1999**, *J. Comput. Chem.*, 20, 786--798](https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1096-987X(199906)20:8<786::AID-JCC5>3.0.CO;2-B)
 
+[^2]: [C. W. Hopkins, S. Le Grand, R. C. Walker, and A. E. Roitberg, **2015**, *J. Chem. Theory Comput.*, 11, 1864--1874](https://pubs.acs.org/doi/full/10.1021/ct5010406)
+
+[^3]: [J. Jung, K. Kasahara, C. Kobayashi, H. Oshima, T. Mori, and Y.Sugita, **2021**, *J. Chem. Theory Comput.*, 17, 5312--5321](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.1c00185)
+
+[^4]: [J. Jung and Y. Sugita, **2020**, *J. Chem. Phys.*, 153, 234115](https://aip.scitation.org/doi/abs/10.1063/5.0027873)
+
+[^5]: [J. Jung, C. Kobayashi and Y. Sugita, **2019**, *J. Chem. Theory Copmput.* 15, 84--94](https://pubs.acs.org/doi/abs/10.1021/acs.jctc.8b00874)
+
+[^6]: [J. Jung, C. Kobayashi and Y. Sugita, **2018**, *J. Chem. Phys.*, 148, 164109](https://aip.scitation.org/doi/abs/10.1063/1.5008438)
