@@ -265,7 +265,6 @@ are also prepared.
 # mass-weighted RMSD
 $ cd ../2_rmsd_analysis
 $ /home/user/GENESIS/bin/rmsd_analysis INP > log
-
 ```
 
 This figure shows that RMSD goes down linearly in this simulation.
@@ -295,7 +294,6 @@ You can select coordinates from the trajectory for making a movie.
 # Convert crd for movie 
 $ cd ../4_crd_convert 
 $ /home/user/GENESIS/bin/crd_convert INP > log
-
 ```
 
 ## 6. Steered MD simulation 
@@ -398,5 +396,5 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 3.  [H Grubmüller ]{.MUxGbd .wuQ4Ob .WZ8Tjf}*et al. Science, [**271**,     997--999,]{dir="ltr" role="presentation"} [(1996).]{dir="ltr"     role="presentation"}*[[]{dir="ltr"     role="presentation"}](https://www.science.org/doi/10.1126/science.271.5251.997)
 
 *Written by Chigusa Kobayashi@RIKEN R-CCS. March, 4, 2022*
-
 *Updated by Chigusa Kobayashi@RIKEN R-CCS. May, 9, 2022*
+{: .notice} 
