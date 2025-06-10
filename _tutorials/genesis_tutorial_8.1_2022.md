@@ -14,9 +14,9 @@ sidebar:
 Implicit solvent models are useful to reduce computational cost in the
 simulation of biomolecules [^1]. The GB/SA (Generalized Born/Solvent accessible surface area) model is one of the popular implicit solvent
 models, in which the electrostatic contribution to the solvation free
-energy is computed with the GB theory \[2,3\], and the non-polar
+energy is computed with the GB theory [^2][^3], and the non-polar
 contribution is calculated from the solvent accessible surface area
-\[4,5\]. In the GB theory, solvent molecules surrounding the solute are
+[^4][^5]. In the GB theory, solvent molecules surrounding the solute are
 approximated as a continuum that has the dielectric constant of \~80. To
 date, various GB models have been developed such as GBSW [^6], GBMV
 [^7], HCT [^8], and OBC [^9]. In GENESIS, the OBC model and LCPO
@@ -26,33 +26,33 @@ both CHARMM and AMBER force fields are available. In this tutorial, we
 learn how to use the GB/SA model with the AMBER ff14SB force field
 parameters in GENESIS.
 
-## [![](/assets/images/2019_08_explicit_implicit.jpg) Preparation]
+![](/assets/images/2019_08_explicit_implicit.jpg)
 
-First of all, download the tutorial file
-([tutorial22-8.1.tar.gz](/assets/tutorial_files/2022_07_tutorial22-8.1.tar.gz)). This tutorial consists of five steps: 1) system setup, 2)
-energy minimization, 3) equilibration, 4) production run, and 5)
-trajectory analysis. Control files for GENESIS are already included in
-the file. 
+##  0. Preparation
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 
+If you haven't downloaded the files yet, open your terminal
+and run the following command:
+```bash
+$ cd ~/GENESIS_Tutorials-2022
 
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-8.1.zip ./
-$ unzip tutorial22-8.1.zip
 
-# Let's clean up the directory
-$ mv tutorial22-8.1.zip TRASH
+If you already have the tutorial materials, let's go to our working directory.
+```bash
+$ cd genesis_tutorial_materials/tutorial-8.1
 
 # Let's take a note
 $ echo "tutorial-8.1: MD simulation of Protein G in GBSA" >> README
 
 # Check the contents of Tutorial 8.1
-$ cd tutorial-8.1
 $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
 $ ls 
 1_setup  2_minimize  3_equilibrate  4_production  5_analysis  bin
-
 ```
 
 ##  1. Setup
@@ -62,13 +62,13 @@ GB/SA simulation is performed for a system consisting of only solute
 molecules (no explicit water). In the following commands, we first make
 a symbolic link to the PDB file of Protein G ([PDB: 2QMT](https://www.rcsb.org/structure/2qmt)) in the setup directory, and then build a
 system by using tLEAP in the AMBER tools (see also [Tutorial 5.2](/tutorials/genesis_tutorial_5.2_2022/)). Since we
-use the OBC2 model, we specify `"set default PBradii mbondi2"` in
+use the OBC2 model, we specify `set default PBradii mbondi2` in
 `tleap.inp` (see the AMBER manual). Here, we use the AMBER ff14SB force
 field parameters. We obtain `proa.crd`, `proa.prmtop`, and `proa.pdb` as
 the input files for GENESIS.
 
 
-```
+```bash
 # Change directory for the system setup
 $ cd 1_setup
 $ ls
@@ -85,7 +85,6 @@ leap.log  proa.pdb  tleap.inp    tmp.pdb    vmd.tcl
 
 # View the initial structure
 $ vmd -parm7 proa.prmtop -rst7 proa.crd
-
 ```
 
 ##  2. Minimization
@@ -100,11 +99,11 @@ cut-off distance. In addition, we use non-periodic boundary conditions.
 In this example, we use the default parameters for GBSA, where the
 dielectric constants of solute and solvent are set to 1.0 and 78.5,
 respectively, and the salt concentration is set to 0.2 mol/L, and the
-surface tension coefficient is 0.005 kcal/mol/Å^2^ (see the GENESIS user manual). Note that in GENESIS only OBC model is available currently, and
+surface tension coefficient is 0.005 kcal/mol/Å<sup>2</sup> (see the GENESIS user manual). Note that in GENESIS only OBC model is available currently, and
 the OBC2 parameters are the default setting.
 
 
-```
+```bash
 # Change directory for energy minimization
 $ cd ../2_minimize
 $ less INP
@@ -119,18 +118,16 @@ implicit_solvent = GBSA    # [GBSA]
 
 [BOUNDARY]
 type             = NOBC    # [NOBC]
-
 ```
 
 Then, we execute ATDYN. The following is an example command using 4 CPU
 cores.
 
 
-```
+```bash
 # Run ATDYN 
 $ export OMP_NUM_THREADS=1
 $ mpirun -np 4 ../bin/atdyn INP > log
-
 ```
 
 ##  3. Equilibration
@@ -144,7 +141,7 @@ minimization. We use the Langevin thermostat to consider the random
 effects of the solvent on the solute atoms. 
 
 
-```
+```bash
 # Change directory for equilibration
 $ cd ../3_equilibrate
 $ less INP
@@ -153,16 +150,14 @@ $ less INP
 ensemble         = NVT       # [NVE,NVT]
 tpcontrol        = LANGEVIN  # [NO,BERENDSEN,BUSSI,LANGEVIN]
 temperature      = 298.15    # initial and target temperature (K)
-
 ```
 
 Let's execute ATDYN. In the `log` file, the solvation free energy (GB + SA terms) is shown in the 16th column.
 
 
-```
+```bash
 # Run ATDYN 
 $ mpirun -np 4 ../bin/atdyn INP > log
-
 ```
 
 ##  4. Production run 
@@ -175,7 +170,7 @@ comparison, we also run the gas-phase simulation using `INP2`, where the
 GB/SA term is turned off.
 
 
-```
+```bash
 # Change directory for production run
 $ cd ../4_production
 
@@ -184,7 +179,6 @@ $ mpirun -np 4 ../bin/atdyn INP1 > log1
 
 # Run ATDYN (GBSA off) 
 $ mpirun -np 4 ../bin/atdyn INP2 > log2
-
 ```
 
 Let's compare the computational time between the two simulations. The
@@ -208,13 +202,14 @@ directory. In the analysis, hydrogen bond is defined if the D...A
 smaller than 120°, and H-D...A angle is greater than 30°.
 
 
-```
+```bash
 # Change directory for the hydrogen bond analysis
 $ cd ../5_analysis
 $ cd H-bonds
 $ ls
 INP1  INP2
-
+```
+```toml
 [OPTION] 
 check_only    = NO          # only checking input files (YES/NO)
 allow_backup  = NO          # backup existing output files (YES/NO)
@@ -227,20 +222,18 @@ boundary_type = NOBC        # (PBC / NOBC)
 output_type   = count_snap  # (count_atom / count_snap)
                             # count_atom: number of H-bonds is output for each pair
                             # count_snap: number of H-bonds is output every snapshot
-
 ```
 
 Let's run `hb_analysis`:
 
 
-```
+```bash
 # Run hb_analysis
 $ ../../bin/hb_analysis INP1 > log1
 $ ../../bin/hb_analysis INP2 > log2
-
 ```
 
-Then, plot the "`output_gbsa.out`" and "`output_gas.out`". You will see
+Then, plot the `output_gbsa.out` and `output_gas.out`. You will see
 that the number of hydrogen bonds in the gas-phase MD trajectory is more
 than that in the GB/SA MD trajectory. This is because in the gas phase
 electrostatic interactions between polar groups have been enhanced by
@@ -266,7 +259,7 @@ can see the characters "H", "E", "S", "T" in the 5th column, which
 indicates α-helix, β-sheet, bend, and turn, respectively (for details, see the [DSSP manual](https://swift.cmbi.umcn.nl/gv/dssp/DSSP_2.html)).
 
 
-```
+```bash
 # Change directory for the analysis
 $ cd ../5_analysis/DSSP
 $ ls
@@ -274,7 +267,6 @@ INP1  INP2  propensity
 
 # Run DSSP for the initial structure
 /home/user/DSSP/dssp ../../1_setup/proa.pdb
-
 ```
 
 By using `dssp_interface`, we can run the DSSP program for each snapshot
@@ -285,7 +277,7 @@ specify a path to the DSSP program. `dssp_interface` generates
 This is repeated for all snapshots.
 
 
-```
+```toml
 [SELECTION]
 group1         = all                     # selection group 1
  
@@ -293,7 +285,6 @@ group1         = all                     # selection group 1
 analysis_atom  = 1                       # protein atom group
 dssp_exec      = /home/user/DSSP/dssp    # dssp binary path
 temporary_pdb  = temporary_gbsa.pdb      # temporary pdb for DSSP
-
 ```
 
 After the calculation, we obtain `dssp_gbsa.out` and `dssp_gas.out` from
@@ -301,7 +292,7 @@ After the calculation, we obtain `dssp_gbsa.out` and `dssp_gas.out` from
 obtained by DSSP for all snapshots are contained.
 
 
-```
+```bash
 # Run dssp_interface for INP1 and INP2
 $ ../../bin/dssp_interface INP1 > log1
 $ ../../bin/dssp_interface INP2 > log2
@@ -309,19 +300,19 @@ $ ../../bin/dssp_interface INP2 > log2
 $ ls
 INP1  dssp_gas.out   log1  propensity         temporary_gbsa.pdb
 INP2  dssp_gbsa.out  log2  temporary_gas.pdb
-
 ```
 
 Let's analyze the output files to calculate a secondary structure
 propensity of each amino acid in the protein. For this purpose, we need
 an additional analysis tool. The example awk program is included in the
-directory "`propensity`". Here, `calc.awk` computes a rate of the
-secondary structure formation of each amino acid (see Appendix of this page). The α-helix and β-sheet propensities are shown in the 2nd and 3rd
+directory `propensity`. Here, `calc.awk` computes a rate of the
+secondary structure formation of each amino acid (see [Appendix](http://127.0.0.1:4000/tutorials/genesis_tutorial_8.1_2022/#appendix) of this page).
+The α-helix and β-sheet propensities are shown in the 2nd and 3rd
 column of the output file, respectively. If the propensity is one, the
 secondary structure was formed in all snapshots.
 
 
-```
+```bash
 # Change directory to analyze secondary structure propensity
 $ cd propensity
 $ ls
@@ -330,7 +321,6 @@ calc.awk
 # Calculate the secondary structure propensity
 $ awk -f calc.awk ../dssp_gbsa.out > gbsa.out
 $ awk -f calc.awk ../dssp_gas.out  > gas.out
-
 ```
 
 Let's plot the results. We can see that the α-helix and β-sheet of
@@ -339,7 +329,7 @@ the gas-phase simulation.
 
 ![](/assets/images/2022_03_figure8.1.4.png)
 
-##  Appendix
+## Appendix
 
 When you use the program `calc.awk` for other cases, you must take care
 about the following red parts. `nres` is the total number of amino acid
@@ -348,8 +338,7 @@ compute the α-helix and β-sheet propensity, respectively. Note that
 those characters should be in the 4th column if the PDB file does not
 include the chain ID.
 
-
-```
+```awk
 calc.awk:
 
 BEGIN {       nres = 56;       calc =  0;       istr =  0;       for (i=1; i<=nres; i++) freq_H[‍i] = 0;       for (i=1; i<=nres; i++) freq_E[‍i] = 0     }
@@ -357,78 +346,33 @@ BEGIN {       nres = 56;       calc =  0;       istr =  0;       for (i=1; i<=nr
 { if ($1 == "SNAPSHOT") istr = istr + 1       if (calc == 1) {         if ($5 == "H") freq_H[‍$1] = freq_H[$1] + 1;         if ($5 == "E") freq_E[‍$1] = freq_E[$1] + 1       }       if ($2 == "RESIDUE") calc = 1       if ($1 == nres)      calc = 0     }
 
 END {       printf("RESNO    HELIX    SHEET\n")       for (i=1; i<=nres; i++) {       prop_H[‍i] = freq_H[‍i]/istr;       prop_E[‍i] = freq_E[‍i]/istr;       printf("%5d %8.5f %8.5f\n",i, prop_H[‍i], prop_E[‍i])       }     }
-
 ```
-
-##  References
-
-1.  T. Mori *et al.*, *BBA-Biomembranes*, **1858**, 1635-1651 (2016).
-
-```
-[](https://www.sciencedirect.com/science/article/pii/S0005273615004381)
-```
-
-2.  W. C. Still *et al.*, *J. Am. Chem. Soc.*, **112**, 6127-6129
-
-```
-(1990).
-[](https://pubs.acs.org/doi/10.1021/ja00172a038)
-```
-
-3.  D. Bashford and D. A. Case, *Annu. Rev. Phys. Chem.*, **51**,
-
-```
-129-152 (2000).
-[](https://www.annualreviews.org/doi/abs/10.1146/annurev.physchem.51.1.129)
-```
-
-4.  D. Eisenberg and A. D. McLachlan, *Nature*, **319**, 199-203 (1986).
-
-```
-[](https://www.nature.com/articles/319199a0)
-```
-
-5.  T. Ooi *et al.*, *Proc. Natl. Acad. Sci. U.S.A.*, **84**, 3086-3090
-
-```
-(1987). [](https://www.pnas.org/content/84/10/3086)
-```
-
-6.  W. Im *et al.*, *J. Comput. Chem.,* **24**, 1691-1702, (2003).
-
-```
-[](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.10321)
-```
-
-7.  M. S. Lee *et al.*, *J. Chem. Phys.*, **116**, 10606 (2002).
-
-```
-[](https://aip.scitation.org/doi/10.1063/1.1480013)
-```
-
-8.  G. D. Hawkins *et al.*, *J. Phys. Chem.*, **100**, 19824-19839
-
-```
-(1996).
-[](https://pubs.acs.org/doi/10.1021/jp961710n)
-```
-
-9.  A. Onufriev *et al.*, *Proteins*, **55**, 383-394 (2004).
-
-```
-[](https://onlinelibrary.wiley.com/doi/full/10.1002/prot.20033)
-```
-
-10. J. Weiser *et al.*, *J.* *Comput. Chem.* **20**, 217-230 (1999).
-
-```
-[](https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1096-987X(19990130)20:2%3C217::AID-JCC4%3E3.0.CO;2-A)
-
-```
-
-------------------------------------------------------------------------
+----
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
-March 22, 2022*
+laboratory March 22, 2022*
+{: .notice}
+
+## References
+
+[^1]: T. Mori *et al.*, *BBA-Biomembranes*, **1858**, 1635-1651 (2016).
+
+[^2]: W. C. Still *et al.*, *J. Am. Chem. Soc.*, **112**, 6127-6129
+
+[^3]: D. Bashford and D. A. Case, *Annu. Rev. Phys. Chem.*, **51**,129-152 (2000).
+
+[^4]: D. Eisenberg and A. D. McLachlan, *Nature*, **319**, 199-203 (1986).
+
+[^5]: T. Ooi *et al.*, *Proc. Natl. Acad. Sci. U.S.A.*, **84**, 3086-3090 (1987). 
+
+[^6]: W. Im *et al.*, *J. Comput. Chem.,* **24**, 1691-1702, (2003).
+
+[^7]: M. S. Lee *et al.*, *J. Chem. Phys.*, **116**, 10606 (2002).
+
+[^8]: G. D. Hawkins *et al.*, *J. Phys. Chem.*, **100**, 19824-19839 (1996).
+
+[^9]: A. Onufriev *et al.*, *Proteins*, **55**, 383-394 (2004).
+
+[^10]: J. Weiser *et al.*, *J.* *Comput. Chem.* **20**, 217-230 (1999).
+
 
