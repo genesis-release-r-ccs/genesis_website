@@ -9,37 +9,40 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 7.4 All-atom Go-model for the molten globule simulation of RNase-H protein 
+# All-atom Go-model for the molten globule simulation of RNase-H protein 
 
-In the tutorial 7.3, we used Cα Go-model, which coarse-graining each
+In [Tutorial 7.3](/tutorials/genesis_tutorial_7.3_2022), 
+we used Cα Go-model, which coarse-graining each
 amino acid residue as one bead. Here, we use another coarse-grained
 model, all atom Go (AA Go) model which can describe higher-order effect
 such as side chain interaction of protein [^1]. With this model, we are
 going to simulate the unfolding of RNase H protein from HIV-1 (RNase-H),
 and observe molten globule state of the molecule [^2].
 
-You can download the [[tutorial files](/assets/tutorial_files/2022_04_tutorial22-7.4.tar.gz)] and please unpack the zip into a working directory.
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub]
+(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
-
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# download the tutorial file
-$ cd /home/user/GENESIS/Tutorials
-$ mv ~/Downloads/tutorial22-7.4.zip ./
-$ unzip tutorial22-7.4.zip 
-$ cd tutorial-7.4 
+If you already have the tutorial materials, let's go to our working directory:
+
+```bash
+$ cd genesis_tutorial_materials/tutorial-7.4
 $ ls
 1_setup 2_production 3_analysis
-
 ```
 
-
 This tutorial is composed of three steps:
-
 1.  system setup
 2.  production run
 3.  trajectory analysis
-
- 
 
 ## 1. Setup the system
 
@@ -54,13 +57,20 @@ various modules. You can install these modules by using `yum` (Red-Hat),
 on Ubuntu:
 ```
 $ sudo apt-get install -y perl # Perl
-$ sudo apt-get install -y libxml-parser-perl libxml-simple-perl libxml-perl \
-                          libxml-sax-expatxs-perl libxml-validate-perl \
+$ sudo apt-get install -y libxml-parser-perl \
+                          libxml-simple-perl \
+                          libxml-perl \
+                          libxml-sax-expatxs-perl \
+                          libxml-validate-perl \
                           libxml-validator-schema-perl # XML module
-$ sudo apt-get install -y libsub-exporter-perl libexporter-tiny-perl \
-                          libexporter-autoclean-perl libexporter-cluster-perl \
-                          libexporter-declare-perl libexporter-easy-perl \
-                          libexporter-lite-perl libexporter-renaming-perl \
+$ sudo apt-get install -y libsub-exporter-perl \
+                          libexporter-tiny-perl \
+                          libexporter-autoclean-perl \
+                          libexporter-cluster-perl \
+                          libexporter-declare-perl \
+                          libexporter-easy-perl \
+                          libexporter-lite-perl \
+                          libexporter-renaming-perl \
                           libexporter-tidy-perl # Exporter module
 $ sudo apt-get install -y pdl libpdl-stats-perl # PDL
 $ sudo apt-get install -y libgetopt-long-descriptive-perl # Getopt module
@@ -81,7 +91,6 @@ $ cd /path/to/1_setup
 
 # download the PDB file (PDB ID: 1r0a)
 $ wget https://files.rcsb.org/download/1r0a.pdb
-
 ```
 
 You have to extract RNase-H from the PDB file by trimming off the other
@@ -93,7 +102,6 @@ $ head -n6198 1r0a.pdb | tail -n932 > 1r0a_mod.pdb
 
 # add END statement which is necessary to run SMOG2
 $ echo END >> 1r0a_mod.pdb
-
 ```
 
 ![](/assets/images/2022_04_fig1.png){: width="400"}
@@ -107,18 +115,16 @@ $ smog_adjustPDB -i 1r0a_mod.pdb # adjusted.pdb file will be generated as an out
 
 # Generate structure-based AA-Go model by using SMOG2
 $ smog2 -i adjusted.pdb -AA > setup.log
-
 ```
 
 After running SMOG2, you can see four output files
 (`smog.gro`, `.top`, `.ndx`, and `.contacts`). Among them, you will use `.gro`
 and `.top` files in the following MD simulation.
 
- 
-
 ## 2. Production run
 
-Just same as Tutorial 7.3, we are going to perform a production run
+Just same as [Tutorial 7.3](/tutorials/genesis_tutorial_7.3_2022),
+we are going to perform a production run
 without energy minimization or equilibration.
 
 The following commands perform a 1.0 x 10<sup>7</sup> steps (20 ns) simulation
@@ -134,7 +140,6 @@ $ export OMP_NUM_THREADS=1
 
 # perform production run with atdyn by using 8 MPI processors
 $ mpirun 8 -np 8 atdyn run.inp | tee run.out
-
 ```
 
 The control file `run.inp` contains several sections, such as
@@ -201,15 +206,12 @@ gamma_t        = 0.1 # friction (ps-1) # in [LANGEVIN]
 
 [BOUNDARY] 
 type           = NOBC # [PBC, NOBC]
-
 ```
 
 ## 3. Trajectory analysis
 
 As an example for the analysis, we use the `rg_analysis`, which calculates a
-radius of gyration (*R*~g~) for each snapshot in the trajectory. You can
-perform `rg_analysis` with following commands:
-
+radius of gyration (\\(R_g\\)) for each snapshot in the trajectory. You can perform `rg_analysis` with following commands:
 
 ```
 # change to the analysis directory
@@ -220,11 +222,9 @@ $ export OMP_NUM_THREADS=1
 
 # perform rg_anlaysis
 $ rg_analysis run.inp | tee run.out
-
 ```
 
-The control file for the *R*~g~ calculation is shown below:
-
+The control file for the \\(R_g\\) calculation is shown below:
 
 ```
 [INPUT] 
@@ -253,19 +253,18 @@ check_only     = NO # (YES/NO)
 allow_backup   = NO # (YES/NO)
 analysis_atom  = 1 # atom group
 mass_weighted  = YES 
-
 ```
 
 In the `[TRAJECTORY]` section, we set the input trajectory files as
 `trjfile1=../2_production/run.dcd`.
 
 In the `[SELECTION]` section, we define a group (`group1`) of all atoms
-in the model which are used for the *R*~g~ calculation. Finally, the
-*R*~g~ output file (`rgfile=run.rg`) is set in the `[OUTPUT]` section.
+in the model which are used for the \\(R_g\\) calculation. Finally, the
+\\(R_g\\) output file (`rgfile=run.rg`) is set in the `[OUTPUT]` section.
 
-By running `rg_analysis`, we get an *R*~g~ file (`run.rg`). The first
+By running `rg_analysis`, we get an \\(R_g\\) file (`run.rg`). The first
 column of this file is the indices of time step, and the second column
-is the *R*~g~ values in the unit of Angstrom. We can visualize it with
+is the \\(R_g\\) values in the unit of Angstrom. We can visualize it with
 programs such as gnuplot:
 
 
@@ -274,14 +273,14 @@ $ gnuplot
 gnuplot> set xlabel “Step”
 gnuplot> set ylabel “Rg [Angstrom]”
 gnuplot> plot “run.rg” w lp
-
 ```
 
 ![](/assets/images/2022_04_fig2.png)
-
 ---
 
-*Written By Mao Oide @ RIKEN Theoretical molecular science laboratory\ June 18, 2022*
+*Written By Mao Oide @ RIKEN Cluster for Pioneering Research\
+Theoretical molecular science laboratory\
+June 18, 2022*
 {: .notice}
 
 ## References
@@ -291,6 +290,4 @@ gnuplot> plot “run.rg” w lp
 [^3]: J. K. Noel *et al.*, *PLoS Comput. Biol.*, **12**, e1004794 (2016).
 [^4]: P. C. Whitford *et al.*, [*Proteins: Structure, Function,     Bioinformatics*, **75**, 430-441 (2009).]
 [^5]: J. K. Noel *et al.*, *J. Phys. Chem. B* **116**, 8692-8702 (2012). 
-
-
 

@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 16.3 Flexible fitting refinement for *de novo* models
+# Flexible fitting refinement for *de novo* models
 
 In this tutorial, we learn how to refine the structure (decoy) obtained
 from *de novo* modeling such as MAINMAST [^1] and Pathwalking [^2].
@@ -28,7 +28,7 @@ these programs in advance (installation of CHARMM is not required). This
 tutorial is related to our recent publication [^3].
 
 
-## Preparation
+## 0. Preparation
 
 First, we make a directory in the `Data/Parameters` directory, to which
 the CHARMM C19 parameter and topology files for the EEF1 model
@@ -36,7 +36,6 @@ the CHARMM C19 parameter and topology files for the EEF1 model
 compied from the CHARMM program package. Here, we assume that the users
 download the CHARMM program in the `~/Downloads` directory. The
 parameter files are found in the `support/aspara` directory in CHARMM. 
-
 
 ```
 # Copy EEF1 parameter files in the Data directory
@@ -46,58 +45,50 @@ $ cd ./eef1
 $ cp ~/Downloads/charmm/support/aspara/solvpar.inp ./
 $ cp ~/Downloads/charmm/support/aspara/toph19_eef1.1.inp ./
 $ cp ~/Downloads/charmm/support/aspara/param19_eef1.1.inp ./
-
 ```
-
 Second, we set environmental variables: `VMDBIN`, `PULCHRABIN`, and
 `CONVPDBPL`, which are the path to VMD, PULCHRA, and convpdb.pl of
 MMTSB, respectively. Note that the path is depending on where the user
 installed these programs. The example commands are as follows:
-
 
 ```
 # Set environmental variables for this tutorial
 $ export VMDBIN="/home/user/Software/vmd-1.9.3/LINUXAMD64/vmd_LINUXAMD64"
 $ export PULCHRABIN="/home/user/Software/pulchra_306/pulchra"
 $ export CONVPDBPL="/home/user/Software/mmtsb/perl/convpdb.pl"
-
 ```
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
-Now, let's download the tutorial files:
-[tutorial22-16.3.tar.gz](/assets/tutorial_files/2022_04_tutorial22-16.3.tar.gz). 
-
-
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works/
-$ mv ~/Downloads/tutorial22-16.3.zip ./
-$ unzip tutorial22-16.3.zip
-
-# Let's clean up the directory
-$ mv tutorial22-16.3.zip TRASH
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-16.3
 
 # Let's take a note
 $ echo "tutorial-16.3: Flexible fitting refinement for de novo models" >> README
 
 # Check the contents of Tutorial 16.3
-$ cd tutorial-16.3
 $ ln -s ../../Programs/genesis-2.0.0/bin ./
 $ ls
 0_data     2_psfgen    4_fix_errors_1  5_build_c19  Parameters
 1_pulchra  3_minimize  4_fix_errors_2  6_saua-ffr   bin
-
 ```
-
 We make symbolic links of the CHARMM `toppar` and `eef1` directories in
 the `Parameters` directory. 
-
 
 ```
 # Make symbolic links to the parameter files
 $ cd Parameters
 $ ln -s ../../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ln -s ../../../Data/Parameters/eef1 ./eef1
-
 ```
 
 Let's look around the `0_data` directory, in which the target density
@@ -105,7 +96,6 @@ map and PDB files of decoys are contained. There are 50 decoys
 (`model1.pdb` ... `model50.pdb`) in the directory, and they are Cα
 model. `input.sit` is the target cryo-EM density map in the SITUS
 format. 
-
 
 ```
 $ cd ../0_data
@@ -115,7 +105,6 @@ model1.pdb   model2.pdb   model3.pdb   model4.pdb   model5.pdb
 model10.pdb  model20.pdb  model30.pdb  model40.pdb  model50.pdb
 model11.pdb  model21.pdb  model31.pdb  model41.pdb  model6.pdb
 ...
-
 ```
 
 ##  1. Full-atom modeling 
@@ -126,17 +115,14 @@ We generate the full-atom model from each decoy using PULCHRA. In the
 `1_pulchra` directory, there is one script: `Run.csh`, which applies
 PULCHRA to all decoys contained in the `../0_data` directory.
 
-
 ```
 $ cd ../1_pulchra
 $ ls
 Run.csh
-
 ```
 
 Let's execute `Run.csh`. We obtain 50 PDB files of the full-atom model
 (`model1.rebuilt.pdb` ... `model50.rebuilt.pdb`):
-
 
 ```
 $ ./Run.csh
@@ -147,7 +133,6 @@ model10.rebuilt.pdb  model26.rebuilt.pdb  model41.rebuilt.pdb
 model11.rebuilt.pdb  model27.rebuilt.pdb  model42.rebuilt.pdb
 model12.rebuilt.pdb  model28.rebuilt.pdb  model43.rebuilt.pdb
 ...
-
 ```
 
 ### 1.2 Energy minimization using GENESIS
@@ -164,7 +149,6 @@ the CHARMM C36m force field parameters. 
 $ cd ../2_psfgen
 $ ls
 Run.csh  build.tcl  tmp
-
 ```
 
 Let's execute `Run.csh`. You can obtain the PSF file (`model.psf`) and
@@ -181,7 +165,6 @@ log1       log23  log37  log50  model18.pdb  model31.pdb  model45.pdb
 log10      log24  log38  log6   model19.pdb  model32.pdb  model46.pdb
 log11      log25  log39  log7   model2.pdb   model33.pdb  model47.pdb
 ...
-
 ```
 
 We carry out the energy minimization for all decoys. Let's move to the
@@ -199,7 +182,6 @@ Check.csh  Make.csh  Submit.csh  template
 
 # Check the script file
 $ less Make.csh
-
 ```
 
 As seen in `Make.csh`, the control file (`INP`) and batch job script
@@ -207,12 +189,10 @@ file (`job.sh`) in the `template` directory are replicated to generate
 50 control files (`INP1` ... `INP50`) and script files (`job1.sh` .. `job50.sh`). Before executing `Make.csh`, let's check the files
 contained in `template`. 
 
-
 ```
 # Check the template batch script file
 $ less ./template/job.sh
 $ less ./template/INP
-
 ```
 
 In the template control file (`INP`) and batch script file (`job.sh`),
@@ -221,14 +201,12 @@ you can find "MODELID", which is replaced with the decoy index by the
 batch script file (`job.sh`) by yourself according to your computer
 system. 
 
-
 ```
 ...
 
 mpirun -np 8 -x OMP_NUM_THREADS=3 ../bin/atdyn INPMODELID > logMODELID
 
 ...
-
 ```
 
 Important control parameters are highlighted below. If
@@ -246,12 +224,10 @@ nsteps          = 2000
 eneout_period   =  100
 rstout_period   = 2000
 check_structure = YES
-
 ```
 
 Let's execute `Make.csh` to create the control files and batch script
 files.
-
 
 ```
 # Replicate the files for all decoys 
@@ -262,12 +238,10 @@ INP1       INP21  INP33  INP45  job1.sh     job21.sh  job33.sh  job45.sh
 INP10      INP22  INP34  INP46  job10.sh    job22.sh  job34.sh  job46.sh
 INP11      INP23  INP35  INP47  job11.sh    job23.sh  job35.sh  job47.sh
 ...
-
 ```
 
 Then, let's submit all jobs using `Submit.csh`, which executes all jobs
 one by one using the `qsub` command.
-
 
 ```
 # Check the script
@@ -275,7 +249,6 @@ $ less ./Submit.csh
 
 # Submit all jobs
 $ ./Submit.csh
-
 ```
 
 You obtain `model1.pdb` ... `mode50.pdb`, `model1.rst` ...
@@ -295,7 +268,6 @@ $ less ./Check.csh
 
 # Run the script
 $ ./Check.csh
-
 ```
 
 As displayed in the terminal window, there are many errors in the
@@ -322,7 +294,6 @@ protocol.
 $ cd ../4_fix_errors_1
 $ ls
 Check.csh  Make.csh  Submit.csh  template
-
 ```
 
 In the control file, `fix_ring_error` and `fix_chirality_error` in the
@@ -338,17 +309,14 @@ rstout_period       = 2000
 check_structure     = YES
 fix_ring_error      = YES
 fix_chirality_error = YES
-
 ```
 
 Let's execute the three scripts one by one. 
-
 
 ```
 $ ./Make.csh
 $ ./Submit.csh
 $ ./Check.csh
-
 ```
 
 In the energy-minimized structures, there are no chirality errors and no
@@ -364,7 +332,6 @@ the `[SELECTION]` and `[RESTRAINTS]` sections, respectively. The
 information in these two files are appended to the template control
 file.
 
-
 ```
 # Change directory to fix the errors Step2
 $ cd ../4_fix_errors_2
@@ -379,7 +346,6 @@ restraint.dat  selection.dat
 # Run restraint MD and check structures
 $ ./Submit.csh
 $ ./Check.csh
-
 ```
 
 After the calculations, we can see that the number of cis peptide bonds
@@ -408,7 +374,6 @@ Run.csh  build.tcl  tmp
 
 # Run the script for build
 $ ./Run.csh
-
 ```
 
 ### 2.2 Run the flexible fitting refinement (SAUA-FFR)
@@ -423,7 +388,6 @@ taken over from Cycle1 to Cycle5.
 $ cd ../6_saua-ffr
 $ ls
 Cycle1  Cycle2  Cycle3  Cycle4  Cycle5
-
 ```
 
 Let's move to `Cycle1`, and check the template control file.
@@ -436,7 +400,6 @@ $ ls
 Make.csh  Submit.csh  template
 
 $ less ./template/INP
-
 ```
 
 In this calculation, 100 ps MD simulation is carried out, where the
@@ -468,7 +431,6 @@ $ ./Submit.csh
 $ cd ../Cycle5
 $ ./Make.csh
 $ ./Submit.csh
-
 ```
 
 You can obtain the refined models. After getting the results, it is
@@ -478,6 +440,12 @@ model is selected based on c.c., RWplus score, and MolProbity score from
 multiple flexible fitting runs using different force constants. 
 
 
+##  References
+
+[^1]: G. Terashi and D. Kihara, *Nat. Commun.*, **9**, 1618 (2018).
+[^2]: M. Y. Chen *et al.*, *J. Struct. Biol.*, **196**, 289-298 (2016).
+[^3]: Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021).
+
 ##  Acknowledgement 
 
 The original Cα-model PDB and density map files used in this tutorial
@@ -486,14 +454,15 @@ also distributed as a part of  the publication data of Reference 3 (for details
 
 ---
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\ April 10, 2022*
+*Written by Takaharu Mori@RIKEN Cluster for Pioneering Research,\
+Theoretical molecular science laboratory\
+April 10, 2022*
 {: .notice}
-
 
 ##  References
 
 [^1]: G. Terashi and D. Kihara, *Nat. Commun.*, **9**, 1618 (2018).
+
 [^2]: M. Y. Chen *et al.*, *J. Struct. Biol.*, **196**, 289-298 (2016).
-[^3]: Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021)..
 
-
+[^3]: Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021).
