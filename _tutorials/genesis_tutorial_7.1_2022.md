@@ -9,73 +9,75 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 7.1 Coarse-grained MD simulation with the KB Go-model 
+# Coarse-grained MD simulation with the KB Go-model 
 
 Coarse-grained models are useful for studying large-scale conformational
 dynamics of biomolecules with time scales that are difficult for
 atomistic MD simulations to access. Here, we give a simple example of
 using the coarse-grained model in GENESIS. We are going to simulate the
 folding/unfolding of protein G, using a variation of the Go-model
-potential energy function developed by Karanicolas and Brooks \[1,2\]
-(hereafter referred to as the KB Go-model).
+potential energy function developed by Karanicolas and Brooks[^1] [^2] (hereafter
+referred to as the KB Go-model).
 
-Please download the [[tutorial files](/assets/tutorial_files/2022_06_tutorial22-7.1.tar.gz)] and extract the
-tar-ball into your working directory:
+All the files required for this tutorial are hosted in the 
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 
+If you haven't downloaded the files yet, open your terminal 
+and run the following command (see more in 
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+```bash
+$ cd ~/GENESIS_Tutorials-2022
 
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd /home/user/GENESIS/Tutorials
-$ mv ~/Downloads/tutorial22-7.1.zip ./
-$ unzip tutorial22-7.1.zip
-$ cd tutorial-7.1
+
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-7.1
+```
+
+Verify the initial PDB structure 
+```bash
 $ ls
 1_construction 2_production 3_analysis
-
-# verify the initial PDB structure 
 $ cd 1_construction 
 $ vmd 1pgb.pdb 
-
 ```
 
 This tutorial consists of three steps:
 
-1.  system setup,
-2.  production run,
-3.  trajectory analysis.
+1. System setup
+2. Production run
+3. Trajectory analysis
 
 ##  1. Setup the system 
 
 The KB Go-model simplify each amino acid residue as one coarse-grained
 bead, which locates at the position of the alpha carbon (Cα). The
 potential energy function is given in section 5.1 of the GENESIS
-manual.[] There are differences between the KB
-Go-model and a typical atomistic model:
+manual. There are differences between the KB Go-model and a typical
+atomistic model:
 
-1.  no electrostatic terms in the KB Go-model;
-2.  the vdW terms are divided into two terms: *native contacts* and
+1.  No electrostatic terms in the KB Go-model
+2.  The VdW terms are divided into two terms: *native contacts* and *non-native
+contacts*, where the native contacts have 12-10-6-type attractive potential,
+while the non-native contacts have 12-type repulsive potential.
 
-```
-*non-native contacts*, where the native contacts have 12-10-6-type
-attractive potential, while the non-native contacts have 12-type
-repulsive potential.
+In the first step, we are going to generate a `param` file (parameter file) and
+a `top` file (topology file) by using the [MMTSB](http://www.mmtsb.org/webservices/gomodel.html)
+web service. After this, we are going to use [VMD](http://www.ks.uiuc.edu/Research/vmd/)
+to create a `psf` file (protein structure file) that is required for GENESIS simulation.
 
-```
+![](/assets/images/2019_08_fig1_CG_system.png){: width="400" .align-center}
 
-In the first step, we are going to generate a `param` file (parameter file) and a `top` file (topology file) by using
-the [MMTSB](http://www.mmtsb.org/webservices/gomodel.html) web service.
-After this, we are going to
-use [VMD](http://www.ks.uiuc.edu/Research/vmd/) to create a `psf` file
-(protein structure file) that is required for GENESIS simulation.
+To build a simulation system, we start by downloading a PDB file of protein G
+from the [RCSB](http://www.rcsb.org/) Protein Data Bank (also can be found in
+`1_construction/1pgb.pdb`). You can download the PDB file via a web browser,
+or use the following commands:
 
-![](/assets/images/2019_08_fig1_CG_system.png)
-
-To build a simulation system, we start by downloading a PDB file of
-protein G from the [RCSB](http://www.rcsb.org/) Protein Data Bank (also can be found in `1_construction/`[`1pgb.pdb`](fundamental/2016_06_1pgb.pdb)).
-You can download the PDB file via a web browser, or use the following
-commands:
-
-``` system-message
+```bash
 # change to the construction directory
 $ cd /path/to/1_construction
 
@@ -87,33 +89,31 @@ The downloaded PDB file has to be "cleaned" by removing everything
 except the lines starting with the `ATOM` flag:
 
 
-```
+```bash
 # "clean" the file by deleting the entries other than ATOM
 $ grep -e "^ATOM" 1PGB.pdb > 1pgb_edited.pdb
-
 ```
 
 Then we submit it to
 the [MMTSB](http://www.mmtsb.org/webservices/gomodel.html) server:
 
-1.  upload our "cleaned" PDB file (`1_construction/1pgb_edited.pdb`);
-2.  give a reference tag (i.e. `1pgb`);
-3.  enter your e-mail address.
+1. Upload our "cleaned" PDB file (`1_construction/1pgb_edited.pdb`)
+2. Give a reference tag (i.e. `1pgb`)
+3. Enter your e-mail address
 
 The webpage looks like this:
 
-![](/assets/images/2019_08_fig2_MMTSB_instruct.png)
+![](/assets/images/2019_08_fig2_MMTSB_instruct.png){: width="600" .align-center}
 
-After MMTSB finishes the calculations, a tar-ball will be sent to your
-email address (we provided one as `1_construction/1pgb.tar`). Extract
-the tar-ball into the working directory and you will find the
+After MMTSB finishes the calculations, a tar-ball will be sent to your email
+address (we provided one as well, located at `1_construction/1pgb.tar`).
+Extract the tar-ball into the working directory and you will find the
 coarse-grained coordinate, topology and parameter files.
 
 
-```
+```bash
 # extract the tar-ball file
 $ tar xvf /path/to/1pgb.tar
-
 ```
 
 Here we only simulate a single-chain protein. However, if the protein of
@@ -127,14 +127,14 @@ A VMD script (`1_construction/setup.tcl`) is provided to build the GO
 model below:
 
 
-```
+```tcl
 ### read pdb
 mol load pdb GO_1pgb.pdb
 
 ### replace residue names with G1, G2, G3, ...
 set all [atomselect top all]
 set residue_list [lsort -unique [$all get resid]]
-foreach i $residue_list {         set resname_go [format "G%d" $i]         set res [atomselect top "resid $i" frame all]         $res set resname $resname_go     }
+foreach i $residue_list {set resname_go [format "G%d" $i] set res [atomselect top "resid $i" frame all] $res set resname $resname_go}
 
 $all writepdb tmp.pdb
 
@@ -143,7 +143,7 @@ package require psfgen
 resetpsf
 topology GO_1pgb.top
 
-segment PROT {      first none      last none      pdb tmp.pdb     }
+segment PROT {first none last none pdb tmp.pdb}
 regenerate angles dihedrals
 coordpdb tmp.pdb PROT
 
@@ -155,56 +155,40 @@ writepsf go.psf
 writepdb go.pdb
 
 exit
-
 ```
 
 The script does these things:
 
-1.  reads in the PDB file created by the MMTSB web service and replaces
-
-```
-the residue names with special ones for the KB Go-model
-(`G1, G2, G3, ...`). These new names should match the residue names
-defined in the `top` and `param` files;
-```
-
-2.  moves the molecule so that the center of mass is at the origin;
-3.  calls the `psfgen` plugin to generate a `psf` file
-
-```
-(`1_construction/go.psf`) and a `pdb` file
-(`1_construction/go.pdb`).
-
-```
+1. Reads in the PDB file created by the MMTSB web service and replaces the
+residue names with special ones for the KB Go-model (`G1, G2, G3, ...`).
+These new names should match the residue names defined in the `top` and
+`param` files
+2. Moves the molecule so that the center of mass is at the origin
+3. Calls the `psfgen` plugin to generate a `psf` file (`1_construction/go.psf`)
+and a `pdb` file (`1_construction/go.pdb`)
 
 The script can be run with VMD in the following way:
 
-
-```
+```bash
 $ vmd -dispdev text <setup.tcl | tee run.out
-
 ```
-
 Now we can visualize the structure with VMD by specifying the `psf` file
 (`1_construction/go.psf`) and the `pdb` file (`1_construction/go.pdb`):
 
-
-```
+```bash
 $ vmd -psf go.psf -pdb go.pdb
-
 ```
 
-##  2. Production simulation 
+## 2. Production simulation 
 
 Coarse-grained simulations are usually not very sensitive to the initial
 configuration. Therefore here we perform a production simulation without
 energy minimization or equilibration.
 
-The following command performs a 1×10^8^ step production simulation with
-`atdyn`:
+The following command performs a \\(1 \times 10^8\\) steps production
+simulation with `atdyn`:
 
-
-```
+```bash
 # change to the production directory
 $ cd /path/to/2_production/
 
@@ -213,18 +197,21 @@ $ export OMP_NUM_THREADS=1
 
 # perform production simulation with ATDYN by using 8 MPI processes
 $ mpirun -np 8 atdyn run.inp | tee run.out
-
 ```
 
 The control file (`run.inp`) contains several sections, such as
 `[INPUT]`, `[OUTPUT]`, and `[ENERGY]`, where we can specify the control
 parameters for the simulation. In the `[INPUT]` section, we set the file
 names for the `topfile` (topology file), the `parfile` (parameter file),
-the `psffile` (protein structure file), and the `pdbfile` (the initial structure) (see [section 4.1 of the GENESIS manual] for an explanation of each input file).
+the `psffile` (protein structure file), and the `pdbfile` (the initial
+structure) (see **section 4.1 of the GENESIS manual** for an explanation
+of each input file).
 
 In the `[OUTPUT]` section, output filenames are set. `atdyn` does not
 create any output file unless we explicitly specify their names. Here in
-our example, the `rstfile` (restart file) and the `dcdfile` (binary trajectory file) are set (see section 4.2 of the GENESIS manual for an explanation of each output file).
+our example, the `rstfile` (restart file) and the `dcdfile` (binary
+trajectory file) are set (see **section 4.2 of the GENESIS manual** for
+an explanation of each output file).
 
 In the `[ENERGY]` section, we specify the parameters related to the
 energy and force evaluation. `KBGO` is the force-field name for the KB
@@ -243,12 +230,13 @@ pairs (`rigid_bond=YES`). We set `fast_water=NO` since here we don't
 have any water molecule. The tolerance for SHAKE is set
 to `shake_tolerance=1.0e-6`.
 
-*[ ]*Note: In the case of KB
+**Note**: In the case of KB
 GO, `rigid_bond=YES` constrains all the bond lengths with SHAKE
 algorithm.  Generally, the convergence of SHAKE becomes more difficult
 as the system gets bigger because of the increasing number of bonds
 involved in SHAKE. For larger systems, a value of `timestep=0.010` is
 more recommended for better convergence.
+{: .notice--info}
 
 In the `[ENSEMBLE]` section, the `LANGEVIN` thermostat is chosen for an
 isothermal simulation with the friction constant of 0.01 ps^-1^.
@@ -257,7 +245,7 @@ Finally, in the `[BOUNDARY]` section, we set the boundary condition for
 the system, which is no boundary condition (`NOBC`) here.
 
 
-```
+```toml
 [INPUT]
 topfile = ../1_construction/GO_1pgb.top       # topology file
 parfile = ../1_construction/GO_1pgb.param     # parameter file
@@ -298,10 +286,9 @@ gamma_t         = 0.01                        # thermostat friction (ps-1)
                                               # in [LANGEVIN]
 [BOUNDARY]
 type            = NOBC                        # [PBC, NOBC]
-
 ```
 
-##  3. Analysis: RMSD calculation 
+## 3. Analysis: RMSD calculation 
 
 As an example for the analysis, we use the `crd_convert`, which is one
 of the post-processing programs in GENESIS. `crd_convert` is a utility
@@ -309,7 +296,7 @@ to calculate various quantities from a trajectory. The following
 commands calculate RMSD of the simulation trajectory.
 
 
-```
+```bash
 # change to the analysis directory
 $ cd /path/to/3_analysis/
 
@@ -318,13 +305,12 @@ $ export OMP_NUM_THREADS=1
 
 # perform analysis with crd_convert
 $ crd_convert run.inp | tee run.out
-
 ```
 
 The control file for the RMSD calculation is shown below:
 
 
-```
+```toml
 [INPUT]
 psffile = ../1_construction/go.psf  # protein structure file
 reffile = ../1_construction/go.pdb  # PDB file
@@ -349,12 +335,10 @@ fitting_atom   = 1                  # atom group
 
 [OPTION]
 check_only     = NO                 # (YES/NO) 
-
 ```
 
-In
-the `[TRAJECTORY]`[ ]section,
-we set the input trajectory file as `trjfile1=../2_production/run.dcd`.
+In the `[TRAJECTORY]`[ ]section, we set the input trajectory file as
+`trjfile1=../2_production/run.dcd`.
 
 In the `[SELECTION]` section, we define a group (`group1`) of all beads
 in the model which are used for the RMSD calculation. In the `[FITTING]`
@@ -368,26 +352,31 @@ values in the unit of Angstroms. One can visualize it with programs such
 as [gnuplot](http://www.gnuplot.info/):
 
 
-```
+```bash
 $ gnuplot
 gnuplot> set xlabel "Step"
 gnuplot> set ylabel "RMSD [Angstrom]"
 gnuplot> plot "run.rms" w lp
-
 ```
 
 As can be seen in the following figure, small and large RMSD values
 correspond to folded and unfolded states of the protein, respectively:
 
-![](/assets/images/2019_08_fig3_RMSD_plot.png)
+![](/assets/images/2019_08_fig3_RMSD_plot.png){: width="500" .align-center}
 
-Note: Results may differ due to different random numbers generated.
+**Note**: Results may differ due to different random numbers generated.
+{: .notice--info}
 
-------------------------------------------------------------------------
+---
 
-[*Written by Donatas Surblys@RIKEN Theoretical molecular science laboratory\ June, 2016*]
+*Written by Donatas Surblys@RIKEN Theoretical molecular science laboratory, June 2016\
+Updated by Yasuhiro Matsunaga@RIKEN R-CCS, May 2018\
+Updated by Cheng Tan@RIKEN R-CCS, July 2019*
+{: .notice}
 
-[*Updated by Yasuhiro Matsunaga@RIKEN R-CCS\ May, 22, 2018*]
 
-[*Updated by Cheng Tan@RIKEN R-CCS\ Jul, 30, 2019*]
+## References
 
+[^1]: Karanicolas J., Brooks C. L., **2002**, *Protein Sci.*, 11, 2351--2361.
+
+[^2]: Karanicolas J., Brooks C. L., **2003**, *J. Mol. Bio.*, 334, 309--325.

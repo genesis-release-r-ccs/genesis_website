@@ -16,33 +16,40 @@ errors in a protein using GENESIS. Here, we use spdyn. The same scheme
 is available in atdyn. The scheme in the below figure will be performed
 [^1]. For details, please read the GENESIS user manual (`[MINIMIZE]` chapter).
 
-![](/assets/images/2022_06_checkstructure.png)
+![](/assets/images/2022_06_checkstructure.png){: width="600" .align-center}
 
-## [Preparation]
-
-Let's download the tutorial file
-([tutorial22-A.6.tar.gz](/assets/tutorial_files/2022_06_tutorial22-A.6.tar.gz)). This tutorial is mainly composed of two steps: 1) system
-setup and 2) energy minimization. The energy minimization is further
-composed of three steps to remove ring penetrations and chirality
-errors. Control files for GENESIS are already included in the download
-file. Since we use the CHARMM36m force field parameters, we make a
-symbolic link to the CHARMM toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+## Preparation
 
 
+All the files required for this tutorial are hosted in the 
+[GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+
+If you haven't downloaded the files yet, open your terminal 
+and run the following command (see more in 
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Put the tutorial file in the Works directory
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-A.6.zip ./
-$ unzip tutorial22-A.6.zip
 
-# Let's clean up the directory
-$ mv tutorial22-A.6.zip TRASH
+If you already have the tutorial materials, let's go to our working directory:
 
-# Let's take a note
-$ echo "tutorial-A.6: Remove ring penetration and chirality errors" >> README
+```bash
+$ cd genesis_tutorial_materials/tutorial-A.6
+```
 
+This tutorial is mainly composed of two steps: (1) system setup and (2) energy
+minimization. The energy minimization is further composed of three steps to
+remove ring penetrations and chirality errors. Control files for GENESIS are
+already included in the tutorial folder. Since we use the CHARMM36m force
+field parameters, we make a symbolic link to the CHARMM toppar directory
+(see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
+
+```bash
 # Check the contents in Appendix 6
-$ cd tutorial-A.6
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ln -s ../../Programs/genesis-2.0.0/bin ./bin
 $ ls 
@@ -59,17 +66,15 @@ build.tcl    ionized.psf  protein.pdb  wbox.log  wbox.psf
 ionized.pdb  proa.pdb     protein.psf  wbox.pdb
 
 $ cd ../
-
 ```
 
-## [ Energy minimization]
+## Energy minimization
 
 ### Step1: Run basic minimization
 
 First, we carry out a basic energy minimization for this system.
 
-
-```
+```bash
 # Check the control file
 $ less INP1
 
@@ -86,15 +91,13 @@ $ ls
 INP1  INP2  INP3  log1  min1.dcd  min1.rst  bin  setup  toppar
 
 $ less log1
-
 ```
 
 However, in the log message you can see that there are several residues
 that may have ring penetrations or chirality errors in the energy
 minimized structure.
 
-
-```
+```bash
 Check_Ring_Structure> Check ring structure
 
   suspicious ring group id = 12 : TRP 68 (atom = 1011) max_bond_length = 1.921
@@ -119,13 +122,12 @@ Check_Chirality> Check chirality
   with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
   The energy minimization should be restarted from the restart file obtained in "this" run.
   For more information, see the chapter on [MINIMIZE] in the user manual.
-
 ```
 
 Let's check the corresponding residues carefully using a molecular
 viewer software.
 
-![](/assets/images/2022_06_appendix6-fig1.png)
+![](/assets/images/2022_06_appendix6-fig1.png){: width="600" .align-center}
 
 ###  Step2: Run minimization to remove errors
 
@@ -136,7 +138,7 @@ restart the energy minimization using `min1.rst`. Let's take a look at
 be added **only when** the error was found **in the energy minimized
 structure**.
 
-``` 
+```toml
 [INPUT] 
 topfile = ./toppar/top_all36_prot.rtf
 parfile = ./toppar/par_all36m_prot.prm
@@ -156,19 +158,16 @@ fix_chirality_error = YES
 
 Run the energy minimization again using `INP2`.
 
-
-```
+```bash
 # Run minimization
 $ mpirun -np 8 ./bin/spdyn INP2 > log2
 $ less log2
-
 ```
 
 However, unfortunately, we could not fix the chirality error in Pro32 in
 this run.
 
-
-```
+```bash
 Check_Ring_Structure> Check ring structure
 
   No suspicious residue was detected.
@@ -184,16 +183,14 @@ Check_Chirality> Check chirality
   with the options "check_structure = YES" and "fix_chirality_error = YES" in [MINIMIZE].
   The energy minimization should be restarted from the restart file obtained in "this" run.
   For more information, see the chapter on [MINIMIZE] in the user manual.
-
 ```
 
-###  Step3: Second trial to remove the remaining errors
+### Step3: Second trial to remove the remaining errors
 
 So, we run the energy minimization again using `INP3`, in which
 `fix_chirality_error = YES` is specified.
 
-
-```
+```toml
 [INPUT] 
 topfile = ./toppar/top_all36_prot.rtf
 parfile = ./toppar/par_all36m_prot.prm
@@ -208,11 +205,12 @@ nsteps              = 5000  # number of minimization steps
 crdout_period       = 1000
 rstout_period       = 5000
 fix_chirality_error = YES
+```
 
+```bash
 # Run minimization
 $ mpirun -np 8 ./bin/spdyn INP3 > log3
 $ less log3
-
 ```
 
 Now, you can see that there are no suspicious residues. Please take a
@@ -220,7 +218,7 @@ look at Trp68, Glu5, and Pro32 to check whether the errors were actually
 removed. Then, you can use the obtained restart file (`min3.rst`) for
 the subsequent MD simulation.
 
-``` 
+```bash
 Check_Ring_Structure> Check ring structure
 
   No suspicious residue was detected.
@@ -230,13 +228,11 @@ Check_Chirality> Check chirality
   No suspicious residue was detected.
 ```
 
-##  References
+---
 
-1.  T. Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021).
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory, June 2022*
+{: .notice}
 
-------------------------------------------------------------------------
+## References
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
-June 16, 2022*
-
+[^1]: Mori T., Terashi G., Matsuoka D., Kihara D., Sugita Y., **2021**, *J. Chem. Inf. Model.*, 61, 3516--3528.
