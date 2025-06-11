@@ -572,7 +572,7 @@ $ gnuplot pathcv.gpi
 ```
 
 The command gives the distribution of r~1~/r~2~ (dist.pdf), and the
-probability of pathCV \[3,4\] (pathcv.pdf and pathcv_all.pdf). The
+probability of pathCV [^3] [^4] (pathcv.pdf and pathcv_all.pdf). The
 results are shown in Fig. 5.
 
 ![](/assets/images/2022_04_tim_dist2.png){: width="800" .center-image }
