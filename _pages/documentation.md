@@ -21,10 +21,10 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Learn more"
   - image_path: /assets/images/20250513_samples.png
-    alt: "samples"
-    title: "Input Samples"
+    alt: "examples"
+    title: "Input Examples"
     excerpt: ""
-    url: "/docs/samples/"
+    url: "/docs/examples/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
   - image_path: /assets/images/20250513_tutorials.png

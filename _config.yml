@@ -243,6 +243,9 @@ collections:
   tutorials:
     output: true
     permalink: /tutorials/:path/
+  examples:
+    output: true
+    permalink: /examples/:path/
 
 
 # Sass/SCSS
