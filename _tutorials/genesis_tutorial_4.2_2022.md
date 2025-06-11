@@ -9,37 +9,26 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 4.2 Statistical analysis of the trajectory data by Awk 
-
-
-```
-- [](/tutorials/genesis_tutorial_4.2_2022/#i)
-- [2.2 2D-Histogram](/tutorials/genesis_tutorial_4.2_2022/#22_2D-Histogram)
-
-```
+# Statistical analysis of the trajectory data by Awk 
 
 ##  Preparation 
 
-Let's download the tutorial file
-([tutorial22-4.2.tar.gz](/assets/tutorial_files/2022_02_tutorial22-4.2.tar.gz)).
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminaland run the following command (see more in[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
-
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-4.2.zip ./
-$ unzip tutorial22-4.2.zip
 
-# Let's clean up the directory
-$ mv tutorial22-4.2.zip ./TRASH
+If you already have the tutorial materials, let's go to our working directory:
 
-# Let's take a note
-$ echo "tutorial-4.2: Trajectory analysis using awk" >> README
-
+```bash
 $ cd ./tutorial-4.2
 $ ls
 Analysis1   Analysis2.1   Analysis2.2
-
 ```
 
 ##  1. Analyze the statistics
@@ -53,7 +42,7 @@ following is an example of analyzing the energy trajectory data obtained
 in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/) (the header and step 0 lines have been removed beforehand).
 
 
-```
+```bash
 # Change directory for statistics analysis
 $ cd Analysis1
 $ ls
@@ -64,7 +53,7 @@ energy.log
 ### 1.1 Averaged value
 
 
-```
+```bash
 # Compute the averaged value of the 5th column
 $ awk '{sum+=$5} END {print sum/NR}' energy.log
 -1.51401
@@ -74,7 +63,7 @@ $ awk '{sum+=$5} END {print sum/NR}' energy.log
 ### 1.2 Standard deviation
 
 
-```
+```awk
 # Compute the standard deviation of the 5th column
 $ awk '{sum+=$5;sum2+=$5*$5} END {print sqrt(sum2/NR-(sum/NR)^2)}' energy.log
 2.83058
@@ -84,7 +73,7 @@ $ awk '{sum+=$5;sum2+=$5*$5} END {print sqrt(sum2/NR-(sum/NR)^2)}' energy.log
 ### 1.3 Minimum and maximum values
 
 
-```
+```awk
 # Compute the minimum value of the 5th column
 $ awk 'BEGIN {min= 9999} {if($5<min) min=$5} END {print min}' energy.log 
 -10.2807
@@ -105,22 +94,19 @@ $ awk '{print $5}' energy.log | sort -g | tail -1
 
 ##  2. Analyze the histogram 
 
-In Section 2, we learn how to analyze histogram or frequency of the
-data.
+In Section 2, we learn how to analyze histogram or frequency of the data.
 
 ### 2.1 1D-Histogram
 
 First, we will analyze the distance trajectory data (`output.dis`)
 obtained in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/) and draw a 1D histogram. This directory already contains
-the analysis program
-([`hist1d.awk`](fundamental/2022_02_hist1d.awk_.txt)), which is
-written in awk language. In the header part of the program, you can see
+the analysis program (`hist1d.awk`), which is written in awk language. 
+In the header part of the program, you can see
 that the bin size of the histogram (`binsizex`) and the analysis range
 (`xmin` to `xmax`) are specified. Here, we are analyzing the second
 column (`$2`) of `output.dis`, which is specified in the middle part.
 
-
-```
+```awk
 # Change directory for analysis of the 1D histogram
 $ cd ../Analysis2.1
 $ ls 
@@ -131,12 +117,23 @@ $ less hist1d.awk
 
 #  1D histogram analysis
 #
-BEGIN {       xmin = 0.0; xmax = 15.0; binsizex = 0.1;       nx   = (xmax - xmin)/binsizex;       for (i=0; i<=nx; i++) freq[‍i‍]=0     }
-
-{ i = int(($2 - xmin)/binsizex);       freq[‍i‍] = freq[‍i‍] + 1 }
-
-END {       for (i=0; i<=nx; i++) {         x0 = xmin + i*binsizex;         print x0, freq[‍i‍], freq[‍i‍]/NR       }     }
-
+BEGIN {
+    xmin = 0.0; xmax = 15.0; binsizex = 0.1;
+    nx   = (xmax - xmin)/binsizex;
+    for (i=0; i<=nx; i++){
+        freq[‍i‍]=0
+    }
+}
+{
+    i = int(($2 - xmin)/binsizex);
+    freq[‍i‍] = freq[‍i‍] + 1 
+}
+END{
+    for (i=0; i<=nx; i++) {
+        x0 = xmin + i*binsizex;
+        print x0, freq[‍i‍], freq[‍i‍]/NR
+    }
+}
 ```
 
 Let's execute the program for `output.dis`, where "`out`" is obtained
@@ -157,14 +154,13 @@ gnuplot> plot [7:13][]'out' u 1:2 with boxes
 
 ```
 
-### [![](/assets/images/2019_08_1dhist.jpg)]
+### ![](/assets/images/2019_08_1dhist.jpg)
 
 ### 2.2 2D-Histogram
 
 Next, we will analyze the Ramachandran plot data (`output.tor`) obtained
 in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/) to draw a 2-D histogram (or probability distribution).
-The analysis program
-([`hist2d.awk`](fundamental/2022_02_hist2d.awk_.txt)) is already
+The analysis program (`hist2d.awk`) is already
 included in the directory, and it is a 2D extension of the previous 1D
 program. In the header part of the program, you can see that the bin
 size of the histogram for each dimension (`binsizex`, `binsizey`) and
@@ -173,7 +169,7 @@ We will analyze the second (`$2`) and third (`$3`) columns of
 `output.tor` as specified in the middle row.
 
 
-```
+```awk
 # Change directory for analysis of the 2D histogram
 $ cd ../Analysis2.2
 $ ls 
@@ -184,19 +180,40 @@ $ less hist2d.awk
 
 #  2D histogram analysis
 #
-BEGIN {       xmin = -180.0; xmax = 180.0; binsizex = 10.0;       ymin = -180.0; ymax = 180.0; binsizey = 10.0;       nx   = (xmax - xmin)/binsizex;       ny   = (ymax - ymin)/binsizey;       for (i=0; i<=nx; i++) for (j=0; j<=ny; j++) freq[‍i,j‍]=0     }
+BEGIN {
+    xmin = -180.0; xmax = 180.0; binsizex = 10.0;
+    ymin = -180.0; ymax = 180.0; binsizey = 10.0;
+    nx   = (xmax - xmin)/binsizex;       
+    ny   = (ymax - ymin)/binsizey;
 
-{ i = int(($2 - xmin)/binsizex);       j = int(($3 - ymin)/binsizey);       freq[‍i,j‍] = freq[‍i,j‍] + 1 }
-
-END {       for (i=0; i<=nx; i++) {         for (j=0; j<=ny; j++) {           x0 = xmin + i*binsizex;           y0 = ymin + j*binsizey;           print x0, y0, freq[‍i,j‍], freq[‍i,j‍]/NR         }       print " "       }     }
+    for (i=0; i<=nx; i++) {
+        for (j=0; j<=ny; j++) {
+            freq[‍i,j‍]=0     
+        }
+    }
+}
+{
+    i = int(($2 - xmin)/binsizex);
+    j = int(($3 - ymin)/binsizey);
+    freq[‍i,j‍] = freq[‍i,j‍] + 1 
+}
+END{
+    for (i=0; i<=nx; i++) {
+        for (j=0; j<=ny; j++) {
+            x0 = xmin + i*binsizex;
+            y0 = ymin + j*binsizey;
+            print x0, y0, freq[‍i,j‍], freq[‍i,j‍]/NR
+        }
+        print " "
+    }
+}
 
 ```
 
-Let's execute the program for `output.tor`, where "`out`" is obtained
-with the following command.
+Let's execute the program for `output.tor`, where "`out`" is obtained with the following command.
 
 
-```
+```bash
 # Analysis of the 2D probability distribution
 $ awk -f hist2d.awk output.tor > out
 

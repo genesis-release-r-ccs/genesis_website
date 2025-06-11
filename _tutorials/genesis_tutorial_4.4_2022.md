@@ -9,10 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 4.4 How to make a simulation movie with PyMol?
-
-- [](/tutorials/genesis_tutorial_4.4_2022/#i)
-- [Step4. Combine image files into a movie     file](/tutorials/genesis_tutorial_4.4_2022/#Step4_Combine_image_files_into_a_movie_file)
+# How to make a simulation movie with PyMol?
 
 Computational biophysicists often show simulation movies in their oral
 presentations at seminars, conferences, and so on. In order to show a
@@ -36,25 +33,18 @@ with a script to create png images of each snapshot. In Step3, run the
 each image. Finally, in Step4, use the `ffmpeg` command to combine all
 the images and create a move file.
 
-## [![](/assets/images/2019_07_movie_scheme-1.jpg) Preparation]
+## ![](/assets/images/2019_07_movie_scheme-1.jpg) Preparation
 
-Let's download the PDB and DCD sample files
-([tutorial22-4.4.tar.gz](/assets/tutorial_files/2022_06_tutorial22-4.4.tar.gz)) for this tutorial. This is the MD trajectory of a small
+Let's download the PDB and DCD sample files for this tutorial.
+All the files required for this tutorial are hosted in the [GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+This is the MD trajectory of a small
 protein, and the trajectory contains 100 frames. The sample does not
 contain any water molecules, but you can use the same protocol even if
 solvent is explicitly present. The input and script files for each step
 are already included in the respective directories.
 
 
-```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-4.4.zip ./
-$ unzip tutorial22-4.4.zip
-
-# Let's clean up the directory
-$ mv tutorial22-4.4.zip ./TRASH
-
+```bash
 # Let's take a note
 $ echo "tutorial-4.4: Movie making using PyMol" >> README
 
@@ -65,7 +55,6 @@ $ ln -s ../../Programs/genesis-2.0.0/bin ./
 # Check the trajectory data and initial structure
 $ ls ./Data/
 md.dcd  proa.pdb
-
 ```
 
 ##  Step1. Create individual PDB files from the DCD file 
@@ -75,7 +64,7 @@ GENESIS `crd_convert` tool. Before we run the tool, let's take a look at
 the control file.
 
 
-```
+```toml
 # Change the directory for Step1
 $ cd 1_makepdb
 
@@ -102,7 +91,7 @@ the output file name. Let's execute the `crd_convert` tool to this
 control file.
 
 
-```
+```bash
 # Run the crd_convert tool
 $ ../bin/crd_convert INP > log
 $ ls
@@ -124,7 +113,7 @@ In the Step2 directory, there are three files `input_0.pml`,
 `../1_makepdb/md0.pdb`. Execute PyMol using this script.
 
 
-```
+```bash
 # Change the directory for Step2
 $ cd ../2_makepng
 $ ls
@@ -147,7 +136,7 @@ these values
 later.![](/assets/images/2022_02_PyMol_getview.png)
 
 
-```
+```toml
 set_view (\          0.700811803,    0.321628720,   -0.636726499,\         -0.506851256,    0.852599680,   -0.127194136,\          0.501961410,    0.411864907,    0.760529041,\         -0.000017758,   -0.000041828, -106.357391357,\        -18.747209549,    0.224934518,   -8.418970108,\         86.687660217,  126.027915955,   20.000000000 )
 
 ```
@@ -162,7 +151,7 @@ variables `width` and `height`, respectively. Feel free to edit
 `template.pml` for your favorite representation by yourselves (see [PyMol manual](http://pymol.org/pymol-command-ref.html)).
 
 
-```
+```bash
 # Take a look at the script
 $ less template.pml
 
@@ -186,7 +175,7 @@ which is an iterative loop that replaces the strings AAA and BBB in
 `input_all.pml`.
 
 
-```
+```bash
 # Take a look at the script for making input_all.pml
 $ less Make.csh
 
@@ -213,7 +202,7 @@ output their images are written. Finally, let's execute PyMol for
 the image files `md0000.png` through `md0100.png`.
 
 
-```
+```bash
 # Run the script
 $ ./Make.csh
 $ ls
@@ -249,8 +238,7 @@ Step3 directory, you can see that it executes the `convert` command on
 all the PNG files.
 
 
-```
- 
+```bash
 # Change directory for Step3
 $ cd ../3_convert
 $ ls
@@ -294,7 +282,7 @@ calculate the correct `simtim` in the awk command (e.g., `awk '{printf("%5.1f",$
 something similar.
 
 
-```
+```bash
 # Run the script 
 $ ./Run.csh
 $ ls
@@ -311,8 +299,6 @@ md0003.png  md0020.png  md0037.png  md0054.png  md0071.png  md0088.png
 
 md0100.png
 
-## []
-
 ##  Step4. Combine image files into a movie file 
 
 Finally, we run the `ffmpeg` command on the all images obtained in Step3
@@ -321,7 +307,7 @@ in AVI format and converting it to MP4. The resulting movie is shown
 below.
 
 
-```
+```bash
 # Change directory for Step4
 $ cd ../4_ffmpeg
 

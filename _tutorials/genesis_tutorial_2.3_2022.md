@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 2.3 Building the initial structure for MD simulation 
+# Building the initial structure for MD simulation 
 
 
 This tutorial describes how to set up a system for all-atom MD
@@ -22,38 +22,34 @@ molecules around the protein, and 5) randomly place ions in the water.
 Here, we select [Protein G](https://www.rcsb.org/structure/2QMT) as an
 example, and solvate the protein in 150 mM NaCl solution. Since GENESIS
 is not providing a structure setup tool, we will use VMD for this
-purpose [^1]. We will also use
+purpose [^1] . We will also use
 [psfgen-plugin](https://www.ks.uiuc.edu/Research/vmd/plugins/psfgen/),
 [solvate-plugin](https://www.ks.uiuc.edu/Research/vmd/plugins/solvate/), and
 [autoionize-plugin](https://www.ks.uiuc.edu/Research/vmd/plugins/autoionize/) in VMD.
 
-## [![](/assets/images/2019_07_scheme-1.jpg)]
+## ![](/assets/images/2019_07_scheme-1.jpg)
 
 ##  Preparation
 
-Let's download the tutorial file
-([tutorial22-2.3.tar.gz](/assets/tutorial_files/2022_03_tutorial22-2.3.tar.gz)). When you unzip the file, you can see that there are five
-directories "`1_oripdb`", "`2_modpdb`", "`3_psfgen`", "`4_solvate`", and
-"`5_ionize`", each of which corresponds to each step in the above
-figure.
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub]
+(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal and run
+ the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
-
-```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-2.3.zip ./
-$ unzip tutorial22-2.3.zip
-
-# Clean up the working directory
-$ mv tutorial22-2.3.zip ./TRASH
-
-$ cd tutorial-2.3 
-$ ls 
-1_oripdb  2_modpdb  3_psfgen  4_solvate  5_ionize
-
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
 
- We have prepared these five directories to
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-11.1
+```
+
+We have prepared these five directories to
 carry out each step. In fact, we will obtain multiple output files at
 each step, and if we do all the work in one directory, it will be
 difficult to recognize which file was output in which step. Such
@@ -69,7 +65,7 @@ the target. It is useful for referring to a directory or file that is
 far from the current working directory.
 
 
-```
+```baash
 # Make a symbolic link to the CHARMM toppar directory
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls
@@ -87,10 +83,16 @@ drude                     par_all36_na.prm           top_all36_li
 
 ##  Step1. Prepare the PDB file of the target protein 
 
-[Here, we use the PDB ID: [2QMT](https://www.rcsb.org/structure/2QMT), which was solved by X-ray crystallography at 1.05 Å resolution. We have already downloaded the PDB file in [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/). Let's go to the "`1_oripdb`" directory, make a symbolic link to the PDB file, and look at the structure in VMD. We can find not only protein atoms but also oxygen of water and other compounds such as phosphate ion, isopropyl alcohol, and methylpentane diol. In fact, these additional compounds were used for crystallization of the protein in the experiment, and are not essential for this MD simulation. Now, we would like to also ][check the center of mass (COM) of the protein by using the "`measure center`" command in VMD. We can see that it has deviated significantly from the origin (0, 0, 0). This displacement may be inconvenient when the protein is solvated in a water box (Step 4). In the next step, we are going to remove unnecessary compounds from the PDB file and move the COM to the origin as well.\ ]
+Here, we use the PDB ID: [2QMT](https://www.rcsb.org/structure/2QMT), which was solved by X-ray crystallography at 1.05 Å resolution. 
+We have already downloaded the PDB file in [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/). Let's go to the "`1_oripdb`" directory, make a symbolic link to the PDB file, and look at the structure in VMD. 
+We can find not only protein atoms but also oxygen of water and other compounds such as phosphate ion, isopropyl alcohol, and methylpentane diol. 
+In fact, these additional compounds were used for crystallization of the protein in the experiment, and are not essential for this MD simulation. 
+Now, we would like to also check the center of mass (COM) of the protein by using the "`measure center`" command in VMD. 
+We can see that it has deviated significantly from the origin (0, 0, 0). This displacement may be inconvenient when the protein is solvated in a water box (Step 4). 
+In the next step, we are going to remove unnecessary compounds from the PDB file and move the COM to the origin as well.
 
 
-```
+```bash
 # Change the working directory
 $ cd 1_oripdb
 
@@ -112,10 +114,22 @@ vmd > measure center $sel weight mass
 
 ##  Step2. Modify the original PDB file 
 
-[In Step 2, we modify the PDB file in order to set up the system correctly. Let's go to the "`2_modpdb`" directory. We can find "`build.tcl`" in this directory. Let's take a look at this file with the `less` command. This is a tcl script, which contains the VMD commands we want to execute. By executing this script through VMD, the following procedures can be performed sequentially and automatically: 1) load the PDB file, 2) change the residue name "HIS" to "HSD", 3) change the atom name "CD1" to "CD" in ILE, and 4) change the C-terminal atom names "O" and "OXT" to "OT1" and "OT2", respectively, 5) select all protein atoms, 6) measure the COM of the protein, and 7) move ][COM to the origin. Finally, write the coordinates of the selected atoms (i.e., protein) to "`proa.pdb`". The reason for changing the atom and residue names is that some of the atom and residue names are defined differently in the CHARMM force field than in the general PDB rules, and these names need to be changed to follow the CHARMM rules. The definitions of the names in CHARMM are found in the topology file.\ ]
+In Step 2, we modify the PDB file in order to set up the system correctly. Let's go to the "`2_modpdb`" directory. We can find "`build.tcl`" in this directory. 
+Let's take a look at this file with the `less` command. This is a tcl script, which contains the VMD commands we want to execute. 
+By executing this script through VMD, the following procedures can be performed sequentially and automatically: 
+1) load the PDB file, 
+2) change the residue name "HIS" to "HSD", 
+3) change the atom name "CD1" to "CD" in ILE, and 
+4) change the C-terminal atom names "O" and "OXT" to "OT1" and "OT2", respectively, 
+5) select all protein atoms, 
+6) measure the COM of the protein, and 
+7) move COM to the origin. 
+Finally, write the coordinates of the selected atoms (i.e., protein) to "`proa.pdb`". 
+The reason for changing the atom and residue names is that some of the atom and residue names are defined differently in the CHARMM force field than in the general PDB rules, and these names need to be changed to follow the CHARMM rules. 
+The definitions of the names in CHARMM are found in the topology file.
 
 
-```
+```bash
 # Change directory
 $ cd ../2_modpdb
 $ ls
@@ -148,10 +162,13 @@ exit
 
 ```
 
-[Let's run this script in VMD with the following command. The option "`-dispdev text`" means to start VMD in text mode, i.e. not to open the viewer window. Once the above script is loaded with "`-e build.tcl`", all the commands in the script will be executed automatically by VMD. In the `log` file, we can see what has been executed by VMD. Look at the obtained PDB file (`proa.pdb`), and make sure that the COM has indeed been moved to the origin.]
+Let's run this script in VMD with the following command. 
+The option "`-dispdev text`" means to start VMD in text mode, i.e. not to open the viewer window. 
+Once the above script is loaded with "`-e build.tcl`", all the commands in the script will be executed automatically by VMD. 
+In the `log` file, we can see what has been executed by VMD. 
+Look at the obtained PDB file (`proa.pdb`), and make sure that the COM has indeed been moved to the origin.
 
-
-```
+```bash
 # Run the script using VMD
 $ vmd -dispdev text -e build.tcl > log
 $ ls
@@ -167,10 +184,9 @@ vmd > measure center $sel weight mass
 
 ![](/assets/images/2019_07_setup_figure2.jpg)
 
-[Also, check that the names of the atoms and residues you specified have been changed correctly.]
+Also, check that the names of the atoms and residues you specified have been changed correctly.
 
-
-```
+```bash
 # Check the renamed atoms 
 $ less proa.pdb
 
@@ -206,7 +222,7 @@ coordinates of each atom in PROA are read from the PDB file
 the "`guesscoord`" command. Finally, the PSF and PDB files are output.
 
 
-```
+```bash
 # Change directory
 $ cd ../3_psfgen
 $ ls
@@ -233,10 +249,12 @@ exit
 
 ```
 
-[Let's run this script in VMD, and then take a look at the obtained PDB file (`protein.pdb`). Here, we load the PSF file (`protein.psf`) along with the PDB file using the "`-psf`" option. The PSF file contains information about the bond connectivity of atoms in the system, so if the PDB and PSF files are not created correctly, you will see strange covalent bonds in VMD. If there are no problems with the structure, both PDB and PSF files should be fine.\ ]
+Let's run this script in VMD, and then take a look at the obtained PDB file (`protein.pdb`). 
+Here, we load the PSF file (`protein.psf`) along with the PDB file using the "`-psf`" option. 
+The PSF file contains information about the bond connectivity of atoms in the system, so if the PDB and PSF files are not created correctly, you will see strange covalent bonds in VMD. 
+If there are no problems with the structure, both PDB and PSF files should be fine.
 
-
-```
+```bash
 # Run the script using VMD 
 $ vmd -dispdev text -e build.tcl > log 
 $ ls
@@ -249,10 +267,9 @@ $ vmd protein.pdb -psf protein.psf
 
 ![](/assets/images/2019_07_setup_figure3.jpg)
 
-[Let's take a look at the obtained PDB file with the `less` command. In the system, there are 858 atoms including hydrogen. The segment name "PROA" is written in the 12th column.]
+Let's take a look at the obtained PDB file with the `less` command. In the system, there are 858 atoms including hydrogen. The segment name "PROA" is written in the 12th column.
 
-
-```
+```bash
 # View the processed PDB file
 $ less protein.pdb
 
@@ -266,10 +283,16 @@ ATOM      5  CA  MET A   1      -2.483  12.211   6.569  1.00  0.00      PROA C
 
 ```
 
-[Check the PSF file as well. In the header section, you will find "`first NTER`" and "`last CTER`". Here, "`first NTER`" indicates that the N-terminus of PROA has been capped with NH~3~^+^. If you look at the CHARMM topology file, you will see that "`NTER`" is defined as a patch residue (PRES) that creates an NH~3~ group at the N-terminus. Similarly, the C-terminus has been capped with COO^--^ using the patch residue "`CTER`". In the section right after that, you can also see detailed information about all the atoms, including residue name, atom name, type, charge, and mass for each atom. In the middle section, the bond connectivity is defined. There are 864 covalent bonds in the system, and the bonded atoms are defined by the indices of the neighboring atoms (e.g., [1-5], [2-1], and [3-1] pairs are corresponding to "N-CA", "HT1-N", and "HT2-N" bonds, respectively). Lists of angles and dihedral angles are also defined in the same manner. These lists are used for Σ~bonds~, Σ~angles~, and Σ~dihedrals~ in the equation in [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).]
+Check the PSF file as well. 
+In the header section, you will find "`first NTER`" and "`last CTER`". 
+Here, "`first NTER`" indicates that the N-terminus of PROA has been capped with NH~3~^+^. 
+If you look at the CHARMM topology file, you will see that "`NTER`" is defined as a patch residue (PRES) that creates an NH~3~ group at the N-terminus. 
+Similarly, the C-terminus has been capped with COO^--^ using the patch residue "`CTER`". In the section right after that, you can also see detailed information about all the atoms, including residue name, atom name, type, charge, and mass for each atom. 
+In the middle section, the bond connectivity is defined. There are 864 covalent bonds in the system, and the bonded atoms are defined by the indices of the neighboring atoms (e.g., [1-5], [2-1], and [3-1] pairs are corresponding to "N-CA", "HT1-N", and "HT2-N" bonds, respectively). 
+Lists of angles and dihedral angles are also defined in the same manner. These lists are used for Σ~bonds~, Σ~angles~, and Σ~dihedrals~ in the equation in [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).
 
 
-```
+```bash
 # View the PSF file 
 $ less protein.psf
 
@@ -302,10 +325,12 @@ $ less protein.psf
 
 ##  Step4. Add water 
 
-[In Step 4, we solvate the protein in water. Let's go to the "`4_solvate`" directory. Again, a script for VMD is provided here. In the script, we turn on the solvate-plugin, set the input PDB and PSF files of the protein, and add water molecules around the protein with a box size of 64 Å × 64 Å × 64 Å. The "`minmax`" option specifies the minimum and maximum coordinates of the water box. The output file name is defined with the "`-o`" option.]
+In Step 4, we solvate the protein in water. Let's go to the "`4_solvate`" directory. Again, a script for VMD is provided here. 
+In the script, we turn on the solvate-plugin, set the input PDB and PSF files of the protein, and add water molecules around the protein with a box size of 64 Å × 64 Å × 64 Å. The "`minmax`" option specifies the minimum and maximum coordinates of the water box. 
+The output file name is defined with the "`-o`" option.
 
 
-```tcl
+```bash
 # Change directory
 $ cd ../4_solvate
 $ ls
@@ -319,10 +344,9 @@ solvate $psffile $pdbfile -minmax \{\{-32 -32 -32\} \{32 32 32\}\} -o wbox
 exit
 ```
 
-[Let's run the script in VMD. As a result, we get `wbox.pdb` and `wbox.psf`. In the PDB file, we see that the water residue name is "TIP3", indicating that the [TIP3P water model](https://en.wikipedia.org/wiki/Water_model) is used.\ ]
+Let's run the script in VMD. As a result, we get `wbox.pdb` and `wbox.psf`. In the PDB file, we see that the water residue name is "TIP3", indicating that the [TIP3P water model](https://en.wikipedia.org/wiki/Water_model) is used.
 
-
-```
+```bash
 # Run the script in VMD 
 $ vmd -dispdev text -e build.tcl > log 
 $ ls
@@ -340,7 +364,13 @@ $ vmd wbox.pdb -psf wbox.psf
 
 ------------------------------------------------------------------------
 
-[ The optimal box size depends on the system and should be determined carefully. Basically, for adequate solvation, the margin between the protein surface and the edge of the water box needs to be wide. One choice is to set the margin size to a distance that is longer than the cutoff distance for non-bonded interactions. However, for instance, if the protein undergoes unfolding during the simulation, such a choice may not be sufficient. This is because a small box allows the protein to interact directly with itself in the image cells under the periodic boundary condition, which can stabilize the unfolded states (see Figure (a)). A similar problem occurs when elongated proteins are solvated in a rectangular water box. During the simulation, the protein may rotate, and then self-interactions may occur (see Fig. (b)). Those artifacts will affect the reliability of the results obtained from the MD simulation. **This kind of mistake has been frequently made by many people, so please be careful.**\ ]
+The optimal box size depends on the system and should be determined carefully. 
+Basically, for adequate solvation, the margin between the protein surface and the edge of the water box needs to be wide. 
+One choice is to set the margin size to a distance that is longer than the cutoff distance for non-bonded interactions. 
+However, for instance, if the protein undergoes unfolding during the simulation, such a choice may not be sufficient. This is because a small box allows the protein to interact directly with itself in the image cells under the periodic boundary condition, which can stabilize the unfolded states (see Figure (a)). 
+A similar problem occurs when elongated proteins are solvated in a rectangular water box. 
+During the simulation, the protein may rotate, and then self-interactions may occur (see Fig. (b)). 
+Those artifacts will affect the reliability of the results obtained from the MD simulation. **This kind of mistake has been frequently made by many people, so please be careful.**
 
 ![](/assets/images/2019_08_bad_example2.jpg)
 
@@ -366,7 +396,7 @@ automatically adjusted to reproduce the specified ion concentration
 manual of autoionize-plugin.
 
 
-```
+```bash
 # Change directory
 $ cd ../5_ionize
 $ ls
@@ -381,10 +411,10 @@ exit
 
 ```
 
-[Eventually, we get `ionized.pdb` and `ionized.psf`.]
+Eventually, we get `ionized.pdb` and `ionized.psf`.
 
 
-```
+```bash
 # Run the script using VMD 
 $ vmd -dispdev text -e build.tcl > log 
 $ ls
@@ -397,10 +427,10 @@ $ vmd ionized.pdb -psf ionized.psf
 
 ![](/assets/images/2019_07_setup_figure5.jpg)
 
-[Now let's count the total number of sodium ions, chloride ions, and water molecules in `ionized.pdb` to see if the ion concentration is actually 150 mM. To count the sodium ions, we use the `grep` command to pick up the lines containing "SOD". You will find 26 sodium ions.\ ]
+Now let's count the total number of sodium ions, chloride ions, and water molecules in `ionized.pdb` to see if the ion concentration is actually 150 mM. To count the sodium ions, we use the `grep` command to pick up the lines containing "SOD". You will find 26 sodium ions.
 
 
-```
+```bash
 # Count sodium ions (Na+) by using "grep"
 $ grep "SOD" ionized.pdb
 :
@@ -408,10 +438,10 @@ ATOM  24530  SOD SOD I  26     -18.942 -14.615  18.877  1.00  0.00      ION
 
 ```
 
-[Here, the `wc` command is useful to count the lines. In the following commands, we first pick up the lines including "`SOD`" with the `grep` command, write them in a new file "`sod.dat`", and then execute the `wc` command to this file.]
+Here, the `wc` command is useful to count the lines. In the following commands, we first pick up the lines including "`SOD`" with the `grep` command, write them in a new file "`sod.dat`", and then execute the `wc` command to this file.
 
 
-```
+```bash
 # Count sodium ions (Na+) by using "grep" followed by "wc"
 $ grep "SOD" ionized.pdb > sod.dat
 $ wc -l sod.dat
@@ -419,21 +449,20 @@ $ wc -l sod.dat
 
 ```
 
-[These two commands can be combined via the pipeline "`|`". Piping is very useful in many cases, and it will be frequently used in our Tutorials. Please, master the piping.]
+These two commands can be combined via the pipeline "`|`". Piping is very useful in many cases, and it will be frequently used in our Tutorials. Please, master the piping.
 
 
-```
+```bash
 # Count chloride ions (Cl-) by using "grep" and "wc" commands with pipeline "|"
 $ grep "SOD" ionized.pdb | wc -l
       26
 
 ```
 
-Similarly, let's count the chloride ions and water molecules in the
-system.
+Similarly, let's count the chloride ions and water molecules in the system.
 
 
-```
+```bash
 # Count chloride ions (Cl-)
 $ grep "CLA" ionized.pdb | wc -l
       22
@@ -444,7 +473,7 @@ $ grep "OH2 TIP3" ionized.pdb | wc -l
 
 ```
 
-[Now, remember basic chemistry. Since we specified 150 mM NaCl solution, the number of moles of solute in 1 litter (L) solution should be 150 mmol. The Avogadro number is 6.02 × 10^23^. Accordingly, there are 150 × 10^-3^ × 6.02 × 10^23^ = 9.03 × 10^22^ NaCl molecules in the 1 L NaCl solution. Here, we assume that the density of NaCl solution is almost same with that of solvent. The density of water is \~0.997 g/cm^3^ at the room temperature, and thus, the weight of 1 L water is \~997 g. Since the weight of 1 mol H~2~O is \~18.02 g, the 1 L water is composed of \~3.33 × 10^25^ H~2~O molecules (55.3 mol). According to these relationships, when there are *N* water molecules in the system, we should add (9.03 × 10^22^)/(3.33 ×10^25^) × *N* = **0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. In the case of *N* = 7,882, this equation gives \~21.4, which is close to the number of Cl^−^ in the constructed system. Actually, 4 more Na^+^ were added to the system than Cl^−^. This is because Protein G has a total net charge of −4, and the corresponding positive charge was needed to neutralize the system, which is required to use the particle mesh Ewald method (PME) in the MD simulations.]
+Now, remember basic chemistry. Since we specified 150 mM NaCl solution, the number of moles of solute in 1 litter (L) solution should be 150 mmol. The Avogadro number is 6.02 × 10^23^. Accordingly, there are 150 × 10^-3^ × 6.02 × 10^23^ = 9.03 × 10^22^ NaCl molecules in the 1 L NaCl solution. Here, we assume that the density of NaCl solution is almost same with that of solvent. The density of water is \~0.997 g/cm^3^ at the room temperature, and thus, the weight of 1 L water is \~997 g. Since the weight of 1 mol H~2~O is \~18.02 g, the 1 L water is composed of \~3.33 × 10^25^ H~2~O molecules (55.3 mol). According to these relationships, when there are *N* water molecules in the system, we should add (9.03 × 10^22^)/(3.33 ×10^25^) × *N* = **0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. In the case of *N* = 7,882, this equation gives \~21.4, which is close to the number of Cl^−^ in the constructed system. Actually, 4 more Na^+^ were added to the system than Cl^−^. This is because Protein G has a total net charge of −4, and the corresponding positive charge was needed to neutralize the system, which is required to use the particle mesh Ewald method (PME) in the MD simulations.
 
 ##  Let's take a note
 
@@ -460,7 +489,7 @@ is written directly to the `README` file using the `echo` command. Of
 course, you can create the `README` file using `vi` or any other editor.
 
 
-```
+```bash
 # Take a look inside the Works directory
 $ cd ../../
 $ ls
@@ -478,30 +507,17 @@ $ less README
 
 ##  What is next?
 
-[In the previous tutorial, we downloaded the CHARMM parameter and topology files, and here, we learned how to build the initial structure of the target system by using VMD/PSFGEN to create the PDB and PSF files. We note that other tools such as CHARMM [^2] or CHARMM-GUI [^3] are also useful to create PDB and PSF files. We are now ready to start the MD simulation. These four files (PDB, PSF, parameter, and topology) are used as the inputs of GENESIS. In Tutorial 3, we will learn how to execute GENESIS. The system constructed here will be simulated in [Tutorial 3.3](/tutorials/genesis_tutorial_3.3_2022/).\ ]
+In the previous tutorial, we downloaded the CHARMM parameter and topology files, and here, we learned how to build the initial structure of the target system by using VMD/PSFGEN to create the PDB and PSF files. We note that other tools such as CHARMM [^2] or CHARMM-GUI [^3] are also useful to create PDB and PSF files. We are now ready to start the MD simulation. These four files (PDB, PSF, parameter, and topology) are used as the inputs of GENESIS. In Tutorial 3, we will learn how to execute GENESIS. The system constructed here will be simulated in [Tutorial 3.3](/tutorials/genesis_tutorial_3.3_2022/).
 
 ![](/assets/images/2019_06_scheme_charmm.jpg)
 
 ##  References
 
-1.  W. Humphrey *et al.*, *J. Mol. Graph.*, **14**, 33-38 (1996).
+[^1]: W. Humphrey *et al.*, *J. Mol. Graph.*, **14**, 33-38 (1996). [<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0263785596000185)
 
-```
-[](https://www.sciencedirect.com/science/article/pii/0263785596000185)
-```
+[^2]: B. R. Brooks *et al.*, *J. Comput. Chem.*, **30**, 1545-1614 (2009). [<i class="fas fa-link"></i>](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.21287)
 
-2.  B. R. Brooks *et al.*, *J. Comput. Chem.*, **30**, 1545-1614 (2009).
-
-```
-[](https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.21287)
-```
-
-3.  S. Jo *et al.*, *J. Comput. Chem.*, **29**, 1859-1865 (2008).
-
-```
-[](https://onlinelibrary.wiley.com/doi/10.1002/jcc.20945)
-
-```
+[^3]: S. Jo *et al.*, *J. Comput. Chem.*, **29**, 1859-1865 (2008). [<i class="fas fa-link"></i>](https://onlinelibrary.wiley.com/doi/10.1002/jcc.20945)
 
 ------------------------------------------------------------------------
 
