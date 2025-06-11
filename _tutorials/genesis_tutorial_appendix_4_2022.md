@@ -347,11 +347,13 @@ These commands will create two text files
 (`T-REMD_parmID-repID.log` and `T-REMD_repID-Temperature.log`) and two
 figures (`Replica_exchange_all.png` and `Temperature_exchange_all.png`).
 
-![](/assets/images/2022_06_tutorial_A4_Replica_exchange_all.png){: style="width:100%; display:block; margin:0 auto;"}
+![](/assets/images/2022_06_tutorial_A4_Replica_exchange_all.png){: style="width:100%;" .align-center}
+<!-- {: style="width:100%; display:block; margin:0 auto;"} -->
 
 This figure shows that each temperature visits every replica randomly.
 
-![](/assets/images/2022_06_tutorial_A4_Temperature_exchange_all.png){: style="width:100%; display:block; margin:0 auto;"}
+![](/assets/images/2022_06_tutorial_A4_Temperature_exchange_all.png){: style="width:100%;" .align-center}
+<!-- {: style="width:100%; display:block; margin:0 auto;"} -->
 
 This figure shows the random walk of each replica in the temperature
 space.
@@ -441,7 +443,8 @@ for i_rep in range(N_REP):
 plt.savefig("potential_energy_temperature.png")
 ```
 
-![](/assets/images/2022_06_tutorial_A4_potential_energy_temperature.png){: style="width:60%; display:block; margin:0 auto;"}
+![](/assets/images/2022_06_tutorial_A4_potential_energy_temperature.png){: style="width:60%;" .align-center}
+<!-- style="width:60%; display:block; margin:0 auto;"} -->
 
 This figure shows the potential energy distribution at each temperature
 (indicated by the colors).
@@ -557,7 +560,8 @@ Now let's plot the PMF:
 $ ./02_plot_PMF_Q.py
 ```
 
-![](/assets/images/2022_06_tutorial_A4_qval_pmf.png){: style="width:60%; display:block; margin:0 auto;"}
+![](/assets/images/2022_06_tutorial_A4_qval_pmf.png){: style="width:60%;" .align-center}
+<!-- {: style="width:60%; display:block; margin:0 auto;"} -->
 
 This figure shows the PMF of Q value at 400 K.
 

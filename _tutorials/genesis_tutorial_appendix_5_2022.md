@@ -28,7 +28,7 @@ fixed.
 Deviation of the exchange probability between replicas \\(i\\) and \\(j\\),
 \\(\\Delta p\_{ij}\\), from the target exchange probability, \\(p\_\\mathrm{tgt}\\), can be written as:
 
-\\[\\Delta p\_{ij} = p\_{ij} - p\_\\mathrm{tgt} - \\mathrm{sign}(p\_{ij} - p\_\\mathrm{tgt}) \\cdot \\mathrm{min}(\\mathrm{abs}(p\_{ij} - p\_\\mathrm{tgt}),p\_\\mathrm{mgn})\\],
+\\[\\Delta p\_{ij} = p\_{ij} - p\_\\mathrm{tgt} - \\mathrm{sign}(p\_{ij} - p\_\\mathrm{tgt}) \\cdot \\mathrm{min}(\\mathrm{abs}(p\_{ij} - p\_\\mathrm{tgt}),p\_\\mathrm{mgn})\\]
 
 where \\(p\_{ij}\\) is the exchange probability between replicas \\(i\\) and
 \\(j\\), and margin is also considered. If the exchange probability is within
