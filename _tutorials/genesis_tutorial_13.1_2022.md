@@ -248,7 +248,7 @@ fitting_atom     = 1
 ```
 
 In the folder, we also provide a control file for the calculation of the
-collective variables (Φ and Ψ) with the `trj_analysis ` tool
+collective variables (Φ and Ψ) with the `trj_analysis` tool
 in GENESIS. The following commands execute
 `trj_analysis` and calculate the collective variables:
 
@@ -263,7 +263,7 @@ along with the two collective variables (Φ and Ψ). The free energy
 surface, evaluated from very long brute-force simulations, is drawn for
 reference. Although the peptide successfully shifts from the initial
 alpha-helix
-structure (<span style="color:red">red star</span>) to the final beta[-sheet ]structure ([black star]), there are large fluctuations in the
+structure (<span style="color:red">red star</span>) to the final beta-sheet structure (black star), there are large fluctuations in the
 trajectory.
 
 ![](/assets/images/2022_03_smd.png){: width="600" .align-center}
