@@ -151,7 +151,7 @@ kcal/mol/Å<sup>2</sup> for all replicas. Note that 1.80 Å is nearly correspond
 to the hydrogen bond distance, and 13.76 Å is a distance when the
 peptide forms a fully extended conformation.
 
-![](/assets/images/2019_07_ala3_dist.jpg){: width="400" .center-image}
+![](/assets/images/2019_07_ala3_dist.jpg){: width="400" .align-center}
 
 <span style="color: #ff6600"><i class="fas fa-exclamation-triangle"></i></span> 
 Index of the restraint function to be used in
@@ -526,7 +526,7 @@ gnuplot> unset key
 gnuplot> plot [][0:15]'index.log' u ($0/200):11
 ```
 
-![](/assets/images/2022_06_chapter_12-2_figure1.png){: width="600" .center-image}
+![](/assets/images/2022_06_chapter_12-2_figure1.png){: width="600" .align-center}
 
 We also plot the time courses of the target distance of the restraint
 function in one replica. In the log file, parameter index is output in
@@ -549,7 +549,7 @@ gnuplot> unset key
 gnuplot> plot [][0:15]'dist.log' u ($0/200):5 with lines
 ```
 
-![](/assets/images/2022_06_chapter_12-2_figure2-1.png){: width="600" .center-image}
+![](/assets/images/2022_06_chapter_12-2_figure2-1.png){: width="600" .align-center}
 
 ### 5.5 Analyze the end-to-end distance of (Ala)<sub>3</sub>
 
@@ -631,7 +631,7 @@ gnuplot> unset key
 gnuplot> plot [][0:15]'replica5.dis' u ($0/2000):2 with lines
 ```
 
-![](/assets/images/2022_06_chapter_12-2_figure3.png){: width="600" .center-image}
+![](/assets/images/2022_06_chapter_12-2_figure3.png){: width="600" .align-center}
 
 Let us compare the results with the above plot (changes in the target distance in Replica 5). We can see that the distance increases as the
 target distance increases, and vice versa.
@@ -670,7 +670,7 @@ gnuplot> ndata=20000
 gnuplot> plot for [k=1:14] 'parameter'.k.'.dis' u (bin($2,binwidth)):(1.0/ndata) w l t 'Parameter'.k smooth freq
 ```
 
-![](/assets/images/2022_06_chapter_12-2_figure4-2.png){: width="600" .center-image}
+![](/assets/images/2022_06_chapter_12-2_figure4-2.png){: width="600" .align-center}
 
 The results show that there is enough overlap between neighboring
 umbrella windows along the reaction coordinates. These overlaps are
@@ -790,7 +790,7 @@ gnuplot> set ylabel 'Potential of mean force (kcal/mol)'
 gnuplot> plot [0:13][0:10]'dist.pmf' u 1:3 w lines
 ```
 
-![](/assets/images/2022_06_chapter_12-2_figure6-1.png){: width="600" .center-image}
+![](/assets/images/2022_06_chapter_12-2_figure6-1.png){: width="600" .align-center}
 
 We can see that there is the global energy minimum around r = 10.1 Å and
 a local energy minimum around r = 2.8 Å. The latter corresponds to the

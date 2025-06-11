@@ -34,7 +34,7 @@ reaction has been extensively studied since the early 2000 [^3] [^4] [^5] [^6] [
 is a well known benchmark system [^2] [^9]. We calculate the MEP of the
 following reaction:
 
-![](/assets/images/2022_04_tim_scheme.png){: width="800" .center-image }
+![](/assets/images/2022_04_tim_scheme.png){: width="800" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 1. Schematic illustration of the proton transfer
 reaction from DHAP to Glu165 of TIM. r<sub>1</sub> – r<sub>7</sub>
@@ -80,7 +80,7 @@ The PDB file is visualized in Fig. 2. Note that TIM is a homo-dimer
 (segment name TIMA and TIMB), and that the reaction site of both
 proteins contains the ligand.
 
-![](/assets/images/2022_04_tim_overall.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_overall.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 2. The overall structure of the system.  
 </figcaption>
@@ -152,7 +152,7 @@ In `2.equil`, the final snapshot structure of step3.4 is first cut out
 to a non-periodic system using qmmm_generator. 15 Å around the TIM dimer
 is extracted.
 
-![](/assets/images/2022_04_tim_cut.png){: width="800" .center-image }
+![](/assets/images/2022_04_tim_cut.png){: width="800" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 3. Cut 15 Å around the TIM dimer from a periodic system
 (left) to create a non-periodic system (right)
@@ -498,7 +498,7 @@ $ vmd -e min.vmd
 This command gives Fig. 4, which shows that the proton of DHAP is
 transferred to Glu165.
 
-![](/assets/images/2022_04_tim_min2.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_min2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 4. Visualization of the reactant and product. The proton (H31) is indicated with yellow circle.  
 </figcaption>
@@ -831,7 +831,7 @@ $ gnuplot rpath_ene.gpi
 $ gnuplot rpath_OHCH.gpi
 ```
 
-![](/assets/images/2022_04_tim_mep_conv.png){: width="800" .center-image }
+![](/assets/images/2022_04_tim_mep_conv.png){: width="800" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 5. The convergence of the energy profile (left) and the
 geometric pathway in a section of r<sub>1</sub>/r<sub>2</sub>
@@ -847,7 +847,7 @@ the image ID,
 $ gnuplot rpath_r_img.gpi
 ```
 
-![](/assets/images/2022_04_tim_mep_r_img.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_mep_r_img.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 6. The variation of r<sub>1</sub> – r<sub>7</sub> along the MEP.
 </figcaption>

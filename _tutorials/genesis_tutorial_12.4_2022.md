@@ -31,7 +31,7 @@ shown in Figure 1, we can see that the boost potential is added to the
 original potential surface, which lowers the energy barrier between
 basins.
 
-![](/assets/images/2019_08_boosting.png){: width="400" .center-image }
+![](/assets/images/2019_08_boosting.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Figure 1. Scheme of GaMD boosting.
 </figcaption>
@@ -548,7 +548,7 @@ The reweighted free-energy landscape is shown in Figure 2. We can see
 that the free-energy barriers in the unreweighted PMF (i.e., biased PMF)
 becomes lower than those in the reweighted PMF.
 
-![](/assets/images/2022_05_gamd_fig2.png){: width="400" .center-image }
+![](/assets/images/2022_05_gamd_fig2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Figure 2. Free-energy landscapes of the end-to-end distance of (Ala)<sub>3</sub>.
 Puple and green lines represent unreweighted and reweighted free
@@ -560,7 +560,7 @@ energies, respectively.
 To obtain the free-energy landscape in a 2-dimensional dihedral-angle
 space, we calculate dihedral angles around residue 2 in (Ala)<sub>3</sub> (Figure 3).
 
-![](/assets/images/2022_05_gamd_fig3.png){: width="600" .center-image }
+![](/assets/images/2022_05_gamd_fig3.png){: width="600" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Figure 3. Dihedral angles of residue 2 in (Ala)<sub>3</sub>.
 </figcaption>
@@ -687,7 +687,7 @@ y-direction (2nd CV).
 matplotlib is required. Figure 4 shows the free-energy landscape
 reconstructed from the GaMD trajectories.
 
-![](/assets/images/2022_05_gamd_fig4.png){: width="600" .center-image }
+![](/assets/images/2022_05_gamd_fig4.png){: width="600" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Figure 4. The reweighted and unreweighted free-energy landscapes of two
 dihedral angles of (Ala)<sub>3</sub>.

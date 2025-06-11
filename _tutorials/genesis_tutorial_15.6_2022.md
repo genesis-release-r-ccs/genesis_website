@@ -31,7 +31,7 @@ MEP and restart files are provided in the tutorial file, it is
 recommended to first work on [tutorial 15.5](/tutorials/genesis_tutorial_15.5_2022/),
 where the MEP is obtained by the string method.
 
-![](/assets/images/2022_04_tim_scheme_r_img.png){: width="600" .center-image }
+![](/assets/images/2022_04_tim_scheme_r_img.png){: width="600" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 1. (a) Schematic illustration of the proton transfer
 reaction (H31) from DHAP to Glu165 of TIM, and the atomic distances,
@@ -150,7 +150,7 @@ make_window      make_window.sh   win_rr.gpi       win_rr.pdf
 make_window.f90  win_rr.dat       win_rr.log
 ```
 
-![](/assets/images/2022_04_tim_window.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_window.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 2. Variation of r<sub>1</sub> – r<sub>4</sub> and
 r<sub>6</sub> along the MEP.
@@ -173,7 +173,7 @@ Each window is propagated for 500 fs at the level of DFTB3/MM. Then, in
 the next step, MDs of all windows (replicas) are carried out in parallel
 for 1 ps at the level of B3LYP-D3/MM.
 
-![](/assets/images/2022_04_tim_reus_equil.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_reus_equil.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 3. The procedure of equilibration.
 </figcaption>
@@ -555,7 +555,7 @@ $ gnuplot rmsd.gpi
 
 The command plots RMSD of each replica and yields rmsd.pdf,
 
-![](/assets/images/2022_04_tim_rmsd.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_rmsd.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;;">
 Fig. 4. RMSD of backbone atoms of TIM along simulation time.
 </figcaption>
@@ -575,7 +575,7 @@ The command gives the distribution of r~1~/r~2~ (dist.pdf), and the
 probability of pathCV [^3] [^4] (pathcv.pdf and pathcv_all.pdf). The
 results are shown in Fig. 5.
 
-![](/assets/images/2022_04_tim_dist2.png){: width="800" .center-image }
+![](/assets/images/2022_04_tim_dist2.png){: width="800" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 5. (a) Distribution of r<sub>1</sub>/r<sub>2</sub>, (b) probablility distribution of pathCV for each replica along the reaction coordinate, and (c) the same as (b) but a cumulative distribution of all replicas.
 </figcaption>
@@ -685,7 +685,7 @@ and RMSD is plotted by gnuplot,
 $ gnuplot rmsd_analysis.gpi
 ```
 
-![](/assets/images/2022_04_tim_rmsd2.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_rmsd2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 6. RMSD of backbone atoms of TIM along simulation time.
 </figcaption>
@@ -736,7 +736,7 @@ not in the whole space. A similar tendency is observed in other replicas
 as well, suggesting that the MD simulation needs to extend to achieve
 random walk in the replica space.
 
-![](/assets/images/2022_04_tim_replica_index-1.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_replica_index-1.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 7. Plots of the replica index of parameter 9 as a function of simulation time.
 </figcaption>
@@ -757,7 +757,7 @@ For clarity, the procedure is outlined in Fig. 8, where the number in
 the box corresponds to the number of the directories. Also, the analysis
 tools used in each step are shown in yellow text.
 
-![](/assets/images/2022_04_tim_workflow.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_workflow.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 8. Dataflow chart and their associated analysis tools
 (in yellow) to calculate the PMF along pathCV (5) and the 2-dimensional
@@ -915,7 +915,7 @@ dist.gpi   prod3_1.dis   prod3_2.dis   ...
 $ gnuplot dist.gpi
 ```
 
-![](/assets/images/2022_04_tim_dist3.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_dist3.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 9. Distribution of r<sub>1</sub> / r<sub>2</sub> after 2 ps of REUS simulations.
 </figcaption>
@@ -1042,7 +1042,7 @@ occational large deviation cause numerical errors, it is recommended to
 set a cutoff that is 2 -- 3 times larger than the average value when
 calculating the PMF. We use cutoff=0.04 below.
 
-![](/assets/images/2022_04_tim_pathcv2.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_pathcv2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; ">
 Fig. 10. (a) Distribution of pathCV and (b) Path distance of one of the parameters (parameter 9).
 </figcaption>
@@ -1102,7 +1102,7 @@ $ ls
 pmf.gpi   pmf.pdf   pmf_bw15.dat ...
 ```
 
-![](/assets/images/2022_04_tim_pmf_pathcv.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_pmf_pathcv.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Fig. 11. PMF along pathCV with and without Gaussian smoothing.
 </figcaption>
@@ -1168,7 +1168,7 @@ $ ls
 2dsurf_mix.gpi  2dsurf_mix.pdf  pmf.inp ...
 ```
 
-![](/assets/images/2022_04_tim_2dpmf_r1r2.png){: width="400" .center-image }
+![](/assets/images/2022_04_tim_2dpmf_r1r2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Fig. 12. 2D-PMF as a function of r1 (OE2-H31) and r2 (C3-H31). The contours are drawn every 4 kcal/mol.
 </figcaption>

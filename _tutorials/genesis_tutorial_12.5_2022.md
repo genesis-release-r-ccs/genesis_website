@@ -52,7 +52,7 @@ used in REUS, resulting in faster convergence for free-energy
 calculation in GaREUS compared to REUS, while keeping a similar
 computational cost.
 
-![](/assets/images/2022_06_gareus_fig1.png){: width="600" .center-image }
+![](/assets/images/2022_06_gareus_fig1.png){: width="600" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 Figure 1. Scheme of GaREUS.
 </figcaption>
@@ -462,7 +462,7 @@ Other options of `calc_pmf_1d.py` are explained in 7.2 of tutorial
 The reweighted free-energy landscape is shown in Figure 2. We can see
 that the free-energy barriers in the unreweighted PMF (i.e., GaMD-biased PMF) becomes lower than those in the reweighted PMF.
 
-![](/assets/images/2022_06_gareus_fig2.png){: width="400" .center-image }
+![](/assets/images/2022_06_gareus_fig2.png){: width="400" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Figure 2. Free-energy landscapes of the end-to-end distance of (Ala)<sub>3</sub>.
 Purple and green lines represent unreweighted and reweighted free
@@ -545,7 +545,7 @@ using the cumulant expansion. `weight.dat` can be assigned by
 `plot_pmf_2d.py` draws the two-dimensional free-energy landscape using
 "`pmf_2d.dat`", "`xi.dat`", and "`yi.dat`" (Figure 3, Left).
 
-![](/assets/images/2022_06_gareus_fig3.png){: width="600" .center-image }
+![](/assets/images/2022_06_gareus_fig3.png){: width="600" .align-center }
 <figcaption style="font-size: 1.0em; font-family: 'Arial';">
 Figure 3. The reweighted and unreweighted free-energy landscapes of two
 dihedral angles of (Ala)<sub>3</sub>.
