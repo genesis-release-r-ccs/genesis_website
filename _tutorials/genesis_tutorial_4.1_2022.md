@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 4.1 Analysis of DCD file by the user's Fortran programming 
+# Analysis of DCD file by the user's Fortran programming 
 
 ##  Preparation 
 
@@ -20,26 +20,28 @@ quantities such as distance, angle, RMSD, etc. If you want to analyze
 "minor" quantities that cannot be handled by the GENESIS analysis tools,
 you need to create your own tools or scripts. In this tutorial, we will
 learn how to analyze coordinates data in the DCD format by editing a
-simple sample Fortran program. Let's download the tutorial file
-([tutorial22-4.1.tar.gz](/assets/tutorial_files/2022_02_tutorial22-4.1.tar.gz)).
+simple sample Fortran program. 
 
-
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub]
+(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
-# Download the tutorial file
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-4.1.zip ./
-$ unzip tutorial22-4.1.zip
-
-# Let's clean up the directory
-$ mv tutorial22-4.1.zip ./TRASH
-
-# Let's take a note
-$ echo "tutorial-4.1: Analysis of DCD by Fortran programming" >> README
-
-$ cd ./tutorial-4.1
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-4.1
 $ ls
 ionized.pdb  run.dcd  sample.f90
 ```
+
+
+
 
 ##  1. What is contained in DCD file?
 
@@ -50,7 +52,7 @@ generated from GENESIS and processed with the `crd_convert` tool, with
 the water and ions wrapped into unit cells.
 
 
-```
+```bash
 # Take a look at the trajectory using VMD
 $ vmd ionized.pdb -dcd run.dcd
 ```
@@ -58,7 +60,7 @@ $ vmd ionized.pdb -dcd run.dcd
 Let's take a look at the DCD file using the `less` command.
 
 
-```
+```bash
 # Take a look at the contents in the DCD file
 $ less run.dcd
 ```
@@ -87,7 +89,7 @@ not included.
 [The directory contains a sample program (`sample.f90`) written in the Fortran language [^1] , [^2]. If you are not very familiar with programming, please try to understand the program line by line. This program opens a DCD file (`run.dcd`) and reads the box size and the coordinates of the atoms in each frame, but does not calculate anything. You will see "`Analyze the snapshot here`" in the program, where you can insert equations and calculations for the analysis of physical quantities. In the next section, we will show an example of editing this sample program to calculate a distance between two atoms.]
 
 
-```
+```toml
 # View the sample program
 $ less sample.f90
 
@@ -155,7 +157,7 @@ not copy and paste the code! Think about the meaning of each line and
 type it all in.
 
 
-```
+```toml
 :
   integer              :: i, natom, atm1, atm2
   integer(4)           :: dcdinfo(20), ntitle
@@ -189,7 +191,7 @@ look at the structure of the peptide in VMD to see if the plotted data
 actually reflects the results.
 
 
-```
+```bash
 # Compile the sample program 
 $ gfortran sample.f90
 $ ls

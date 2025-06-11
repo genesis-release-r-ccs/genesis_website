@@ -9,10 +9,10 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 12.1 REMD simulation of (Ala)~3 ~in water
+# REMD simulation of (Ala)<sub>3</sub> in water
 
 In this tutorial, we illustrate how to run temperature replica exchange
-molecular dynamics (T-REMD) simulations of (Ala)~3~ and calculate PMF of
+molecular dynamics (T-REMD) simulations of (Ala)<sub>3</sub> and calculate PMF of
 end to end distance and dihedral angle (Φ and Ψ) distribution. T-REMD is
 an enhanced sampling method that parallelly simulate the system at a
 range of different temperatures and periodically exchanging between
@@ -31,10 +31,28 @@ hours to finish all simulations in this tutorial.
 this tutorial.
 
 
-## [[Preparation]{lang="EN-US"}]
+## Preparation
 
-Let's download the tutorial file
-([tutorial22-12.1.tar.gz](/assets/tutorial_files/2022_07_tutorial22-12.1.tar.gz)). This tutorial consists of five steps: 1) system setup, 2)
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub]
+(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-12.1
+```
+
+
+
+ This tutorial consists of five steps: 1) system setup, 2)
 energy minimization and pre-equilibration, 3) REMD equilibration, 4)
 REMD production, and 5) trajectory analysis. Control files for GENESIS
 are already included in the download file. Since we use the CHARMM36m
@@ -42,39 +60,30 @@ force field parameters [^2], we make a symbolic link to the CHARMM
 toppar directory (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)).
 
 
-```
-# Put the tutorial file in the Works directory
-$ cd ~/GENESIS_Tutorials-2022/Works
-$ mv ~/Downloads/tutorial22-12.1.zip ./
-$ unzip tutorial22-12.1.zip
-
-# Check out the contents in Tutorial 12.1
-$ cd tutorial-12.1
+```bash
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls 
 1_setup  2_min_equil  3_equil_remd  4_prod_remd  5_analy toppar
-
 ```
 
 ## 1. Setup
 
-In this tutorial, we simulate (Ala)~3~ in explicit water. We use the
+In this tutorial, we simulate (Ala)<sub>3</sub> in explicit water. We use the
 same initial structure as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). 
 
 
 
-```
+```bash
 # Change directory for the system setup
 $ cd 1_setup 
 
 # Prepare PDB and PSF files
 $ ln -s ../../tutorial-3.2/1_setup/3_solvate/wbox.pdb ./
 $ ln -s ../../tutorial-3.2/1_setup/3_solvate/wbox.psf ./
-
 ```
 
 
-## [2. [Minimization and pre-equilibration]{lang="EN-US"}]
+## 2. Minimization and pre-equilibration
 
 
 We use the same protocols described in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). Since we
@@ -82,16 +91,15 @@ have already equilibrated the system in Tutorial 3.2, we use the restart
 file obtained previously.
 
 
-```
+```bash
 # Change directory for the minimization and equilibration
 $ cd ../2_minimize_pre-equi
 
 # Prepare equilibrated restart file
 $ ln -s ../../tutorial-3.2/3_equilibrate/eq3.rst
-
 ```
 
-## [3. [REMD equilibration]{lang="EN-US"}]
+## 3. REMD equilibration
 
 ### Temperature setting
 
@@ -100,22 +108,17 @@ Before starting T-REMD simulation, we must determine the number of replicas and 
 
 
 
-We recommend using the web server [REMD Temperature generator](https://virtualchemistry.org/remd-temperature-generator/) [^3].]{lang="EN-US"}[ This tool automatically generates the number of replicas and their temperatures according to the information we input. We show the example of the input for the T-REMD simulation of the solvated trialanine system:
+We recommend using the web server [REMD Temperature generator](https://virtualchemistry.org/remd-temperature-generator/) [^3]. This tool automatically generates the number of replicas and their temperatures according to the information we input. We show the example of the input for the T-REMD simulation of the solvated trialanine system:
 
 ![](/assets/images/2022_06_tutorial-12-1-fig1.png)
 
- 
-
-Replica exchange probabilities are often set to 0.2 -- 0.3, and here we set the replica exchange probability to 0.25. The lower and upper temperature limits are set to ]{lang="EN-US" style="color: initial;"}[`300 K`]{lang="EN-US"}[ and ]{lang="EN-US" style="color: initial;"}[`351.3 K`]{lang="EN-US"}[, respectively. Since we use SHAKE and SETTLE algorithms in the simulation, "]{lang="EN-US" style="color: initial;"}[constraints in the protein]{lang="EN-US" style="color: initial;"}[" is set to "]{lang="EN-US" style="color: initial;"}[`Bonds to hydrogen only`]{lang="EN-US"}[", and "]{lang="EN-US" style="color: initial;"}[Constraints in water]{lang="EN-US" style="color: initial;"}[" to "]{lang="EN-US" style="color: initial;"}[`rigid`]{lang="EN-US"}[". We use all-atom model, so we select "]{lang="EN-US" style="color: initial;"}[`All H`]{lang="EN-US"}[" for the parameter of "]{lang="EN-US" style="color: initial;"}[`Hydrogens in proteins`]{lang="EN-US"}[". The numbers of protein atoms and the water molecules are input according to the numbers in ]{lang="EN-US" style="color: initial;"}[`"../1_setup/wbox.pdb`]{lang="EN-US"}[". We can count the number of the water molecules in the system as follows:
+Replica exchange probabilities are often set to 0.2 -- 0.3, and here we set the replica exchange probability to 0.25. The lower and upper temperature limits are set to 300 K and 351.3 K, respectively. Since we use SHAKE and SETTLE algorithms in the simulation, "constraints in the protein" is set to "Bonds to hydrogen only", and "Constraints in water" to "rigid". We use all-atom model, so we select "All H" for the parameter of "Hydrogens in proteins". The numbers of protein atoms and the water molecules are input according to the numbers in "../1_setup/wbox.pdb". We can count the number of the water molecules in the system as follows:
 
 
 
-
-
-```
+```bash
 # Count the number of TIP3P water molecules
 $ grep "TIP3" ../1_setup/wbox.pdb | wc -l | awk '{print $1 / 3}'
-
 ```
 
 
@@ -138,12 +141,11 @@ even though we use *NVT* ensemble in our T-REMD simulation.
 
 
 
-```
+```bash
 # Change directory for the REMD equilibration
 $ cd ../3_equil_remd
 $ ls
 run.inp
-
 ```
 
 
@@ -159,7 +161,7 @@ hinder the exchange between them. The REMD equilibration control file
 is:
 
 
-```
+```toml
 [INPUT]
 topfile  = ../toppar/top_all36_prot.rtf     # topology file
 parfile  = ../toppar/par_all36m_prot.prm    # parameter file
@@ -219,7 +221,6 @@ parameters1       = 300.00 302.53 305.09 307.65 310.24 \
                     312.85 315.47 318.12 320.78 323.46 \
                     326.16 328.87 331.61 334.37 337.14 \
                     339.94 342.75 345.59 348.44 351.30
-
 ```
 
 In `[INPUT]` section, we specify `../2_min_equil/eq3.rst` file as the
@@ -255,23 +256,21 @@ To run REMD equilibiration, we use the following commands. Here we used
 640 (= 8 x 4 x 20) CPU cores.
 
 
-```
+```bash
 # Run REMD-equilibiration step. 
 $ export OMP_NUM_THREADS=4
 $ mpirun -np 160 /home/user/GENESIS/bin/spdyn run.inp > run.log
-
 ```
 
 ## 4. REMD production
 
 
 
-```
+```bash
 # Change directory for the REMD production
 $ cd ../4_prod_remd
 $ ls
 run.inp
-
 ```
 
 
@@ -285,7 +284,7 @@ needed to obtain better energy results. The following control file is
 used to run the simulation in NVT ensemble:
 
 
-```
+```toml
 [INPUT]
 topfile  = ../toppar/top_all36_prot.rtf     # topology file
 parfile  = ../toppar/par_all36m_prot.prm    # parameter file
@@ -346,7 +345,6 @@ parameters1       = 300.00 302.53 305.09 307.65 310.24 \
                     312.85 315.47 318.12 320.78 323.46 \
                     326.16 328.87 331.61 334.37 337.14 \
                     339.94 342.75 345.59 348.44 351.30
-
 ```
 
 In `[INPUT]` section, `rstfile` points to the output files from the
@@ -364,11 +362,10 @@ MPI processes and 4 OpenMP threads for  each replica, i.e., a total of
 640 (= 8 x 4 x 20) CPU cores.
 
 
-```
+```bash
 # Run REMD production 
 $ export OMP_NUM_THREADS=4
 $ mpirun -np 160 /home/user/GENESIS/bin/spdyn run.inp > run.log
-
 ```
 
 ## 5. Analysis
@@ -381,11 +378,11 @@ refer to [^4].
 
 ![](/assets/images/2022_04_end-end.png)
 
-End to end distance of (Ala)~3~ 
+End to end distance of (Ala)<sub>3</sub> 
 
 ![](/assets/images/2022_04_Fig.3.png)
 
-Dihedral angle of (Ala)~3~ 
+Dihedral angle of (Ala)<sub>3</sub> 
 
 \
 In REMD control file, we setup the `exchange_period=2000`. In the log
@@ -393,7 +390,7 @@ output of the REMD simulation, we can see the information about
 replica-exchange attempts at every `exchange_period` steps.
 
 
-```
+```toml
 REMD> Step:    1998000   Dimension:    1   ExchangePattern:    2
   Replica      ExchangeTrial             AcceptanceRatio      Before       After
         1          3 >     2   R         148 /       500     305.090     305.090
@@ -447,7 +444,6 @@ REMD> Step:    2000000   Dimension:    1   ExchangePattern:    1
   Parameter    :    307.650   315.470   300.000   305.090   326.160   310.240   318.120   337.140   302.530   348.440   351.300   334.370   323.460   320.780   312.850   328.870   339.940   342.750   331.610   345.590
   RepIDtoParmID:          4         7         1         3        11         5         8        15         2        19        20        14        10         9         6        12        16        17        13        18
   ParmIDtoRepID:          3         9         4         1         6        15         2         7        14        13         5        16        19        12         8        17        18        20        10        11
-
 ```
 
 In this log file, we should pay attention to the `AcceptanceRatio`
@@ -471,13 +467,12 @@ acceptance ratio and check if it matches our original selection, see
 next section.
 
 
-```
+```bash
 # change directory 
 $ cd ../5_analy
 $ ls 
 1_calc_ratio  3_sort            5_end_end_distance  7_MBAR         9_PMF_dihedral
 2_plot_index  4_plot_potential  6_dihedral_angle    8_PMF_distance
-
 ```
 
 ### 5.1. Calculate the acceptance ratio of each replica
@@ -492,7 +487,7 @@ thus we calculate only "A" to "B". For this calculation, you can use the
 script "`calc_retio.sh`".
 
 
-```
+```bash
 # change directory 
 $ cd 1_calc_ratio 
 
@@ -510,13 +505,12 @@ $ ./calc_ratio.sh
 15 > 16 0.425 
 17 > 18 0.434 
 19 > 20 0.413 
-
 ```
 
 The file "`calc_ratio.sh`" contains the following commands:
 
 
-```
+```bash
 # get acceptance ratios between adjacent parameter IDs
 $ grep "  1 >     2" ../../4_prod_remd/run.log | tail -1  > acceptance_ratio.dat
 ...
@@ -525,7 +519,6 @@ $ grep " 19 >    20" ../../4_prod_remd/run.log | tail -1 >> acceptance_ratio.dat
 
 # calculate the ratios
 awk '{printf ("%2d %s %2d %4.3f \n", $2,$3,$4,$6/$8)}' acceptance_ratio.dat
-
 ```
 
 ### 5.2. Plot time courses of replica indices and temperatures
@@ -541,7 +534,7 @@ respectively.[ For example, the first column correspond to 300 K,  the 10th col
 replica IDs in each snapshot.
 
 
-```
+```bash
 # change directory
 $ cd ../2_plot_index 
 $ ls
@@ -553,7 +546,6 @@ $ ./plot_index.sh
 
 # plot replica IDs in each snapshot 
 $ gnuplot plot_parmID-repID.gnuplot
-
 ```
 
 The file "`plot_index.sh`" contains the following commands:
@@ -562,7 +554,6 @@ The file "`plot_index.sh`" contains the following commands:
 ```
 # get replica IDs in each snapshot
 grep "ParmIDtoRepID:" ../../4_prod_remd/run.log | sed 's/ParmIDtoRepID:/ /' > T-REMD_parmID-repID.dat
-
 ```
 
 The file "`plot_parID-repID.gnuplot`" contains the following commands :
@@ -584,7 +575,6 @@ plot "T-REMD_parmID-repID.log" using ($1*0.0025*0.001):11 with points pt 7 ps 0.
 
 set output "351.30k.jpg"
 plot "T-REMD_parmID-repID.log" using ($1*0.0025*0.001):21 with points pt 9 ps 0.5 lt 3 title "351.30 K"
-
 ```
 
 
@@ -611,7 +601,6 @@ $ ./plot_temperature.sh
 
 # plot tempreture IDs in each snapshot 
 $ gnuplot plot_repID-Temperature.gnuplot
-
 ```
 
 The file "`plot_temperature.sh`" contains the following commands:
@@ -620,7 +609,6 @@ The file "`plot_temperature.sh`" contains the following commands:
 ```
 # get replica temperatures in each snapshot
 grep "Parameter    :" ../../4_prod_remd/run.log | sed 's/Parameter    :/ /' > T-REMD_repID-temperatrue.dat
-
 ```
 
 The "`plot_repID-Temperature.gnuplot`" include the following commands:
@@ -637,7 +625,6 @@ plot \
   "T-REMD_repID-Temperature.log" using ($1*0.0025*0.001):2  with lines lt 3 title "repID=1 ",\
   "T-REMD_repID-Temperature.log" using ($1*0.0025*0.001):11 with lines lt 2 title "repID=10",\
   "T-REMD_repID-Temperature.log" using ($1*0.0025*0.001):21 with lines lt 1 title "repID=20"
-
 ```
 
 ![](/assets/images/2022_07_tutorial-12-1-RepID1_10_20.jpg)
@@ -667,7 +654,6 @@ $ remd_convert.inp
 
 # Sort frames by parameters
 $ /home/user/GENESIS/bin/remd_convert remd_convert.inp | tee remd_convert.log 
-
 ```
 
 The following control file is used to convert dcd files:
@@ -710,7 +696,6 @@ trjout_format    = DCD
 trjout_type      = COOR+BOX
 trjout_atom      = 1 
 pbc_correct      = NO
-
 ```
 
 
@@ -738,7 +723,6 @@ $ ./plot_potential.sh
 
 # plot potential energy distribution 
 gnuplot plot_potential.gnuplot
-
 ```
 
 The file "`plot_potential.sh`" contains the following commands:
@@ -750,7 +734,6 @@ grep "INFO:" ../3_sort/remd_parmID1_trialanine.log   | tail -n +2 | awk '{print 
 ...
 ...
 grep "INFO:" ../3_sort/remd_parmID20_trialanine.log  | tail -n +2 | awk '{print $2, $5}' > potential_energy_rep20.log
-
 ```
 
 The file "`plot_potential.gnuplot`" contains the following commands:
@@ -766,7 +749,6 @@ binwidth=50
 bin(x,width)=width*floor(x/width)
 ndata=2000
 plot for [k=1:20] "potential_parmID".k.".log" u (bin($2,binwidth)):(1.0/ndata) t "Tempreture".k with lines smooth freq
-
 ```
 
 ![](/assets/images/2022_04_pot_temp.jpg)
@@ -796,7 +778,6 @@ $ ./generate_input_for_trj_analysis.sh
 # run with 20 input files
 $ chmod u+x run_trj_end_to_end.sh 
 $ ./run_trj_end_to_end.sh
-
 ```
 
 One created control file
@@ -825,7 +806,6 @@ trj_natom      = 0         # (0:uses reference PDB atom count)
 [OPTION]
 check_only     = NO
 distance1      = PROA:1:ALA:OY PROA:3:ALA:HNT
-
 ```
 
 The file "`run_trj_end_to_end.sh`" include the following commands:\
@@ -836,7 +816,6 @@ The file "`run_trj_end_to_end.sh`" include the following commands:\
 ...
 ...
 /home/user/GENESIS/trj_analysis trj_end_end_parmID20.inp | tee trj_end_end_parmID20.log
-
 ```
 
 ### 5.6. Calculating dihedral angle 
@@ -849,7 +828,7 @@ analysis tool trj_analysis as follow:
 
 
 
-```
+```bash
 # change directory
 $ cd ../6_dihedral_angle
 $ ls
@@ -862,14 +841,13 @@ $ ./trj_dihedral.sh
 # run with 20 input files
 $ chmod u+x run_trj_dihedral.sh 
 $ ./run_trj_dihedral.sh
-
 ```
 
 One created control file "`trj_dihedral_parmID1.inp`" is used to
 calculate end to end distance as follow:
 
 
-```
+```toml
 [INPUT]
 psffile        = ../../1_setup/proa.psf
 reffile        = ../../1_setup/proa.pdb
@@ -891,18 +869,16 @@ trj_natom      = 0         # (0:uses reference PDB atom count)
 check_only     = NO
 torsion1       = PROA:1:ALA:C PROA:2:ALA:N  PROA:2:ALA:CA PROA:2:ALA:C
 torsion2       = PROA:2:ALA:N PROA:2:ALA:CA PROA:2:ALA:C  PROA:3:ALA:N
-
 ```
 
 THe file "`run_trj_dihedral.sh"` include the followind commands:
 
 
-```
+```bash
 /home/user/GENESIS/trj_analysis trj_dihedral_parmID1.inp | tee trj_dihedral_parmID1.log
 ...
 ...
 /home/user/GENESIS/trj_analysis trj_dihedral_parmID20.inp | tee trj_dihedral_parmID20.log
-
 ```
 
 ### 5.7. MBAR analysis
@@ -966,7 +942,6 @@ snapshot for each parameterID. For example, `weight1.dat` is as follows:
 ...
      3998000  2.803355372323412E-004
      4000000  2.787713494107975E-004
-
 ```
 
 ### 5.7. Calculating PMF of distance distribution
@@ -1029,7 +1004,6 @@ set yrange [0:10]
 set xlabel "End to End Distance (Å)"
 set ylabel "PMF (kcal/mol)"
 plot "dist.pmf" u 1:2 w l notitle
-
 ```
 
 ![](/assets/images/2022_07_tutorial-12-1-PMF_distance.jpg)
@@ -1045,12 +1019,12 @@ between OY and HNT is formed. These results suggest that in water the
 
 The final step of this tutorial is to use the calculated dihedral angle
 (5.6) and weight files from MBAR analysis (5.7) to calculate PMF of
-dihedral distribution of 2nd alanine in (ALA)~3~.
+dihedral distribution of 2nd alanine in (ALA)<sub>3<sub>.
 
 We can get PMF to the following commands:
 
 
-```
+```bash
 # change directory 
 $ cd ../9_PMF_dihedral 
 $ ls 
@@ -1083,7 +1057,6 @@ python3 calc_pmf_2d.py \
 
 # print PMF
 python3 plot_pmf_2d.py
-
 ```
 
 Similar to the script of section 6.2 in [Tutorial 13.1](/tutorials/genesis_tutorial_13.1/), the absolute temperature, the number of
@@ -1109,31 +1082,18 @@ the PMF about end to end distance in (5.7), we can understand that
 
 ## References
 
-1.  Y. Sugita et al., Chemical Physics Letters, **314**, 141--151
+[^1]:  Y. Sugita et al., Chemical Physics Letters, **314**, 141--151, (1999).
 
-```
-(1999).
-```
+[^2]:  J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899, (2013).
 
-2.  J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899
+[^3]:  A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077, (2008).
 
-```
-(2013).
-```
-
-3.  A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077
-
-```
-(2008).
-```
-
-4.  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).
+[^4]:  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).
 
 ------------------------------------------------------------------------
 
 *Written by Daisuke Matsuoka@RIKEN Theoretical molecular science
-laboratory*
-
+laboratory*\
 *Updated by Hisham Dokainish@RIKEN Theoretical molecular science
 laboratory\
 August, 28, 2019\
@@ -1141,5 +1101,5 @@ August, 28, 2019\
 Updated by Daiki Matsubara@RIKEN Center for Biosystems Dynamics Research
 (BDR)*\
 *March, 31, 2022*
-
+{: .notice} 
 

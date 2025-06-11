@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 9.1 Target MD and steered MD simulations of Ribose Binding Protein (RBP) in water 
+# Target MD and steered MD simulations of Ribose Binding Protein (RBP) in water 
 
 GENESIS prepares several functions that restrain selected
 distance/angle/dihedral angles. In this section, these restraint
@@ -17,22 +17,37 @@ functions are described.
 
 ## Preparation
 
-First of all, let's download the tutorial file
-[(tutorial22-9.1.tar.gz).](fundamental/2022_03_tutorial22-9.1.zip "tutorial22-9.1.zip") This tutorial consists of five steps: 1) simulation system,
+All the files required for this tutorial are hosted in the
+[GENESIS tutorials repository on GitHub]
+(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+If you haven't downloaded the files yet, open your terminal
+and run the following command (see more in
+[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+```bash
+$ cd ~/GENESIS_Tutorials-2022
+# if not yet
+$ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
+```
+If you already have the tutorial materials, let's go to our working directory:
+```bash
+$ cd genesis_tutorial_materials/tutorial-9.1
+```
+
+This tutorial consists of five steps: 1) simulation system,
 2) energy minimization, 3) equilibration, 4) production run with a
 restraint function, 5) Targeted MD simulation, and 6) Steered MD
 simulation. Control files for GENESIS are already included in the
 download file.
 
 
-```
+```bash
 # Download the tutorial file
 $ cd /home/user/GENESIS/Tutorials
 $ mv ~/Downloads/tutorial22-9-1.zip ./ 
 $ unzip tutorial22-9.1.zip 
 $ cd tutorial-9.1
 $ ls
-1_system  2_minimize  3_equilibrate  4_MD_restraint  5_targeted_MD  6_steered_MD
+1_setup  2_minimize  3_equilibrate  4_MD_restraint  5_targeted_MD  6_steered_MD
 ```
 
 A direcotry in paramter files can be linked as shown in Tutorial 3.1.
@@ -45,7 +60,9 @@ conformations related to ligand binding.  We are going to explain
 restraint energy functions using the protein. The 1_system directory
 contains two pdb and a psf files for the system.
 
-## [[![](/assets/images/2020_11_rbp-close-open_t.png)](/assets/images/2020_11_rbp-close-open_t.png)2. Minimization []]
+## [![](/assets/images/2020_11_rbp-close-open_t.png)](/assets/images/2020_11_rbp-close-open_t.png)
+
+## 2. Minimization
 
 First, we execute the energy minimization of the system to remove steric
 clashes in the initial structure. For further details of the control
@@ -54,7 +71,7 @@ section (see [Tutorial 3.2](tutorials2022/tutorial-3.2/index.html)). In the `2_m
 control file, "INP", is given.
 
 
-```
+```bash
 # Change directory to 2_minimize
 $ cd 2_minimize
 $ ls
@@ -73,7 +90,7 @@ ensemble with positional restraints. The procedure is similar to the
 basic tutorial section, except that the step numbers are doubled. (see [Tutorial 3.2](tutorials2019/tutorial-3.2/index.html))
 
 
-```
+```bash
 $ cd ../3_equilibrate
 $ ls
 1_md 2_comdist
@@ -92,12 +109,13 @@ To see the structural changes of the protein, we sometimes need to
 restrain the distances between the centers of mass (COMs) of two domains
 (groups).
 
-[![](/assets/images/2020_11_rbp2_closed_t.png)](/assets/images/2020_11_rbp2_closed_t.png)Before
-running simulations with the restraints, we need to calculate the
+[![](/assets/images/2020_11_rbp2_closed_t.png)](/assets/images/2020_11_rbp2_closed_t.png)
+
+Before running simulations with the restraints, we need to calculate the
 distance between two groups from the trajectory. 
 
 
-```
+```bash
 $ cd ../2_comdist
 $ cat INP
 $ /home/user/GENESIS/bin/trj_analysis INP > log
@@ -111,7 +129,7 @@ GENESIS manual for instructions on how to specify the group. Please use
 `com_distance1` instead of `distance1` in the `[OPTION]` section.
 
 
-```
+```bash
 [INPUT]
 psffile = ../../1_setup/rbp_closed.psf
 reffile = ../../1_setup/rbp_closed.pdb
@@ -133,7 +151,8 @@ group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
 check_only = NO                        # only checking input files (YES/NO)
 allow_backup = NO                      # backup existing output files (YES/NO)
 com_distance1 = 1 2                    # Analyze the time courses of COM distance
-
+```
+```bash
 $ /home/user/GENESIS/bin/trj_analysis INP > log
 $ ls
 INP  log  output.comdis
@@ -154,7 +173,7 @@ conventional MD and REUS simulations. In this section, we show how to
 use restraints on the COM distance.
 
 
-```
+```bash
 $ cd ../../4_MD_restraint
 $ ls
 1_md 2_comdist
@@ -168,7 +187,7 @@ To restrain the COM distance, we set keywords in `[SELECTION]` and
 `[RESTRAINTS]` sections in the following way.
 
 
-```
+```bash
 [SELECTION]
 group1 = segid:PROA & (resno:1-100 | resno:236-259) and an:CA
 group2 = segid:PROA & (resno:108-231 | resno:269-271) and an:CA
@@ -184,7 +203,7 @@ After the simulation, you can check the COM distance during the
 simulation using trj_analysis.
 
 
-```
+```bash
 $ cd ../2_comdist
 $ cat INP
 $ /home/user/GENESIS/bin/trj_analysis INP > log
@@ -192,12 +211,12 @@ $ /home/user/GENESIS/bin/trj_analysis INP > log
 
 ## 5. Targeted MD simulation 
 
-Targeted MD (TMD)\[1,2\] is a method that applies holonomic forces to
+Targeted MD (TMD) [^1] , [^2] is a method that applies holonomic forces to
 drive the system towards a targeted RMSD of the system during the
 simulation.
 
 
-```
+```bash
 $ cd ../../5_targeted_MD
 $ ls
 1_md 2_rmsd_analysis 3_comdist 4_crd_concert
@@ -216,7 +235,7 @@ Please increase the number when you execute the simulation in your
 research.
 
 
-```
+```toml
 [INPUT]
 (skip)
 psffile = ../../1_setup/rbp_closed.psf
@@ -261,7 +280,7 @@ control files for `rmsd_analysis`,  `trj_analysis`, and `crd_convert`
 are also prepared.
 
 
-```
+```bash
 # mass-weighted RMSD
 $ cd ../2_rmsd_analysis
 $ /home/user/GENESIS/bin/rmsd_analysis INP > log
@@ -274,13 +293,10 @@ This figure shows that RMSD goes down linearly in this simulation.
  
 
 
-```
+```bash
 # COM distance
 $ cd ../3_trj_analysis
 $ /home/user/GENESIS/bin/trj_analysis INP > log
-
- 
-
 ```
 
 The COM dist also changes during the simulation.
@@ -298,14 +314,14 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 
 ## 6. Steered MD simulation 
 
-Steered MD (SMD)[^3] is a method that applies forces to change the
+Steered MD (SMD) [^3] is a method that applies forces to change the
 conformations. Targeted MD applies a holonomic constraint to keep RMSD
 value, whereas Steered MD applies a harmonic restraint force that
 changes the reference value throughout the simulation. GENESIS has two
 types of simulations.
 
 
-```
+```bash
 $ cd ../../6_Steered_MD
 $ ls
 1_md 2_rmsd_analysis 3_comdist 4_crd_concert
@@ -326,7 +342,7 @@ for the tutorial purpose. Please increase the number of steps when you
 execute the simulation in your research. [The value of FC should be determined with care, taking into account the aspect of possible structural changes.]
 
 
-```
+```toml
 [DYNAMICS]
 integrator = VRES      # [LEAP,VVER,VRES]
 nsteps = 40000         # number of MD steps (100 ps)
@@ -357,7 +373,7 @@ control files for `rmsd_analysis`,  `trj_analysis`, and `crd_convert`
 are also prepared.
 
 
-```
+```bash
 # mass-weighted RMSD
 $ cd ../2_rmsd_analysis
 $ /home/user/GENESIS/bin/rmsd_analysis INP > log
@@ -369,7 +385,7 @@ RMSD curve changes when [[a different value of FC is used]{.hotkey-layer .previe
 [![](/assets/images/2022_03_smd_rmsd.png)](/assets/images/2022_03_smd_rmsd.png)
 
 
-```
+```bash
 # COM distance
 $ cd ../3_trj_analysis
 $ /home/user/GENESIS/bin/trj_analysis INP > log
@@ -383,7 +399,7 @@ also different.
 You can select coordinates from the trajectory for making a movie.
 
 
-```
+```bash
 # Convert crd for movie 
 $ cd ../4_crd_convert 
 $ /home/user/GENESIS/bin/crd_convert INP > log
@@ -391,9 +407,9 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 
 ## 7. References
 
-1.  [J. Schlitter, *et. al.*  ]{dir="ltr" role="presentation"}*[Mol.     Sim.]{dir="ltr" role="presentation"}*[, **10**, 291-308,     (1993).]{dir="ltr"     role="presentation"}[](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170)
-2.  [J. Schlitter, *et. al.* ]{dir="ltr" role="presentation"} *[J. Mol.     Graph.]{dir="ltr" role="presentation"}*[, **12**, 84--89,     (1994).[](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723)]{dir="ltr" role="presentation"}
-3.  [H Grubmüller ]{.MUxGbd .wuQ4Ob .WZ8Tjf}*et al. Science, [**271**,     997--999,]{dir="ltr" role="presentation"} [(1996).]{dir="ltr"     role="presentation"}*[[]{dir="ltr"     role="presentation"}](https://www.science.org/doi/10.1126/science.271.5251.997)
+[^1]:  [J. Schlitter, *et. al.*  Mol.     Sim.  **10**, 291-308,     (1993).](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170)
+[^2]:  [J. Schlitter, *et. al.*  J. Mol.     Graph. **12**, 84--89,     (1994).](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723)
+[^3]:  [H Grubmüller  *et al.* Science, **271**,     997--999, (1996).](https://www.science.org/doi/10.1126/science.271.5251.997)
 
 *Written by Chigusa Kobayashi@RIKEN R-CCS. March, 4, 2022*
 *Updated by Chigusa Kobayashi@RIKEN R-CCS. May, 9, 2022*
