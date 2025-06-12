@@ -395,7 +395,7 @@ p(\\xi) = \\left\<\\exp\[\\beta \\Delta U^{\\text{GaMD}}\]\\right\>{\'}_{\\xi} \
 \end{aligned}
 \\]
 
-[\\(\\left\<\\exp\[\\beta \\Delta U^{\\text{GaMD}}\]\\right\>{\'}\_{\\xi} \\) and \\(p\'(\\xi)\\) can be calculated using \\(p\'(x\_{jn})\\) (= weight files obtaind by mbar_analysis). However, similar to tutorial 12.4,][ the slow convergence of \\(\\left\<\\exp\[\\beta \\Delta U^{\\text{GaMD}}\]\\right\>{\'}\_{\\xi} \\) causes the large statistical error. To reduce the statistical error, the cumulant expansion to the second order are applied to the term [^6].]
+\\(\\left\<\\exp\[\\beta \\Delta U^{\\text{GaMD}}\]\\right\>{\'}\_{\\xi} \\) and \\(p\'(\\xi)\\) can be calculated using \\(p\'(x\_{jn})\\) (= weight files obtaind by mbar_analysis). However, similar to tutorial 12.4, the slow convergence of \\(\\left\<\\exp\[\\beta \\Delta U^{\\text{GaMD}}\]\\right\>{\'}\_{\\xi} \\) causes the large statistical error. To reduce the statistical error, the cumulant expansion to the second order are applied to the term [^6].
 
 To reweight the GaMD biases, let's move to 5_reweight_dist.
 
@@ -450,7 +450,6 @@ free-energy landscape by the following commands.
 
 ```bash
 $ python ./calc_pmf_1d.py -t 300.0 -c 10.0 -n 1000000 --Xmin 0.0 --Xmax 14.0 --Xdel 0.5 --cv_file cv.dat --out_file out.dat --weight_file weight.dat --anharm
-
 ```
 
 `calc_pmf_1d.py` reweights the free-energy landscape using the cumulant
