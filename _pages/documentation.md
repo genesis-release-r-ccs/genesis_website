@@ -22,7 +22,7 @@ feature_row:
     btn_label: "Learn more"
   - image_path: /assets/images/20250513_samples.png
     alt: "samples"
-    title: "Input Samples"
+    title: "Input Examples"
     excerpt: ""
     url: "/docs/samples/"
     btn_class: "btn--primary"
