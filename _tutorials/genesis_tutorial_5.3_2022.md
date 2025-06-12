@@ -165,4 +165,5 @@ $ gmx pdb2gmx -f proa_dnabc.pdb -o proa_dnabc.gro -water tip3p
 
 *Written by Ai Niitsu@RIKEN Theoretical molecular science laboratory\
 April 1, 2022*
+{: .notice}
 

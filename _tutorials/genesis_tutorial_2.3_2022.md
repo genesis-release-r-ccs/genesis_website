@@ -521,7 +521,6 @@ In the previous tutorial, we downloaded the CHARMM parameter and topology files,
 
 ------------------------------------------------------------------------
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\
 Aug. 10, 2019*
-
+{: .notice}

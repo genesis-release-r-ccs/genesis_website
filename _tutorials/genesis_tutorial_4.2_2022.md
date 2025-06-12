@@ -232,7 +232,7 @@ gnuplot> splot [-180:180][-180:180][]'out' u 1:2:4 with lines
 
 ------------------------------------------------------------------------
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory*\
-*Feb. 24, 2022*
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\
+Feb. 24, 2022*
+{: .notice}
 

@@ -323,7 +323,6 @@ $ ffmpeg -i md.avi -b 4000k -vcodec libx264 -pix_fmt yuv420p md.mp4
 
 ------------------------------------------------------------------------
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory\
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\
 Feb 25, 2022*
-
+{: .notice}
