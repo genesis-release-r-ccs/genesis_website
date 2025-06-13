@@ -32,8 +32,7 @@ purpose [^1] . We will also use
 ##  Preparation
 
 All the files required for this tutorial are hosted in the
-[GENESIS tutorials repository on GitHub]
-(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal and run
  the following command (see more in
 [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
@@ -65,7 +64,7 @@ the target. It is useful for referring to a directory or file that is
 far from the current working directory.
 
 
-```baash
+```bash
 # Make a symbolic link to the CHARMM toppar directory
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls
@@ -285,12 +284,12 @@ ATOM      5  CA  MET A   1      -2.483  12.211   6.569  1.00  0.00      PROA C
 
 Check the PSF file as well. 
 In the header section, you will find "`first NTER`" and "`last CTER`". 
-Here, "`first NTER`" indicates that the N-terminus of PROA has been capped with NH~3~^+^. 
-If you look at the CHARMM topology file, you will see that "`NTER`" is defined as a patch residue (PRES) that creates an NH~3~ group at the N-terminus. 
-Similarly, the C-terminus has been capped with COO^--^ using the patch residue "`CTER`". In the section right after that, you can also see detailed information about all the atoms, including residue name, atom name, type, charge, and mass for each atom. 
-In the middle section, the bond connectivity is defined. There are 864 covalent bonds in the system, and the bonded atoms are defined by the indices of the neighboring atoms (e.g., [1-5], [2-1], and [3-1] pairs are corresponding to "N-CA", "HT1-N", and "HT2-N" bonds, respectively). 
-Lists of angles and dihedral angles are also defined in the same manner. These lists are used for Σ~bonds~, Σ~angles~, and Σ~dihedrals~ in the equation in [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).
-
+Here, "`first NTER`" indicates that the N-terminus of PROA has been capped with NH<sub>3</sub><sup>+</sup>. 
+If you look at the CHARMM topology file, you will see that "`NTER`" is defined as a patch residue (PRES) that creates an NH<sub>3</sub> group at the N-terminus. 
+Similarly, the C-terminus has been capped with COO<sup>-</sup> using the patch residue "`CTER`". In the section right after that, you can also see detailed information about all the atoms, including residue name, atom name, type, charge, and mass for each atom. 
+In the middle section, the bond connectivity is defined. 
+There are 864 covalent bonds in the system, and the bonded atoms are defined by the indices of the neighboring atoms (e.g., [1-5], [2-1], and [3-1] pairs are corresponding to "N-CA", "HT1-N", and "HT2-N" bonds, respectively). 
+Lists of angles and dihedral angles are also defined in the same manner. These lists are used for Σ<sub>bonds</sub>, Σ<sub>angles</sub>, and Σ<sub>dihedrals</sub> in the equation in [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).
 
 ```bash
 # View the PSF file 
@@ -380,7 +379,7 @@ Those artifacts will affect the reliability of the results obtained from the MD 
 
 In most simulation studies, proteins are placed in water in which ions
 are dissolved, i.e., in a solution with a certain ionic concentration.
-Since the concentration of K^+^ in the cell is \~150 mM, to simulate
+Since the concentration of K<sup>+</sup> in the cell is \~150 mM, to simulate
 proteins functioning inside the cell, we usually solvate the protein in
 a 150 mM KCl solution \[mM = mmol/L (millimoles per liter)\]. On the
 other hand, for proteins that reside outside the cell, a 150 mM NaCl
@@ -388,10 +387,10 @@ solution is usually used.
 
 To add ions to the system, we use the autoionize-plugin in VMD. Let's
 move to the "`5_ionize`" directory. In this directory, you will find a
-script to randomly add sodium ions (Na^+^: SOD) and chloride ions
-(Cl^--^: CLA) in the system. The total number of each ion is
+script to randomly add sodium ions (Na<sup>+</sup>: SOD) and chloride ions
+(Cl<sup>--</sup>: CLA) in the system. The total number of each ion is
 automatically adjusted to reproduce the specified ion concentration
-(0.15M). If you want to add potassium ions (K^+^), specify
+(0.15M). If you want to add potassium ions (K<sup>+</sup>), specify
 "`-cation POT`" in the script. For other cases, please refer to the user
 manual of autoionize-plugin.
 
@@ -473,10 +472,19 @@ $ grep "OH2 TIP3" ionized.pdb | wc -l
 
 ```
 
-Now, remember basic chemistry. Since we specified 150 mM NaCl solution, the number of moles of solute in 1 litter (L) solution should be 150 mmol. The Avogadro number is 6.02 × 10^23^. Accordingly, there are 150 × 10^-3^ × 6.02 × 10^23^ = 9.03 × 10^22^ NaCl molecules in the 1 L NaCl solution. Here, we assume that the density of NaCl solution is almost same with that of solvent. The density of water is \~0.997 g/cm^3^ at the room temperature, and thus, the weight of 1 L water is \~997 g. Since the weight of 1 mol H~2~O is \~18.02 g, the 1 L water is composed of \~3.33 × 10^25^ H~2~O molecules (55.3 mol). According to these relationships, when there are *N* water molecules in the system, we should add (9.03 × 10^22^)/(3.33 ×10^25^) × *N* = **0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. In the case of *N* = 7,882, this equation gives \~21.4, which is close to the number of Cl^−^ in the constructed system. Actually, 4 more Na^+^ were added to the system than Cl^−^. This is because Protein G has a total net charge of −4, and the corresponding positive charge was needed to neutralize the system, which is required to use the particle mesh Ewald method (PME) in the MD simulations.
+Now, remember basic chemistry. 
+Since we specified 150 mM NaCl solution, the number of moles of solute in 1 litter (L) solution should be 150 mmol. 
+The Avogadro number is 6.02 × 10<sup>23</sup>. 
+Accordingly, there are 150 × 10<sup>-3</sup> × 6.02 × 10<sup>23</sup> = 9.03 × 10<sup>22</sup> NaCl molecules in the 1 L NaCl solution. 
+Here, we assume that the density of NaCl solution is almost same with that of solvent. 
+The density of water is \~0.997 g/cm<sup>3</sup> at the room temperature, and thus, the weight of 1 L water is \~997 g. 
+Since the weight of 1 mol H<sub>2</sub>O is \~18.02 g, the 1 L water is composed of \~3.33 × 10<sup>25</sup> H<sub>2</sub>O molecules (55.3 mol). 
+According to these relationships, when there are *N* water molecules in the system, we should add (9.03 × 10<sup>22</sup>)/(3.33 × 10<sup>25</sup>) × *N* = **0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. 
+In the case of *N* = 7,882, this equation gives \~21.4, which is close to the number of Cl<sup>−</sup> in the constructed system. 
+Actually, 4 more Na<sup>+</sup> were added to the system than Cl<sup>−</sup>. 
+This is because Protein G has a total net charge of −4, and the corresponding positive charge was needed to neutralize the system, which is required to use the particle mesh Ewald method (PME) in the MD simulations.
 
 ##  Let's take a note
-
 Now, we have completed Tutorial 2.3. Let's move on to the `Works`
 directory and take a look inside the directory again. At the moment, we
 can see that the directory related to the tutorial is only
