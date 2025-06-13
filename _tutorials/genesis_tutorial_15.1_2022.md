@@ -130,7 +130,7 @@ GENESIS has a general interface, which makes feasible to easily connect
 with any QM programs. The structure of the interface is sketched in the
 figure below,
 
-![](/assets/images/2019_02_qmmm_scheme.png)
+![](/assets/images/2019_02_qmmm_scheme.png){: width="400" .align-center}
 
 `qmcnt` and `qmexe` are the options specified in a \[QMMM\] section of
 the control file. `qmcnt` is a template file to generate input files for
