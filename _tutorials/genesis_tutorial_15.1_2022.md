@@ -12,10 +12,10 @@ sidebar:
 # What is QM/MM? 
 
 QM/MM method is a multiscale/multiphysics approach, first proposed in
-seminal papers by Warshel and Karplus [^1] and Warshel and Levitt [^2], which treats a chemically
+seminal papers by Warshel and Karplus [^1] and Warshel and Levitt, [^2] which treats a chemically
 important region by the electronic structure theory (QM) and the
 surrounding environment by a molecular mechanics force field (MM). The
-method was recently implemented into GENESIS [^3] [^4].
+method was recently implemented into GENESIS. [^3]<sup>,</sup> [^4]
 In this section, we give a brief introduction to the theory.
 
 ## 1. MM force field 
