@@ -18,8 +18,7 @@ functions are described.
 ## Preparation
 
 All the files required for this tutorial are hosted in the
-[GENESIS tutorials repository on GitHub]
-(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal
 and run the following command (see more in
 [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
@@ -60,7 +59,7 @@ conformations related to ligand binding.  We are going to explain
 restraint energy functions using the protein. The 1_system directory
 contains two pdb and a psf files for the system.
 
-## [![](/assets/images/2020_11_rbp-close-open_t.png)](/assets/images/2020_11_rbp-close-open_t.png)
+![](/assets/images/2020_11_rbp-close-open_t.png){: width="500" .align-center}
 
 ## 2. Minimization
 
@@ -109,7 +108,7 @@ To see the structural changes of the protein, we sometimes need to
 restrain the distances between the centers of mass (COMs) of two domains
 (groups).
 
-[![](/assets/images/2020_11_rbp2_closed_t.png)](/assets/images/2020_11_rbp2_closed_t.png)
+![](/assets/images/2020_11_rbp2_closed_t.png){: width="200" .align-center}
 
 Before running simulations with the restraints, we need to calculate the
 distance between two groups from the trajectory. 
@@ -211,7 +210,7 @@ $ /home/user/GENESIS/bin/trj_analysis INP > log
 
 ## 5. Targeted MD simulation 
 
-Targeted MD (TMD) [^1] , [^2] is a method that applies holonomic forces to
+Targeted MD (TMD)[^1]<sup>,</sup>[^2] is a method that applies holonomic forces to
 drive the system towards a targeted RMSD of the system during the
 simulation.
 
@@ -288,10 +287,7 @@ $ /home/user/GENESIS/bin/rmsd_analysis INP > log
 
 This figure shows that RMSD goes down linearly in this simulation.
 
-[![](/assets/images/2022_03_tmd_rmsd.png)](/assets/images/2022_03_tmd_rmsd.png)
-
- 
-
+![](/assets/images/2022_03_tmd_rmsd.png){: width="400" .align-center}
 
 ```bash
 # COM distance
@@ -301,7 +297,7 @@ $ /home/user/GENESIS/bin/trj_analysis INP > log
 
 The COM dist also changes during the simulation.
 
-[![](/assets/images/2022_03_tmd_comdis.png)](/assets/images/2022_03_tmd_comdis.png)
+![](/assets/images/2022_03_tmd_comdis.png){: width="400" .align-center}
 
 You can select coordinates from the trajectory for making a movie.
 
@@ -314,7 +310,7 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 
 ## 6. Steered MD simulation 
 
-Steered MD (SMD) [^3] is a method that applies forces to change the
+Steered MD (SMD)[^3] is a method that applies forces to change the
 conformations. Targeted MD applies a holonomic constraint to keep RMSD
 value, whereas Steered MD applies a harmonic restraint force that
 changes the reference value throughout the simulation. GENESIS has two
@@ -382,7 +378,7 @@ $ /home/user/GENESIS/bin/rmsd_analysis INP > log
 We examine two FCs (10 and 100). Please notice that the behaviour of the
 RMSD curve changes when [[a different value of FC is used]{.hotkey-layer .preview-overlay .is-preview-sidebar-visible}]{.hotkey-layer}.
 
-[![](/assets/images/2022_03_smd_rmsd.png)](/assets/images/2022_03_smd_rmsd.png)
+![](/assets/images/2022_03_smd_rmsd.png){: width="400" .align-center}
 
 
 ```bash
@@ -394,7 +390,7 @@ $ /home/user/GENESIS/bin/trj_analysis INP > log
 As shown in the RMSD plot, the amounts of change in the COM dist are
 also different.
 
-[![](/assets/images/2022_03_smd_comdis.png)](/assets/images/2022_03_smd_comdis.png)
+![](/assets/images/2022_03_smd_comdis.png){: width="400" .align-center}
 
 You can select coordinates from the trajectory for making a movie.
 
@@ -407,9 +403,9 @@ $ /home/user/GENESIS/bin/crd_convert INP > log
 
 ## 7. References
 
-[^1]:  [J. Schlitter, *et. al.*  Mol.     Sim.  **10**, 291-308,     (1993).](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170)
-[^2]:  [J. Schlitter, *et. al.*  J. Mol.     Graph. **12**, 84--89,     (1994).](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723)
-[^3]:  [H Grubmüller  *et al.* Science, **271**,     997--999, (1996).](https://www.science.org/doi/10.1126/science.271.5251.997)
+[^1]: [J. Schlitter, *et. al.*  Mol. Sim. **10**, 291-308, (1993).](https://www.tandfonline.com/doi/abs/10.1080/08927029308022170)
+[^2]: [J. Schlitter, *et. al.*  J. Mol. Graph. **12**, 84--89, (1994).](https://www.sciencedirect.com/science/article/abs/pii/0263785594800723)
+[^3]: [H Grubmüller  *et al.* Science, **271**, 997--999, (1996).](https://www.science.org/doi/10.1126/science.271.5251.997)
 
 *Written by Chigusa Kobayashi@RIKEN R-CCS. March, 4, 2022*
 *Updated by Chigusa Kobayashi@RIKEN R-CCS. May, 9, 2022*

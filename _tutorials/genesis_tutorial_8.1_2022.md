@@ -12,19 +12,20 @@ sidebar:
 # 8.1 MD simulation of Protein G in the GB/SA model 
 
 Implicit solvent models are useful to reduce computational cost in the
-simulation of biomolecules [^1]. The GB/SA (Generalized Born/Solvent accessible surface area) model is one of the popular implicit solvent
+simulation of biomolecules.[^1] The GB/SA (Generalized Born/Solvent
+accessible surface area) model is one of the popular implicit solvent
 models, in which the electrostatic contribution to the solvation free
-energy is computed with the GB theory [^2][^3], and the non-polar
+energy is computed with the GB theory[^2]<sup>,</sup>[^3], and the non-polar
 contribution is calculated from the solvent accessible surface area
-[^4][^5]. In the GB theory, solvent molecules surrounding the solute are
-approximated as a continuum that has the dielectric constant of \~80. To
-date, various GB models have been developed such as GBSW [^6], GBMV
-[^7], HCT [^8], and OBC [^9]. In GENESIS, the OBC model and LCPO
-method [^10] are used for the calculation of the GB term and SA term,
-respectively. The GB/SA model is introduced only in ATDYN currently, and
-both CHARMM and AMBER force fields are available. In this tutorial, we
-learn how to use the GB/SA model with the AMBER ff14SB force field
-parameters in GENESIS.
+[^4]<sup>,</sup>[^5]. In the GB theory, solvent molecules surrounding
+the solute are approximated as a continuum that has the dielectric
+constant of \~80. To date, various GB models have been developed such
+as GBSW,[^6] GBMV,[^7] HCT,[^8] and OBC.[^9] In GENESIS, the OBC model
+and LCPO method [^10] are used for the calculation of the GB term and
+SA term, respectively. The GB/SA model is introduced only in ATDYN
+currently, and both CHARMM and AMBER force fields are available. In
+this tutorial, we learn how to use the GB/SA model with the AMBER
+ff14SB force field parameters in GENESIS.
 
 ![](/assets/images/2019_08_explicit_implicit.jpg)
 
@@ -339,13 +340,31 @@ those characters should be in the 4th column if the PDB file does not
 include the chain ID.
 
 ```awk
-calc.awk:
+BEGIN {
+  nres = 56;
+  calc =  0;
+  istr =  0;
+  for (i=1; i<=nres; i++) freq_H[i] = 0;
+  for (i=1; i<=nres; i++) freq_E[i] = 0
+}
 
-BEGIN {       nres = 56;       calc =  0;       istr =  0;       for (i=1; i<=nres; i++) freq_H[‍i] = 0;       for (i=1; i<=nres; i++) freq_E[‍i] = 0     }
+{ if ($1 == "SNAPSHOT") istr = istr + 1
+  if (calc == 1) {
+    if ($5 == "H") freq_H[$1] = freq_H[$1] + 1;
+    if ($5 == "E") freq_E[$1] = freq_E[$1] + 1
+  }
+  if ($2 == "RESIDUE") calc = 1
+  if ($1 == nres)      calc = 0
+}
 
-{ if ($1 == "SNAPSHOT") istr = istr + 1       if (calc == 1) {         if ($5 == "H") freq_H[‍$1] = freq_H[$1] + 1;         if ($5 == "E") freq_E[‍$1] = freq_E[$1] + 1       }       if ($2 == "RESIDUE") calc = 1       if ($1 == nres)      calc = 0     }
-
-END {       printf("RESNO    HELIX    SHEET\n")       for (i=1; i<=nres; i++) {       prop_H[‍i] = freq_H[‍i]/istr;       prop_E[‍i] = freq_E[‍i]/istr;       printf("%5d %8.5f %8.5f\n",i, prop_H[‍i], prop_E[‍i])       }     }
+END {
+  printf("RESNO    HELIX    SHEET\n")
+  for (i=1; i<=nres; i++) {
+    prop_H[i] = freq_H[i]/istr;
+    prop_E[i] = freq_E[i]/istr;
+    printf("%5d %8.5f %8.5f\n",i, prop_H[i], prop_E[i])
+  }
+}
 ```
 ----
 

@@ -13,7 +13,7 @@ sidebar:
 
 In this tutorial, we simulate the translocator protein (TSPO) in the
 IMM1 implicit membrane model. The IMM1 model was originally developed by
-T. Lazaridis [^1], and is available in the CHARMM program package.
+T. Lazaridis,[^1] and is available in the CHARMM program package.
 Recently, we have introduced IMM1 into GENESIS.
 
 ##  Preparation
