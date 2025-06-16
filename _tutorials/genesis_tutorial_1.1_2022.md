@@ -51,20 +51,23 @@ $ mkdir Data/Parameters
 
 ## Download GENESIS
 
-In this tutorial, we use [GENESIS version 2.0.0](/docs/download/).
-We put the GENESIS source code in `Programs`.
+These tutorials were originally developed using [GENESIS version 2.0.0](/docs/download/).
+However, they are expected to be compatible with all releases in the GENESIS 2.x series.
 
+
+Let's download and put the GENESIS source code in `Programs`:
 ```bash
 # Put the source code of GENESIS in the "Programs" directory 
 $ cd Programs
 $ git clone https://github.com/genesis-release-r-ccs/genesis.git
 $ cd genesis
+
+# Optional
 $ git checkout v2.0.0
 ```
 
 
 ## Install GENESIS
-
 
 Now, let’s run the `configure` command. This script automatically checks your
 computing environment and generates a `Makefile` with appropriate compilation
