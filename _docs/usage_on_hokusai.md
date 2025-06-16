@@ -17,7 +17,7 @@ hybrid MPI/OpenMP computation with 64 MPI processors and 4 OpenMP
 threads (256 CPU cores in total), and a command to submit a job. Please
 see also the user guide of the computer system.
 
-### Installation {#installation style="text-align: justify"}
+### Installation
 
     $ cd /home/user/genesis
     $ module load sparc

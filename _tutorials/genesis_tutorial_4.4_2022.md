@@ -320,7 +320,7 @@ $ ffmpeg -i md.avi -b 4000k -vcodec libx264 -pix_fmt yuv420p md.mp4
 
 ```
 
-[http://localhost/assets/images/2019_07_md.mp4](/assets/images/2019_07_md.mp4)
+[An example of an MD movie](/assets/images/2019_07_md.mp4)
 
 ------------------------------------------------------------------------
 
