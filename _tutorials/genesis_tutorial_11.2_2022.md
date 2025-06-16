@@ -14,7 +14,7 @@ sidebar:
 **Notice**: This tutorial is for GENESIS v1.7.0 and later!
 {: .notice--info}
 
-In the 3SPN.2C model [^1], every nucleotide is represented by three
+In the 3SPN.2C model,[^1] every nucleotide is represented by three
 coarse-grained particles, phosphate (P), sugar (S), and base (B). Here
 we show an example of simulating the partial melting and
 re-hybridization of a 50bp double-stranded DNA (dsDNA) with the 3SPN.2C
@@ -27,9 +27,9 @@ model in GENESIS. 
 
 As introduced in [tutorial 11.1](/tutorials/genesis_tutorial_11.1_2022/), we use
 the [GENESIS-cg-tool](https://github.com/genesis-release-r-ccs/genesis_cg_tool)
-to generate CG MD files [^2]. In this tutorial we will use one script in the
+to generate CG MD files.[^2] In this tutorial we will use one script in the
 GENESIS-CG-tool to build CG DNA structure and topology from the nucleic acid
-sequence [^2].
+sequence.[^2]
 
 ### 0.2 Download the files for this tutorial
 

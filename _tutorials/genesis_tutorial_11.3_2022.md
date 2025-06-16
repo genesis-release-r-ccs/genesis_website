@@ -22,7 +22,7 @@ transcription. It uses a beta-sheet surface to bind to the minor groove of DNA
 and induces sharp bending of DNA. Here we will use the AICG2+ model[^1] for TBP
 and the 3SPN.2C model[^2] for DNA. For intermolecular protein-DNA interactions,
 we consider excluded-volume, electrostatics, and sequence-specific interactions.
-Particularly, the last one is modeled by the PWMcos method[^3].
+Particularly, the last one is modeled by the PWMcos method.[^3]
 
  
 
@@ -207,7 +207,7 @@ residue indices of the "T" and "A" in PDB, respectively.  Note that some
 elements in the PFM are changed from "0" to "1" (for instance, row 2 column 3 of
 base type "C"). This is because in the transition from PFM to PWM, we have to
 take the logarithm of each element of the PFM. Therefore, we replace all the
-"0"s in the PFM with some small "pseudo counts" [^5].
+"0"s in the PFM with some small "pseudo counts".[^5]
 
 It's time to run the GENESIS-CG-tool again:
 ```bash
@@ -324,8 +324,7 @@ more "pairlistdist" option for the PWMcos: `cg_pairlistdist_PWMcos`.
 
 Notably, the charge of phosphate in the 3SPN.2C model is set to -0.6e (for
 electrostatics between DNA particles). However, in protein-DNA interactions we
-use a value of -1.0e, considering the effect of counter-ion redistribution [^3]<sup>,</sup>
-[^6]. Therefore, here we set a new value for the phosphate charge in the
+use a value of -1.0e, considering the effect of counter-ion redistribution [^3]<sup>,</sup> [^6]. Therefore, here we set a new value for the phosphate charge in the
 electrostatic interactions between protein and DNA to be
 `cg_pro_DNA_ele_scale_Q = -1.0`.
 
