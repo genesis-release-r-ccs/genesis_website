@@ -62,7 +62,6 @@ Chapter “Getting Started”.
 ##  General scheme for installation
 
 Instructions for obtaining the GENESIS source code are provided on the [Download page](/docs/download/).
-After downloading, first extract the archive to an appropriate directory.
 
 To compile the source code, run the `configure` script in the extracted directory. 
 This script will automatically detect suitable compilers, preprocessors, and libraries on your system, and then generate a `Makefile`. 
@@ -75,9 +74,9 @@ By default, all programs will be installed in the `genesis/bin` directory.
 Below are example commands for installing GENESIS on typical Linux workstations.
 
 ```bash
-$ mv ~/Downloads/genesis-X.Y.Z.tar.bz2 ./
-$ tar xvfj genesis-X.Y.Z.tar.bz2
-$ cd genesis-X.Y.Z
+# after downloading
+$ cd genesis/
+$ git checkout v2.X.Y  # your desired version; optional
 $ ./configure
 $ make install
 ```
@@ -115,11 +114,9 @@ Users can verify the successful installation of GENESIS using the official test 
 The following commands demonstrate how to validate the spdyn program. For more details on using the test sets, please refer to the "Getting Started" chapter in the user manual.
 
 ```bash
-$ mv ~/Downloads/tests-X.Y.Z.tar.bz2 ./
-$ tar xvfj tests-X.Y.Z.tar.bz2
-$ cd tests-X.Y.Z/regression_test
+$ cd genesis/tests/regression_test
 $ export OMP_NUM_THREADS=1
-$ ./test.py "mpirun -np 8 /home/user/genesis-X.Y.Z/bin/spdyn"
+$ ./test.py "mpirun -np 8 /home/user/genesis/bin/spdyn"
 ```
 
 ## Platform-Specific Installation Instructions

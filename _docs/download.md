@@ -12,4 +12,13 @@ sidebar:
 GENESIS is freely available to everyone via the [GENESIS GitHub repository](https://github.com/genesis-release-r-ccs/genesis).
 The repository also includes the user manual and a test set, which can be used to verify a successful installation of GENESIS (see the manual or the [Installation page](/docs/installation/) for details).
 
+Use the following commands to get a copy of GENESIS source code:
+```bash
+# with ssh
+$ git clone git@github.com:genesis-release-r-ccs/genesis.git
+
+# with https
+$ git clone https://github.com/genesis-release-r-ccs/genesis.git
+```
+
 If you encounter any issues while downloading or using GENESIS, please report them via the [GitHub Issues page](https://github.com/genesis-release-r-ccs/genesis/issues).
