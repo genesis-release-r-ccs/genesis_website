@@ -3,6 +3,8 @@ title: Hands-on Tutorial on Fugaku (May 11th, 2022)
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 (This is a page for recruiting participants for GENESIS hands-on

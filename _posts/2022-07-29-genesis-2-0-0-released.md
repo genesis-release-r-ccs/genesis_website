@@ -3,6 +3,8 @@ title: GENESIS 2.0.0 released
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 This version merges functions in GENESIS 2.0 beta3 and GENESIS 1.7.1.

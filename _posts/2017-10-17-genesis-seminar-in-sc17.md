@@ -3,6 +3,8 @@ title: GENESIS seminar in SC17
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 We will give GENESIS seminars in [SC17 at

@@ -3,6 +3,8 @@ title: GENESIS 1.1.4 released
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 This version is also an urgent bugfix release. Users of 1.1.2/1.1.3 must

@@ -3,6 +3,8 @@ title: Joint tutorial of GENESIS, RedMDStream, and MINT was held in Poland!
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 Joint tutorial of GENESIS,
