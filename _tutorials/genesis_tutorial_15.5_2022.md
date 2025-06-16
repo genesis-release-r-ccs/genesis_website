@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 15.5 (2022)"
+gpos: 015.005
 excerpt: ""
 last_modified_at: 2025-06-09T11:37:44+09:00
 layout: single
