@@ -451,7 +451,13 @@ $ mpirun -n 8 $spdyn run_prod.inp > run_prod.out
 Check the trajectory obtained by the production run using VMD. As shown
 in the below movie, the system is stable during the production run.
 
-[A movie of MD simulations of GPCR in lipid](/assets/images/2022_02_gpcr_movie.mp4)
+<!-- [A movie of MD simulations of GPCR in lipid](/assets/images/2022_02_gpcr_movie.mp4) -->
+
+<video width="480" controls="controls" style="display: block; margin: 0 auto;">
+  <source src="/assets/images/2022_02_gpcr_movie.mp4" type="video/mp4">
+  A movie of MD simulations of GPCR in lipid.
+</video>
+
 
 ## 5. Analysis
 

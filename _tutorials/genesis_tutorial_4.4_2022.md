@@ -320,7 +320,11 @@ $ ffmpeg -i md.avi -b 4000k -vcodec libx264 -pix_fmt yuv420p md.mp4
 
 ```
 
-[An example of an MD movie](/assets/images/2019_07_md.mp4)
+<!-- [An example of an MD movie](/assets/images/2019_07_md.mp4) -->
+
+<video width="480" controls="controls" style="display: block; margin: 0 auto;">
+  <source src="/assets/images/2019_07_md.mp4" type="video/mp4">
+</video>
 
 ------------------------------------------------------------------------
 

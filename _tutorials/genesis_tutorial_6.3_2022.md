@@ -663,7 +663,13 @@ plt.show()
 As expected, the trajectory fluctuates near the target temperature of
 300 K. Let us also visualize the trajectory.
 
-[A movie of MD simulation of N-glycan](/assets/images/2022_06_nglycan_simulation.mp4)
+<!-- [A movie of MD simulation of N-glycan](/assets/images/2022_06_nglycan_simulation.mp4) -->
+
+<video width="480" controls="controls" style="display: block; margin: 0 auto;">
+  <source src="/assets/images/2022_06_nglycan_simulation.mp4" type="video/mp4">
+  A movie of MD simulation of N-glycan.
+</video>
+
 
 It may be useful to record the number of intramolecular hydrogen bonds
 over time, as a change in conformation must overcome existing hydrogen
