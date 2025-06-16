@@ -10,7 +10,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-# 15.6 The enzyme reaction 2: Free-energy calculation 
+# The enzyme reaction 2: Free-energy calculation 
 
 ## 1. Introduction 
 
@@ -19,21 +19,11 @@ In this section, we demonstrate the replica-exchange umbrella sampling
 free-energy profile of an enzyme reaction. REUS [^1] is one of the
 enhanced sampling methods, in which multiple MD simulations (replicas)
 are carried out with different restraint potentials, exchanging them
-stochastically. In [tutorial 11.1](/tutorials/genesis_tutorial_11.1/), REUS has been performed with classical
+stochastically. In [tutorial 12.2](/tutorials/genesis_tutorial_12.2_2022/), REUS has been performed with classical
 MM-MD. This tutorial is similar to it but differs in:
 
-1.  The reaction coordinate is set to a pre-determined minimum energy
-
-```
-path (MEP).
-```
-
-2.  QM/MM-MD simulations are carried out using
-
-```
-[QSimulate-QM](https://qsimulate.com/academic).
-
-```
+1.  The reaction coordinate is set to a pre-determined minimum energy path (MEP).
+2.  QM/MM-MD simulations are carried out using [QSimulate-QM](https://qsimulate.com/academic).
 
 Following [tutorial 15.5](/tutorials/genesis_tutorial_15.5_2022/), the method is
 applied to a proton transfer reaction of dihyroxyacetone phosphate
@@ -42,33 +32,30 @@ MEP and restart files are provided in the tutorial file, it is
 recommended to first work on [tutorial 15.5](/tutorials/genesis_tutorial_15.5_2022/),
 where the MEP is obtained by the string method.
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_scheme_r_img-1024x369.png"
-data-fetchpriority="high" decoding="async" width="768" height="277"
-alt="This image has an empty alt attribute; its file name is tim_scheme_r_img-1024x369.png" />
-<figcaption>Fig. 1. (a) Schematic illustration of the proton transfer
+![](/assets/images/2022_04_tim_scheme_r_img.png){: width="600" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
+Fig. 1. (a) Schematic illustration of the proton transfer
 reaction (H31) from DHAP to Glu165 of TIM, and the atomic distances,
 r<sub>1</sub> – r<sub>7</sub>. (b) The variation of r<sub>1</sub> –
-r<sub>7</sub> along the MEP.</figcaption>
-</figure>
+r<sub>7</sub> along the MEP.
+</figcaption>
 
-The target proton transfer reaction and selected atomic distances (r~1~ -- r~7~) are schematically shown in Fig. 1 (a). The variation of r~1~ --
-r~7~ along the MEP is shown in Fig. 1 (b). The figure indicates that
-r~1~ -- r~4~ strongly vary along the path, whereas r~5~ and r~7~ are
-rather insensitive. r~6~ is relatively flat compared to r~1~ -- r~4~,
+The target proton transfer reaction and selected atomic distances (r<sub>1</sub> -- r<sub>7</sub>) are schematically shown in Fig. 1 (a). The variation of r<sub>1</sub> --
+r<sub>7</sub> along the MEP is shown in Fig. 1 (b). The figure indicates that
+r<sub>1</sub> -- r<sub>4</sub> strongly vary along the path, whereas r<sub>5</sub> and r<sub>7</sub> are
+rather insensitive. r<sub>6</sub> is relatively flat compared to r<sub>1</sub> -- r<sub>4</sub>,
 yet it does change 0.1 Å before and after the reaction. Therefore, the
-five atomic distances, r~1~ -- r~4~ and r~6~ , well represent the
+five atomic distances, r<sub>1</sub> -- r<sub>4</sub> and r<sub>6</sub> , well represent the
 reaction coordinate. Here, we carry out the off-lattice REUS using these
 atomic distances as a collective variable (CV).
 
 ## 2. Setup of window 
 
 Download the tutorial file
-([tutorial22-15.6.tar.gz](/assets/tutorial_files/2022_05_tutorial22-15.6.tar.gz), or [github](https://github.com/yagikiyoshi/QMMMtutorial)),
-unzip it, and proceed to tutorial-15.6/1.tim. The directory contains
+([GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials "github")), and proceed to tutorial-15.6/1.tim. The directory contains
 three sub-directories.
 
-``` 
+```bash
 $ unzip tutorial22-15.6.zip 
 $ cd tutorial-15.6/1.tim
 $ ls  
@@ -77,14 +64,14 @@ $ ls
 
 `2.equil` contains psf and pdb files, and a restart file,
 
-``` 
+```bash
 $ ls 2.equil
 step4.11_qmmm_nvt.rst   step4_nvt_100.pdb   step4_nvt_100.psf
 ```
 
 and `4.mep` contains the information of the MEP,
 
-``` 
+```bash 
 $ ls 4.mep/2.analysis
 rpath_93.dat
 ```
@@ -93,7 +80,7 @@ You are welcome to overwrite these files with your results in tutorial
 15.5 (or add `5.reus` to your `tutorial15.5/1.tim`). Proceed to
 `5.reus`, and you will find seven sub-directories.
 
-``` 
+```bash 
 $ cd 5.reus
 $ ls
 0.window/   2.equil2/          3.prod3/           4.pmf/
@@ -102,7 +89,7 @@ $ ls
 
 Now, let us generate the windows of US,
 
-``` 
+```bash 
 $ cd 0.window
 $ ls
 make_window.f90  make_window.sh  win_rr.gpi
@@ -111,17 +98,13 @@ make_window.f90  make_window.sh  win_rr.gpi
 `make_window.f90` is a fortran program to generate the windows, and
 `make_window.sh` is a script to run the program.
 
-``` 
+```bash 
 $ cat make_window.sh
 #!/bin/bash
 
 gfortran make_window.f90 -o make_window
 ./make_window -dat ../../4.mep/2.analysis/rpath_93.dat \
-
-```
-          -ds 0.1 -ndim 5 -idx 1,2,3,4,6 > win_rr.log
-```
-
+              -ds 0.1 -ndim 5 -idx 1,2,3,4,6 > win_rr.log
 ```
 
 The first line compiles the program. "gfortran" can be replaced with
@@ -131,27 +114,26 @@ options are:
 - -dat : the information of the MEP
 - -ds : the interval of window (in Å)
 - -ndim : the number of dimensions
-- -idx : optionally specifies which distances are used. r~1~-r~x~ are
+- -idx : optionally specifies which distances are used. r<sub>1</sub>-r<sub>x</sub> are
 
-```
+```bash
 selected with "-ndim x" by default. "-idx 1,2,3,4,6" specifies
-r~1~-r~4~ and r~6~.
-
+r<sub>1</sub>-r<sub>4</sub> and r<sub>6</sub>.
 ```
 
 Now run the script,
 
-``` 
+```bash 
 $ ./make_window.sh
 $ ls
 make_window      make_window.f90  make_window.sh 
 win_rr.dat       win_rr.gpi       win_rr.log
 ```
 
-The values of r~1~-r~4~ and r~6~ are written for each window in
+The values of r<sub>1</sub>-r<sub>4</sub> and r<sub>6</sub> are written for each window in
 win_rr.dat,
 
-``` 
+```bash 
 $ cat win_rr.dat
 cat win_rr.dat
    1  2.5300  1.0980  1.7620  1.8690  2.7770
@@ -162,27 +144,25 @@ cat win_rr.dat
 
 The variation along the MEP can be visualized by gnuplot,
 
-``` 
+```bash 
 $ gnuplot win_rr.gpi
 $ ls
 make_window      make_window.sh   win_rr.gpi       win_rr.pdf
 make_window.f90  win_rr.dat       win_rr.log
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_window.png" decoding="async"
-width="452" height="293"
-alt="This image has an empty alt attribute; its file name is tim_window.png" />
-<figcaption>Fig. 2. Variation of r<sub>1</sub> – r<sub>4</sub> and
-r<sub>6</sub> along the MEP.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_window.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 2. Variation of r<sub>1</sub> – r<sub>4</sub> and
+r<sub>6</sub> along the MEP.
+</figcaption>
 
 Note that 21 windows are set by the program. The number of window
 depends on the window interval, "-ds". A large "ds" value reduces the
 number of window and the computational cost, yet with a higher risk that
 the neighboring windows have less or insufficient overlap of the
 probability distribution. The window interval of 0.1 Å with a force
-constant of 100 kcal/mol/Å^2^ is often used for chemical reactions.
+constant of 100 kcal/mol/Å<sup>2</sup> is often used for chemical reactions.
 Nonetheless, it is always good to check the overlap in the initial
 equilibration steps, as we shall see in the next sub-section.
 
@@ -194,16 +174,14 @@ Each window is propagated for 500 fs at the level of DFTB3/MM. Then, in
 the next step, MDs of all windows (replicas) are carried out in parallel
 for 1 ps at the level of B3LYP-D3/MM.
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_reus_equil.png"
-decoding="async" width="430" height="237"
-alt="This image has an empty alt attribute; its file name is tim_reus_equil.png" />
-<figcaption>Fig. 3. The procedure of equilibration.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_reus_equil.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 3. The procedure of equilibration.
+</figcaption>
 
 Proceed to `1.equil`,
 
-``` 
+```bash 
 $ cd 1.equil
 $ ls
 geninp1.sh   qsimulate.json   run.sh   template.inp   toppar
@@ -213,7 +191,7 @@ geninp1.sh   qsimulate.json   run.sh   template.inp   toppar
 window based on a template file, `template.inp`. The template file is
 shown below:
 
-``` 
+```bash
 [INPUT]
 topfile = toppar/top_all36_prot.rtf, toppar/top_all36_cgenff.rtf
 parfile = toppar/par_all36_prot.prm, toppar/par_all36_cgenff.prm
@@ -319,59 +297,50 @@ reference6    = R5
 select_index6 = 3  9
 ```
 
-Important options are highlighted in red with comments in blue. Note
-that:
+Note that:
 
 - **\[INPUT\]**: The files in `2.equil` are used to restart the job.
-
-```
 `rstfile=../../2.equil/step4.11_qmmm_nvt.rst` is for the first
-window. Other windows restarts from the previous window .
-```
-
+window. Other windows restart from the previous window.
 - **\[OUTPUT\]**, **\[QMMM\]**: "ID" is replaced by window ID.
-- **\[ENERGY\]**: The switch and cutoff distances are longer than
-
-```
-usual.
-```
-
+- **\[ENERGY\]**: The switch and cutoff distances are longer than usual.
 - **\[DYNAMICS\]**: The timestep is shorter than usual.
 - **\[CONSTRAINTS\]**: `noshake_index` specifies hydrogen atoms where
-
-```
 SHAKE is disabled. The selection indicies 4, 9, 10, and 11 refer to
 HE2 of His95, HO3, H31, H32 of DHAP, respectively.
-```
-
 - **\[QMMM\]**: QSimulate-QM is specified as a QM program. `qmexe` is
-
-```
 not needed, because GENESIS and QSimulate-QM are linked through
 dynamic libraries.
-```
-
 - **\[SELECTION\]**: group1 is the QM region (DHAP and sidechain of     His95 and Glu165), and group2-11 are used for the restraint.
 - **\[RESTRAINTS\]**: The first function is a positional restraint of
-
-```
 the center of mass of TIMA and TIMB. Functions 2 -- 6 are the
-restraints of the atomic distances, r~1~ -- r~4~ and r~6~,
+restraints of the atomic distances, r<sub>1</sub> -- r<sub>4</sub> and r<sub>6</sub>,
 respectively. R1, R2, ..., R5 are replaced by the reference values
 of each window.
-
-```
-
 `qsimulate.json` is a control file of QSimulate-QM. In this case, we use
 the DFTB3 method,
 
-``` 
-{ "bagel" : [  {   "title" : "molecule",   "basis" : "dftb" },  {   "title" : "force",   "method" : [ {     "title" : "dftb",     "charge" : -3,     "thresh" : 1.0e-5   } ] }  ]}
+```bash 
+{ "bagel" : [  
+
+{   
+  "title" : "molecule",   
+  "basis" : "dftb" },  
+  {   
+    "title" : "force",   
+    "method" : [ {     
+      "title" : "dftb",     
+      "charge" : -3,     
+      "thresh" : 1.0e-5   
+    } ] 
+}  
+
+]}
 ```
 
 Now, let's run the script, `geninp1.sh`,
 
-``` 
+```bash 
 $ ./geninp1.sh
 $ ls 
 equil1_1.inp    equil1_2.inp   equil1_3.inp  ...
@@ -381,7 +350,7 @@ equil1_1.inp    equil1_2.inp   equil1_3.inp  ...
 restarts from `equil1_(n-1).rst`, as specified in `rstfile` of
 **\[INPUT\]**. `run.sh` is a script to run the job,
 
-``` 
+```bash 
 #!/bin/bash
 #
 export LD_LIBRARY_PATH=/path/to/qsimulate/lib:$LD_LIBRARY_PATH  ... (1)
@@ -402,17 +371,13 @@ exit 0
 ```
 
 1.  Set the `LD_LIBRARY_PATH` to where the dynamic libraries of
-
-```
 QSimulate-QM are installed.
-```
-
 2.  Set the `PATH` to where GENESIS is installed.
 3.  Sequential run of equil1_1, equil1_2, ... and equil1_nimg.
 
 Now, run the job:
 
-``` 
+```bash 
 $ ./run.sh 
 ```
 
@@ -420,7 +385,7 @@ $ ./run.sh
 
 When the job is done, proceed to `2.equil2`,
 
-``` 
+```bash 
 $ cd ../2.equil2
 $ ls
 geninp2.sh   qsimulate.json   run.sh   template.inp   toppar
@@ -431,7 +396,7 @@ template file is similar to before, but now there is **\[REMD\]**
 section to run all windows (replicas) in parallel. We only show the
 different parts below.
 
-``` 
+```bash 
 [INPUT]
 ...
 rstfile = OLDNAME_{}.rst     # restart file
@@ -479,52 +444,28 @@ select_index2 = 6  10
 ...
 ```
 
-- **\[INPUT\]**, **\[OUTPUT\]**, **\[QMMM\]**: NEWNAME and OLDNAME are
-
-```
-basename of files. They are given by the arguments of `geninp2.sh`
+- **\[INPUT\]**, **\[OUTPUT\]**, **\[QMMM\]**: NEWNAME and OLDNAME are basename of files. They are given by the arguments of `geninp2.sh`
 (see below).
-```
-
 - **\[REMD\]**
-
-```
-- exchange_period: The period of exchange attempt. No attempt is
+    - exchange_period: The period of exchange attempt. No attempt is
     made when exchange_period=0.
-- type1=RESTRAINT: Invokes REUS in the first dimension
-- nreplica1: The number of replicas of the first dimension
-- rest_function1: The restraint function used for REUS. Here,
+    - type1=RESTRAINT: Invokes REUS in the first dimension
+    - nreplica1: The number of replicas of the first dimension
+    - rest_function1: The restraint function used for REUS. Here,
     off-lattice REUS is invoked in which multiple restraints are
     merged into a single reaction coordinate.
-```
-
-- **\[DYNAMICS\]**: crdout_period and eneout_period are set to 20 to
-
-```
-save the data for analyses.
-```
-
-- **\[ENSEMBLE\]**: tau_t = 0.5 is smaller than the default. This
-
-```
-enables to equilibrate the system faster (\~0.5 ps).
-```
-
-- **\[RESTRAINTS\]**: FC1 and R1 are replaced by the force constants
-
-```
-and the reference distances of the windows (replicas).
-
-```
+- **\[DYNAMICS\]**: crdout_period and eneout_period are set to 20 to save the data for analyses.
+- **\[ENSEMBLE\]**: tau_t = 0.5 is smaller than the default. This enables to equilibrate the system faster (\~0.5 ps).
+- **\[RESTRAINTS\]**: FC1 and R1 are replaced by the force constants and the reference distances of the windows (replicas).
 
 `qsimulate.json` is a control file of QSimulate-QM, which now specifies
 the B3LYP-D3/aug-cc-pVDZ level for DFT calculations. Refer to
-[tutorial-16.5](/tutorials/genesis_tutorial_16.5/) for details on the options.
+[tutorial-15.5](/tutorials/genesis_tutorial_15.5_2022/) for details on the options.
 
 Now, run `geninp2.sh` with NEWNAME and OLDNAME in the first and second
 argument, respectively,
 
-``` 
+```bash 
 $ ./geninp2.sh equil2 ../1.equil1/equil1
 $ ls
 equil2_reus.inp   geninp.sh   qsimulate.json   run.sh
@@ -535,7 +476,7 @@ template.inp      toppar
 constants and the reference distances are written in a single line for
 all windows:
 
-``` 
+```bash 
 $ grep -e constant2 -e reference2 equil2_reus.inp
 constant2     =  100.0  100.0  ... 100.0  100.0
 reference2    = 2.5300 2.4319  ...1.0232 1.0160
@@ -543,7 +484,7 @@ reference2    = 2.5300 2.4319  ...1.0232 1.0160
 
 `run.sh `is a script to run the job,
 
-``` 
+```bash 
 $ cat run.sh
 #!/bin/bash
 #
@@ -564,14 +505,14 @@ exit 0
 Here, we specify 8 MPI processes per replica, and request 8 MPI x 21
 replicas = 168 MPI processes in total. Now we run the job,
 
-``` 
+```bash 
 $ ./run.sh
 ```
 
 When the job is finished, it is a good point to do a sanity check before
 the production run. Go to `2.equil2_analysis`,
 
-``` 
+```bash 
 $ cd ../2.equil2_analysis
 $ ls
 analysis.sh        pathcv.inp         rmsd_analysis.inp
@@ -582,7 +523,7 @@ trj_analysis.inp   rst_convert.inp    ...
 shown above. Running the script yields an output for each window as
 follow,
 
-``` 
+```bash 
 $ ./analysis.sh
 1
 2
@@ -598,7 +539,7 @@ Let us examine the results.
 \(1\) Visualize the pdb files (the last snapshot of the trajectory) of
 each window,
 
-``` 
+```bash 
 $ vmd -e equil2.vmd
 ```
 
@@ -609,19 +550,16 @@ check the structure.
 
 \(2\) Plot the RMSD of backbone heavy atoms of proteins,
 
-``` 
+```bash 
 $ gnuplot rmsd.gpi
 ```
 
 The command plots RMSD of each replica and yields rmsd.pdf,
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_rmsd.png" loading="lazy"
-decoding="async" width="422" height="289"
-alt="This image has an empty alt attribute; its file name is tim_rmsd.png" />
-<figcaption>Fig. 4. RMSD of backbone atoms of TIM along simulation
-time.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_rmsd.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;;">
+Fig. 4. RMSD of backbone atoms of TIM along simulation time.
+</figcaption>
 
 The value of RMSD is normally around 1 to 2. If the RMSD is much larger
 or abruptly changing along the simulation time, it is a sign that there
@@ -629,25 +567,19 @@ is something happening in the protein structure.
 
 \(3\) Check the distribution.
 
-``` 
+```bash 
 $ gnuplot dist.gpi
 $ gnuplot pathcv.gpi 
 ```
 
 The command gives the distribution of r~1~/r~2~ (dist.pdf), and the
-probability of pathCV \[3,4\] (pathcv.pdf and pathcv_all.pdf). The
+probability of pathCV [^3] [^4] (pathcv.pdf and pathcv_all.pdf). The
 results are shown in Fig. 5.
 
-<figure id="block-d0c87801-2d8d-482d-a25c-a3d1e365da96"
-class="wp-block-image is-resized">
-<img src="wp-content/uploads/2022/04/tim_dist2-1024x247.png"
-loading="lazy" decoding="async" width="768" height="185"
-alt="This image has an empty alt attribute; its file name is tim_dist2-1024x247.png" />
-<figcaption>Fig. 5. (a) Distribution of r<sub>1</sub>/r<sub>2</sub>, (b)
-probablility distribution of pathCV for each replica along the reaction
-coordinate, and (c) the same as (b) but a cumulative distribution of all
-replicas.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_dist2.png){: width="800" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
+Fig. 5. (a) Distribution of r<sub>1</sub>/r<sub>2</sub>, (b) probablility distribution of pathCV for each replica along the reaction coordinate, and (c) the same as (b) but a cumulative distribution of all replicas.
+</figcaption>
 
 Although the number of sampling (100 points) is still few, these figures
 already tell that the distributions of each window are reasonably
@@ -663,7 +595,7 @@ rarely solves the issue.
 
 Now, we perform the production run. Proceed to `3.prod3`,
 
-``` 
+```bash 
 $ cd ../3.prod3
 $ ls
 geninp2.sh   qsimulate.json   run.sh   template.inp   toppar
@@ -672,7 +604,7 @@ geninp2.sh   qsimulate.json   run.sh   template.inp   toppar
 Again, we generate the input based on `template.inp`. It is almost the
 same as the previous one except for \[REMD\] and \[DYNAMICS\] sections,
 
-``` 
+```bash 
 [REMD]
 dimension         = 1
 exchange_period   = 100    # attempt the exchange every 50 fs
@@ -693,7 +625,7 @@ mod(`nsteps`,(2\*`exchange_period`\*`dimension`)) must be zero.
 
 Now, generate the input and run the simulation,
 
-``` 
+```bash 
 $ ./geninp2.sh prod3 ../2.equil2/equil2
 $ ls
 geninp2.sh   prod3_reus.inp   qsimulate.json ...
@@ -703,7 +635,7 @@ $ ./run3.sh
 This command carries out REUS MD simulations for 1 ps. It often happens
 that we want to extend the MD simulation. This can be done by,
 
-``` 
+```bash 
 $ ./geninp2.sh prod4 prod3
 $ ls
 geninp2.sh   prod4_reus.inp   qsimulate.json ...
@@ -720,7 +652,7 @@ when the computational resources is busy.
 When `prod3` and `prod4` are both finished, let us now analyze the
 results. We first check the calculation. Proceed to `3.prod3_analysis`,
 
-``` 
+```bash 
 $ cd ../3.prod3_analysis/
 $ ls
 acceptance_ratio.sh  prod4.vmd            replica_index.sh     rmsd_analysis.inp
@@ -731,7 +663,7 @@ analysis.sh          replica_index.gpi    rmsd_analysis.gpi    rst_convert.inp
 each window. Running the script yields an output for each window as
 follow,
 
-``` 
+```bash 
 $ ./analysis.sh
 1
 2
@@ -744,23 +676,20 @@ prod4_1.pdb   prod4_1.rms ...
 
 The pdb files can be visualized by VMD,
 
-``` 
+```bash 
 $ vmd -e prod4.vmd
 ```
 
 and RMSD is plotted by gnuplot,
 
-``` 
+```bash 
 $ gnuplot rmsd_analysis.gpi
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_rmsd2.png" loading="lazy"
-decoding="async" width="422" height="289"
-alt="This image has an empty alt attribute; its file name is tim_rmsd2.png" />
-<figcaption>Fig. 6. RMSD of backbone atoms of TIM along simulation
-time.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_rmsd2.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 6. RMSD of backbone atoms of TIM along simulation time.
+</figcaption>
 
 These results look reasonable. Nonetheless, we emphasize again that the
 sanity check is important to detect possible errors in the simulation.
@@ -768,7 +697,7 @@ sanity check is important to detect possible errors in the simulation.
 \(2\) Given the output file of REUS, `acceptance_ratio.sh` yields the
 acceptance ratio of each replica,
 
-``` 
+```bash 
 $ ./acceptance_ratio.sh ../3.prod3/prod4_reus.out
 1 > 2 0.15
 2 > 3 0.25
@@ -792,12 +721,12 @@ $ ./acceptance_ratio.sh ../3.prod3/prod4_reus.out
 20 > 21 0.35
 ```
 
-Although there are several replicas with low acceptance ratio (in red),
+Although there are several replicas with low acceptance ratio,
 most replicas show an acceptance ratio of 0.2 -- 0.3.
 
 \(3\) Let us also check the time course of the index of replica.
 
-``` 
+```bash 
 $ ./replica_index.sh
 $ gnuplot replica_index.gpi
 ```
@@ -808,20 +737,17 @@ not in the whole space. A similar tendency is observed in other replicas
 as well, suggesting that the MD simulation needs to extend to achieve
 random walk in the replica space.
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_replica_index-1.png"
-loading="lazy" decoding="async" width="422" height="290"
-alt="This image has an empty alt attribute; its file name is tim_replica_index-1.png" />
-<figcaption>Fig. 7. Plots of the replica index of parameter 9 as a
-function of simulation time.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_replica_index-1.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 7. Plots of the replica index of parameter 9 as a function of simulation time.
+</figcaption>
 
 ## 6. The potential of mean-force (PMF) 
 
 Now, we calculate the PMF along the reaction path. Proceed to `4.pmf`
 and find six sub-directories,
 
-``` 
+```bash 
 $ cd ../4.pmf
 $ ls
 1.sort_dcd/    2.calc_dist/   3.mbar/        
@@ -832,19 +758,17 @@ For clarity, the procedure is outlined in Fig. 8, where the number in
 the box corresponds to the number of the directories. Also, the analysis
 tools used in each step are shown in yellow text.
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_workflow-1024x656.png"
-loading="lazy" decoding="async" width="512" height="328"
-alt="This image has an empty alt attribute; its file name is tim_workflow-1024x656.png" />
-<figcaption>Fig. 8. Dataflow chart and their associated analysis tools
+![](/assets/images/2022_04_tim_workflow.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
+Fig. 8. Dataflow chart and their associated analysis tools
 (in yellow) to calculate the PMF along pathCV (5) and the 2-dimensional
-PMF in a section of r<sub>1</sub> / r<sub>2</sub>.</figcaption>
-</figure>
+PMF in a section of r<sub>1</sub> / r<sub>2</sub>.
+</figcaption>
 
 The script to run the analysis tools, `run.sh`, are prepared in all
 directories,
 
-``` 
+```bash 
 $ ls */run.sh
 1.sort_dcd/run.sh   3.mbar/run.sh         5.pmf_pathcv/run.sh
 2.calc_dist/run.sh  4.calc_pathcv/run.sh  6.pmf_r1r2/run.sh
@@ -852,13 +776,13 @@ $ ls */run.sh
 
 These files start with the following lines,
 
-``` 
+```bash 
 #!/bin/bash
 
 export PATH=${PATH}:/path/to/genesis/bin
 ```
 
-Change "`/`[`path/to`]{.has-inline-color .has-vivid-red-color}" to the
+Change "<span style="color:red">/path/to</span>" to the
 directory where GENESIS is installed.
 
 ### 6.1. Sort DCD 
@@ -867,7 +791,7 @@ Because the REUS simulation prints the coordinates (dcd files) in terms
 of replica ID, we first sort the coordinates in terms of parameter ID.
 Proceed to 1.sort_dcd,
 
-``` 
+```bash 
 $ cd 1.sort_dcd
 $ ls
 remd_convert3.inp  remd_convert4.inp  run.sh
@@ -876,7 +800,7 @@ remd_convert3.inp  remd_convert4.inp  run.sh
 `remd_convert3.inp` is an input file of `remd_convert`, which is shown
 below,
 
-``` 
+```bash 
 [INPUT]
 reffile = ../../../2.equil/step4_nvt_100.pdb
 dcdfile = ../../3.prod3/prod3_{}.dcd
@@ -913,14 +837,14 @@ coordinates in terms of parameter ID with `covert_type = PARAMETER`.
 `remd_convert4.inp` converts the dcd files of `prod4` in the same way.
 `run.sh` reads,
 
-``` 
+``` bash
 remd_convert remd_convert3.inp >& remd_convert3.out
 remd_convert remd_convert4.inp >& remd_convert4.out
 ```
 
 Now, run the script,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 prod3_param1.dcd   prod3_param1.log ...
@@ -935,16 +859,16 @@ log files, though they are not used in the current analysis.
 
 Proceed to `2.calc_dist`,
 
-``` 
+```bash 
 $ cd ../2.calc_dist
 $ ls
 dist.gpi    run.sh    trj_analysis.inp
 ```
 
 `trj_analysis.inp` is an input file of `trj_analysis`, which calculates
-the distances, r~1~ -- r~4~ and r~6~, from dcd files.
+the distances, r<sub>1</sub> -- r<sub>4</sub> and r<sub>6</sub>, from dcd files.
 
-``` 
+```bash 
 [INPUT]
 psffile = ../../../2.equil/step4_nvt_100.psf
 reffile = ../../../2.equil/step4_nvt_100.pdb
@@ -980,32 +904,29 @@ the dcd files of `prod3` and `prod4` are read at the same time
 
 Now, run the script,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 dist.gpi   prod3_1.dis   prod3_2.dis   ...
 ```
 
-`dist.gpi` plots the distribution of r~1~ / r~2~,
+`dist.gpi` plots the distribution of r<sub>1</sub> / r<sub>2</sub>,
 
-``` 
+```bash 
 $ gnuplot dist.gpi
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_dist3.png" loading="lazy"
-decoding="async" width="450" height="281"
-alt="This image has an empty alt attribute; its file name is tim_dist3.png" />
-<figcaption>Fig. 9. Distribution of r<sub>1</sub> / r<sub>2</sub> after
-2 ps of REUS simulations.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_dist3.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 9. Distribution of r<sub>1</sub> / r<sub>2</sub> after 2 ps of REUS simulations.
+</figcaption>
 
 ### 6.3 MBAR 
 
 Here, we solve the MBAR equation [^5] and obtain the weight of each
 snapshot. Proceed to `3.mbar`,
 
-``` 
+```bash 
 $ cd ../3.mbar
 $ ls
 mbar.inp  run.sh
@@ -1013,7 +934,7 @@ mbar.inp  run.sh
 
 `mbar.inp` is an input file of `mbar_analysis`,
 
-``` 
+```bash 
 [INPUT]
 cvfile = ../2.calc_dist/prod3_{}.dis   # distant files
   
@@ -1045,7 +966,7 @@ is_periodic1 = no
 
 `run.sh` reads,
 
-``` 
+```bash 
 export OMP_NUM_THREADS=4
 mbar_analysis mbar.inp >& mbar.out
 ```
@@ -1053,7 +974,7 @@ mbar_analysis mbar.inp >& mbar.out
 `mbar_analysis` is thread-parallelized, and setting the variable,
 `OMP_NUM_THREADS`, accelerates the calculation. Now, run the script,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 fene.dat   weight1.dat   weight2.dat ...
@@ -1069,7 +990,7 @@ respectively.
 
 Now, proceed to `4.calc_pathcv`,
 
-``` 
+```bash 
 $ cd ../4.calc_pathcv
 $ ls
 pathcv.gpi  pathdist.gpi   pathcv.inp  run.sh
@@ -1077,7 +998,7 @@ pathcv.gpi  pathdist.gpi   pathcv.inp  run.sh
 
 `pathcv.inp` is an input file of `pathcv_analysis`.
 
-``` 
+```bash 
 [INPUT]
 pathfile = ../../0.window/win_rr.dat    # the information of discretized path
 cvfile   = ../2.calc_dist/prod3_{}.dis  # CV data
@@ -1098,7 +1019,7 @@ ascribed to and how distant it is from the path, respectively.
 
 Now, run the script,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 pathcv.inp  pathcv.out  prod3_1.pathcv   prod3_2.pathcv ...
@@ -1107,7 +1028,7 @@ pathcv.inp  pathcv.out  prod3_1.pathcv   prod3_2.pathcv ...
 The pathCV and distance are printed in the second and third columns of
 `prod3_x.pathcv`, respectively. These values are plotted by,
 
-``` 
+```bash 
 $ gnuplot pathcv.gpi
 $ gnuplot pathdist.gpi
 ```
@@ -1122,17 +1043,14 @@ occational large deviation cause numerical errors, it is recommended to
 set a cutoff that is 2 -- 3 times larger than the average value when
 calculating the PMF. We use cutoff=0.04 below.
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_pathcv2.png" loading="lazy"
-decoding="async" width="725" height="281"
-alt="This image has an empty alt attribute; its file name is tim_pathcv2.png" />
-<figcaption>Fig. 10. (a) Distribution of pathCV and (b) Path distance of
-one of the parameters (parameter 9).</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_pathcv2.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; ">
+Fig. 10. (a) Distribution of pathCV and (b) Path distance of one of the parameters (parameter 9).
+</figcaption>
 
 Proceed to 5.pmf_pathcv,
 
-``` 
+```bash 
 $ cd ../5.pmf_pathcv
 $ ls
 pmf.gpi   pmf_bw15.inp  pmf_bw20.inp  run.sh
@@ -1140,7 +1058,7 @@ pmf.gpi   pmf_bw15.inp  pmf_bw20.inp  run.sh
 
 `pmf_bw*.in` are the input file of `pmf_analysis`.
 
-``` 
+```bash 
 [INPUT]
 weightfile     = ../3.mbar/weight{}.dat             # weight file
 cvfile         = ../4.calc_pathcv/prod3_{}.pathcv   # pathCV
@@ -1169,7 +1087,7 @@ bandwidth is set to 0.15 and 0.20 in `pmf_dat15.inp` and
 
 Now, run the job,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 pmf_bw15.dat   pmf_bw15.inp   pmf_bw15.out
@@ -1179,19 +1097,16 @@ pmf_bw20.dat   pmf_bw20.inp   pmf_bw20.out  ...
 dat files contain the PMF along pathCV with and without the Gaussian
 smoothing. Finally, the data is plot by gnuplot,
 
-``` 
+```bash 
 $ gnuplot pmf.gpi
 $ ls
 pmf.gpi   pmf.pdf   pmf_bw15.dat ...
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_pmf_pathcv.png" loading="lazy"
-decoding="async" width="339" height="270"
-alt="This image has an empty alt attribute; its file name is tim_pmf_pathcv.png" />
-<figcaption>Fig. 11. PMF along pathCV with and without Gaussian
-smoothing.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_pmf_pathcv.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
+Fig. 11. PMF along pathCV with and without Gaussian smoothing.
+</figcaption>
 
 ### 6.5. 2D-PMF in r1/r2 
 
@@ -1200,7 +1115,7 @@ r~2~. Since r~1~ and r~2~ are already obtained for each snapshots in
 `2.calc_dist`, we go directly to `pmf_analysis`. Proceed to
 `6.pmf_r1r2`,
 
-``` 
+```bash 
 $ cd ../6.pmf_r1r2
 $ ls
 2dsurf_mix.gpi   pmf.inp   run.sh
@@ -1232,14 +1147,14 @@ is_periodic2   = NO
 ```
 
 The dimension is set to 2, and the gridsX, band_widthX, is_periodicX
-(X=1,2) are set for the first and second dimensions, i.e., r~1~ and
-r~2~, respectively. Note that r~1~ and r~2~ are written in the second
+(X=1,2) are set for the first and second dimensions, i.e., r<sub>1</sub> and
+r<sub>2</sub>, respectively. Note that r<sub>1</sub> and r<sub>2</sub> are written in the second
 and third columns of `prod3_*.dis`, respectively, and thus we can use
 them as is for `cvfile`.
 
 Now, run the script,
 
-``` 
+```bash 
 $ ./run.sh
 $ ls
 pmf.inp      pmf.out      pmf2.dat ...
@@ -1248,19 +1163,16 @@ pmf.inp      pmf.out      pmf2.dat ...
 pmf2.dat contains the data of 2D-PMF in a gnuplot format. Finally, plot
 the data using gnuplot,
 
-``` 
+```bash
 $ gnuplot 2dsurf_mix.gpi
 $ ls 
 2dsurf_mix.gpi  2dsurf_mix.pdf  pmf.inp ...
 ```
 
-<figure class="aligncenter is-resized">
-<img src="wp-content/uploads/2022/04/tim_2dpmf_r1r2.png" loading="lazy"
-decoding="async" width="395" height="315"
-alt="This image has an empty alt attribute; its file name is tim_2dpmf_r1r2.png" />
-<figcaption>Fig. 12. 2D-PMF as a function of r1 (OE2-H31) and r2
-(C3-H31). The contours are drawn every 4 kcal/mol.</figcaption>
-</figure>
+![](/assets/images/2022_04_tim_2dpmf_r1r2.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial';">
+Fig. 12. 2D-PMF as a function of r1 (OE2-H31) and r2 (C3-H31). The contours are drawn every 4 kcal/mol.
+</figcaption>
 
 The resulting 2D-PMF in Fig. 12 shows the overall shape of the
 free-energy landscape. However, some contour lines (4 and 8 kcal/mol, in particular) show wiggle shape, which is an indication of insufficient
@@ -1291,46 +1203,18 @@ promising direction, since DFTB is orders of magnitude cheaper than DFT
 with DFTB and reweight the energy landscape to DFT level. Such a
 multi-level approch will be our next goal.
 
-## References 
-
-1.  Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 6042
-
-```
-(2000).
-[](https://aip.scitation.org/doi/10.1063/1.1308516)
-```
-
-2.  K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 --
-
-```
-4713 (2021).
-[](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
-```
-
-3.  D. Branduardi, F. L. Gervasio, M. Parrinello, J. Chem. Phys.
-
-```
-**126**, 054103 (2007).
-[](https://aip.scitation.org/doi/10.1063/1.2432340)
-```
-
-4.  Y. Matsunaga, Y. Komuro, C. Kobayashi, J. Jung, T. Mori, and Y.
-
-```
-Sugita, J. Phys. Chem. Lett. **7**, 1446−1451 (2016).
-[](https://pubs.acs.org/doi/10.1021/acs.jpclett.6b00317)
-```
-
-5.  M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124194
-
-```
-(2008).
-[](https://aip.scitation.org/doi/10.1063/1.2978177)
-
-```
-
-------------------------------------------------------------------------
-
 *Written by Kiyoshi Yagi@RIKEN Theoretical molecular science laboratory\
 April., 3, 2022*
+{: .notice}
 
+## References 
+
+[^1]:  [Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 604 (2000).](https://aip.scitation.org/doi/10.1063/1.1308516)
+
+[^2]:  [K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 -- 4713 (2021).](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
+
+[^3]:  [D. Branduardi, F. L. Gervasio, M. Parrinello, J. Chem. Phys. **126**, 054103 (2007).](https://aip.scitation.org/doi/10.1063/1.2432340)
+
+[^4]:  [Y. Matsunaga, Y. Komuro, C. Kobayashi, J. Jung, T. Mori, and Y. Sugita, J. Phys. Chem. Lett. **7**, 1446−1451 (2016).](https://pubs.acs.org/doi/10.1021/acs.jpclett.6b00317)
+
+[^5]:  [M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124194 (2008).](https://aip.scitation.org/doi/10.1063/1.2978177)
