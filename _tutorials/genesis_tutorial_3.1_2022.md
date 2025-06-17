@@ -481,10 +481,10 @@ March, 5, 2022*
 
 ##  References
 
-[^1]: [J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).](https://www.nature.com/articles/nmeth.4067)
+[^1]: J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).[<i class="fas fa-link"></i>](https://www.nature.com/articles/nmeth.4067)
 
-[^2]: [J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).](https://www.sciencedirect.com/science/article/pii/0021999177900985)
+[^2]: J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999177900985)
 
-[^3]: [H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).](https://www.sciencedirect.com/science/article/pii/0021999183900141)
+[^3]: H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999183900141)
 
-[^4]: [G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).](https://aip.scitation.org/doi/10.1063/1.2408420)
+[^4]: G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).[<i class="fas fa-link"></i>](https://aip.scitation.org/doi/10.1063/1.2408420)
