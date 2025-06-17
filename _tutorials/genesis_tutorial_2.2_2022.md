@@ -264,8 +264,11 @@ Now that the CHARMM force field parameter files are ready, we have the following
             |     + toppar_c36_jul21
             |     + TRASH
             |
-            + Works                  # All simulations will be done here
-               + TRASH
+            + genesis_tutorial_materials  # Simulation materials
+            |  + tutorial_2.3
+            |  + tutorial_3.1
+            |  + tutorial_3.2
+            |  + ...
 ```
 
 In the next Tutorial, we will learn how to setup the initial structure of the
