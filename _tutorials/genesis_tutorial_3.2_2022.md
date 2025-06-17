@@ -88,7 +88,7 @@ $ build.tcl  log  wbox.log  wbox.pdb  wbox.psf
 $ vmd wbox.pdb -psf wbox.psf
 ```
 
-![](/assets/images/2019_07_t3-2_fig1.jpg)
+![](/assets/images/2019_07_t3-2_fig1.jpg){: style="width:80%;" .align-center}
 
 ##  2. Minimization
 
@@ -262,7 +262,7 @@ The following is an important part of the control file. We carry out a
 50-ps MD simulation at *T* = 300 K. The equations of motion are
 integrated with a time step of 2 fs with the velocity Verlet algorithm,
 and the bond lengths involving hydrogen atoms are constrained using the
-SHAKE/RATTLE [^3] [^4] and SETTLE algorithms [^5]. Temperature is
+SHAKE/RATTLE [^3]<sup>,</sup>[^4] and SETTLE algorithms [^5]. Temperature is
 controlled with the Bussi thermostat [^6]. The `[ENERGY]` section is
 the same as in the previous energy minimization. In the `[BOUNDARY]`
 section, the box size is not specified, since the atomic coordinates and
@@ -328,7 +328,7 @@ $ mpirun -np 4 ../bin/spdyn INP1 > log1
 $ vmd ../1_setup/3_solvate/wbox.pdb -dcd eq1.dcd
 ```
 
-![](/assets/images/2019_07_t3-2_fig3.jpg)
+![](/assets/images/2019_07_t3-2_fig3.jpg){: style="width:80%;" .align-center}
 
 If you want to wrap all molecules into the unit cell, the following VMD
 command is useful:
@@ -356,7 +356,7 @@ the `[ENSENBLE]` section, we specify "`ensemble = NPT`". The target
 pressure *P* = 1 atm is also set in the same section. The other sections
 and parameters are the same as in Step 1. Here, we run a 50-ps MD
 simulation at *T* = 300 K and *P* = 1 atm using the Bussi thermostat and
-barostat [^6] [^7]. Again, the equations of motion are integrated with a
+barostat [^6]<sup>,</sup>[^7]. Again, the equations of motion are integrated with a
 time step of 2 fs with the velocity Verlet algorithm, and the
 SHAKE/RATTLE and SETTLE algorithms are employed for bond constraints.
 Positional constraints are still applied to the heavy atoms of the
@@ -696,18 +696,18 @@ April 26, 2022*
 
 ##  References
 
-[^1]: Huang, J., *et al.*, **2017**, *Nat. Methods*, 14, 71-73.
+[^1]: Huang, J., *et al.*, **2017**, *Nat. Methods*, 14, 71--73.[<i class="fas fa-link"></i>](https://www.nature.com/articles/nmeth.4067)
 
-[^2]: Darden, T., *et al.*, **1993**, *J. Chem. Phys.*, 98, 10089-10092.
+[^2]: Darden, T., *et al.*, **1993**, *J. Chem. Phys.*, 98, 10089--10092.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/98/12/10089/461765/Particle-mesh-Ewald-An-N-log-N-method-for-Ewald)
 
-[^3]: Ryckaert, J. P., *et al.*, **1977**, *J. Comput. Phys.*, 23, 327-341.
+[^3]: Ryckaert, J. P., *et al.*, **1977**, *J. Comput. Phys.*, 23, 327--341.[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999177900985)
 
-[^4]: Andersen, H. C., **1983**, *J. Comp. Phys.*, 52, 24-34.
+[^4]: Andersen, H. C., **1983**, *J. Comp. Phys.*, 52, 24--34.[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999183900141?via%3Dihub)
 
-[^5]: Miyamoto, S., Kollman, P. A., **1992**, *J. Comput. Chem.*, 13, 952-962.
+[^5]: Miyamoto, S., Kollman, P. A., **1992**, *J. Comput. Chem.*, 13, 952--962.[<i class="fas fa-link"></i>](https://onlinelibrary.wiley.com/doi/10.1002/jcc.540130805)
 
-[^6]: Bussi, G., *et al.*, **2007**, *J. Chem. Phys.*, 126, 014101.
+[^6]: Bussi, G., *et al.*, **2007**, *J. Chem. Phys.*, 126, 014101.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/126/1/014101/186581/Canonical-sampling-through-velocity-rescaling)
 
-[^7]: Bussi, G., *et al.*, **2009**, *J. Chem. Phys.*, 130, 074101.
+[^7]: Bussi, G., *et al.*, **2009**, *J. Chem. Phys.*, 130, 074101.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/130/7/074101/188096/Isothermal-isobaric-molecular-dynamics-using)
 
-[^8]: Tuckerman, M., *et al.*, **1992**, *J. Chem. Phys.*, 97, 1990-2001.
+[^8]: Tuckerman, M., *et al.*, **1992**, *J. Chem. Phys.*, 97, 1990--2001.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/97/3/1990/221848/Reversible-multiple-time-scale-molecular)
