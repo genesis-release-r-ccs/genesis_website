@@ -92,7 +92,7 @@ build.tcl  log  proa.pdb  proa.psf
 $ vmd proa.pdb -psf proa.psf 
 ```
 
-![](/assets/images/2019_07_ala2.jpg)
+![](/assets/images/2019_07_ala2.jpg){: style="width:60%;" .align-center}
 
 ##  2. MD simulation
 
@@ -372,7 +372,7 @@ dihedral angle of the C-N-Cα-C atoms and ψ is the dihedral angle of the
 N-Cα-C-N atoms. The `trj_analysis` tool is used to analyze these
 dihedral angles, whose control file is shown below.
 
-![](/assets/images/2019_07_ala2_dihed.jpg){: width="400"}
+![](/assets/images/2019_07_ala2_dihed.jpg){: width="400" .align-center}
 
 
 ```bash
