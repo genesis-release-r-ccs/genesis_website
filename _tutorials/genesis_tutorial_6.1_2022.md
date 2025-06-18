@@ -586,10 +586,7 @@ laboratory*\
 *February, 16, 2022*\
 *Updated by Diego Ugarte @ RIKEN, R-CCS, Computational Biophysics
 Research Team*\
-*February, 16, 2022*\
-*Updated by Jaewoon Jung @ RIKEN, R-CCS, Computational Biophysics
-Research Team*\
-*June, 5, 2026*
+*February, 16, 2022*
 {: .notice}
 
 
