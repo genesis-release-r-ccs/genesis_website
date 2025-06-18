@@ -131,7 +131,7 @@ ls
 
 The input scripts can be modified for our use. Consider downloading the
 input scripts
-[here](https://github.com/noinil/genesis_tutorial_materials/tree/main/tutorial-6.3), or modify them yourself.
+[here](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials/tree/main/tutorial-6.3), or modify them yourself.
 
 ## 2. Minimization
 
@@ -256,7 +256,7 @@ df = pd.read_csv("results/step4.0_minimization.csv")
 
 # Format the figure. Here we use a white background, 
 # colorblind-friendly palette, and remove the line on the right and top
-sns.set_theme(style= 'white', palette='colorblind',                rc={"axes.spines.right": False,  "axes.spines.top": False,                'xtick.bottom': True, 'ytick.left': True})
+sns.set_theme(style= 'white', palette='colorblind', rc={"axes.spines.right": False, "axes.spines.top": False, 'xtick.bottom': True, 'ytick.left': True})
 
 # define the figure, plot a line from the data, and show figure
 plt.figure()
@@ -266,7 +266,7 @@ fig.set(xlabel ="step", ylabel = "potential energy")
 plt.show()
 ```
 
-![](/assets/images/2022_02_fig1.png)
+![](/assets/images/2022_02_fig1.png){: width="500"}
 
 We confirm the potential energy is decreasing at each step as expected.
 Because the potential energy is plateauing, we observe the minimization
@@ -817,9 +817,7 @@ conformational space has been sufficiently explored.
 
 ------------------------------------------------------------------------
 *Written by Kiyoto Aramis Tanemura @ Michigan State University*
-*June 18, 2022*
-{: .notice}
-
+*June 18, 2022*\
 *Updated by Chigusa Kobayashi@RIKEN Center for Computational Science*
 *May 30, 2024*
 {: .notice}
@@ -827,17 +825,17 @@ conformational space has been sufficiently explored.
 
 ## References
 
-[^1]: [F. Schwarz, M. Aebi, **2011**, *Curr. Opin. Struct. Biol.*, 21, 576--582.]
+[^1]: [F. Schwarz, M. Aebi, **2011**, *Curr. Opin. Struct. Biol.*, 21, 576--582.](https://doi.org/10.1016/j.sbi.2011.08.005)
 
-[^2]: [R. Apweiler, H. Hermjakob, N. Sharon. **1999**, *BBA-General Subjects*, 1473, 4--8]
+[^2]: [R. Apweiler, H. Hermjakob, N. Sharon. **1999**, *BBA-General Subjects*, 1473, 4--8](https://doi.org/10.1016/S0304-4165(99)00165-8)
 
-[^3]: [R. A. Dwek, **1998**,  *Molecular recognition and inclusion*; Springer, pp 1--6]
+[^3]: [R. A. Dwek, **1998**,  *Molecular recognition and inclusion*; Springer, pp 1--6](https://doi.org/10.1007/978-94-011-5288-4)
 
-[^4]: [L. Krasnova, G.H. Wong, **2016**, *Annual review of biochemistry*, 85, 599--638]
+[^4]: [L. Krasnova, C. H. Wong, **2016**, *Annual review of biochemistry*, 85, 599--638](https://doi.org/10.1146/annurev-biochem-060614-034420)
 
-[^5]: [S. J. Park, J. Lee, Y. Qi, N. R. Kern, H. S. Lee, S. Jo, I. Joung, K. Joo, J. Lee, W. Im, W. **2019**, *Glycobiology*, 29, 320--331]
+[^5]: [S. J. Park, J. Lee, Y. Qi, N. R. Kern, H. S. Lee, S. Jo, I. Joung, K. Joo, J. Lee, W. Im, W. **2019**, *Glycobiology*, 29, 320--331](https://doi.org/10.1093/glycob/cwz003)
 
-[^6]: [W. McKinney et al, **2010**,  In *Proceedings of the 9th python in science conference*, Vol. 445, pp 51--56.]
+[^6]: [W. McKinney et al, **2010**,  In *Proceedings of the 9th python in science conference*, pp 56--61.](https://doi.org/10.25080/Majora-92bf1922-00a)
 
 [^7]: [M. Waskom et al, **2017**, *Mwaskom/Seaborn: V0.8.1*, https://doi.org/10.5281/zenodo.883859](https://doi.org/10.5281/zenodo.883859)
 

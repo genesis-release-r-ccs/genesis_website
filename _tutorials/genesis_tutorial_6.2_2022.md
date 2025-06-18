@@ -37,7 +37,7 @@ state far from equilibrium (for example, a random mixture of lipid and water mol
 initial setup is considerably important to obtain the correct
 equilibrated state within short time. CHARMM-GUI provides a graphical
 user interface and many modules (Membrane builder etc.) which help us to
-build a protein-membrane system [^1]. Here we demonstrate how to setup
+build a protein-membrane system.[^1] Here we demonstrate how to setup
 the initial structure of GPCR-membrane system using CHARMM-GUI.
 
 Let's go to top page of CHARMM-GUI. You need to login or register if you
@@ -45,7 +45,7 @@ don't have your account. From top page, please access "Input Generator"
 \> "Membrane Builder" \> "Bilayer Builder". At the first step of the
 bilayer builder, we choose "Protein/Membrane System" and input a PDB id.
 From RCSB, we download "3pwh", which is the thermostabilized adenosine
-A2A Receptor [^2].
+A2A Receptor.[^2]
 
 ![](/assets/images/2022_02_gpcr_fig1.jpg)
 
@@ -149,8 +149,8 @@ step5_input.crd  step6.0_minimization.inp  step6.3_equilibration.inp  step6.6
 
 \
 The downloaded file contains several files used for setup of the system.
-"`toppar`" includes CHARMM force field file for proteins and solvent.
-"`zma`" includes CGenFF files for the ligand. "`genesis`" includes
+`toppar` includes CHARMM force field file for proteins and solvent.
+`zma` includes CGenFF files for the ligand. `genesis` includes
 structure files (`step5_input.pdb` and `step5_input.psf`), control files
 for GENESIS (`step*_***.inp`), and files for local restraints
 (`restraints/`).
@@ -164,11 +164,11 @@ Figure 8. The membrane system of GPCR built by Membrane Builder in
 CHARMM-GUI. (Left) The side view of the system. (Right) The ligand bound
 to GPCR.
 
-In this tutorial, we use only "`toppar/`", "`zma/`", "`restraints/`",
-"`step5_input.pdb`" and "`step5_input.psf`" in the following sections.
-These files are included in "`1_setup/`" of tutorial22-6.2.zip, although
-"`step5_input.pdb`" and "`step5_input.psf`" are renamed "`complex.pdb`"
-and "`complex.psf`", respectively.
+In this tutorial, we use only `toppar/`, `zma/`, `restraints/`,
+`step5_input.pdb` and `step5_input.psf` in the following sections.
+These files are included in `1_setup/` of `tutorial6.2`, although
+`step5_input.pdb` and `step5_input.psf` are renamed `complex.pdb`
+and `complex.psf`, respectively.
 
 ```bash
 # Check files in 1_setup/ of tutorial-6.2
@@ -181,7 +181,7 @@ complex.pdb  complex.psf  restraints/  toppar/  zma/
 
 ### 3. 1. Perform MD simulations using spdyn
 
-Let's move to "2_min_equil" and check control files for GENESIS.
+Let's move to `2_min_equil` and check control files for GENESIS.
 
 ```bash
 $ cd ../2_min_equil/
@@ -410,7 +410,7 @@ disappear even in NPT equilibration and breaks the lipid bilayer (Figure 14). Ev
 recover the correct equilibration state. You had better rapidly go
 through NVT processes before bubbles appear in your system.
 
-![](/assets/images/2022_02_gpcr_fig13.jpg)
+![](/assets/images/2022_02_gpcr_fig13.jpg){: width="300" .align-center}
 
 Figure 13. A bubble in the system. The dashed red line indicates a large
 void space.
@@ -422,7 +422,7 @@ system. (Right) The side view of the system.
 
 ## 4. Production
 
-Let's perform production run. Move to "3_production" and check control
+Let's perform production run. Move to `3_production` and check control
 files for GENESIS.
 
 ```bash
@@ -461,7 +461,7 @@ in the below movie, the system is stable during the production run.
 
 ## 5. Analysis
 
-Let's analyze the resulting trajectory. Move to the "`4_analysis`"
+Let's analyze the resulting trajectory. Move to the `4_analysis`
 directory.
 
 ```bash
@@ -475,7 +475,7 @@ root-mean-square fluctuation (RMSF) of GPCR.
 
 ### 5. 1. RMSD of GPCR
 
-Move to the "rmsd" directory.
+Move to the `rmsd` directory.
 
 ```bash
 $ cd rmsd
@@ -540,7 +540,7 @@ Figure 15. Time series of the RMSD of heavy atoms of GPCR.
 
 ### 5. 2. RMSF of GPCR
 
-Move to the "rmsf" directory.
+Move to the `rmsf` directory.
 
 ```bash
 $ cd ../rmsf

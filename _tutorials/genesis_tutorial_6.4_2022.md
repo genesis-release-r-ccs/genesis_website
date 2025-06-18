@@ -13,13 +13,13 @@ sidebar:
 # RNA in water 
 
 In this tutorial, we will perform a short simulation of a synthetic
-riboswitch called N1 [^1]. It is a small RNA fragment, containing 27
+riboswitch called N1.[^1] It is a small RNA fragment, containing 27
 nucleotides, able to bind aminoglycoside antibiotics and regulate the
 expression of genes located in the same mRNA. Its dynamics was
 thoroughly investigated using molecular dynamics simulations, both with
-and without various ligands \[2,3\]. For the simulations of the
+and without various ligands.[^2] [^3] For the simulations of the
 riboswitch, we are going to use Amber force field, which is considered
-to work well for the simulations of various RNA systems [^2] [^3] [^4].  
+to work well for the simulations of various RNA systems.[^2] [^3] [^4]  
 
 The input files are now ready to download from [GENESIS tutorials repository on
 GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
@@ -31,7 +31,7 @@ in the tutorial files.
 
 
 ``` bash
-$ cd genesis_tutorial_materials/tutorial-6.1
+$ cd genesis_tutorial_materials/tutorial-6.4
 $ ls
 1_setup 2_minimize 3_equilibrate 4_production 5_analysis
 ```
@@ -51,18 +51,18 @@ to perform a simple simulation without any ligands, the paromomycin
 (PAR) residue should be removed. The PDB file without the ligand
 (2mxs_RNA-only.pdb) is already provided in the tutorial files in the
 "1_setup" directory. We are ready to use the Amber *tleap* program with
-the input file [`leap.inp`] to
+the input file `leap.inp` to
 add water molecules and ions to the system to obtain the
-[`md.pdb`] file. The system is
+`md.pdb` file. The system is
 solvated with a 20 Å shell of TIP3P water molecules around the RNA
-molecule. 52 Na+ and 26 Cl− ions are added to neutralize the negative
+molecule. 52 Na<sup>+</sup> and 26 Cl<sup>−</sup> ions are added to neutralize the negative
 charge of the nucleic acid and achieve 100 mM NaCl concentration. At the
 same time, the Amber force field parameter file
-[`md.prm`] is generated.
+`md.prm` is generated.
 Detailed instructions and commands for working with *tleap* are provided
 in the tutorial 5.2. If you wish to skip this step, the output files
-[`md.pdb`] and
-[`md.prm`] are also included
+`md.pdb` and
+`md.prm` are also included
 in the tutorial files.
 
 
@@ -88,7 +88,7 @@ worry about this.  
 The energy minimization will be performed using the steepest descent
 (SD) algorithm for 5000 time steps. At this stage, the positions of the
 non-hydrogen (heavy) atoms of the 27 residues of RNA are fixed by using
-positional restraints of 10 kcal/mol/Å^2^. The simulation is performed
+positional restraints of 10 kcal/mol/Å<sup>2</sup>. The simulation is performed
 using periodic boundary conditions (PBC). The initial simulation box
 size is set according to the output log file from the *tleap* program.
 The particle mesh Ewald method (PME) is used for the long-range
@@ -192,7 +192,7 @@ INP1 INP2
 
 ### 3.1 NVT-MD with positional restraints
 
-The file [`INP1`] will be used
+The file `INP1` will be used
 in the first equilibration step, which is carried out for 50 ps in the
 NVT ensemble. Note that the positional restraints applied to all
 non-hydrogen RNA atoms are now weaker so these atoms can move slightly
@@ -200,8 +200,7 @@ more. The water molecules are not restrained thus they can move freely.
 The equations of motion are integrated using the velocity verlet
 integrator with the time step of 2 fs using the SHAKE algorithm [^10]
 for the bonds involving hydrogen atoms. The Bussi thermostat is applied
-to control the temperature
-[^11].
+to control the temperature.[^11]
 
 ``` toml
 [INPUT]
@@ -272,13 +271,13 @@ $ vmd ../1_setup/md.pdb -dcd eq1.dcd
 
 ### 3.2 NPT-MD with positional restraints
 
-Next, we will perform the second step of equilibration (using [`INP2`]). There are two main
+Next, we will perform the second step of equilibration (using `INP2`). There are two main
 differences between this step and the previous step. First, we switch
 the ensemble to NPT in order to regulate the box size. Second, we
 specify the target pressure P = 1 atm. The latter condition is a default
 setting for the simulations for the NPT ensemble, so we do not need to
 specify it in the input file. The Bussi barostat is applied to control
-the pressure [^11]. All the parameters are printed in the output log
+the pressure.[^11] All the parameters are printed in the output log
 file, so it is always possible to confirm them after the
 simulation.
 
@@ -360,8 +359,8 @@ We will now perform a 400 ps production simulation in the
 isothermal-isobaric (NPT) ensemble without any restraints. Since it is
 safer to run the large production simulations in smaller parts, we will
 divide this simulation in two parts, using the input files
-[`INP1`] and
-[`INP2`].
+`INP1` and
+`INP2`.
 
 
 ``` bash
@@ -371,7 +370,7 @@ $ ls
 INP1 INP2
 ```
 
-The contents of the  [`INP1`]
+The contents of the  `INP1`
 file are shown below.
 
 ``` toml
@@ -418,7 +417,7 @@ tpcontrol       = BUSSI  # thermostat and barostat
 temperature     = 310.15  # initial and target temperature (K)
 pressure        = 1.0  # target pressure (atm)
 ```
-Let's execute the two production runs (run [`INP2`] after [`INP1`] finishes ):
+Let's execute the two production runs (run `INP2` after `INP1` finishes ):
 
 ``` bash
 # Production run for 0-200 ps (restart from eq2.rst)
@@ -478,7 +477,7 @@ $ /home/user/GENESIS/bin/flccrd_analysis INP2 | tee run2.out
 ```
 
 Several output files were produced during the calculation. The 4th
-column in the [`run2.rms` ]file corresponds to the RMSF
+column in the `run2.rms` file corresponds to the RMSF
 value in the units of Angstrom. It can be plotted with gnuplot for each
 of the 27 nucleotides:
 
@@ -503,26 +502,26 @@ University of Warsaw*
 
 ## References
 
-[^1]: [Duchardt‐Ferner et al. **2010**, *Angew. Chem. Int. Ed.* 49, 6216--6219].
+[^1]: [Duchardt‐Ferner et al. **2010**, *Angew. Chem. Int. Ed.* 49, 6216--6219.](https://doi.org/10.1002/anie.201001339)
 
-[^2]: [Kulik et al. **2018**, *Nucleic Acids Res.* 46, 9960--9970].
+[^2]: [Kulik et al. **2018**, *Nucleic Acids Res.* 46, 9960--9970.](https://doi.org/10.1093/nar/gky833)
 
-[^3]: [Chyży et al. **2021**, *Front. Mol. Biosci*. 8, 12].
+[^3]: [Chyży et al. **2021**, *Front. Mol. Biosci*. 8, 633130](https://doi.org/10.3389/fmolb.2021.633130)
 
-[^4]: [Sponer et al. **2018**, *Chem. Rev.* 118, 4177--4338].
+[^4]: [Sponer et al. **2018**, *Chem. Rev.* 118, 4177--4338.](https://doi.org/10.1021/acs.chemrev.7b00427)
 
-[^5]: [Jorgensen et al. **1983**, *J. Chem. Phys.* 79, 926--935].
+[^5]: [Jorgensen et al. **1983**, *J. Chem. Phys.* 79, 926--935.](https://doi.org/10.1063/1.445869)
 
-[^6]: [Joung and Cheatham **2008**, *J. Phys. Chem. B* 112, 9020--9041].
+[^6]: [Joung and Cheatham **2008**, *J. Phys. Chem. B* 112, 9020--9041.](https://doi.org/10.1021/jp8001614)
 
-[^7]: [Cornell et al. **1995**, *J. Am. Chem. Soc.* 117, 5179--5197].
+[^7]: [Cornell et al. **1995**, *J. Am. Chem. Soc.* 117, 5179--5197.](https://doi.org/10.1021/ja00124a002)
 
-[^8]: [Pérez et al. **2007**, *Biophys. J.* 92, 3817--3829].
+[^8]: [Pérez et al. **2007**, *Biophys. J.* 92, 3817--3829.](https://doi.org/10.1529/biophysj.106.097782)
 
-[^9]: [Zgarbova et al. **2011**, *J. Chem. Theory Comput* 7, 2886--2902].
+[^9]: [Zgarbova et al. **2011**, *J. Chem. Theory Comput* 7, 2886--2902.](https://doi.org/10.1021/ct200162x)
 
-[^10]: [Ryckaert et al. **1977**, *J. Comput. Phys.* 23, 327--341].
+[^10]: [Ryckaert et al. **1977**, *J. Comput. Phys.* 23, 327--341.](https://doi.org/10.1016/0021-9991%2877%2990098-5)
 
-[^11]: [Bussi et al. **2007**, *J. Chem. Phys.* 126, 014101].
+[^11]: [Bussi et al. **2007**, *J. Chem. Phys.* 126, 014101.](https://doi.org/10.1063/1.2408420)
 
 
