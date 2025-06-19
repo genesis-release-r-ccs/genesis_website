@@ -17,18 +17,18 @@ at RIKEN Center for Computational Science and has 158, 976 nodes. This
 machine has been made available through the
 [HPCI](https://www.hpci-office.jp/folders/english) project.
 
-GENESIS was one of the target applications during the development of
-this supercomputer and has been developed to maximize the performance of
-this supercomputer through co-design. The appendix indicate how to
-execute atomistic MD simulations on Fugaku.
 
- The optimized code for Fugaku is available in
-[GitHub](https://github.com/genesis-release-r-ccs/genesis) as release
-verson 2.0.0.
+GENESIS was selected as one of the target applications during the development of
+the Fugaku supercomputer, and has been co-designed to maximize its performance
+on this platform.  The appendix provides instructions on how to run atomistic MD
+simulations on Fugaku.
 
+The optimized GENESIS code for Fugaku is available on 
+[GitHub](https://github.com/genesis-release-r-ccs/genesis)
+in version 2.x.
 
 ```bash
-# Download the tutorial file
+# Download the source code
 $ git clone https://github.com/genesis-release-r-ccs/genesis.git
 $ cd genesis
 $ autoreconf
@@ -37,36 +37,33 @@ $ make
 $ make install
 ```
 
-To compile GENESIS on Fugaku, please do not forget to add
-`--host=Fugaku`.
+To compile GENESIS on Fugaku, please do not forget to add `--host=Fugaku`.
 
 A option `--enable-single/mixed/double` controls default precision of
 real type variables. 
 
-We recommend using <code>--enable-<span style="color:blue">mixed</span></code> in terms
-of simulation stability and accuracy on
-<span style="color:red">**Fugaku**</span>. In particular, it has been
-reported that the simulation with `--enable-single` give slightly
-different box sizes/temperature from those with `--enable-mixed/double`.
+We recommend using `--enable-mixed` for improved simulation stability and
+accuracy on Fugaku. In particular, it has been reported that simulations
+compiled with `--enable-single` may produce slightly different box sizes and
+temperatures compared to those with `--enable-mixed` or `--enable-double`.
+{: .notice--warning}
 
-You can find further information in doc/GENESIS.pdf
+Please refer to `doc/GENESIS.pdf` for more information.
 
-After compile, please execute compile test.
-
-
+After the compilation, please execute `compile test`.
 ```bash
 $ cd ./tests/regression_test
 (make a job script)
 $ pjsub test_script.sh
 ```
 
-Templates of `pjsub` script are shown in the Fugaku portal site. (Only registered users) Please find a script with hybrid parallelization type
-(MPI/OpenMP) in the site. Please find the detailed explanation of
-`pjsub` options from the portal site.
+Templates for `pjsub` scripts are available on the Fugaku portal site (accessible
+to registered users only).  Please refer to the site to find a script configured
+for hybrid parallelization (MPI/OpenMP). Detailed explanations of the available
+`pjsub` options can also be found there.
 
 Due to amount of memory, please assign at least 2 nodes for compile
 test.
-
 
 ```bash
 ./test.py "mpiexec ${bindir}/spdyn " fugaku > regression.log
@@ -74,15 +71,15 @@ test.
 
 For normal jobs, please write down the line for the execution of
 GENESIS.
-
 ```bash
 mpiexec -stdout run_fep1.out ${bindir}/spdyn inp
 ```
 
-Although not as fast, GENESIS 1.5.1 and later versions work on Fugaku.
-If you would like to use the versions,  `--host=Fugaku`  should be
-used for configure, however, only `--enable-single/double` are
-available in the versions.
+Although not as fast as the optimized version, GENESIS 1.5.1 and later are
+compatible with Fugaku. If you wish to use these versions, please specify
+`--host=Fugaku` during configuration. Note, however, that only `--enable-single`
+or `--enable-double` are available in these versions, whereas `--enable-mixed`
+is not supported.
 
 *Written by Chigusa Kobayashi@RIKEN Center for Computational Science\
 July 29, 2022*
