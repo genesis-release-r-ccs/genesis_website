@@ -12,7 +12,6 @@ sidebar:
 
 # Building the initial structure for MD simulation 
 
-aaa
 This tutorial describes how to set up a system for all-atom MD
 simulations using the CHARMM force field. The figure below outlines a
 general scheme for building a system for soluble proteins. The scheme
@@ -213,7 +212,7 @@ coordinates of each atom in PROA are read from the PDB file
 (`../2_modpdb/proa.pdb`), and missing atoms are automatically built with
 the `guesscoord` command. Finally, the PSF and PDB files are output.
 
-```bash
+```tcl
 # Change directory
 $ cd ../3_psfgen
 $ ls
