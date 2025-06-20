@@ -101,7 +101,7 @@ in which the sidechain has two possible orientations. In such case not B
 **build1.tcl:**
 
 
-```toml
+```bash
 # 1) Load the PDB file
 mol load pdb 1ERT.pdb
 
@@ -133,7 +133,7 @@ PDB file are guessed and added.
 **build2.tcl:**
 
 
-```toml
+```bash
 # 1) Load the psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf
@@ -170,7 +170,7 @@ is an error during the making of the PSF file, bonds will be displayed
 incorrectly.
 
 
-```toml
+```bash
 # Check the obtained PDB and PSF files using VMD
 $ vmd protein.pdb -psf protein.psf
 vmd > mol load pdb 1ERT.pdb
@@ -201,7 +201,7 @@ structures. Segment names appear on the 12<sup>th</sup> column in the
 
 **build1.tcl:**
 
-``` toml
+``` bash
 # 4) Output the PDB file of each segment
 set sel1 [atomselect top "protein and chain A" frame 0]
 set sel2 [atomselect top "protein and chain B" frame 0]
@@ -212,7 +212,7 @@ $sel2 writepdb prob.pdb
 **build2.tcl:**
 
 
-```toml
+```bash
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 segment PROB {pdb prob.pdb}
@@ -243,7 +243,7 @@ simulation constraining them to oxygen atoms is required.
 **build1.tcl:**
 
 
-```toml
+```bash
 # 2) Rename "PDB general name" to "CHARMM-specific name"
 [atomselect top "resname ILE and name CD1"] set name CD
 [atomselect top "resname HIS"             ] set resname HSD
@@ -264,7 +264,7 @@ $sel3 writepdb cal.pdb
 **build2.tcl:**
 
 
-```toml
+```bash
 # 1) Load psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf
@@ -318,7 +318,7 @@ directions.
 **build2.tcl:**
 
 
-```toml
+```bash
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 
@@ -360,7 +360,7 @@ SSBOND  3  CYS A  20  CYS  B  19        1555 1555 2.04
 **build2.tcl:**
 
 
-```toml
+```bash
 # 2) Define a segment name for each chain
 segment PROA {pdb proa.pdb}
 segment PROB {pdb prob.pdb}
@@ -400,7 +400,7 @@ properly, the resulting structure will be of an RNA.
 **build1.tcl:**
 
 
-```toml
+```bash
 # 1) Load the PDB file
 mol load pdb 3LNQ.pdb
 
@@ -427,7 +427,7 @@ $sel3 writepdb dna2.pdb
 **build2.tcl:**
 
 
-```toml
+```bash
 # 1) Load psfgen-plugin and CHARMM topology file
 package require psfgen
 resetpsf

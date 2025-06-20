@@ -336,10 +336,9 @@ systems containing only a protein. Here, we show how to deal with cases
 in which a protein is bound to DNA. We use [PDB ID: 3LNQ](https://www.rcsb.org/structure/3LNQ) as an example. We follow the same procedure
 as before, by creating separate PDB files for each chain and using tleap
 to combine them. The `leaprc.protein.ff14SB` file does not contain
-parameters for DNA, thus we additionally read either `leaprc.DNA.bsc1`
-[^1] or `leaprc.DNA.OL15` [^2]. Recently, Galindo-Murillo et al
+parameters for DNA, thus we additionally read either `leaprc.DNA.bsc1`[^1] or `leaprc.DNA.OL15`[^2]. Recently, Galindo-Murillo et al
 provided useful information regarding which of the two parameter sets to
-be chosen [^3]. Here, we use the latter parameter set.
+be chosen[^3]. Here, we use the latter parameter set.
 
 
 ```bash
@@ -435,7 +434,7 @@ used. The accuracy of this force field is low comparing to those for
 amino acids, RNA, or DNA, for which parameters were carefully optimized.
 However, this is a simple parameter set, useful for applications such as
 drug design in which numerous calculations on various ligand types are
-performed. Here, we use PDB ID: 1OV5 as an example for a ligand-bound
+performed. Here, we use [PDB: 1OV5](https://www.rcsb.org/structure/1OV5) as an example for a ligand-bound
 protein system. First, similarly to previous sections, we create PDB
 files separately for the protein and for the ligand (residue name 2LP).
 
