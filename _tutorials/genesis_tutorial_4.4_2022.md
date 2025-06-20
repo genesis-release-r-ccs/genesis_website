@@ -21,7 +21,7 @@ trajectories using [PyMol](https://pymol.org/2/), one of the famous molecular vi
 structural biology, and how to create a movie file by combining these
 images. We will use the `convert` and `ffmpeg` commands as well as
 GENESIS. The `convert` command is available in the
-[Imagemagick](https://imagemagick.org/script/command-line-tools.php) software package. These tools should be installed before
+[ImageMagick](https://imagemagick.org/script/command-line-tools.php) software package. These tools should be installed before
 this tutorial.
 
 ##  Outline
@@ -32,9 +32,10 @@ PDB files using the GENESIS `crd_convert` tool. In Step2, PyMol is run
 with a script to create png images of each snapshot. In Step3, run the
 `convert` command again with a script to write the simulation time to
 each image. Finally, in Step4, use the `ffmpeg` command to combine all
-the images and create a move file.
+the images and create a move file.  
 
-## ![](/assets/images/2019_07_movie_scheme-1.jpg) Preparation
+![](/assets/images/2019_07_movie_scheme-1.jpg)
+##  Preparation
 
 Let's download the PDB and DCD sample files for this tutorial.
 All the files required for this tutorial are hosted in the [GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
@@ -65,7 +66,7 @@ GENESIS `crd_convert` tool. Before we run the tool, let's take a look at
 the control file.
 
 
-```toml
+```bash
 # Change the directory for Step1
 $ cd 1_makepdb
 
@@ -81,7 +82,6 @@ trjout_format  = PDB                # (PDB/DCD)
 trjout_type    = COOR+BOX           # (COOR/COOR+BOX)
 trjout_atom    = 2                  # atom group
 split_trjpdb   = YES                # output split PDB trajectory
-
 ```
 
 The most important options in the control file are shown above and
@@ -102,7 +102,6 @@ md0.pdb   md21.pdb  md35.pdb  md49.pdb  md62.pdb  md76.pdb  md9.pdb
 md1.pdb   md22.pdb  md36.pdb  md5.pdb   md63.pdb  md77.pdb  md90.pdb
 md10.pdb  md23.pdb  md37.pdb  md50.pdb  md64.pdb  md78.pdb  md91.pdb
 :
-
 ```
 
 ##  Step2. Create an image file for each snapshot 
@@ -125,7 +124,6 @@ $ less input_0.pml
 
 # Run PyMol
 $ pymol input_0.pml
-
 ```
 
 Rotate the molecule in the PyMol window to determine the orientation of
@@ -137,9 +135,14 @@ these values
 later.![](/assets/images/2022_02_PyMol_getview.png)
 
 
-```toml
-set_view (\          0.700811803,    0.321628720,   -0.636726499,\         -0.506851256,    0.852599680,   -0.127194136,\          0.501961410,    0.411864907,    0.760529041,\         -0.000017758,   -0.000041828, -106.357391357,\        -18.747209549,    0.224934518,   -8.418970108,\         86.687660217,  126.027915955,   20.000000000 )
-
+```bash
+set_view (\
+          0.700811803,    0.321628720,   -0.636726499, \
+         -0.506851256,    0.852599680,   -0.127194136, \
+          0.501961410,    0.411864907,    0.760529041, \
+         -0.000017758,   -0.000041828, -106.357391357, \
+        -18.747209549,    0.224934518,   -8.418970108, \
+         86.687660217,  126.027915955,   20.000000000 )
 ```
 
 Next, let's take a look at `template.pml`. By using this file as a
@@ -164,8 +167,13 @@ bg_color white
 set ray_shadow, off
 set ray_opaque_background, on
 
-set_view (\          0.700811803,    0.321628720,   -0.636726499,\         -0.506851256,    0.852599680,   -0.127194136,\          0.501961410,    0.411864907,    0.760529041,\         -0.000017758,   -0.000041828, -106.357391357,\        -18.747209549,    0.224934518,   -8.418970108,\         86.687660217,  126.027915955,   20.000000000 )
-
+set_view (\          
+          0.700811803,    0.321628720,   -0.636726499,\
+         -0.506851256,    0.852599680,   -0.127194136,\ 
+          0.501961410,    0.411864907,    0.760529041,\
+         -0.000017758,   -0.000041828, -106.357391357,\ 
+        -18.747209549,    0.224934518,   -8.418970108,\ 
+         86.687660217,  126.027915955,   20.000000000 )
 ```
 
 Next, let's take a look at `Make.csh`. Here, the variables `ista` and
@@ -192,7 +200,6 @@ while ($i <= $iend)
   sed -e "s/AAA/$i/g" template.pml | sed -e "s/BBB/$IDX/g" >> input_all.pml
   @ i = $i + 1
 end
-
 ```
 
 Let's run `Make.csh` and take a look at the generated `input_all.pml`.
@@ -222,12 +229,12 @@ input_all.pml  md0017.png  md0035.png  md0053.png  md0071.png  md0089.png
 md0000.png     md0018.png  md0036.png  md0054.png  md0072.png  md0090.png
 md0001.png     md0019.png  md0037.png  md0055.png  md0073.png  md0091.png
 :
-
 ```
 
-![](/assets/images/2022_02_md0100_step2.png)
-
+![](/assets/images/2022_02_md0100_step2.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 md0100.png
+</figcaption>
 
 ##  Step3. Write a simulation time in each image 
 
@@ -270,7 +277,6 @@ while ($i <= $iend)
 
   @ i = $i + 1
 end
-
 ```
 
 The options of the `convert` command determine what characters are drawn
@@ -293,12 +299,12 @@ md0001.png  md0018.png  md0035.png  md0052.png  md0069.png  md0086.png
 md0002.png  md0019.png  md0036.png  md0053.png  md0070.png  md0087.png
 md0003.png  md0020.png  md0037.png  md0054.png  md0071.png  md0088.png
 :
-
 ```
 
-![](/assets/images/2022_02_md0100_step3.png)
-
+![](/assets/images/2022_02_md0100_step3.png){: width="400" .align-center }
+<figcaption style="font-size: 1.0em; font-family: 'Arial'; text-align: center;">
 md0100.png
+</figcaption>
 
 ##  Step4. Combine image files into a movie file 
 
@@ -317,7 +323,6 @@ $ ffmpeg -i ../3_convert/md%4d.png -qscale 0 -vcodec mjpeg -s 480x480 md.avi
 
 # Convert the file format from avi to mp4 (if needed)
 $ ffmpeg -i md.avi -b 4000k -vcodec libx264 -pix_fmt yuv420p md.mp4
-
 ```
 
 <!-- [An example of an MD movie](/assets/images/2019_07_md.mp4) -->
