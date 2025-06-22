@@ -22,10 +22,15 @@ efficiently overcome well known problem of conventional MD, wherein the
 conformation could be trapped in a local minimum. For further details of
 REMD method, please refer to the original paper.[^1]
 
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
 REMD simulation in GENESIS requires an **MPI environment**.
 **At least one MPI processor** must be assigned to **one replica**.  
+\
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
 Please note that it may take more than 12 hours
 to finish all simulations in this tutorial.  
+\
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
 **python 3.x.x** is required for analysis in this tutorial.
 {: .notice--info}
 
@@ -350,12 +355,12 @@ temperatures trajectory upon applying the Multistate Bennett Acceptance
 Ratio (MBAR) re-weighting method. For information on MBAR method, please
 refer to the original paper.[^4]
 
-![](/assets/images/2022_04_end-end.png){: width="600" .align-center}
+![](/assets/images/2022_04_end-end.png){: width="400" .align-center}
 
 End to end distance of (Ala)<sub>3</sub>
 {: .text-center}
 
-![](/assets/images/2022_04_Fig.3.png){: width="600" .align-center}
+![](/assets/images/2022_04_Fig.3.png){: width="400" .align-center}
 
 Dihedral angle of (Ala)<sub>3</sub>
 {: .text-center}
@@ -455,7 +460,7 @@ output "`../4_prod_remd/run.log`", and we examine the data from the last
 step. Here, we show an example how to examine the data. Note that the
 acceptance ratio of replica "A" to "B" is identical to "B" to "A", and
 thus we calculate only "A" to "B". For this calculation, you can use the
-script "`calc_retio.sh`".
+script "`calc_ratio.sh`".
 
 ```bash
 # change directory 
@@ -543,9 +548,9 @@ set output "351.30k.jpg"
 plot "T-REMD_parmID-repID.log" using ($1*0.0025*0.001):21 with points pt 9 ps 0.5 lt 3 title "351.30 K"
 ```
  
-![](/assets/images/2022_07_tutorial-12-1-300.00k.jpg){: width="600" .align-center}
-![](/assets/images/2022_07_tutorial-12-1-323.46k.jpg){: width="600" .align-center}
-![](/assets/images/2022_07_tutorial-12-1-351.30k.jpg){: width="600" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-300.00k.jpg){: width="400" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-323.46k.jpg){: width="400" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-351.30k.jpg){: width="400" .align-center}
 
 These graphs indicate that a certain temperature (parameterID) visit
 randomly each replica, and thus random walks in the temperature spaces
@@ -586,7 +591,7 @@ plot \
   "T-REMD_repID-Temperature.log" using ($1*0.0025*0.001):21 with lines lt 1 title "repID=20"
 ```
 
-![](/assets/images/2022_07_tutorial-12-1-RepID1_10_20.jpg){: width="600" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-RepID1_10_20.jpg){: width="400" .align-center}
 
 The temperatures of each replica during the simulation are distributed
 in all temperatures assigned. It means that correct annealing of the
@@ -699,7 +704,7 @@ ndata=2000
 plot for [k=1:20] "potential_parmID".k.".log" u (bin($2,binwidth)):(1.0/ndata) t "Tempreture".k with lines smooth freq
 ```
 
-![](/assets/images/2022_04_pot_temp.jpg){: width="600" .align-center}
+![](/assets/images/2022_04_pot_temp.jpg){: width="400" .align-center}
 
 As can bee seen from the figure the potential energies of all temperatures have good overlap.
 
@@ -925,14 +930,14 @@ set ylabel "PMF (kcal/mol)"
 plot "dist.pmf" u 1:2 w l notitle
 ```
 
-![](/assets/images/2022_07_tutorial-12-1-PMF_distance.jpg){: width="600" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-PMF_distance.jpg){: width="400" .align-center}
 
 We can see that there is the global energy minimum around r = 10 Å. The
 latter corresponds to the α-helix conformation, where the hydrogen bond
 between OY and HNT is formed. These results suggest that in water the
 (Ala)<sub>3</sub> tends to form an extended conformation rather than α-helix. 
 
-### 5.8. Calculating PMF of dihedral distribution
+### 5.9. Calculating PMF of dihedral distribution
 
 The final step of this tutorial is to use the calculated dihedral angle
 (5.6) and weight files from MBAR analysis (5.7) to calculate PMF of
@@ -987,7 +992,7 @@ the free energies in each bin "pmf.dat" and grid points of the CVs
 free-energy landscape using "pmf.dat", "xi.dat", and "yi.dat".
 
 
-![](/assets/images/2022_07_tutorial-12-1_PMF_dihedral.png){: width="601" .align-center}
+![](/assets/images/2022_07_tutorial-12-1_PMF_dihedral.png){: width="400" .align-center}
 
 We can see that there is the global energy minimum around (φ,ψ) = (-75°, 150°) and local energy minimum around (φ,ψ) = (-60°, -45°). The latter
 corresponds to the PPII and α-helix conformation respectively.  As in
