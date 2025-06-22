@@ -1003,13 +1003,13 @@ the PMF about end to end distance in (5.7), we can understand that
 
 ## References
 
-[^1]:  [Y. Sugita et al., Chemical Physics Letters, **314**, 141--151, (1999).](https://doi.org/10.1016/S0009-2614(99)01123-9)
+[^1]:  Y. Sugita et al., Chemical Physics Letters, **314**, 141--151, (1999). [<i class="fas fa-link"></i>](https://doi.org/10.1016/S0009-2614(99)01123-9)
 
-[^2]:  [J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899, (2013).](https://doi.org/10.1021/ct400109a)
+[^2]:  J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899, (2013). [<i class="fas fa-link"></i>](https://doi.org/10.1021/ct400109a)
 
-[^3]:  [A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077, (2008).](https://doi.org/10.1039/B716554D)
+[^3]:  A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077, (2008). [<i class="fas fa-link"></i>](https://doi.org/10.1039/B716554D)
 
-[^4]:  [M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).](https://doi.org/10.1063/1.2978177)
+[^4]:  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008). [<i class="fas fa-link"></i>](https://doi.org/10.1063/1.2978177)
 
 ------------------------------------------------------------------------
 

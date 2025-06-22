@@ -1009,11 +1009,11 @@ research team*
 
 ## References
 
-[^1]:  [P. Liu, B. Kim, R. A. Friesner, B. J. Berne, Replica exchange with solute tempering: A method for sampling biological systems in explicit water. *Proc. Natl. Acad. Sci. U.S.A.***102**, 13749--13754 (2005).](https://doi.org/10.1073/pnas.0506346102)
+[^1]:  P. Liu, B. Kim, R. A. Friesner, B. J. Berne, *Proc. Natl. Acad. Sci. U.S.A.***102**, 13749--13754 (2005). [<i class="fas fa-link"></i>](https://doi.org/10.1073/pnas.0506346102)
 
-[^2]:  [L. Wang, R. A. Friesner, B. J. Berne, Replica exchange with solute scaling: A more efficient version of replica exchange with solute tempering (REST2). *J. Phys. Chem. B* **115**, 9431--9438 (2011).](https://doi.org/10.1021/jp204407d)
+[^2]:  L. Wang, R. A. Friesner, B. J. Berne, *J. Phys. Chem. B* **115**, 9431--9438 (2011). [<i class="fas fa-link"></i>](https://doi.org/10.1021/jp204407d)
 
-[^3]:  [M. Kamiya, Y. Sugita, Flexible selection of the solute region in replica exchange with solute tempering: Application to protein-folding simulations. *J. Chem. Phys.* **149**, 072304 (2018).](https://doi.org/10.1063/1.5016222)
+[^3]:  M. Kamiya, Y. Sugita, *J. Chem. Phys.* **149**, 072304 (2018). [<i class="fas fa-link"></i>](https://doi.org/10.1063/1.5016222)
 
-[^4]:  [M. Shirts, J. D. Chodera, Statistically optimal analysis of samples from multiple equilibrium states. *J. Chem. Phys.*, **129**, 124105--124114 (2008).](https://doi.org/10.1063/1.2978177)
+[^4]:  M. Shirts, J. D. Chodera, *J. Chem. Phys.*, **129**, 124105--124114 (2008). [<i class="fas fa-link"></i>](https://doi.org/10.1063/1.2978177)
 

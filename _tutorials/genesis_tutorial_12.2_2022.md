@@ -814,8 +814,8 @@ July 28, 2022*
 
 ##  References
 
-[^1]: [Y. Sugita, A. Kitao, and Y. Okamoto, *J. Chem. Phys.*, **113**, 6042 (2000).](http://scitation.aip.org/content/aip/journal/jcp/114/15/10.1063/1.1308516)  
-[^2]: [H. Fukunishi, O. Watanabe, and S. Takada, *J. Chem. Phys.*, **116**, 9058 (2002).](http://scitation.aip.org/content/aip/journal/jcp/116/20/10.1063/1.1472510)  
-[^3]: [S. Park, T. Kim, and W. Im, *Phys. Rev. Lett.*, **108**, 108102 (2012).](http://journals.aps.org/prl/abstract/10.1103/PhysRevLett.108.108102)  
-[^4]: [H. Oshima, S. Re, and Y. Sugita, *J. Chem. Theory Comput.*, **15**, 10, 5199 (2019).](https://pubs.acs.org/doi/10.1021/acs.jctc.9b00761)  
+[^1]: Y. Sugita, A. Kitao, and Y. Okamoto, *J. Chem. Phys.*, **113**, 6042 (2000). [<i class="fas fa-link"></i>](http://scitation.aip.org/content/aip/journal/jcp/114/15/10.1063/1.1308516)  
+[^2]: H. Fukunishi, O. Watanabe, and S. Takada, *J. Chem. Phys.*, **116**, 9058 (2002). [<i class="fas fa-link"></i>](http://scitation.aip.org/content/aip/journal/jcp/116/20/10.1063/1.1472510)  
+[^3]: S. Park, T. Kim, and W. Im, *Phys. Rev. Lett.*, **108**, 108102 (2012). [<i class="fas fa-link"></i>](http://journals.aps.org/prl/abstract/10.1103/PhysRevLett.108.108102)  
+[^4]: H. Oshima, S. Re, and Y. Sugita, *J. Chem. Theory Comput.*, **15**, 10, 5199 (2019). [<i class="fas fa-link"></i>](https://pubs.acs.org/doi/10.1021/acs.jctc.9b00761)  
 
