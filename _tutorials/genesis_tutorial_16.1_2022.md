@@ -15,19 +15,19 @@ sidebar:
 Cryo-electron microscopy (cryo-EM) is a powerful tool for determining
 the three-dimensional structure of biomolecules with near-atomic
 resolution. Flexible fitting is widely used to model atomic structures
-from experimentally obtained density maps [^1]. One of the most
-commonly used methods is MD-based flexible fitting [^2], which is
-available in ATDYN and SPDYN in the GENESIS program package [^3], [^4].
+from experimentally obtained density maps.[^1] One of the most
+commonly used methods is MD-based flexible fitting,[^2] which is
+available in ATDYN and SPDYN in the GENESIS program package.[^3]<sup>,</sup> [^4] 
 Here we describe the basic scheme for MD-based flexible fitting using
 the GB/SA implicit solvent model (see also [Tutorial 8.1](/tutorials/genesis_tutorial_8.1_2022/)), using
 cryo-EM density maps of the TPC2 channel. Fitting from a closed-form
 structure to an open-form density map will be demonstrated.
 
-![](/assets/images/2022_03_Figure16.1.1.png)
+![](/assets/images/2022_03_Figure16.1.1.png){: width="800" .align-center}
 
 ## 0. Preparation 
 
-### 0.1 Experimental data 
+### 0.1. Experimental data 
 
 First, let's download the PDB file of the closed form of the TPC2
 channel ([PDBID: 6NQ1](https://www.rcsb.org/structure/6nq1)), and put it to the `~/GENESIS_Tutorials-2022/Data/PDB`
@@ -35,7 +35,7 @@ directory. We will use this structure as the initial structure of the
 flexible fitting. In the following example commands, we use the `wget`
 command to download the file.
 
-![](/assets/images/2022_03_Figure16.1.2.png)
+![](/assets/images/2022_03_Figure16.1.2.png){: width="800" .align-center}
 
 ```bash
 # Download the PDB file of the closed form
@@ -49,18 +49,19 @@ TPC2 channel. Let's access to the website of
 [EMDataResource](https://www.emdataresource.org/), in which we can find experimental data deposited by
 cryo-EM experimentalists. The EM density map data of the open form of
 the TPC2 channel was determined by J. She et al (eLife, 2019), and it is
-registered as the "`EMD-0477`" in this data base. Let's search for "`0477`"
-in the search box on the top of the
-page.**![](/assets/images/2022_03_Figure16.1.3.png)**
+registered as the `EMD-0477` in this data base. Let's search for `0477`
+in the search box on the top of the page.
+![](/assets/images/2022_03_Figure16.1.3.png){: width="800" .align-center}
 
 In the page for `EMD-0477`, we can see various information such as
 summary of the sample preparation, experimental condition, and so on.
 The resolution of the density map is 3.7 &#8491;. To download the density map,
-click the "`Download`" Tab, and then "`emd_0477.map.gp`". Alternatively, in
+click the `Download` Tab, and then `emd_0477.map.gp`. Alternatively, in
 the below example commands, we use the `wget` command for the download.
 Put the density map file to the `~/GENESIS_Tutorials-2022/Data/EMmap`
 directory. We will use this density map as the target map of the
-flexible fitting.**![](/assets/images/2022_03_Figure16.1.4.png)**
+flexible fitting.
+![](/assets/images/2022_03_Figure16.1.4.png){: width="800" .align-center}
 
 ```bash
 # Download the EM density map file of the open form
@@ -71,27 +72,31 @@ $ mkdir EMmap
 $ mv emd_0477.map ./EMmap
 ```
 
-Let's view the PDB structure and cryo-EM density map using VMD. After
-loading the files in VMD, we have to move the seek-bar of the "`Isovalue`"
-in the Graphical Representation window to take a look at the density map
-(Select `[Graphics]` tab in the VMD Main window \> Select `[Representations]` \> (1) Select `[Isosurface]` in the Graphical Representation window \> (2) Select `[Solid Surface]` in the Draw option \> (3) Move Isovalue seek-bar). We can see that the structure is already
-close to the density map, but not perfectly fitted to the map. In the
-VMD Main window, we can see that the total number of heavy atoms
-( \\(N_{atom}\\) ) in the system is about 10,000. Please keep this number in
+Let's view the PDB structure and cryo-EM density map using VMD.  
+After loading the files in VMD, we have to move the seek-bar of the `Isovalue`
+in the Graphical Representation window to take a look at the density map.  
+(Select `[Graphics]` tab in the VMD Main window \> Select `[Representations]`   
+(1) Select `[Isosurface]` in the Graphical Representation window   
+(2) Select `[Solid Surface]` in the Draw option  
+(3) Move `Isovalue` seek-bar).   
+We can see that the structure is already close to the density map, but not perfectly fitted to the map.  
+In the VMD Main window, we can see that the total number of heavy atoms
+( \\(N_\\mathrm{atom}\\) ) in the system is about 10,000. Please keep this number in
 mind, which will be used later.
 
 ```bash
 # Check the PDB structure and EM density map
 $ vmd -ccp4 ./EMmap/emd_0477.map -pdb ./PDB/6NQ1.pdb
 ```
-![](/assets/images/2022_03_Figure16.1.5.png)
 
-### 0.2 Tutorial file
+![](/assets/images/2022_03_Figure16.1.5.png){: width="800" .align-center}
+
+### 0.2. Tutorial file
 
 All the files required for this tutorial are hosted in the 
 [GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal and 
-run the follwing command (see mo in [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/))
+run the follwing command (see more in [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/))
 
 In this tutorial, we use the CHARMM36m force field
 parameters, and we make a symbolic link to the CHARMM toppar directory
@@ -143,7 +148,6 @@ file is already contained in the directory. Here, we simply perform the
 energy minimization without the EM biasing. We execute `ATDYN` for
 `INP`. After the calculation, `min.dcd` and `min.rst` are obtained.
 
-
 ```bash
 # Perform energy minimization using 16 CPU cores
 $ cd ../2_minimize
@@ -159,7 +163,6 @@ INP  log  min.dcd  min.rst
 Then, we carry out the flexible fitting. The control file is already
 included in the directory.
 
-
 ```bash
 # Change directory to run the simulation
 $ cd ../3_fitting
@@ -174,11 +177,10 @@ The following shows the most important parts in the control file. You
 can understand that the flexible fitting is a kind of "restrained MD
 simulation", and most parameters are common with the conventional MD
 simulations. We apply the EM biasing potential on the protein heavy
-atoms, where the force constant of the bias is set to \\(3N_{atom} =  30,000~kcal/mol\\) [^5]. 
+atoms, where the force constant of the bias is set to \\(3N_\\mathrm{atom} =  30,000~\\mathrm{kcal/mol}\\) [^5]. 
 `emfit_sigma` is a resolution parameter, which is
 usually set to the half of the resolution of the target density map
 (sigma = 3.7 &#8491;/ 2 = 1.85 &#8491;).
-
 
 ```toml
 [INPUT]
@@ -206,7 +208,6 @@ emfit_sigma     = 1.85                     # half of the map resolution (3.7 A)
 Now, let's run `ATDYN` for `INP`. The following is an example to execute
 `mpirun` using 16 CPU cores:
 
-
 ```bash
 # Perform flexible fitting
 $ export OMP_NUM_THREADS=4
@@ -221,15 +222,15 @@ where the PDB file is the structure at the last step. The `log` file
 contains time courses of the energy and c.c. (Column 19: `RESTR_CVS001`). Let's view the trajectory by using VMD. You can see
 that the structure is well fitted to the target density.
 
-
 ```bash
 $ vmd -ccp4 ../1_build/emd_0477.map -pdb ../1_build/initial.pdb -psf ../1_build/initial.psf -dcd run.dcd
 ```
 
-![](/assets/images/2022_03_Figure16.1.6.png)
+![](/assets/images/2022_03_Figure16.1.6.png){: width="600" .align-center}
 
-In this tutorial, we have done 500-steps of
-energy minimization and 5-ps of flexible fitting. However, in practice
+<span style="color: #ff6600"><i class="fas fa-exclamation-triangle"></i></span> 
+In this tutorial, we have done 500 steps of
+energy minimization and 5 ps of flexible fitting. However, in practice
 this should not be enough to obtain a well-fitted structure. Keep in
 mind that this tutorial is only a demonstration. If you try to use the
 same conditions as in this tutorial in your actual research, your
@@ -237,17 +238,16 @@ calculations may become unstable or the fitting may not work. In such
 cases, please extend the minimization or simulation steps. In general,
 you may need more than 1,000 steps of minimization or 100 ps of flexible
 fitting. 
-{: .notice--info}
+{: .notice--warning}
 
 ## 4. Analysis
 
-### 4.1 Cross-correlation coefficient 
+### 4.1. Cross-correlation coefficient 
 
 We analyze the time courses of c.c., which can be easily obtained by
 using the following command. We select the value in the Column 19
 (`RESTR_CVS001`) in the `log` file. You can see that the c.c. is
 successfully increased during the fitting.
-
 
 ```bash
 # Change directory for analysis
@@ -260,25 +260,30 @@ $ less cc.log
 
 Let us plot the c.c. using gnuplot.
 
-![](/assets/images/2022_06_figure-16-1-7.png)
+![](/assets/images/2022_06_figure-16-1-7.png){: width="400" .align-center}
 
-### 4.2 MolProbity score
+### 4.2. MolProbity score
 
 Finally, we evaluate the quality of the obtained structure. One of the
-commonly used criteria is the MolProbity score [^6], which represents
+commonly used criteria is the MolProbity score,[^6] which represents
 how good the structure is as a protein. It can be computed with the GUI
-server. Let's access to the [MolProbity Server](http://molprobity.biochem.duke.edu/), and upload `run.pdb` obtained from the
-flexible fitting.
+server. Let's access to the [MolProbity Server](http://molprobity.biochem.duke.edu/), 
+and upload `run.pdb` obtained from the flexible fitting.
 
-![](/assets/images/2022_03_Figure16.1.8.png)After the process, the original
-hydrogen atoms are removed, but the original PDB file "`run.pdb`" are used
-in the next process. We select "Currently working on \[run.pdb File (modified) uploaded by user\]", and then click "analyze all-atom
-contacts and geometry". In the next page, we just click the \[Run programs to perform these analyses\] at the bottom of the page.
+![](/assets/images/2022_03_Figure16.1.8.png){: width="800" .align-center}
 
-![](/assets/images/2022_03_Figure16.1.9.png)Finally, we can obtain the
-MolProbity score of `run.pdb`. The score 1.94 seems to be good.
+After the process, the original hydrogen atoms are removed, 
+but the original PDB file `run.pdb` are used in the next process.  
+We select "Currently working on \[run.pdb File (modified) uploaded by user\]",  
+and then click "analyze all-atom contacts and geometry".  
+In the next page, we just click the \[Run programs to perform these analyses\] at the bottom of the page.
 
-![](/assets/images/2022_03_Figure16.1.10.png)
+![](/assets/images/2022_03_Figure16.1.9.png){: width="800" .align-center}
+
+Finally, we can obtain the MolProbity score of `run.pdb`. 
+The score 1.94 seems to be good.
+
+![](/assets/images/2022_03_Figure16.1.10.png){: width="800" .align-center}
 
 There is still a room to improve the structural quality. If we use a
 simulated annealing protocol in the flexible fitting, or if we further
