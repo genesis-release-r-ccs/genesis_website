@@ -37,9 +37,10 @@ $ cd genesis_tutorial_materials
 This tutorial consists of three steps: 1) system setup, 2)
 MD simulation, and 3) trajectory analysis. GENESIS control file in each
 step is already included in the download file. To use the CHARMM36m
-force field parameters [^1], let's create a symbolic link to the CHARMM
-toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)), and in
-addition, create a symbolic link to the GENESIS bin directory (see [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)).
+force field parameters,[^1] let's create a symbolic link to the CHARMM
+toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)),
+and in addition, create a symbolic link to the GENESIS bin directory 
+(see [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)).
 
 
 ```bash
@@ -56,17 +57,18 @@ $ ls
 
 ##  1. Setup 
 
-In this tutorial, we will simulate alanine-dipeptide in the gas phase,
-i.e., without solvent molecules. First, we build a system using
-VMD/PSFGEN from a PDB file of the alanine-dipeptide. The scheme is the
-same as in Steps1 and 3 of [Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/). We obtain
-`proa.pdb` and `proa.psf` as the input files for GENESIS. The peptide
-has one alanine residue, with the N- and C-termini capped by acetyl
-(CH<sub>3</sub>CO-) and N-methyl (-NHCH<sub>3</sub>) groups, respectively. This structure
-has already been optimized by energy minimization and there are no
-clashes between atoms. Therefore, MD simulations can be started
-immediately. Note that in most cases, energy minimization is required
-before MD simulation (e.g. [Tutorials 3.2](/tutorials/genesis_tutorial_3.2_2022/) and [3.3](/tutorials/genesis_tutorial_3.3_2022/)).
+In this tutorial, we will simulate alanine-dipeptide in the gas phase, i.e.,
+without solvent molecules. First, we build a system using VMD/PSFGEN from a PDB
+file of the alanine-dipeptide. The scheme is the same as in Steps1 and 3 of
+[Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/). We obtain `proa.pdb` and
+`proa.psf` as the input files for GENESIS. The peptide has one alanine residue,
+with the N- and C-termini capped by acetyl (CH<sub>3</sub>CO-) and N-methyl
+(-NHCH<sub>3</sub>) groups, respectively. This structure has already been
+optimized by energy minimization and there are no clashes between atoms.
+Therefore, MD simulations can be started immediately. Note that in most cases,
+energy minimization is required before MD simulation (e.g. 
+[Tutorials 3.2](/tutorials/genesis_tutorial_3.2_2022/) and
+[3.3](/tutorials/genesis_tutorial_3.3_2022/)).
 
 
 ```bash
@@ -111,26 +113,24 @@ INP
 $ less INP
 ```
 
-In the control file, the `[INPUT]` section specifies the topology and
-parameter files for the CHARMMC36m force field. The psf and pdb files
-created in Step1 are also specified. In the `[OUTPUT]` section, the
-filename of the coordinates trajectory data obtained from the MD
-simulation is specified with `dcdfile`. Since the system is in the gas
-phase, non-bonded interactions are calculated with the usual cutoff
-scheme (`electrostatic = CUTOFF`) instead of the Ewald method.
-Therefore, we need to use as long a cutoff distance as possible. Here we
-calculate the potential energy with the cutoff distance of 49 Å, as
-specified in the `[ENERGY]` section.
+In the control file, the `[INPUT]` section specifies the topology and parameter
+files for the CHARMMC36m force field. The psf and pdb files created in Step1 are
+also specified. In the `[OUTPUT]` section, the filename of the coordinates
+trajectory data obtained from the MD simulation is specified with `dcdfile`.
+Since the system is in the gas phase, non-bonded interactions are calculated
+with the usual cutoff scheme (`electrostatic = CUTOFF`) instead of the Ewald
+method.  Therefore, we need to use as long a cutoff distance as possible. Here
+we calculate the potential energy with the cutoff distance of 49 Å, as specified
+in the `[ENERGY]` section.
 
 We use the velocity Verlet integrator (VVER) with a time step of 2 fs
-(`[DYNAMICS]`), where the SHAKE [^2] and RATTLE algorithms [^3] are
-used for constraining the bond length involving hydrogen
-(`[CONSTRAINTS]`). The energy and coordinates are output every 500 steps
-(`[DYNAMICS]`). We use the Bussi thermostat [^4] to keep the
-temperature constant at 298.15 K (`[ENSEMBLE]`). Since the system is the
-gas-phase, we do not use the periodic boundary condition, namely,
-boundary type is set to `NOBC` (no boundary condition) (`[BOUNDARY]`).
-We carry out a 1-ns MD simulation (nsteps = 500000).
+(`[DYNAMICS]`), where the SHAKE [^2] and RATTLE algorithms [^3] are used for
+constraining the bond length involving hydrogen (`[CONSTRAINTS]`). The energy
+and coordinates are output every 500 steps (`[DYNAMICS]`). We use the Bussi
+thermostat [^4] to keep the temperature constant at 298.15 K (`[ENSEMBLE]`).
+Since the system is the gas-phase, we do not use the periodic boundary
+condition, namely, boundary type is set to `NOBC` (no boundary condition)
+(`[BOUNDARY]`).  We carry out a 1-ns MD simulation (`nsteps = 500000`).
 
 
 ```toml
@@ -170,13 +170,14 @@ temperature      = 298.15    # initial and target temperature (K)
 type             = NOBC      # non-periodic system
 ```
 
-Now let's run GENESIS. ATDYN is more suitable than SPDYN for this
-simulation because the peptide is very small and the system is
-non-periodic. Here we specify one OpenMP thread and use only one CPU
-core for the calculation (see the [Usage page](/docs/usage/) for details). The simulation takes approximately 20 seconds. Specifying
-`> log` on the command line will write the output message to `log`
-(this procedure is called "[Redirection](https://en.wikipedia.org/wiki/Redirection_(computing))"). if `> log` is omitted, the message will be
-displayed in the terminal window.
+Now let's run GENESIS. ATDYN is more suitable than SPDYN for this simulation
+because the peptide is very small and the system is non-periodic. Here we
+specify one OpenMP thread and use only one CPU core for the calculation (see the
+[Usage page](/docs/usage/) for details). The simulation takes approximately 20
+seconds. Specifying `> log` on the command line will write the output message to
+`log` (this procedure is called
+"[Redirection](https://en.wikipedia.org/wiki/Redirection_(computing))"). if 
+`> log` is omitted, the message will be displayed in the terminal window.
 
 
 ```bash
@@ -203,11 +204,11 @@ $ vmd ../1_setup/2_psfgen/proa.pdb -dcd md.dcd
 
 ![](/assets/images/2022_04_Figure3.1_VMD.png)
 
- The resulting DCD file is a binary file, not
-a text file. So, even if you use the `less` command for the dcd file,
-its contents cannot be visually confirmed by human eyes. In [Tutorial 4.1](/tutorials/genesis_tutorial_4.1_2022/), you will
-learn how to handle DCD files.
-
+ The resulting DCD file is a binary file, not a text file. So, even if you use
+ the `less` command for the dcd file, its contents cannot be visually confirmed
+ by human eyes. In [Tutorial 4.1](/tutorials/genesis_tutorial_4.1_2022/), you
+ will learn how to handle DCD files.
+ 
 Also, let's take a look at the `log` file with the `less` command.
 
 
@@ -216,17 +217,17 @@ Also, let's take a look at the `log` file with the `less` command.
 $ less log
 ```
 
-In the middle of the `log` file, there are many lines beginning with
-`INFO:`. In these lines, system information at each step is displayed,
-where `STEP` is the number of MD steps, `TIME` is the simulation time
-(in picoseconds), `TOTAL_ENE` is the sum of the potential energy
-(`POTENTIAL_ENE`) and kinetic energy (`KINETIC_ENE`), `RMSG` is the
-gradient of the potential energy averaged over all atoms
-(root-mean-square gradient). The components of the potential energy of
-the CHARMM force field are then displayed (bond, angle, Urey-Bradley, dihedral angle, improper torsion angle, CMAP, van der Waals, Coulomb).
-`TEMPERATURE` is the system temperature, which is calculated from the
-kinetic energy and velocities by \\(K\_\mathrm{e} = 1/2 \sum m_i v_i^2 = 3/2 Nk\_\mathrm{B}T\\). The
-unit of the energy is kcal/mol, and temperature is Kelvin.
+In the middle of the `log` file, there are many lines beginning with `INFO:`. In
+these lines, system information at each step is displayed, where `STEP` is the
+number of MD steps, `TIME` is the simulation time (in picoseconds), `TOTAL_ENE`
+is the sum of the potential energy (`POTENTIAL_ENE`) and kinetic energy
+(`KINETIC_ENE`), `RMSG` is the gradient of the potential energy averaged over
+all atoms (root-mean-square gradient). The components of the potential energy of
+the CHARMM force field are then displayed (bond, angle, Urey-Bradley, dihedral
+angle, improper torsion angle, CMAP, van der Waals, Coulomb).  `TEMPERATURE` is
+the system temperature, which is calculated from the kinetic energy and
+velocities by \\(K\_\mathrm{e} = 1/2 \sum m_i v_i^2 = 3/2 Nk\_\mathrm{B}T\\).
+The unit of the energy is kcal/mol, and temperature is Kelvin.
 
 
 ```
@@ -248,26 +249,25 @@ INFO:        500          1.0000         -3.6016        -10.1971          6.5955
 :
 ```
 
- Please note that your detailed results may
-differ from the above results. The main reason is that the initial
-velocities of atoms vary depending on the random number seed, and the
-seed is automatically determined according to the time the program is
-executed, unless you specify a seed value. If you want to fix the
-initial seed value, set `iseed` explicitly in the `[DYNAMICS]` section
-(see the User manual).
+Please note that your detailed results may differ from the above results. The
+main reason is that the initial velocities of atoms vary depending on the random
+number seed, and the seed is automatically determined according to the time the
+program is executed, unless you specify a seed value. If you want to fix the
+initial seed value, set `iseed` explicitly in the `[DYNAMICS]` section (see the
+User manual).
 
- `VOLUME` is the volume of the system. In
-this case, zero is output, since we employed the gas-phase. If periodic
-system is simulated as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/), the
-volume of the simulation box is displayed in this column.
+ `VOLUME` is the volume of the system. In this case, zero is output, since we
+ employed the gas-phase. If periodic system is simulated as in [Tutorial
+ 3.2](/tutorials/genesis_tutorial_3.2_2022/), the volume of the simulation box
+ is displayed in this column.
 
-At the end of the `log` file, detailed computation times for this
-simulation are displayed, with timers for energy calculation,
-integrator, pair list making, and so on. `setup` is the time taken to
-start the MD simulation, including loading the input file and initial
-memory allocation, and `dynamics` represents the time for pure MD
-simulation, excluding initial setup. It can be seen that the most time
-consuming part is the non-bonded energy calculation (van der Waals and Coulomb terms).
+At the end of the `log` file, detailed computation times for this simulation are
+displayed, with timers for energy calculation, integrator, pair list making, and
+so on. `setup` is the time taken to start the MD simulation, including loading
+the input file and initial memory allocation, and `dynamics` represents the time
+for pure MD simulation, excluding initial setup. It can be seen that the most
+time consuming part is the non-bonded energy calculation (van der Waals and
+Coulomb terms).
 
 
 ```bash
@@ -349,7 +349,8 @@ Now let's calculate the averaged potential energy from
 `potential_ene.log`. The averaged value for each column can be quickly
 calculated with the `awk` command. The following is an example,
 analyzing the 2nd column of `potential_ene.log`. This file consists of
-1,002 lines, and the first two lines (header information and initial step energy) are skipped in the analysis.
+1,002 lines, and the first two lines (header information and initial step
+energy) are skipped in the analysis.
 
 
 ```bash
@@ -385,30 +386,30 @@ INP
 $ less INP
 ```
 
-We specify the input and output files in the `[INPUT]` and `[OUTPUT]`
-sections. In the `[TRAJECTORY]` section, we specify the number of MD
-steps and coordinates output period corresponding to the DCD file to be
-analyzed and the nsteps and crdout_period in the ATDYN control file,
-respectively (for details on `[TRAJECTORY]`, see the FAQ). The
-`[OPTION]` section sets the list of atoms to be used in the dihedral
-angle calculation. These atom names should be written carefully by
-looking at the molecular structure in VMD or by checking the PDB file.
-Here, the syntax for atom selection is
-\[segment_name\]:\[residue_id\]:\[residue_name\]:\[atom_name\]. In
-particular, PROA:1:ALAD:CA means the Cα atom of ALAD1 in segment:PROA.
+We specify the input and output files in the `[INPUT]` and `[OUTPUT]` sections.
+In the `[TRAJECTORY]` section, we specify the number of MD steps and coordinates
+output period corresponding to the DCD file to be analyzed and the nsteps and
+crdout_period in the ATDYN control file, respectively (for details on
+`[TRAJECTORY]`, see [this page](/docs/usage_analysis_multiple_DCD/)). The
+`[OPTION]` section sets the list of atoms to be used in the dihedral angle
+calculation. These atom names should be written carefully by looking at the
+molecular structure in VMD or by checking the PDB file.  Here, the syntax for
+atom selection is
+\[segment_name\]:\[residue_id\]:\[residue_name\]:\[atom_name\]. In particular,
+PROA:1:ALAD:CA means the Cα atom of ALAD1 in segment:PROA.
 
-We specify the input and output files in the `[INPUT]` and `[OUTPUT]`
-sections. In the `[TRAJECTORY]` section, we specify the DCD file to be
-analyzed, and also total number of MD steps (`md_step`) and MD output
-period (`mdout_period`), each of which is corresponding to `nsteps` and
-`crdout_period` in the control file of ATDYN, respectively (For more detailed description of the `[TRAJECTORY]` section, see [Appendix 1](/tutorials/genesis_tutorial_appendix_1_2022/)). In the
+We specify the input and output files in the `[INPUT]` and `[OUTPUT]` sections.
+In the `[TRAJECTORY]` section, we specify the DCD file to be analyzed, and also
+total number of MD steps (`md_step`) and MD output period (`mdout_period`), each
+of which is corresponding to `nsteps` and `crdout_period` in the control file of
+ATDYN, respectively (For more detailed description of the `[TRAJECTORY]`
+section, see [Appendix 1](/tutorials/genesis_tutorial_appendix_1_2022/)). In the
 `[OPTION]` section, we set atom lists to be used for the dihedral angle
-calculation. These atom names should be written carefully by looking at
-the molecular structure in VMD or by checking the PDB file. Here, the
-syntax of the atom selection is
-\[segnemt_name\]:\[residue_id\]:\[residue_name\]:\[atom_name\]. In
-particular, `PROA:1:ALAD:CA` means the Cα atom of ALAD1 in
-`segment:PROA`.
+calculation. These atom names should be written carefully by looking at the
+molecular structure in VMD or by checking the PDB file. Here, the syntax of the
+atom selection is
+\[segnemt_name\]:\[residue_id\]:\[residue_name\]:\[atom_name\]. In particular,
+`PROA:1:ALAD:CA` means the Cα atom of ALAD1 in `segment:PROA`.
 
 
 ```toml

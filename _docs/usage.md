@@ -46,7 +46,7 @@ $ less INP
 Then, the users edit this control file by themselves according to the user's
 desired simulation condition. Note that in one line of the file all characters
 after "#" are recognized as a comment (not read in the program). Example control
-files are shown in [Samples](/docs/samples2021/) and
+files are shown in [Examples](/docs/examples/) and
 [Tutorials](/docs/tutorial_2022/). In order to run the MD
 simulation, the users execute atdyn/spdyn for the control file. In the following
 example, MD simulation is carried out with 16 CPU cores, where the 4 MPI
@@ -57,6 +57,8 @@ processors and 4 OpenMP threads are employed for parallel calculation:
 $ export OMP_NUM_THREADS=4
 $ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
 ```
+
+You may want to know [more details about using spdyn with hybrid MPI/OpenMP](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
 ##  General usage of the trajectory analysis tools
 
@@ -75,7 +77,7 @@ $ less INP
 
 Then, the users edit this control file by themselves according to the
 user's desired condition. Example control files are shown in
-[Samples](/docs/samples2021/) and
+[Examples](/docs/examples/) and
 [Tutorials](/docs/tutorial_2022/). In order to run the analysis, the
 users execute the tool for the control file.
 
@@ -86,6 +88,8 @@ $ /home/user/genesis/bin/rmsd_analysis INP > log
 
 Note that MPI is disable in most analysis tools, while OpenMP parallelization is
 enable in some tools (e.g., `wham_analysis` and `mbar_analysis`).
+
+Sometimes you may prefer to [analyze multiple trajectories in a single run](/docs/usage_analysis_multiple_DCD/).
 
 ## Usage on specific computer systems
 

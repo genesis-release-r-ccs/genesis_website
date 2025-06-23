@@ -204,10 +204,12 @@ are employed for one replica (448 CPU cores in total).
 # Carry out the equilibration run
 $ mpirun -np 112 -x OMP_NUM_THREADS=4 ../bin/spdyn INP > log
 ```
-<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span> 
-Number of MPI processors in each replica is automatically set to 
-"total MPI processors ÷ number of replicas". In addition, each replica keeps 
-[the rule of hybrid MPI/OpenMP parallelization for single MD simulation](/docs/FAQ/).
+
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span> Number of
+MPI processors in each replica is automatically set to "total MPI processors
+÷ number of replicas". In addition, each replica keeps  [the rule of hybrid
+MPI/OpenMP parallelization for single MD
+simulation](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 {: .notice--info}
 
 Let's check the peptide conformation in the trajectory of each replica

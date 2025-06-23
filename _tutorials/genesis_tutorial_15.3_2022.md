@@ -108,9 +108,8 @@ The dcd file is specified by `trjfile1`. There are 10 snapshots in
 `ala3.dcd`. `ana_period1` is the frequency of snapshot structures used
 for the analysis. `trj_type = COOR+BOX` means the dcd file includes the
 information of both coordinates and a box size. `trj_natom = 0` takes
-the number of atoms from a reffile of \[INPUT\]. For more details about
-this section, see
-[FAQ](tutorial/faq/faq2.html).
+the number of atoms from a reffile of `[INPUT]`. For more details about
+this section, see [FAQ](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
 ```toml
 [SELECTION]
@@ -163,7 +162,8 @@ $ chmod +x run.sh
 $ ./run.sh
 ```
 
-When successful, you will find ala3_ID.psf, .pdb, .crd, for ID = 5 and 10. You may visually check the created system using VMD,
+When successful, you will find ala3_ID.psf, .pdb, .crd, for ID = 5 and 10. You
+may visually check the created system using VMD,
 
 ```bash
 $ vmd ala3_5.pdb
@@ -201,9 +201,9 @@ $ vmd -psf solvator.psf -dcd tim.dcd
 ![](/assets/images/2022_02_tim_snapshot1-2.png){: width="400"}
 
 The enzyme is in the middle, which is a homo dimer taken from
-PDBID:[7TIM](https://www.rcsb.org/structure/7TIM). The water molecules are diffusing out of the
-simulation box as before. We use `qmmm_generator` to wrap & cut the
-water molecules.
+PDBID:[7TIM](https://www.rcsb.org/structure/7TIM). The water molecules are
+diffusing out of the simulation box as before. We use `qmmm_generator` to wrap &
+cut the water molecules.
 
 "qmmm_generator.inp" is an input file for `qmmm_generator`. The content
 is almost the same as before. The different part is the following,
@@ -226,8 +226,9 @@ frame_number        = 10
 
 The `origin_atom_index` is set to the center of mass of the two enzymes,
 TIMA and TIMB (group1), and the `qmmm_atom_index` is set to be 15
-angstrom around TIMA or TIMB (group 2). Note that potasium ions (segment name POT), which were added to neutralize the system in the preceding
-calculations, are now removed.
+angstrom around TIMA or TIMB (group 2). Note that potasium ions (segment name
+POT), which were added to neutralize the system in the preceding calculations,
+are now removed.
 
 `qm_atom_index` is an optional parameter, which prints the specified
 atoms to a pdb file (xxx_qmregion.pdb). This option is useful to check
