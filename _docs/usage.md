@@ -14,7 +14,7 @@ In the GENESIS program package, not only MD simulators but also various
 trajectory analysis tools are available. The users execute those
 programs on command line. Here, we briefly explain how to execute them.
 The users may find other useful information in the online
-[Tutorials](/tutorials/genesis_tutorial_2022/) for practical usage, and also user
+[Tutorials](/docs/tutorial_2022/) for practical usage, and also user
 manual for basic usage (see Chapters "Getting started" and "Available
 programs").
 
@@ -47,7 +47,7 @@ Then, the users edit this control file by themselves according to the user's
 desired simulation condition. Note that in one line of the file all characters
 after "#" are recognized as a comment (not read in the program). Example control
 files are shown in [Samples](/docs/samples2021/) and
-[Tutorials](/tutorials/genesis_tutorial_2022/). In order to run the MD
+[Tutorials](/docs/tutorial_2022/). In order to run the MD
 simulation, the users execute atdyn/spdyn for the control file. In the following
 example, MD simulation is carried out with 16 CPU cores, where the 4 MPI
 processors and 4 OpenMP threads are employed for parallel calculation:
@@ -76,7 +76,7 @@ $ less INP
 Then, the users edit this control file by themselves according to the
 user's desired condition. Example control files are shown in
 [Samples](/docs/samples2021/) and
-[Tutorials](/tutorials/genesis_tutorial_2022/). In order to run the analysis, the
+[Tutorials](/docs/tutorial_2022/). In order to run the analysis, the
 users execute the tool for the control file.
 
 ```bash
