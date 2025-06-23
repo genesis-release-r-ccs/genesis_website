@@ -82,4 +82,6 @@ sidebar-basic:
         url: /docs/publications/
       - title: "Portfolio"
         url: /docs/showcase/
+      - title: "FAQ"
+        url: /docs/FAQ/
 
