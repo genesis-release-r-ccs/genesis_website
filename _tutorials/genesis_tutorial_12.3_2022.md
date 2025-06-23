@@ -769,7 +769,7 @@ mass_weight     = YES       # mass-weighted fitting
 [OPTION]
 check_only      = NO
 convert_type    = PARAMETER
-convert_ids     = 1         # only lowest T replicas
+convert_ids     =           # 1 for only the lowest T replica; empty for all replicas
 num_replicas    = 4
 nsteps          = 3000000
 exchange_period = 3000
