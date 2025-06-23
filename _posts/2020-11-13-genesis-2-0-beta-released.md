@@ -3,6 +3,8 @@ title: GENESIS 2.0 beta available
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 Ver. 2.0 beta is quite faster than ver. 1.X, and also optimized for the

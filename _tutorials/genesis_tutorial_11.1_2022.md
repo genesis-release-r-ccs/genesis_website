@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 11.1 (2022)"
+gpos: 011.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -29,7 +30,7 @@ setup to basic analysis of the simulation results.
 
 To begin, we need a set of scripts that assist in generating the topology and
 coordinate files required for CG MD simulations in GENESIS.
-This collection of scripts is referred to as the GENESIS-cg-tool[^3].
+This collection of scripts is referred to as the GENESIS-cg-tool.[^3]
 
 The tool is included in the GENESIS package and can be found in the
 `src/analysis/cg_tools` subdirectory. Alternatively, it is available on

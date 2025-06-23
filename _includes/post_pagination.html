@@ -1,0 +1,76 @@
+<!-- {% if page.previous or page.next %}
+  <nav class="pagination">
+    {% if page.previous %}
+      <a href="{{ page.previous.url | relative_url }}" class="pagination--pager" title="{{ page.previous.title | markdownify | strip_html | strip}}">{{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</a>
+    {% else %}
+      <a href="#" class="pagination--pager disabled">{{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</a>
+    {% endif %}
+    {% if page.next %}
+      <a href="{{ page.next.url | relative_url }}" class="pagination--pager" title="{{ page.next.title | markdownify | strip_html | strip}}">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }}</a>
+    {% else %}
+      <a href="#" class="pagination--pager disabled">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }}</a>
+    {% endif %}
+  </nav>
+{% endif %}
+-->
+
+
+{% comment %}
+自定义分页逻辑：
+- 对 tutorials collection 使用 gpos 排序
+- 其他页面使用默认 page.previous / page.next
+{% endcomment %}
+
+{% if page.collection == "tutorials" and page.gpos %}
+  {%- assign tutorials = site.tutorials | where_exp: "p", "p.gpos" -%}
+  {%- assign sorted = tutorials | sort: "gpos" -%}
+  {%- assign current = page.url -%}
+  {%- assign prev = nil -%}
+  {%- assign next = nil -%}
+  {%- assign found = false -%}
+
+  {%- for p in sorted -%}
+    {%- if found %}
+      {%- assign next = p -%}
+      {%- break -%}
+    {%- endif %}
+    {%- if p.url == current %}
+      {%- assign found = true -%}
+    {%- else %}
+      {%- assign prev = p -%}
+    {%- endif %}
+  {%- endfor -%}
+
+  {% if prev or next %}
+  <nav class="pagination">
+    {% if prev %}
+      <a href="{{ prev.url | relative_url }}" class="pagination--pager" title="{{ prev.title }}">Previous</a>
+    {% else %}
+      <span class="pagination--pager disabled">Previous</span>
+    {% endif %}
+
+    {% if next %}
+      <a href="{{ next.url | relative_url }}" class="pagination--pager" title="{{ next.title }}">Next</a>
+    {% else %}
+      <span class="pagination--pager disabled">Next</span>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+{% else %}
+  {% if page.previous or page.next %}
+  <nav class="pagination">
+    {% if page.previous %}
+      <a href="{{ page.previous.url | relative_url }}" class="pagination--pager" title="{{ page.previous.title | markdownify | strip_html | strip }}">Previous</a>
+    {% else %}
+      <span class="pagination--pager disabled">Previous</span>
+    {% endif %}
+
+    {% if page.next %}
+      <a href="{{ page.next.url | relative_url }}" class="pagination--pager" title="{{ page.next.title | markdownify | strip_html | strip }}">Next</a>
+    {% else %}
+      <span class="pagination--pager disabled">Next</span>
+    {% endif %}
+  </nav>
+  {% endif %}
+{% endif %}

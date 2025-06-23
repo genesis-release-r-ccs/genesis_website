@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 15.2 (2022)"
+gpos: 015.002
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:57+09:00
 layout: single
@@ -79,16 +80,12 @@ section (MM coordinates), which are supplemented by GENESIS in runtime.
 
 ```toml
 Hamiltonian = DFTB {
-   SCC                = Yes
-(1)
+   SCC                = Yes                   (1)
    ThirdOrderFull     = Yes
-   Charge             = 0.0
-(2)
-   ReadInitialCharges = Yes
-(3)
+   Charge             = 0.0                   (2)
+   ReadInitialCharges = Yes                   (3)
    SlaterKosterFiles  = Type2FileNames {
-     Prefix = "/path/to/dftb/slako/3ob-3-1/"
-(4)
+     Prefix = "/path/to/dftb/slako/3ob-3-1/"  (4)
      Separator = "-"
      Suffix = ".skf"
    } 
@@ -102,8 +99,7 @@ Hamiltonian = DFTB {
      Exponent = 4.05
    }
    MaxAngularMomentum {
-     H = "s"
-(5)
+     H = "s"                                  (5)
      C = "p"
      N = "p"
      O = "p"
@@ -114,8 +110,7 @@ Hamiltonian = DFTB {
  }
 
  Analysis = {
-   CalculateForces = Yes
-(6)
+   CalculateForces = Yes                      (6)
  }
 ```
 
@@ -166,7 +161,7 @@ The system can be visualized using VMD,
 $ vmd -e snapshot50.vmd
 ```
 
-![](/assets/images/2019_02_cut.png){: width="400"}
+![](/assets/images/2019_02_cut.png){: width="400" .align-center}
 
 You will find a cluster system, where the solute, Ala<sub>3</sub>, is located in
 the center of a sphere surrounded by a layer of water molecules of 20 Å
@@ -433,12 +428,12 @@ The command creates minimize.pdf and temp.pdf. The former shows the
 variation of the energy and maximum gradient along the minimization
 step,
 
-![](/assets/images/2020_12_minimize.jpg)
+![](/assets/images/2020_12_minimize.jpg){: width="800" .align-center}
 
 and the latter gives the variation of temperature along the simulation
 time,
 
-![](/assets/images/2020_12_temp.jpg)
+![](/assets/images/2020_12_temp.jpg){: width="800" .align-center}
 
 *Written by Kiyoshi Yagi@RIKEN Theoretical molecular science laboratory\
 Dec., 5, 2020*\

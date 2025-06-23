@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 15.1 (2022)"
+gpos: 015.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:57+09:00
 layout: single
@@ -12,10 +13,10 @@ sidebar:
 # What is QM/MM? 
 
 QM/MM method is a multiscale/multiphysics approach, first proposed in
-seminal papers by Warshel and Karplus [^1] and Warshel and Levitt [^2], which treats a chemically
+seminal papers by Warshel and Karplus [^1] and Warshel and Levitt, [^2] which treats a chemically
 important region by the electronic structure theory (QM) and the
 surrounding environment by a molecular mechanics force field (MM). The
-method was recently implemented into GENESIS [^3] [^4].
+method was recently implemented into GENESIS. [^3]<sup>,</sup> [^4]
 In this section, we give a brief introduction to the theory.
 
 ## 1. MM force field 
@@ -130,7 +131,7 @@ GENESIS has a general interface, which makes feasible to easily connect
 with any QM programs. The structure of the interface is sketched in the
 figure below,
 
-![](/assets/images/2019_02_qmmm_scheme.png)
+![](/assets/images/2019_02_qmmm_scheme.png){: width="400" .align-center}
 
 `qmcnt` and `qmexe` are the options specified in a \[QMMM\] section of
 the control file. `qmcnt` is a template file to generate input files for

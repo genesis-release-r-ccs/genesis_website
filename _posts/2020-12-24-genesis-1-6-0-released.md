@@ -3,6 +3,8 @@ title: GENESIS 1.6.0 released
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 This version has the following updates.

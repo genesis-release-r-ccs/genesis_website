@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 3.3 (2022)"
+gpos: 003.003
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -79,7 +80,7 @@ has 8 CPU cores. Thus, there are 16 CPU cores in total. This CPU
 architecture can be pictured as follows. Please try to draw a similar
 picture for your case.
 
-![](/assets/images/2019_08_cpu2.jpg)
+![](/assets/images/2019_08_cpu2.jpg){: style="width:80%;" .align-center}
 
  If number of logical processors is twice the
 (number of physical CPUs) \* (number of cores in one physical CPU),
@@ -114,7 +115,7 @@ $ ls ./5_ionize
 build.tcl  ionized.pdb  ionized.psf  log
 ```
 
-![](/assets/images/2019_07_setup_figure5.jpg)
+![](/assets/images/2019_07_setup_figure5.jpg){: style="width:80%;" .align-center}
 
 ##  2. Minimization
 
@@ -171,7 +172,7 @@ perform a 50-ps MD simulation with positional constraints on the heavy
 atoms of the protein (force constant = 1.0 kcal/mol/Å<sup>2</sup>) in the NVT
 ensemble at *T* = 298.15 K. The equations of motion are integrated with
 a time step of 2 fs with the velocity Verlet algorithm, in which the
-SHAKE/RATTLE [^3] [^4] and SETTLE [^5] algorithms are used for the bond
+SHAKE/RATTLE [^3]<sup>,</sup>[^4] and SETTLE [^5] algorithms are used for the bond
 constraint. The temperature is controlled with the Bussi thermostat
 [^6]. Then, we perform a 50-ps MD simulation in the NPT ensemble at *T*
 = 298.15 K and *P* = 1 atm with the Bussi thermostat and the barostat
@@ -550,18 +551,18 @@ March 8, 2022*
 
 ##  References
 
-[^1]:  Huang, J., *et al.*, **2017**, *Nat. Methods*, 14, 71-73.
+[^1]: Huang, J., *et al.*, **2017**, *Nat. Methods*, 14, 71--73.[<i class="fas fa-link"></i>](https://www.nature.com/articles/nmeth.4067)
 
-[^2]:  Darden, T., *et al.*, **1993**, *J. Chem. Phys.*, 98, 10089-10092.
+[^2]: Darden, T., *et al.*, **1993**, *J. Chem. Phys.*, 98, 10089--10092.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/98/12/10089/461765/Particle-mesh-Ewald-An-N-log-N-method-for-Ewald)
 
-[^3]:  Ryckaert, J. P., *et al.*, **1977**, *J. Comput. Phys.*, 23, 327-341.
+[^3]: Ryckaert, J. P., *et al.*, **1977**, *J. Comput. Phys.*, 23, 327--341.[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999177900985)
 
-[^4]:  Andersen, H. C., **1983**, *J. Comp. Phys.*, 52, 24-34.
+[^4]: Andersen, H. C., **1983**, *J. Comp. Phys.*, 52, 24--34.[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999183900141?via%3Dihub)
 
-[^5]:  Miyamoto, S., Kollman, P. A., **1992**, *J. Comput. Chem.*, 13, 952-962.
+[^5]: Miyamoto, S., Kollman, P. A., **1992**, *J. Comput. Chem.*, 13, 952--962.[<i class="fas fa-link"></i>](https://onlinelibrary.wiley.com/doi/10.1002/jcc.540130805)
 
-[^6]:  Bussi, G., *et al.*, **2007**, *J. Chem. Phys.*, 126, 014101.
+[^6]: Bussi, G., *et al.*, **2007**, *J. Chem. Phys.*, 126, 014101.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/126/1/014101/186581/Canonical-sampling-through-velocity-rescaling)
 
-[^7]:  Bussi, G., *et al.*, **2009**, *J. Chem. Phys.*, 130, 074101.
+[^7]: Bussi, G., *et al.*, **2009**, *J. Chem. Phys.*, 130, 074101.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/130/7/074101/188096/Isothermal-isobaric-molecular-dynamics-using)
 
-[^8]:  Tuckerman, M., *et al.*, **1992**, *J. Chem. Phys.*, 97, 1990-2001.
+[^8]: Tuckerman, M., *et al.*, **1992**, *J. Chem. Phys.*, 97, 1990--2001.[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/97/3/1990/221848/Reversible-multiple-time-scale-molecular)

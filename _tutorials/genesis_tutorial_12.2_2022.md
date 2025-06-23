@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 12.2 (2022)"
+gpos: 012.002
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -16,7 +17,10 @@ computational biophysics. Since complex biomolecules have many
 local-minimum energy states, conventional MD simulations often get
 trapped there. Umbrella sampling method has been widely used to
 calculate free energy profile. In 2000, Sugita et al. proposed the
-replica-exchange umbrella sampling method (REUS [^1], which is also called Hamiltonian REMD [^2] or Window exchange umbrella sampling [^3]), in which the restraint potentials are exchanged between replicas
+replica-exchange umbrella sampling method (REUS,[^1] 
+which is also called Hamiltonian REMD[^2] or 
+Window exchange umbrella sampling[^3]), 
+in which the restraint potentials are exchanged between replicas
 to enhance conformational sampling. In this tutorial, we demonstrate a
 REUS simulation of a small peptide using GENESIS.
 
@@ -46,7 +50,7 @@ $ cd genesis_tutorial_materials/tutorial-12.2
 ```
 
 Since we use the CHARMM force field, we make a symbolic link to the CHARMM 
-toppar directory (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)).
+toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 ```bash
 # Make a symbolic link to the CHARMM toppar directory
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
@@ -66,7 +70,6 @@ are already included in the file.
 In this tutorial, we simulate the (Ala)<sub>3</sub>  in water. We use the same
 input PDB and PSF files as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/).
 
-
 ```bash
 # Prepare the input files
 $ cd 1_setup
@@ -82,7 +85,6 @@ simulation to equilibrate the system. We use the same protocols
 described in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). Since we have already equilibrated the system in
 Tutorial 3.2, we use the restart file obtained previously.
 
-
 ```bash
 # Take over the restart file obtained in Tutorial 3.2
 $ cd ../2_minimize_pre-equi
@@ -96,7 +98,6 @@ Final goal of this tutorial is to calculate the free energy profile (or potentia
 each replica has an individual restraint potential, we have to
 equilibrate the system using 14 different restraints before the
 production run. Let's take a look at the control file:
-
 
 ```toml
 # change directory
@@ -154,14 +155,24 @@ peptide forms a fully extended conformation.
 ![](/assets/images/2019_07_ala3_dist.jpg){: width="400" .align-center}
 
 <span style="color: #ff6600"><i class="fas fa-exclamation-triangle"></i></span> 
-Index of the restraint function to be used in
-REUS is specified in `rest_function` in `[REMD]` (red character above),
-and parameters to be exchanged in REUS are specified in `constant` and
-`reference` in `[RESTRAINTS]`. Note that the values in the same column
-in the `constant` and `reference` lines are packed into one "parameter
-set", and they are exchanged between replicas. Specifically, if the user
-sets `constant1 = 1.2 1.4 1.6` and `reference1 = 1.80 2.72 3.64`,
-each replica has the parameter (1.2, 1.80) or (1.4, 2.72) or (1.6, 3.64).
+<!-- Index of the restraint function to be used in -->
+<!-- REUS is specified in `rest_function` in `[REMD]` (red character above), -->
+<!-- and parameters to be exchanged in REUS are specified in `constant` and -->
+<!-- `reference` in `[RESTRAINTS]`. -->
+Index of the restraint function used in REUS is specified in `[REMD]` section by `rest_function`, 
+and the restraint function is further defined in `[RESTRANTS]` section.  
+Note that, in the `[REMD]` section, the suffix on `rest_function` (e.g. the “1” in `rest_function1`) 
+denotes the REMD dimension and must match the suffix on other `[REMD]` settings such as 
+`type`, `nreplica`, and `cyclic_params`; 
+the value assigned to `rest_function` (the number after the `=`) is the restraint index.  
+In the `[RESTRAINTS]` section, that same restraint index must serve as the suffix on 
+`function`, `constant`, `reference`, and `select_index` to define the corresponding parameters.  
+Note that the values in the same column of the `constant` and `reference` lines 
+are packed into one "parameter set" to be set to and exchanged between replicas.  
+Specifically, if the user sets 
+`constant1 = 1.2 1.4 1.6` and `reference1 = 1.80 2.72 3.64`,
+replicas receive the sets (1.2, 1.80), (1.4, 2.72) or (1.6, 3.64).
+{: .notice--warning}
 
 In the `[OUTPUT]` section, we can see that there is a bracket `{}` in
 the filename. The replica number is automatically inserted into this
@@ -178,6 +189,7 @@ If you are going to employ the NVT ensemble
 in the production run, you should NOT use the NPT ensemble at this
 stage. Otherwise, each replica has different volume in the production
 run.
+{: .notice--warning}
 
 Now, let's execute `spdyn`. Since we have 14 replicas, the total number
 of MPI processors should be 14 × *n*,  where *n* is the number of MPI
@@ -188,21 +200,19 @@ correct number of processors in your batch script, when you run the
 simulation. The following is an example command, in which 32 CPU cores
 are employed for one replica (448 CPU cores in total).
 
-
 ```bash
 # Carry out the equilibration run
 $ mpirun -np 112 -x OMP_NUM_THREADS=4 ../bin/spdyn INP > log
 ```
-
 <span style="color: #0000ff"><i class="fas fa-info-circle"></i></span> 
 Number of MPI processors in each replica is automatically set to 
 "total MPI processors ÷ number of replicas". In addition, each replica keeps 
-[the rule of hybrid MPI/OpenMP parallelization for single MD simulation](faq/faq1/index.html).
+[the rule of hybrid MPI/OpenMP parallelization for single MD simulation](/docs/FAQ/).
+{: .notice--info}
 
 Let's check the peptide conformation in the trajectory of each replica
-by using VMD. We can see that the conformation in Replica1 (short distance restraint) is compact, while it is extended in Replica 14 (long distance restraint), indicating that the equilibration runs with 14
+by using VMD. We can see that the conformation in Replica 1 (short distance restraint) is compact, while it is extended in Replica 14 (long distance restraint), indicating that the equilibration runs with 14
 individual restrains were correctly done.
-
 
 ```bash
 # for Replica 1
@@ -217,7 +227,6 @@ $ vmd ../1_setup/wbox.pdb -psf ../1_setup/wbox.psf -dcd eq_rep14.dcd
 We carry out a production run of the REUS simulation. Let us see the
 control file. The following shows important options.
 
-
 ```bash
 # Change directory for production run
 $ cd ../4_production
@@ -225,6 +234,7 @@ $ cd ../4_production
 # View the control file
 $ less INP
 ```
+
 ```toml
 [INPUT]
 topfile = ../1_setup/top_all36_prot.rtf     # topology file
@@ -269,18 +279,17 @@ during the simulation. We perform 10-ns REUS simulation for each replica
 (10 ns × 14 replicas = 140 ns in total). Coordinates are output every
 200 steps. Like the previous equilibration run, we execute `spdyn`.
 
-
 ```bash
 # Perform production run
 $ mpirun -np 112 -x OMP_NUM_THREADS=4 ../bin/spdyn INP > log
 ```
 
 In the log file, information about replica-exchange attempt is output at
-every exchange_period step. For example, at 154,000 step you can see the
+every `exchange_period` step. For example, at 154,000 step you can see the
 following information (detailed results might be different from yours):
 
 
-```toml
+```
 REMD> Step: 154000   Dimension: 1   ExchangePattern: 2
   Replica   ExchangeTrial    AcceptanceRatio   Before   After
         1        1 >    0  N        0 /    0        1       1
@@ -303,36 +312,43 @@ RepIDtoParmID:   1   2   8   3   4   6   7   5  11  14  12  13   9  10
 ParmIDtoRepID:   1   2   4   5   8   6   7   3  13  14   9  11  12  10
 ```
 
-In this case, the red line tells us that Replica 11 had Parameter 13 (k = 1.2, r = 12.84) before 154,000 step, and the exchange to Parameter 12
-(k = 1.2, r = 11.92) was accepted (A) at 154,000 step, and then it has
-Parameter 12 after 154,000 step. The acceptance ratio between the
-parameter pairs 12 and 13 at 154,000 step is 18/39 (=46.2%). The blue
-line tells us that Replica 5 had Parameter 4 (k = 1.2, r = 4.56), but
-the exchange to Parameter 5 (k = 1.2, r = 5.48) was rejected (R), and
-then it has still Parameter 4 after 154,000 step. The green lines tell
-us that Replicas 1 and 10 have Parameters 1 and 14, respectively, but
-they have no neighboring pairs. Thus, replica exchange was not attempted
-(N) at this step.
+In this case, 
+<!-- the red line tells us that --> 
+Replica 11 had Parameter 13 (k = 1.2, r = 12.84) before 154,000 step, 
+and the exchange to Parameter 12 (k = 1.2, r = 11.92) was **accepted (A)** at 154,000 step, 
+and then it has Parameter 12 after 154,000 step.
+The acceptance ratio between the parameter pairs 12 and 13 at 154,000 step is 18/39 (=46.2%).  
+<!-- The blue line tells us that --> 
+Replica 5 had Parameter 4 (k = 1.2, r = 4.56), 
+but the exchange to Parameter 5 (k = 1.2, r = 5.48) was **rejected (R)**, and
+then it has still Parameter 4 after 154,000 step.  
+<!-- The green lines tell us that --> 
+Replicas 1 and 10 have Parameters 1 and 14, respectively, but
+they have no neighboring pairs. Thus, replica exchange was not **attempted (N)** at this step.  
 
-We can see that ExchangePattern is 2 at 154,000 step (orange). In the
-exchange pattern = 2, Parameters 2-3, Parameters 4-5, Parameters 6-7,
-..., and Parameters 12-13 are defined as the neighboring pairs. On the
-other hand, in the exchange pattern = 1, Parameters 1-2, Parameters 3-4,
-Parameters 5-6, ..., and Parameters 13-14 are defined as the neighboring
-pairs. In the one-dimensional REMD simulation, exchange pattern = 1 and
-2 emerge alternatively at every exchange_period.
+We can see that **ExchangePattern** is 2 at 154,000 step 
+(end of the first line).  
+<!-- (orange). --> 
+In the case of `ExchangePattern = 2`, Parameters 2-3, Parameters 4-5, Parameters 6-7,
+..., and Parameters 12-13 are defined as the neighboring pairs.  
+On the other hand, in the case of `ExchangePattern = 1`, Parameters 1-2, Parameters 3-4,
+Parameters 5-6, ..., and Parameters 13-14 are defined as the neighboring pairs.  
+In the one-dimensional REMD simulation, `ExchangePattern = 1` and `2`
+emerge alternatively at every `exchange_period`.  
 
-Purple lines summarize location of replica and parameter indexes. The
-RepIDtoParmID stands for the permutation function that converts Replica
+<!-- Purple lines --> 
+The last three lines `Parameter`, `RepIDtoParmID`, and `ParmIDtoRepID` 
+summarize location of replica and parameter indexes.  
+The `RepIDtoParmID` stands for the permutation function that converts Replica
 ID to Parameter ID. For example, in the 3rd column, 8 is written, which
 means that Replica 3 has Parameter 8. In the 9th column, 11 is written,
-indicating that Replica 9 has Parameter 11.  The ParmIDtoRepID also
-stands for the permutation function that converts Parameter ID to
+indicating that Replica 9 has Parameter 11.  
+The `ParmIDtoRepID` also stands for the permutation function that converts Parameter ID to
 Replica ID. For example, in the 3rd column, 4 is written, which means
 that Parameter 3 is located in Replica 4. In the 5th column, 8 is
-written, indicating that Parameter 5 is located in Replica 8. The
-Parameter line includes parameter index of each replica. In the case of
-REUS, this line is same with RepIDtoParmID line.
+written, indicating that Parameter 5 is located in Replica 8.  
+The `Parameter` line includes parameter index of each replica. In the case of
+REUS, this line is same with `RepIDtoParmID` line.
 
 After the simulation is finished, we obtain trajectory and restart files
 from each replica.
@@ -342,7 +358,7 @@ If you want to restart the REUS simulation,
 do NOT change the order of the replica parameters in the control file
 before and after the restart, even if parameter exchange occurred during
 the simulation.
-
+{: .notice--warning}
 
 ```toml
 [RESTRAINTS]
@@ -350,11 +366,10 @@ constant1  =  1.2  1.2  1.2  1.2  1.2  1.2  1.2  1.2  1.2   1.2   1.2   1.2   1.
 reference1 = 1.80 2.72 3.64 4.56 5.48 6.40 7.32 8.24 9.16 10.08 11.00 11.92 12.84 13.76
 ```
 
-##  5 Analysis
+##  5. Analysis
 
 In this section, we explain how to analyze REUS trajectories. All
 analyses are carried out in the `5_analysis` directory.
-
 
 ```bash
 # change directory
@@ -362,8 +377,7 @@ $ cd ../5_analysis
 $ ls
 1_convert_dcd  2_sort_dcd  3_calc_ratio  4_plot_index  5_calc_dist  6_calc_mbar  7_calc_pmf
 ```
-
-### 5.1 Make converted trajectory files for analysis
+### 5.1. Make converted trajectory files for analysis
 
 Since the obtained "raw" DCD files contain many water molecules, it may
 take much time to analyze them. In order to save time, we first remove
@@ -373,7 +387,6 @@ structure of each snapshot onto the initial structure. Sample control
 file for `crd_convert` is already prepared in the `1_dcd_convert`
 directory. For this purpose, we need 14 control files in total. These
 files were created with a script in the `script` directory.
-
 
 ```bash
 # Change directory
@@ -392,14 +405,13 @@ $ ../../bin/crd_convert INP14 > log14
 $ vmd replica1.pdb -dcd replica1.dcd 
 ```
 
-### 5.2 Sort coordinates in DCD files by parameters
+### 5.2. Sort coordinates in DCD files by parameters
 
 In the raw DCD files generated from the REUS simulation, coordinates at
 different conditions (or replica parameters) are mixed. In order to sort
 the coordinates by replica parameters, we use `remd_convert`. Sorting is
 done based on the information in the `remfile`. In the `2_sort_dcd`
 directory, sample control file is already prepared.
-
 
 ```bash
 # Change directory
@@ -454,7 +466,6 @@ and `eneout_period` must be idential to those used in the REUS
 simulation. We run `remd_convert` by the following command, and then
 obtain the sorted trajectory files.
 
-
 ```bash
 # Run remd_convert
 $ ../../bin/remd_convert INP > log
@@ -463,7 +474,7 @@ $ ../../bin/remd_convert INP > log
 $ vmd param.pdb -dcd param1.dcd
 ```
 
-### 5.3 Calculate the acceptance ratio
+### 5.3. Calculate the acceptance ratio
 
 Acceptance ratio of the parameter exchange is one of the important
 factors that determine an efficiency of REMD simulations. The acceptance
@@ -473,7 +484,6 @@ and summarize the data. Note that the acceptance ratio of "A to B" is
 identical to "B to A", and we calculate only "A to B". The averaged
 acceptance ratio was \~0.25, indicating that sufficient replica exchange
 was realized in the simulation.
-
 
 ```bash
 # Change directory
@@ -503,13 +513,12 @@ $ awk '{print $2,$3,$4,$6/$8}' log
 13 > 14 0.427
 ```
 
-### 5.4 Plot the time courses of replica index and target distance
+### 5.4. Plot the time courses of replica index and target distance
 
 To examine a random walk of the system in replica space, we analyze the
 time courses of the replica index. We need to plot one column in the
 `ParmIDtoRepID:` lines in `log` onto the time axis. The following
 commands are example to plot the replica index that has Parameter 10 (k = 1.2 kcal/mol/Å<sup>2</sup> and r = 10.08Å):
-
 
 ```bash
 # Change directory
@@ -535,7 +544,6 @@ convert the index to the actual distance value. Here, we use awk script
 (`./script/convert.awk`) to convert them. The following commands are
 example to plot the target distance in Replica 5.
 
-
 ```bash
 # Create log file that contains target distance
 $ grep "Parameter    :" ../../4_production/log > param.log
@@ -551,7 +559,7 @@ gnuplot> plot [][0:15]'dist.log' u ($0/200):5 with lines
 
 ![](/assets/images/2022_06_chapter_12-2_figure2-1.png){: width="600" .align-center}
 
-### 5.5 Analyze the end-to-end distance of (Ala)<sub>3</sub>
+### 5.5. Analyze the end-to-end distance of (Ala)<sub>3</sub>
 
 In this subsection, we calculate the end-to-end distance of the (Ala)<sub>3</sub>
 by using `trj_analysis`. In the `5_calc_dist` directory, we have two
@@ -559,7 +567,6 @@ directories: `replica` and `parameter`. The former is used to analyze
 the original DCD files (`../1_convert_dcd/replica{}.dcd`), and the
 latter is used to analyze the sorted DCD files
 (`../2_sort_dcd/param{}.dcd`).
-
 
 ```bash
 # Change directory
@@ -572,7 +579,6 @@ First, let us calculate the end-to-end distance of the peptide in the
 original DCD file. Sample control files are already contained in the
 directory. Again, we have to prepare 14 individual control files to
 analyze each replica.
-
 
 ```bash
 # Change directory
@@ -645,7 +651,6 @@ as the output files. We plot the histogram of the end-to-end distance
 obtained in each restraint condition by using gnuplot. There are 20,000
 distance data in each file, and we set the bin width to be 0.05Å.
 
-
 ```bash
 # Change directory
 $ cd ../parameter
@@ -677,19 +682,19 @@ umbrella windows along the reaction coordinates. These overlaps are
 important to obtain reliable free energy profile in reweighting
 techniques such as WHAM.
 
-### 5.6 Free energy calculation using MBAR
+### 5.6. Free energy calculation using MBAR
 
 We calculate the free energy profile of the (Ala)<sub>3</sub> as a function of
 the end-to-end distance by using MBAR. Here, we use `mbar_analysis` of
 the GENESIS analysis tool set. Let us move to the `6_calc_mbar`
 directory, and see the sample control file:
 
-
 ```bash
 # change directory
 $ cd ../../6_calc_mbar
 $ less INP
 ```
+
 ```toml
 [INPUT]
 cvfile = ../5_calc_dist/parameter/parameter{}.dis # Collective variable file
@@ -720,7 +725,6 @@ of the reaction coordinates, the temperature used in the REUS
 simulation, and so on. For the `[RESTRAINTS]` section, we give the same
 information used in the REUS control file.
 
-
 ```bash
 # perform mbar
 $ ../../bin/mbar_analysis INP > log
@@ -730,7 +734,6 @@ This produces `output.fene` file containing the evaluated relative
 free energies and 14 `output*.weight` files containing the weights of
 each snapshot for each replica. For example, `output1.weight` is as
 follows:
-
 
 ```bash
 $ less output1.weight
@@ -749,14 +752,13 @@ $ less output1.weight
        20000   1.5028161473380590E-007
 ```
 
-### 5.7 [Calculating PMF of distance distribution]
+### 5.7. Calculating PMF of distance distribution
 
 The final step of this tutorial is to use the calculated distances in
 5.5 and weight files from MBAR analysis (5.6) to calculate PMF of end to
 end distance distribution in (Ala)<sub>3</sub>. Here, we use `pmf_analysis` of
 the GENESIS analysis tool set. Let us move to the `7_calc_pmf`
 directory, and see the sample control file:
-
 
 ```bash
 # change directory
@@ -800,7 +802,7 @@ an extended conformation rather than α-helix. Note that this 10-ns
 simulation might be still short to get a reliable free energy profile.
 The users are strongly recommended to check the convergence of the free
 energy profile. If you extend the simulation time, and the free energy
-profile was largely changed, your simulation might be still short (or structure sampling is not sufficient) (for details, see ref [^4]).
+profile was largely changed, your simulation might be still short (or structure sampling is not sufficient).[^4]
 
 ---
 
@@ -812,8 +814,8 @@ July 28, 2022*
 
 ##  References
 
-[^1]: Y. Sugita, A. Kitao, and Y. Okamoto, *J. Chem. Phys.*, **113**, 6042 (2000). [<i class="fas fa-link"></i>](http://scitation.aip.org/content/aip/journal/jcp/113/15/10.1063/1.1308516)  
+[^1]: Y. Sugita, A. Kitao, and Y. Okamoto, *J. Chem. Phys.*, **113**, 6042 (2000). [<i class="fas fa-link"></i>](http://scitation.aip.org/content/aip/journal/jcp/114/15/10.1063/1.1308516)  
 [^2]: H. Fukunishi, O. Watanabe, and S. Takada, *J. Chem. Phys.*, **116**, 9058 (2002). [<i class="fas fa-link"></i>](http://scitation.aip.org/content/aip/journal/jcp/116/20/10.1063/1.1472510)  
 [^3]: S. Park, T. Kim, and W. Im, *Phys. Rev. Lett.*, **108**, 108102 (2012). [<i class="fas fa-link"></i>](http://journals.aps.org/prl/abstract/10.1103/PhysRevLett.108.108102)  
-[^4]:H. Oshima, S. Re, and Y. Sugita, *J. Chem. Theory Comput.*, **15**, 10, 5199 (2019). [<i class="fas fa-link"></i>](https://pubs.acs.org/doi/10.1021/acs.jctc.9b00761)  
+[^4]: H. Oshima, S. Re, and Y. Sugita, *J. Chem. Theory Comput.*, **15**, 10, 5199 (2019). [<i class="fas fa-link"></i>](https://pubs.acs.org/doi/10.1021/acs.jctc.9b00761)  
 

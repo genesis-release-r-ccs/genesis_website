@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 8.2 (2022)"
+gpos: 008.002
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -13,7 +14,7 @@ sidebar:
 
 In this tutorial, we simulate the translocator protein (TSPO) in the
 IMM1 implicit membrane model. The IMM1 model was originally developed by
-T. Lazaridis [^1], and is available in the CHARMM program package.
+T. Lazaridis,[^1] and is available in the CHARMM program package.
 Recently, we have introduced IMM1 into GENESIS.
 
 ##  Preparation

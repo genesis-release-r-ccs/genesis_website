@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 5.3 (2022)"
+gpos: 005.003
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -36,7 +37,6 @@ $ gmx pdb2gmx -f proa.pdb -o proa.gro -water spce
 # This will ask you to choose a force filed. Type 6 for this example.
 > 6
 6: AMBER99SB-ILDN
-
 ```
 
 **Solvation**
@@ -46,7 +46,6 @@ Define a box with editconf to obtain proa_box.gro
 
 ```bash
 $ gmx editconf -f proa.gro -o proa_box.gro -c -d 1.0 -bt cubic
-
 ```
 
 This command places the protein at the center (-c) of a cubic box (-bt cubic), and at 1.0 nm from the box edge (-d 1.0). Let's solvate the box
@@ -55,7 +54,6 @@ with solvate.
 
 ```bash
 $ gmx solvate -cp proa_box.gro -cs spc216.gro -o proa_solv.gro -p topol.top
-
 ```
 
 This will generate proa_solv.gro and rewrite topol.top. `-cs spc216.gro`
@@ -70,7 +68,6 @@ Create .tpr file using grompp, then add ions using genion
 ```bash
 $ gmx grompp -f ions.mdp -c proa_solv.gro -p topol.top -o ions.tpr
 $ gmx genion -s ions.tpr -o proa_ionized.gro -p topol.top -pname NA -nname CL –neutral
-
 ```
 
 **Input on GENESIS**
@@ -82,7 +79,6 @@ topol.top.
 
 ```bash
 $ ln -s path_to_gromacs/share/top/amber99sb-ildn.ff ./
-
 ```
 
 Here is an example of an input file for energy minimization of this
@@ -90,7 +86,7 @@ system. Get the box size from the output of editconf (editconf.out) to
 specify them in the \[BOUNDAY\] section.
 
 
-```toml
+```bash
 [INPUT]
 grotopfile      = topol.top
 grocrdfile      = proa_ionized.gro
@@ -107,7 +103,7 @@ crdout_period   = 500      # coordinates output period
 rstout_period   = 5000     # restart output period
 
 [BOUNDARY]
-type            = PBC      # [PBC,NOBC]
+type            = PBC       # [PBC,NOBC]
 box_size_x      = 70.22     # box size (x) in [PBC]
 box_size_y      = 70.22     # box size (y) in [PBC]
 box_size_z      = 70.22     # box size (z) in [PBC]
@@ -120,7 +116,6 @@ nfunctions      = 1     # number of functions
 function1       = POSI  # restraint function type
 constant1       = 10.0  # force constant
 select_index1   = 1     # restrained group
-
 ```
 
 Note: GENESIS currently does not support CHARMM force fields with
@@ -130,7 +125,8 @@ using CHARMM force fields (see [Chapter 5.1](/tutorials/genesis_tutorial_5.1_202
 ## 2. Changing the protonation states of side-chains 
 
 pdb2gmx allows you to interactively choose side-chain protonation states
-of Lys, Arg, Asp, Glu, Gln, His using `-lys/arg/asp/glu/gln/his` flags.
+of Lys, Arg, Asp, Glu, Gln, His using  
+`-lys/arg/asp/glu/gln/his` flags.
 The protonation states of termini can be also interactively chosen with
 `-ter` flag.
 
@@ -154,7 +150,6 @@ $ gmx pdb2gmx -f proa_dnabc.pdb -o proa_dnabc.gro -water tip3p
 # Type 6 for selecting the force field
 > 6
 6: AMBER99SB-ILDN protein, nucleic AMBER94
-
 ```
 
 ------------------------------------------------------------------------
@@ -165,4 +160,5 @@ $ gmx pdb2gmx -f proa_dnabc.pdb -o proa_dnabc.gro -water tip3p
 
 *Written by Ai Niitsu@RIKEN Theoretical molecular science laboratory\
 April 1, 2022*
+{: .notice}
 

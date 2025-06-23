@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 6.1 (2022)"
+gpos: 006.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -29,8 +30,7 @@ The aim of this tutorial is to learn:
 3.  How to generate an MD trajectory and perform analyses on it.
 
 In this tutorial, we carry out all-atom MD simulations of a lipid
-bilayer with GENESIS and CHARMM-GUI using the CHARMM36 force field
-[^1].
+bilayer with GENESIS and CHARMM-GUI using the CHARMM36 force field.[^1]
 
 ## 1. Preparation
 
@@ -63,8 +63,7 @@ each lipid molecule has a random structure, it takes much time to
 equilibrate the whole system, if one starts the simulation from an
 ordered structure.
 [CHARMM-GUI](http://www.charmm-gui.org) is one of the useful tools to generate
-initial structures of a lipid bilayer for MD simulations
-[^2]. It provides an automatic
+initial structures of a lipid bilayer for MD simulations.[^2] It provides an automatic
 membrane builder not only for lipid bilayers but also for
 protein-membrane systems.
 
@@ -80,14 +79,14 @@ builder can be accessed from the top page, Input Generator, Membrane
 Builder, and then Bilayer Builder. At the first step of the bilayer
 builder, we choose "Membrane Only System":
 
-[![tutorial1.2-step1](/assets/images/2016_06_tutorial1.2-step1.png)](/assets/images/2016_06_tutorial1.2-step1.png)
+![](/assets/images/2016_06_tutorial1.2-step1.png)
 
 In the next step, we decide the number of
 lipids and water molecules to be added to the system. Here, we put 40
 POPC and 40 POPC lipids in the upper and lower leaflets, respectively
 (Note that these numbers might be a lower limit for stable MD simulations with `spdyn`). Because each lipid molecule has a certain
-area per lipid ( A<sub>exp</sub> = 68.3 Å<sup>2</sup>) for POPC), the initial box size
-(*X*, *Y*) = (52.27Å, 52.27Å) can be estimated from \\(X=Y=\\sqrt{n \\times A}\\), where \\(n\\) is the number of lipids in one leaflet and
+area per lipid ( A<sub>exp</sub> = 68.3 Å<sup>2</sup>) for POPC, the initial box size
+(*X*, *Y*) = (52.27 Å, 52.27 Å) can be estimated from \\(X=Y=\\sqrt{n \\times A}\\), where \\(n\\) is the number of lipids in one leaflet and
 \\(A\\) is the area per lipid in Å<sup>2</sup> (assuming both leaflets have the same composition and the same number of lipids).
 
 ![](/assets/images/2022_01_screenshot_01.png)
@@ -186,7 +185,7 @@ reffile = ../1_charmm-gui/step5_assembly.pdb  # reference PDB file for restraint
 ```
 
 The control files for minimization and equilibration are almost the same
-as before \[see [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). The difference is in the way restraints
+as before \(see [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/)\). The difference is in the way restraints
 are applied.
 
 ### 3.1. The restraints for POPC
@@ -196,7 +195,7 @@ to keep the stereoisomer and the *cis*-isomer. Furthermore, the position
 of a phosphate atom, (shown in purple), is also restrained in the Z
 direction to keep the thickness of the bilayer.
 
-![](/assets/images/2019_08_popc_restraint.png){: width="300"}
+![](/assets/images/2019_08_popc_restraint.png){: width="300" .align-center}
 
 The dihedral angles are restrained using `localresfile` in the \[INPUT\]
 section. For example, step6.0_minimization.inp is as follows,
@@ -499,10 +498,9 @@ $ eog prod_area.jpg
 
 ![](/assets/images/2022_01_prod_area.jpg)
 
-Although the calculated A~L~ is slightly smaller than the experimental
-value (*A*<sub>exp</sub> = 68.3Å<sup>2</sup> for POPC), GENESIS reproduces the averaged
-area per lipid of 64.7Å<sup>2</sup> reported in the CHARMM36 paper
-[^1].
+Although the calculated A<sub>L</sub> is slightly smaller than the experimental
+value (*A*<sub>exp</sub> = 68.3 Å<sup>2</sup> for POPC), GENESIS reproduces the averaged
+area per lipid of 64.7 Å<sup>2</sup> reported in the CHARMM36 paper.[^1]
 
 ### 5.2. Bilayer thickness 
 
@@ -537,11 +535,7 @@ membrane_atom = 1     # atom group representing lipid bilayer
 ```
 
 - output file is set to thickness.log
-- membrane_atom = 1 of \[OPTION\] and group1 of \[SELECTION\] specify
-
-```bash
-the phosphate atoms of POPC lipid molecules to be analyzed.
-```
+- membrane_atom = 1 of \[OPTION\] and group1 of \[SELECTION\] specify the phosphate atoms of POPC lipid molecules to be analyzed.
 
 The analysis program is invoked by the following command,
 
@@ -583,31 +577,20 @@ $ eog thickness.jpg
 
 *Written by Takaharu Mori@RIKEN Theoretical molecular science
 laboratory*\
-*June, 30, 2016*
-{: .notice}
-
+*June, 30, 2016*\
 *Written by Kiyoshi Yagi @ RIKEN, CPR, Theoretical molecular science
 laboratory*\
-*October, 7, 2019*
-{: .notice}
-
+*October, 7, 2019*\
 *Updated by Kiyoshi Yagi @ RIKEN, CPR, Theoretical molecular science
 laboratory*\
-*February, 16, 2022*
-{: .notice}
-
+*February, 16, 2022*\
 *Updated by Diego Ugarte @ RIKEN, R-CCS, Computational Biophysics
 Research Team*\
 *February, 16, 2022*
 {: .notice}
 
-*Updated by Jaewoon Jung @ RIKEN, R-CCS, Computational Biophysics
-Research Team*\
-*June, 5, 2026*
-{: .notice}
-
 
 ##  6. References
-[^1]: [J. B. Klauda *et al.*, **2010**, *J. Phys. Chem.*, 114, 7830--7843.](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
-[^2]: [S. Jo, T. Kim, and W. Im, **2008**, *PLoS ONE*, 2, e880.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
+[^1]: [J. B. Klauda *et al.*, **2010**, *J. Phys. Chem. B*, 114, 7830--7843.](https://pubs.acs.org/doi/abs/10.1021/jp101759q)
+[^2]: [S. Jo, T. Kim, and W. Im, **2007**, *PLoS ONE*, 2, e880.](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000880)
 

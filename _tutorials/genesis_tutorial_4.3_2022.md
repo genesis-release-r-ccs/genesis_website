@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 4.3 (2022)"
+gpos: 004.003
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -115,12 +116,12 @@ print("Standard deviation of column {0:>2d}: {1:>12.4f}".format(i_col, ene_std))
 
 Now let's execute the script:
 
-```
+```zsh
 $ ./01_list.py         # or: python3 01_list.py
 Length of the energy list: 1000
 Maximum of column 5: 7.3745
-Minimum of column 5: -10.2807
-Average of column 5: -1.5140
+Minimum of column 5: –10.2807
+Average of column 5: –1.5140
 Standard deviation of column 5: 2.8306
 ```
 
@@ -181,12 +182,12 @@ the following:
 
 Let's run this new script:
 
-```
+```bash
 $ ./02_numpy.py         # or: python3 02_numpy.py
 Length of the energy list: 1000
 Maximum of column 5: 7.3745
-Minimum of column 5: -10.2807
-Average of column 5: -1.5140
+Minimum of column 5: –10.2807
+Average of column 5: –1.5140
 Standard deviation of column 5: 2.8306
 ```
 

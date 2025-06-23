@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 2.2 (2022)"
+gpos: 002.002
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -148,8 +149,8 @@ CPT  CPT   360.000     1.3850 ! atm, methylindole, fit CCDSS
 :
 ```
 
-For detailed description of the parameter files, refer to the [CHARMM manual](https://www.charmm.org/archive/charmm/documentation/)
-([parmfile](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/parmfile/)).
+For detailed description of the parameter files, refer to the [CHARMM manual](https://academiccharmm.org/documentation)
+([parmfile](https://academiccharmm.org/documentation/version/c42b1/parmfile)).
 
 Next, let’s examine the contents of `top_all36_prot.rtf`.
 This file primarily defines the topology, mass, and partial charges of amino acids.
@@ -160,8 +161,8 @@ Below is an example of how alanine (ALA) is defined:
 - The partial charge of each atom is provided in the fourth column. For instance, the hydrogen atom has a partial charge of `+0.09 e`.
 
 For a more detailed explanation of the topology file format, refer to the
-[CHARMM manual](https://www.charmm.org/archive/charmm/documentation/)
-and the [rtop](https://www.charmm.org/archive/charmm/documentation/by-version/c42b1/params/doc/rtop/) documentation.
+[CHARMM manual](https://academiccharmm.org/documentation)
+and the [rtop](https://academiccharmm.org/documentation/version/c42b1/rtop) documentation.
 
 
 ```bash
@@ -263,8 +264,11 @@ Now that the CHARMM force field parameter files are ready, we have the following
             |     + toppar_c36_jul21
             |     + TRASH
             |
-            + Works                  # All simulations will be done here
-               + TRASH
+            + genesis_tutorial_materials  # Simulation materials
+            |  + tutorial_2.3
+            |  + tutorial_3.1
+            |  + tutorial_3.2
+            |  + ...
 ```
 
 In the next Tutorial, we will learn how to setup the initial structure of the

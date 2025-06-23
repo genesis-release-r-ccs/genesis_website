@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 4.2 (2022)"
+gpos: 004.002
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -15,7 +16,9 @@ sidebar:
 
 All the files required for this tutorial are hosted in the
 [GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
-If you haven't downloaded the files yet, open your terminaland run the following command (see more in[Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
+
+If you haven't downloaded the files yet, open your terminaland run the following
+command (see more in [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
 
 ```bash
 $ cd ~/GENESIS_Tutorials-2022
@@ -35,43 +38,37 @@ Analysis1   Analysis2.1   Analysis2.2
 
 In this tutorial, we will learn how to calculate the average, standard
 deviation, maximum and minimum values of physical quantities obtained by
-analyzing trajectory data. Some people may want to use "Microsoft Excel"
-or similar software for this purpose. However, simple statistics can be
-easily and quickly calculated by executing a single line of command. The
-following is an example of analyzing the energy trajectory data obtained
-in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/) (the header and step 0 lines have been removed beforehand).
-
+analyzing trajectory data. Some people may want to use "Microsoft Excel" or
+similar software for this purpose. However, simple statistics can be easily and
+quickly calculated by executing a single line of command. The following is an
+example of analyzing the energy trajectory data obtained in [Tutorial
+3.1](/tutorials/genesis_tutorial_3.1_2022/) (the header and step 0 lines have
+been removed beforehand).
 
 ```bash
 # Change directory for statistics analysis
 $ cd Analysis1
 $ ls
 energy.log
-
 ```
 
 ### 1.1 Averaged value
 
-
-```bash
+```awk
 # Compute the averaged value of the 5th column
 $ awk '{sum+=$5} END {print sum/NR}' energy.log
 -1.51401
-
 ```
 
 ### 1.2 Standard deviation
-
 
 ```awk
 # Compute the standard deviation of the 5th column
 $ awk '{sum+=$5;sum2+=$5*$5} END {print sqrt(sum2/NR-(sum/NR)^2)}' energy.log
 2.83058
-
 ```
 
 ### 1.3 Minimum and maximum values
-
 
 ```awk
 # Compute the minimum value of the 5th column
@@ -89,7 +86,6 @@ $ awk 'BEGIN {max=-9999} {if(max<$5) max=$5} END {print max}' energy.log
 # Alternative command using sort
 $ awk '{print $5}' energy.log | sort -g | tail -1
 7.3745
-
 ```
 
 ##  2. Analyze the histogram 
@@ -99,12 +95,12 @@ In Section 2, we learn how to analyze histogram or frequency of the data.
 ### 2.1 1D-Histogram
 
 First, we will analyze the distance trajectory data (`output.dis`)
-obtained in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/) and draw a 1D histogram. This directory already contains
-the analysis program (`hist1d.awk`), which is written in awk language. 
-In the header part of the program, you can see
-that the bin size of the histogram (`binsizex`) and the analysis range
-(`xmin` to `xmax`) are specified. Here, we are analyzing the second
-column (`$2`) of `output.dis`, which is specified in the middle part.
+obtained in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/) 
+and draw a 1D histogram. This directory already contains the analysis program
+(`hist1d.awk`), which is written in awk language.  In the header part of the
+program, you can see that the bin size of the histogram (`binsizex`) and the
+analysis range (`xmin` to `xmax`) are specified. Here, we are analyzing the
+second column (`$2`) of `output.dis`, which is specified in the middle part.
 
 ```awk
 # Change directory for analysis of the 1D histogram
@@ -139,8 +135,7 @@ END{
 Let's execute the program for `output.dis`, where "`out`" is obtained
 with the following command.
 
-
-```
+```bash
 # Analysis of the 1D histogram
 $ awk -f hist1d.awk output.dis > out
 
@@ -151,7 +146,6 @@ gnuplot> unset key
 gnuplot> set xlabel "Distance (\305)" 
 gnuplot> set ylabel "Frequency"
 gnuplot> plot [7:13][]'out' u 1:2 with boxes
-
 ```
 
 ### ![](/assets/images/2019_08_1dhist.jpg)
@@ -159,15 +153,13 @@ gnuplot> plot [7:13][]'out' u 1:2 with boxes
 ### 2.2 2D-Histogram
 
 Next, we will analyze the Ramachandran plot data (`output.tor`) obtained
-in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/) to draw a 2-D histogram (or probability distribution).
-The analysis program (`hist2d.awk`) is already
-included in the directory, and it is a 2D extension of the previous 1D
-program. In the header part of the program, you can see that the bin
-size of the histogram for each dimension (`binsizex`, `binsizey`) and
-the analysis range (`xmin` to `xmax`, `ymin` to `ymax`) are specified.
-We will analyze the second (`$2`) and third (`$3`) columns of
-`output.tor` as specified in the middle row.
-
+in [Tutorial 3.1](/tutorials/genesis_tutorial_3.1_2022/) to draw a 2-D 
+histogram (or probability distribution).  The analysis program (`hist2d.awk`) is
+already included in the directory, and it is a 2D extension of the previous 1D
+program. In the header part of the program, you can see that the bin size of the
+histogram for each dimension (`binsizex`, `binsizey`) and the analysis range
+(`xmin` to `xmax`, `ymin` to `ymax`) are specified.  We will analyze the second
+(`$2`) and third (`$3`) columns of `output.tor` as specified in the middle row.
 
 ```awk
 # Change directory for analysis of the 2D histogram
@@ -207,11 +199,9 @@ END{
         print " "
     }
 }
-
 ```
 
 Let's execute the program for `output.tor`, where "`out`" is obtained with the following command.
-
 
 ```bash
 # Analysis of the 2D probability distribution
@@ -225,14 +215,12 @@ gnuplot> set ylabel "psi (deg)"
 gnuplot> set zlabel "Probability"
 gnuplot> set zlabel rotate by 90
 gnuplot> splot [-180:180][-180:180][]'out' u 1:2:4 with lines
-
 ```
 
 ![](/assets/images/2019_08_figure4.jpg)
 
-------------------------------------------------------------------------
 
-*Written by Takaharu Mori@RIKEN Theoretical molecular science
-laboratory*\
-*Feb. 24, 2022*
+*Written by Takaharu Mori@RIKEN Theoretical molecular science laboratory\
+Feb. 24, 2022*
+{: .notice}
 

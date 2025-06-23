@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 12.1 (2022)"
+gpos: 012.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -19,23 +20,25 @@ range of different temperatures and periodically exchanging between
 them. As a result of sampling at several temperature, the simulation can
 efficiently overcome well known problem of conventional MD, wherein the
 conformation could be trapped in a local minimum. For further details of
-REMD method, please refer to [^1]. 
+REMD method, please refer to the original paper.[^1]
 
- REMD simulation in GENESIS requires an MPI
-environment. At least one MPI processor must be assigned to one replica.
-
- Please note that it may take more than 12
-hours to finish all simulations in this tutorial.
-
- python 3.x.x is required for analysis in
-this tutorial.
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
+REMD simulation in GENESIS requires an **MPI environment**.
+**At least one MPI processor** must be assigned to **one replica**.  
+\
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
+Please note that it may take more than 12 hours
+to finish all simulations in this tutorial.  
+\
+<span style="color: #0000ff"><i class="fas fa-info-circle"></i></span>
+**python 3.x.x** is required for analysis in this tutorial.
+{: .notice--info}
 
 
 ## Preparation
 
 All the files required for this tutorial are hosted in the
-[GENESIS tutorials repository on GitHub]
-(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal
 and run the following command (see more in
 [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
@@ -45,33 +48,29 @@ $ cd ~/GENESIS_Tutorials-2022
 # if not yet
 $ git clone https://github.com/genesis-release-r-ccs/genesis_tutorial_materials
 ```
+
 If you already have the tutorial materials, let's go to our working directory:
+
 ```bash
 $ cd genesis_tutorial_materials/tutorial-12.1
 ```
 
-
-
- This tutorial consists of five steps: 1) system setup, 2)
+This tutorial consists of five steps: 1) system setup, 2)
 energy minimization and pre-equilibration, 3) REMD equilibration, 4)
 REMD production, and 5) trajectory analysis. Control files for GENESIS
 are already included in the download file. Since we use the CHARMM36m
-force field parameters [^2], we make a symbolic link to the CHARMM
-toppar directory (see [Tutorial 2.1](/tutorials/genesis_tutorial_2.1_2022/)).
-
+force field parameters,[^2] we make a symbolic link to the CHARMM
+toppar directory (see [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/)).
 
 ```bash
 $ ln -s ../../Data/Parameters/toppar_c36_jul21 ./toppar
 $ ls 
 1_setup  2_min_equil  3_equil_remd  4_prod_remd  5_analy toppar
 ```
-
 ## 1. Setup
 
 In this tutorial, we simulate (Ala)<sub>3</sub> in explicit water. We use the
 same initial structure as in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). 
-
-
 
 ```bash
 # Change directory for the system setup
@@ -82,14 +81,11 @@ $ ln -s ../../tutorial-3.2/1_setup/3_solvate/wbox.pdb ./
 $ ln -s ../../tutorial-3.2/1_setup/3_solvate/wbox.psf ./
 ```
 
-
 ## 2. Minimization and pre-equilibration
-
 
 We use the same protocols described in [Tutorial 3.2](/tutorials/genesis_tutorial_3.2_2022/). Since we
 have already equilibrated the system in Tutorial 3.2, we use the restart
 file obtained previously.
-
 
 ```bash
 # Change directory for the minimization and equilibration
@@ -103,43 +99,37 @@ $ ln -s ../../tutorial-3.2/3_equilibrate/eq3.rst
 
 ### Temperature setting
 
-
 Before starting T-REMD simulation, we must determine the number of replicas and the temperatures of replicas. These temperatures need to be chosen carefully, because they will greatly affect the results of T-REMD simulations and probabilities of the replica exchanges. If the difference of temperatures between adjacent replicas is small, the exchange probability is high, but the number of replicas needed for such simulation is also large. Therefore, we need to find the optimal temperature intervals to perform efficient REMD simulations.
 
+We recommend using the web server [REMD Temperature generator](https://virtualchemistry.org/remd-temperature-generator/).[^3] This tool automatically generates the number of replicas and their temperatures according to the information we input. We show the example of the input for the T-REMD simulation of the solvated trialanine system:
 
+![](/assets/images/2022_06_tutorial-12-1-fig1.png){: width="800" .align-center}
 
-We recommend using the web server [REMD Temperature generator](https://virtualchemistry.org/remd-temperature-generator/) [^3]. This tool automatically generates the number of replicas and their temperatures according to the information we input. We show the example of the input for the T-REMD simulation of the solvated trialanine system:
-
-![](/assets/images/2022_06_tutorial-12-1-fig1.png)
-
-Replica exchange probabilities are often set to 0.2 -- 0.3, and here we set the replica exchange probability to 0.25. The lower and upper temperature limits are set to 300 K and 351.3 K, respectively. Since we use SHAKE and SETTLE algorithms in the simulation, "constraints in the protein" is set to "Bonds to hydrogen only", and "Constraints in water" to "rigid". We use all-atom model, so we select "All H" for the parameter of "Hydrogens in proteins". The numbers of protein atoms and the water molecules are input according to the numbers in "../1_setup/wbox.pdb". We can count the number of the water molecules in the system as follows:
-
-
+Replica exchange probabilities are often set to 0.2 -- 0.3, and here we set the replica exchange probability to `0.25`. 
+The lower and upper temperature limits are set to `300` K and `351.3` K, respectively. 
+Since we use SHAKE and SETTLE algorithms in the simulation, 
+"constraints in the protein" is set to "`Bonds to hydrogen only`", 
+and "Constraints in water" to "`rigid`". 
+We use all-atom model, so we select "`All H`" for the parameter of "Hydrogens in proteins". 
+The numbers of protein atoms and the water molecules are input according to the numbers in `../1_setup/wbox.pdb`. 
+We can count the number of the water molecules in the system as follows:
 
 ```bash
 # Count the number of TIP3P water molecules
 $ grep "TIP3" ../1_setup/wbox.pdb | wc -l | awk '{print $1 / 3}'
 ```
 
-
-
 When we fill in all the parameters and submit them, the server generates
 the summary, temperatures and energies of 20 replicas in a few seconds
-as follows.\
+as follows.  
 In the table shown above, there is the parameter "Simulation type". We
 can select either "NPT" or "NVT" for the parameter, but, when we select
 "NVT", the server returns an error message. Thus we choose "NPT" here,
 even though we use *NVT* ensemble in our T-REMD simulation.
 
-![](/assets/images/2022_06_tutorial-12-1-fig2.png)
-
+![](/assets/images/2022_06_tutorial-12-1-fig2.png){: width="800" .align-center}
  
-
- 
-
 ### Equilibration
-
-
 
 ```bash
 # Change directory for the REMD equilibration
@@ -147,7 +137,6 @@ $ cd ../3_equil_remd
 $ ls
 run.inp
 ```
-
 
 Using generated temperature parameters, we start our REMD simulation.
 First, each replica must be equilibrated at the selected temperature
@@ -159,7 +148,6 @@ that you use NVT ensemble, as using NPT ensemble make significant
 differences in the potential energy of each replica and subsequently
 hinder the exchange between them. The REMD equilibration control file
 is:
-
 
 ```toml
 [INPUT]
@@ -250,11 +238,9 @@ GENESIS, we recommend performing T-REMD simulations in *NVT *ensemble,
 because in a temperature exceeding the water boiling point, the system
 may be disrupted.
 
-
 To run REMD equilibiration, we use the following commands. Here we used
 8 MPI processes and 4 OpenMP threads for  each replica, i.e., a total of
 640 (= 8 x 4 x 20) CPU cores.
-
 
 ```bash
 # Run REMD-equilibiration step. 
@@ -264,8 +250,6 @@ $ mpirun -np 160 /home/user/GENESIS/bin/spdyn run.inp > run.log
 
 ## 4. REMD production
 
-
-
 ```bash
 # Change directory for the REMD production
 $ cd ../4_prod_remd
@@ -273,16 +257,11 @@ $ ls
 run.inp
 ```
 
-
-
-
-
 Since we have now completed all preparation steps, now we can start
 running the production simulation. We ran a short simulation for 10 ns
 for the purpose of tutorial, however longer simulation is actually
 needed to obtain better energy results. The following control file is
 used to run the simulation in NVT ensemble:
-
 
 ```toml
 [INPUT]
@@ -374,23 +353,23 @@ In this tutorial, we mainly focus on calculating PMF of the end to end
 distance and dihedral angle distribution at 300 K. In which, we use all
 temperatures trajectory upon applying the Multistate Bennett Acceptance
 Ratio (MBAR) re-weighting method. For information on MBAR method, please
-refer to [^4].
+refer to the original paper.[^4]
 
-![](/assets/images/2022_04_end-end.png)
+![](/assets/images/2022_04_end-end.png){: width="400" .align-center}
 
-End to end distance of (Ala)<sub>3</sub> 
+End to end distance of (Ala)<sub>3</sub>
+{: .text-center}
 
-![](/assets/images/2022_04_Fig.3.png)
+![](/assets/images/2022_04_Fig.3.png){: width="400" .align-center}
 
-Dihedral angle of (Ala)<sub>3</sub> 
+Dihedral angle of (Ala)<sub>3</sub>
+{: .text-center}
 
-\
 In REMD control file, we setup the `exchange_period=2000`. In the log
 output of the REMD simulation, we can see the information about
 replica-exchange attempts at every `exchange_period` steps.
 
-
-```toml
+```
 REMD> Step:    1998000   Dimension:    1   ExchangePattern:    2
   Replica      ExchangeTrial             AcceptanceRatio      Before       After
         1          3 >     2   R         148 /       500     305.090     305.090
@@ -451,21 +430,18 @@ values. In this table, `'A'` and `'R'` mean that the exchange at this
 step is accepted or rejected respectively. The last two columns show
 replica temperatures before and after the exchange trials respectively.
 
-[Lines in red] summarize the locations and
-parameters after replica exchanges. The `Parameter` line gives the
-temperature of each replica in T-REMD simulation. The `RepIDtoParmID`
-line stands for the permutation function that converts Replica ID to
-Parameter ID. For example, in the 1st column, `4` is written, which
-means that the temperature of Replica 1 is set to 307.65 K. The
-`ParmIDtoRepID` line also represents the permutation function
-that converts Parameter ID to Replica ID. For example, in the 5th
-column, `6` is written, which means that Parameter 5 (corresponding to the replica temperature, 310.24 K) is located in Replica 6.
+<!-- <span style="color:red;">[Lines in red]</span> summarize the locations and parameters after replica exchanges. --> 
+The `Parameter`, `RepIDtoParmID`, and `ParmIDtoRepID` lines summarize the locations and parameters after replica exchanges. 
+The `Parameter` line gives the temperature of each replica in T-REMD simulation. 
+The `RepIDtoParmID` line stands for the permutation function that converts Replica ID to Parameter ID. 
+For example, in the 1st column, `4` is written, which means that the temperature of Replica 1 is set to 307.65 K. 
+The `ParmIDtoRepID` line also represents the permutation function that converts Parameter ID to Replica ID. 
+For example, in the 5th column, `6` is written, which means that Parameter 5 (corresponding to the replica temperature, 310.24 K) is located in Replica 6.
 
 In REMD preparation step using temperature generator, we setup the
 probability of exchange to 0.25. So we first check the simulation
 acceptance ratio and check if it matches our original selection, see
 next section.
-
 
 ```bash
 # change directory 
@@ -484,8 +460,7 @@ output "`../4_prod_remd/run.log`", and we examine the data from the last
 step. Here, we show an example how to examine the data. Note that the
 acceptance ratio of replica "A" to "B" is identical to "B" to "A", and
 thus we calculate only "A" to "B". For this calculation, you can use the
-script "`calc_retio.sh`".
-
+script "`calc_ratio.sh`".
 
 ```bash
 # change directory 
@@ -509,7 +484,6 @@ $ ./calc_ratio.sh
 
 The file "`calc_ratio.sh`" contains the following commands:
 
-
 ```bash
 # get acceptance ratios between adjacent parameter IDs
 $ grep "  1 >     2" ../../4_prod_remd/run.log | tail -1  > acceptance_ratio.dat
@@ -530,9 +504,8 @@ time course of the replica indices for each set temperature. We need to
 plot the values of the "`ParmIDtoRepID`" lines from
 `../4_prod_remd/run.log` for a chosen starting replica temperature
 versus time. Each column correspond to initial set temperature
-respectively.[ For example, the first column correspond to 300 K,  the 10th column correspond to 323.46 K, and the last column correspond to 351.3 K]. Using following commands, we can get
+respectively. For example, the first column correspond to 300 K,  the 10th column correspond to 323.46 K, and the last column correspond to 351.3 K. Using following commands, we can get
 replica IDs in each snapshot.
-
 
 ```bash
 # change directory
@@ -550,14 +523,12 @@ $ gnuplot plot_parmID-repID.gnuplot
 
 The file "`plot_index.sh`" contains the following commands:
 
-
-```
+```bash
 # get replica IDs in each snapshot
 grep "ParmIDtoRepID:" ../../4_prod_remd/run.log | sed 's/ParmIDtoRepID:/ /' > T-REMD_parmID-repID.dat
 ```
 
 The file "`plot_parID-repID.gnuplot`" contains the following commands :
-
 
 ```
 set terminal jpeg
@@ -576,13 +547,10 @@ plot "T-REMD_parmID-repID.log" using ($1*0.0025*0.001):11 with points pt 7 ps 0.
 set output "351.30k.jpg"
 plot "T-REMD_parmID-repID.log" using ($1*0.0025*0.001):21 with points pt 9 ps 0.5 lt 3 title "351.30 K"
 ```
-
-
  
-
-![](/assets/images/2022_07_tutorial-12-1-300.00k.jpg)
-![](/assets/images/2022_07_tutorial-12-1-323.46k.jpg)
-![](/assets/images/2022_07_tutorial-12-1-351.30k.jpg)
+![](/assets/images/2022_07_tutorial-12-1-300.00k.jpg){: width="400" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-323.46k.jpg){: width="400" .align-center}
+![](/assets/images/2022_07_tutorial-12-1-351.30k.jpg){: width="400" .align-center}
 
 These graphs indicate that a certain temperature (parameterID) visit
 randomly each replica, and thus random walks in the temperature spaces
@@ -593,8 +561,7 @@ plot one column in the "`Parameter :`" lines in `../4_prod_remd/run.log`
 versus time. Using following commands. we can get replica temperatures
 in each snapshot.
 
-
-```
+```bash
 # make the file executable and use it
 $ chmod u+x plot_temperature.sh
 $ ./plot_temperature.sh
@@ -602,17 +569,14 @@ $ ./plot_temperature.sh
 # plot tempreture IDs in each snapshot 
 $ gnuplot plot_repID-Temperature.gnuplot
 ```
-
 The file "`plot_temperature.sh`" contains the following commands:
 
-
-```
+```bash
 # get replica temperatures in each snapshot
 grep "Parameter    :" ../../4_prod_remd/run.log | sed 's/Parameter    :/ /' > T-REMD_repID-temperatrue.dat
 ```
 
 The "`plot_repID-Temperature.gnuplot`" include the following commands:
-
 
 ```
 set terminal jpeg
@@ -627,13 +591,11 @@ plot \
   "T-REMD_repID-Temperature.log" using ($1*0.0025*0.001):21 with lines lt 1 title "repID=20"
 ```
 
-![](/assets/images/2022_07_tutorial-12-1-RepID1_10_20.jpg)
+![](/assets/images/2022_07_tutorial-12-1-RepID1_10_20.jpg){: width="400" .align-center}
 
 The temperatures of each replica during the simulation are distributed
 in all temperatures assigned. It means that correct annealing of the
 system is realized.
-
-
 
 ### 5.3. Sort coordinates in DCD trajectory files by parameters
 
@@ -641,12 +603,11 @@ The temperature in output DCD files of T-REMD simulation have all range
 of temperatures, due to the exchange. Therefore, to analyze the
 simulation further, we first need to sort the frames in the trajectory
 based on their temperature. To do that, we use GENESIS analysis tool
-(remd_convert). Sorting is done based on the information written in
+`remd_convert`. Sorting is done based on the information written in
 remfiles generated from the REMD simulation. Concomitantly, we also sort
 log files for each replica based on temperature parameters
 
-
-```
+```bash
 # change directory
 $ cd ../3_sort
 $ ls 
@@ -658,10 +619,7 @@ $ /home/user/GENESIS/bin/remd_convert remd_convert.inp | tee remd_convert.log
 
 The following control file is used to convert dcd files:
 
-
-
-
-```
+```toml
 [INPUT]
 psffile  = ../../1_setup/wbox.psf
 reffile  = ../../1_setup/wbox.pdb
@@ -698,8 +656,6 @@ trjout_atom      = 1
 pbc_correct      = NO
 ```
 
-
-
 Now we have sorted temperature log and DCD file which will be used in
 the following analysis steps.
 
@@ -710,8 +666,7 @@ we plot potential energy distribution to ensure sufficient overlap
 between all parameters. First, grep command we extract potential
 energies and step number, similar to previous plot of replica index.
 
-
-```
+```bash
 # change directory
 $ cd ../4_plot_potential
 $ ls
@@ -727,8 +682,7 @@ gnuplot plot_potential.gnuplot
 
 The file "`plot_potential.sh`" contains the following commands:
 
-
-```
+```bash
 # get potential energies for each temperature
 grep "INFO:" ../3_sort/remd_parmID1_trialanine.log   | tail -n +2 | awk '{print $2, $5}' > potential_energy_rep1.log
 ...
@@ -737,7 +691,6 @@ grep "INFO:" ../3_sort/remd_parmID20_trialanine.log  | tail -n +2 | awk '{print 
 ```
 
 The file "`plot_potential.gnuplot`" contains the following commands:
-
 
 ```
 set terminal jpeg
@@ -751,21 +704,18 @@ ndata=2000
 plot for [k=1:20] "potential_parmID".k.".log" u (bin($2,binwidth)):(1.0/ndata) t "Tempreture".k with lines smooth freq
 ```
 
-![](/assets/images/2022_04_pot_temp.jpg)
+![](/assets/images/2022_04_pot_temp.jpg){: width="400" .align-center}
 
-[[As can bee seen from the figure the potential energies of all temperatures have good overlap. ]\ \ ]
-
-
+As can bee seen from the figure the potential energies of all temperatures have good overlap.
 
 ### 5.5. Calculating end to end distance
 
 In order to calculate PMF (one dmension)  of end to end distance
 distribution, in the current subsection we calculate the distance
 between the two terminal alanine `(OY_HNT)`. In which we use GENESIS
-analysis tool trj_analysis as follow:
+analysis tool `trj_analysis` as follow:
 
-
-```
+```bash
 # change directory
 $ cd ../5_end_end_distance
 $ ls
@@ -781,11 +731,10 @@ $ ./run_trj_end_to_end.sh
 ```
 
 One created control file
-"[`trj_end_end_parmID1.inp`]" is used to
+`trj_end_end_parmID1.inp` is used to
 calculate end to end distance as follow:
 
-
-```
+```toml
 [INPUT]
 psffile        = ../../1_setup/proa.psf
 reffile        = ../../1_setup/proa.pdb
@@ -807,11 +756,9 @@ trj_natom      = 0         # (0:uses reference PDB atom count)
 check_only     = NO
 distance1      = PROA:1:ALA:OY PROA:3:ALA:HNT
 ```
+The file `run_trj_end_to_end.sh` include the following commands:
 
-The file "`run_trj_end_to_end.sh`" include the following commands:\
-
-
-```
+```bash
 /home/user/GENESIS/trj_analysis trj_end_end_parmID1.inp | tee trj_end_end_parmID1.log
 ...
 ...
@@ -823,10 +770,7 @@ The file "`run_trj_end_to_end.sh`" include the following commands:\
 In order to calculate PMF (two dimension) of dihedral angle
 distribution, in the current subsection we calculate two dihedral angle
 (Φ and Ψ) of 2nd alanine. As with end to end distance,  we use GENESIS
-analysis tool trj_analysis as follow:
-
-
-
+analysis tool `trj_analysis` as follow:
 
 ```bash
 # change directory
@@ -843,9 +787,8 @@ $ chmod u+x run_trj_dihedral.sh
 $ ./run_trj_dihedral.sh
 ```
 
-One created control file "`trj_dihedral_parmID1.inp`" is used to
+One created control file `trj_dihedral_parmID1.inp` is used to
 calculate end to end distance as follow:
-
 
 ```toml
 [INPUT]
@@ -871,8 +814,7 @@ torsion1       = PROA:1:ALA:C PROA:2:ALA:N  PROA:2:ALA:CA PROA:2:ALA:C
 torsion2       = PROA:2:ALA:N PROA:2:ALA:CA PROA:2:ALA:C  PROA:3:ALA:N
 ```
 
-THe file "`run_trj_dihedral.sh"` include the followind commands:
-
+The file `run_trj_dihedral.sh` include the followind commands:
 
 ```bash
 /home/user/GENESIS/trj_analysis trj_dihedral_parmID1.inp | tee trj_dihedral_parmID1.log
@@ -884,11 +826,10 @@ THe file "`run_trj_dihedral.sh"` include the followind commands:
 ### 5.7. MBAR analysis
 
 In order to use conformers from temperatures higher than the target
-temperature (300K), we apply GENESIS mbar_analysis tool where we use our
+temperature (300 K), we apply GENESIS mbar_analysis tool where we use our
 sorted potential energy files as cv as follows: 
 
-
-```
+```bash
 # change directory
 $ cd ../7_MBAR
 $ ls
@@ -896,18 +837,12 @@ $ MBAR.inp
 
 # calculate free energy with MBAR
 $ /home/user/GENESIS/bin/mbar_analysis MBAR.inp| tee MBAR.log 
-
 ```
 
-
-
-The following control file "`MBAR.inp`" is used to calculate free
+The following control file `MBAR.inp` is used to calculate free
 energy:
 
-
-
-
-```
+```toml
 [INPUT]
 cvfile             = ../4_plot_potential/potential_parmID{}.log
 
@@ -927,13 +862,10 @@ target_temperature = 300.00
 tolerance          = 10E-08
 newton_iteration   = 100 
 self_iteration     = 40
-
 ```
-
-This produces "`fene.dat`" file containing the evaluated relative free
-energies  and 20 "`weight*.dat`" files containing the weights of each
+This produces `fene.dat` file containing the evaluated relative free
+energies  and 20 `weight*.dat` files containing the weights of each
 snapshot for each parameterID. For example, `weight1.dat` is as follows:
-
 
 ```
         2000  2.792858134883802E-004
@@ -944,15 +876,14 @@ snapshot for each parameterID. For example, `weight1.dat` is as follows:
      4000000  2.787713494107975E-004
 ```
 
-### 5.7. Calculating PMF of distance distribution
+### 5.8. Calculating PMF of distance distribution
 
 The one of the final steps of this tutorial is to use the calculated
 distances (5.5). and weight files from MBAR analysis (5.7) to calculate
 PMF of end to end distance distribution in alanine tripeptide. We use
-another tool in GENESIS (`pmf_analysis`) as follow:
+another tool in GENESIS `pmf_analysis` as follow:
 
-
-```
+```bash
 # change directory
 $ cd ../8_PMF_distance
 $ ls
@@ -963,23 +894,18 @@ $ /home/user/GENESIS/bin/pmf_analysis PMF.inp| tee PMF.log
 
 # plot PMF 
 $ gnuplot plot_pmf.gnuplot 
-
 ```
 
+The following control file `PMF.inp` is used to calculate PMF about
+end to end distance:
 
-
-The following control file "`PMF.inp`" is used to calculate PMF about
-end to end distance:\
-
-
-```
+```toml
 [INPUT]
 cvfile       = ../5_end_end_distance/parameter_ID{}.dis        # input cv file
 weightfile   = ../6_MBAR/weight{}.dat
 
 [OUTPUT]
 pmffile      = dist.pmf
-
 
 [OPTION]
 nreplica     = 20         # number of replicas
@@ -990,11 +916,9 @@ band_width1  = 0.25       # sigma of gaussian kernel
                           # should be comparable or smaller than the grid size
                           # (pmf_analysis creates histogram by accumulating gaussians)
 is_periodic1 = NO         # periodicity of cv1
-
 ```
 
-The file "`plot_pmf.gnuplot`" include the following commands:
-
+The file `plot_pmf.gnuplot` include the following commands:
 
 ```
 set terminal jpeg
@@ -1006,23 +930,20 @@ set ylabel "PMF (kcal/mol)"
 plot "dist.pmf" u 1:2 w l notitle
 ```
 
-![](/assets/images/2022_07_tutorial-12-1-PMF_distance.jpg)
+![](/assets/images/2022_07_tutorial-12-1-PMF_distance.jpg){: width="400" .align-center}
 
 We can see that there is the global energy minimum around r = 10 Å. The
 latter corresponds to the α-helix conformation, where the hydrogen bond
 between OY and HNT is formed. These results suggest that in water the
-(Ala)~3~ tends to form an extended conformation rather than α-helix. 
+(Ala)<sub>3</sub> tends to form an extended conformation rather than α-helix. 
 
-
-
-### 5.8. Calculating PMF of dihedral distribution
+### 5.9. Calculating PMF of dihedral distribution
 
 The final step of this tutorial is to use the calculated dihedral angle
 (5.6) and weight files from MBAR analysis (5.7) to calculate PMF of
-dihedral distribution of 2nd alanine in (ALA)<sub>3<sub>.
+dihedral distribution of 2nd alanine in (ALA)<sub>3</sub>.
 
 We can get PMF to the following commands:
-
 
 ```bash
 # change directory 
@@ -1059,7 +980,7 @@ python3 calc_pmf_2d.py \
 python3 plot_pmf_2d.py
 ```
 
-Similar to the script of section 6.2 in [Tutorial 13.1](/tutorials/genesis_tutorial_13.1/), the absolute temperature, the number of
+Similar to the script of section 6.2 in [Tutorial 13.1](/tutorials/genesis_tutorial_13.1_2022/), the absolute temperature, the number of
 samples, the minimum value of the CV, the maximum value of the CV, the
 grid size of the bin for the CV are assigned by "-t", "-n", "--Xmin",
 "--Xmax", "--Xdel", respectively. "-c" represents the cutoff of the
@@ -1071,35 +992,35 @@ the free energies in each bin "pmf.dat" and grid points of the CVs
 free-energy landscape using "pmf.dat", "xi.dat", and "yi.dat".
 
 
-[![](/assets/images/2022_07_tutorial-12-1_PMF_dihedral.png)]
+![](/assets/images/2022_07_tutorial-12-1_PMF_dihedral.png){: width="400" .align-center}
 
 We can see that there is the global energy minimum around (φ,ψ) = (-75°, 150°) and local energy minimum around (φ,ψ) = (-60°, -45°). The latter
-corresponds to the pp\|\| and α-helix conformation respectively.  As in
+corresponds to the PPII and α-helix conformation respectively.  As in
 the PMF about end to end distance in (5.7), we can understand that
-(Ala)~3~ in explicit water prefer extended conformation rather than
+(Ala)<sub>3</sub> in explicit water prefer extended conformation rather than
 α-helix. 
 
 
 ## References
 
-[^1]:  Y. Sugita et al., Chemical Physics Letters, **314**, 141--151, (1999).
+[^1]:  Y. Sugita et al., Chemical Physics Letters, **314**, 141--151, (1999). [<i class="fas fa-link"></i>](https://doi.org/10.1016/S0009-2614(99)01123-9)
 
-[^2]:  J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899, (2013).
+[^2]:  J. E. basconi et al., J. Chem. Theory Comput. **9**, 2887-2899, (2013). [<i class="fas fa-link"></i>](https://doi.org/10.1021/ct400109a)
 
-[^3]:  A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077, (2008).
+[^3]:  A. Patriksson et al,  *Phys. Chem. Chem. Phys.*, **10**, 2073-2077, (2008). [<i class="fas fa-link"></i>](https://doi.org/10.1039/B716554D)
 
-[^4]:  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008).
+[^4]:  M. Shirts et al., *J. Chem. Phys.*, **129**, 124105-124114 (2008). [<i class="fas fa-link"></i>](https://doi.org/10.1063/1.2978177)
 
 ------------------------------------------------------------------------
 
 *Written by Daisuke Matsuoka@RIKEN Theoretical molecular science
-laboratory*\
+laboratory*  
+\
 *Updated by Hisham Dokainish@RIKEN Theoretical molecular science
-laboratory\
-August, 28, 2019\
+laboratory    
+August, 28, 2019  
 \
 Updated by Daiki Matsubara@RIKEN Center for Biosystems Dynamics Research
-(BDR)*\
+(BDR)*  
 *March, 31, 2022*
 {: .notice} 
-

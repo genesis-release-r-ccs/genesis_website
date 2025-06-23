@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 2.1 (2022)"
+gpos: 002.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -213,11 +214,14 @@ $ cd PDB
 # Download Protein G (PDBID: 2QMT)
 $ wget https://files.rcsb.org/download/2QMT.pdb
 
-# Download alanine-dipeptide
-$ wget http://localhost/wp-content/uploads/2019/06/ala2.pdb
+# (If you have not downloaded genesis_tutorial_materials, 
+#  refer to tutorial 1.1)
+#
+# Copy alanine-dipeptide from genesis_tutorial_materials
+$ cp ../../genesis_tutorial_materials/ala2.pdb .
 
-# Download (Ala)3
-$ wget http://localhost/wp-content/uploads/2019/06/ala3.pdb
+# Copy (Ala)3 from genesis_tutorial_materials
+$ cp ../../genesis_tutorial_materials/ala3.pdb .
 ```
 
 Before moving on to the next tutorial, let's check the structure of

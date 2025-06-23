@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 10.1 (2022)"
+gpos: 010.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -12,12 +13,12 @@ sidebar:
 # Acceleration of MD simulations using HMR and a longer time step 
 
 Here we show an example how to apply a longer time step than usual by
-making use of the hydrogen mass repartitioning (HMR) scheme [^1] [^2] [^3] with group
-temperature/pressure.[^4] Please note that this option is recommend with accurate temperature/pressure evaluations.[^4] [^5] [^6].
+making use of the hydrogen mass repartitioning (HMR) scheme [^1]<sup>,</sup> [^2]<sup>,</sup> [^3] with group
+temperature/pressure.[^4] Please note that this option is recommend with accurate temperature/pressure evaluations.[^4]<sup>,</sup> [^5]<sup>,</sup> [^6]
 
 ## 1. Overview of Hydrogen mass repartitioning (HMR)
 
-In hydrogen mass repartitioning (HMR),[^1] [^2] [^3] the mass of hydrogen atoms is
+In hydrogen mass repartitioning (HMR),[^1]<sup>,</sup> [^2]<sup>,</sup> [^3] the mass of hydrogen atoms is
 scaled by 2\~3 while the mass of the heavy atom bonded to the hydrogen
 is reduced such that the total mass is not changed. The figure below is
 an example of HMR with a scaling ratio = 3. Here, numbers in each atom
@@ -259,15 +260,15 @@ hmr_target    = solute
 ```
 
 Here, we scale the mass of hydrogen atoms in the following manner: three
-times for for XH~2~ or XH~3~ and twice for
-XH~1\ (where\ X\ and\ H\ represent\ any\ heavy\ and\ hydrogen\ atoms,\ repsectively)~.
+times for for XH<sub>2</sub> or XH<sub>3</sub> and twice for
+XH<sub>1 (where X and H represent any heavy and hydrogen atoms, repsectively)</sub>.
 In addition, HMR is not applied water molecules. To make use of the HMR
 option, first please write `hydrogen_mr = yes`. If not, HMR is not
 applied even if you write HMR related keys in the control input file.
 The HMR scaling ratio is controlled by `hmr_ratio`. It scales up the
 mass of hydrogen atoms while the mass of the bonded heavy atom is
 reduced to conserve the total mass. `hmr_ratio_xh1` scales the mass of
-hydrogen atoms in XH~1~.
+hydrogen atoms in XH<sub>1</sub>.
 
 Please note that HMR input in GENESIS is distinguished from NAMD or
 AMBER program. In NAMD and AMBER, the scaled hydrogen mass should be

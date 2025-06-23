@@ -42,16 +42,16 @@ feature_row:
     btn_label: "Learn more"      
   - image_path: /assets/images/20250509_homepage_about.png
     alt: "rich-features"
-    title: "About Us"
+    title: "Contact Us"
     excerpt: "GENESIS is primarily developed by researchers at RIKEN, Japan."
     url: "/docs/about/"
     btn_class: "btn--primary"
     btn_label: "Learn more"      
   - image_path: /assets/images/20250509_homepage_contact.png
     alt: "rich-features"
-    title: "Contact Us"
-    excerpt: "Questions and discussions regarding the use of GENESIS are always welcome."
-    url: "/docs/contact/"
+    title: "FAQ"
+    excerpt: "Common questions and answers regarding the use of GENESIS."
+    url: "/docs/FAQ/"
     btn_class: "btn--primary"
     btn_label: "Learn more"      
 ---

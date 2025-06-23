@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 3.1 (2022)"
+gpos: 003.001
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:56+09:00
 layout: single
@@ -91,7 +92,7 @@ build.tcl  log  proa.pdb  proa.psf
 $ vmd proa.pdb -psf proa.psf 
 ```
 
-![](/assets/images/2019_07_ala2.jpg)
+![](/assets/images/2019_07_ala2.jpg){: style="width:60%;" .align-center}
 
 ##  2. MD simulation
 
@@ -371,7 +372,7 @@ dihedral angle of the C-N-Cα-C atoms and ψ is the dihedral angle of the
 N-Cα-C-N atoms. The `trj_analysis` tool is used to analyze these
 dihedral angles, whose control file is shown below.
 
-![](/assets/images/2019_07_ala2_dihed.jpg){: width="400"}
+![](/assets/images/2019_07_ala2_dihed.jpg){: width="400" .align-center}
 
 
 ```bash
@@ -480,10 +481,10 @@ March, 5, 2022*
 
 ##  References
 
-[^1]: [J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).](https://www.nature.com/articles/nmeth.4067)
+[^1]: J. Huang *et al.*, *Nat. Methods*, **14**, 71-73 (2017).[<i class="fas fa-link"></i>](https://www.nature.com/articles/nmeth.4067)
 
-[^2]: [J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).](https://www.sciencedirect.com/science/article/pii/0021999177900985)
+[^2]: J. P. Ryckaert *et al.,* *J. Comput. Phys.*, **23**, 327-341 (1977).[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999177900985)
 
-[^3]: [H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).](https://www.sciencedirect.com/science/article/pii/0021999183900141)
+[^3]: H. C. Andersen, *J. Comp. Phys.*, **52**, 24-34 (1983).[<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/pii/0021999183900141)
 
-[^4]: [G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).](https://aip.scitation.org/doi/10.1063/1.2408420)
+[^4]: G. Bussi *et al.*, *J. Chem. Phys.*, **126**, 014101 (2007).[<i class="fas fa-link"></i>](https://aip.scitation.org/doi/10.1063/1.2408420)

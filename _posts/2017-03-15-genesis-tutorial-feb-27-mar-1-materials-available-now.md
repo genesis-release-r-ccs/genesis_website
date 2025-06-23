@@ -3,6 +3,8 @@ title: GENESIS tutorial (Feb 27-Mar 1) materials available now
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 Presentation slides and materials used in the tutorial (Feb. 27-Mar. 1)

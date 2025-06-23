@@ -3,6 +3,8 @@ title: International Workshop -  Frontiers in Computational Biophysics and Bioch
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 International workshop entitled "[Frontiers in Computational Biophysics

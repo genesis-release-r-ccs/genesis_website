@@ -3,6 +3,8 @@ title: GENESIS paper selected as one of top ten WCMS Articles 2015!
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 Check [this

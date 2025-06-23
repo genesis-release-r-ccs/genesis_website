@@ -3,6 +3,8 @@ title: GENESIS 1.1.2 released!
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 This version contains a new feature and some fixes as follows.

@@ -1,5 +1,6 @@
 ---
 title: "GENESIS Tutorial 16.3 (2022)"
+gpos: 016.003
 excerpt: ""
 last_modified_at: 2025-06-03T00:00:57+09:00
 layout: single
@@ -37,7 +38,7 @@ compied from the CHARMM program package. Here, we assume that the users
 download the CHARMM program in the `~/Downloads` directory. The
 parameter files are found in the `support/aspara` directory in CHARMM. 
 
-```
+```bash
 # Copy EEF1 parameter files in the Data directory
 $ cd ~/GENESIS_Tutorials-2022/Data/Parameters
 $ mkdir eef1
@@ -51,7 +52,7 @@ Second, we set environmental variables: `VMDBIN`, `PULCHRABIN`, and
 MMTSB, respectively. Note that the path is depending on where the user
 installed these programs. The example commands are as follows:
 
-```
+```bash
 # Set environmental variables for this tutorial
 $ export VMDBIN="/home/user/Software/vmd-1.9.3/LINUXAMD64/vmd_LINUXAMD64"
 $ export PULCHRABIN="/home/user/Software/pulchra_306/pulchra"
@@ -84,7 +85,7 @@ $ ls
 We make symbolic links of the CHARMM `toppar` and `eef1` directories in
 the `Parameters` directory. 
 
-```
+```bash
 # Make symbolic links to the parameter files
 $ cd Parameters
 $ ln -s ../../../Data/Parameters/toppar_c36_jul21 ./toppar
@@ -97,7 +98,7 @@ map and PDB files of decoys are contained. There are 50 decoys
 model. `input.sit` is the target cryo-EM density map in the SITUS
 format. 
 
-```
+```bash
 $ cd ../0_data
 $ ls
 input.sit    model19.pdb  model29.pdb  model39.pdb  model49.pdb
@@ -115,7 +116,7 @@ We generate the full-atom model from each decoy using PULCHRA. In the
 `1_pulchra` directory, there is one script: `Run.csh`, which applies
 PULCHRA to all decoys contained in the `../0_data` directory.
 
-```
+```bash
 $ cd ../1_pulchra
 $ ls
 Run.csh
@@ -124,7 +125,7 @@ Run.csh
 Let's execute `Run.csh`. We obtain 50 PDB files of the full-atom model
 (`model1.rebuilt.pdb` ... `model50.rebuilt.pdb`):
 
-```
+```bash
 $ ./Run.csh
 $ ls
 Run.csh              model24.rebuilt.pdb  model4.rebuilt.pdb
@@ -145,7 +146,7 @@ and `build.tcl`. Here, `build.tcl` is a TCL script of VMD/PSFGEN. We use
 the CHARMM C36m force field parameters. 
 
 
-```
+```bash
 $ cd ../2_psfgen
 $ ls
 Run.csh  build.tcl  tmp
@@ -156,7 +157,7 @@ PDB files (`model1.pdb` ... `model50.pdb`) of all decoy. Here, `log1`
 ... `log50` are log files of VMD/PSFGEN.
 
 
-```
+```bash
 $ ./Run.csh
 $ ls
 Run.csh    log21  log35  log49  model16.pdb  model3.pdb   model43.pdb
@@ -173,8 +174,7 @@ We carry out the energy minimization for all decoys. Let's move to the
 script that creates control files of GENESIS automatically for all
 decoys
 
-
-```
+```bash
 # Move to the directory for minimization
 $ cd ../3_minimize
 $ ls
@@ -189,7 +189,7 @@ file (`job.sh`) in the `template` directory are replicated to generate
 50 control files (`INP1` ... `INP50`) and script files (`job1.sh` .. `job50.sh`). Before executing `Make.csh`, let's check the files
 contained in `template`. 
 
-```
+```bash
 # Check the template batch script file
 $ less ./template/job.sh
 $ less ./template/INP
@@ -201,11 +201,9 @@ you can find "MODELID", which is replaced with the decoy index by the
 batch script file (`job.sh`) by yourself according to your computer
 system. 
 
-```
+```bash
 ...
-
 mpirun -np 8 -x OMP_NUM_THREADS=3 ../bin/atdyn INPMODELID > logMODELID
-
 ...
 ```
 
@@ -217,7 +215,7 @@ residues are detected, the warning message will be shown in the GENESIS
 log file.
 
 
-```
+```toml
 [MINIMIZE] 
 method          = SD
 nsteps          = 2000
@@ -229,7 +227,7 @@ check_structure = YES
 Let's execute `Make.csh` to create the control files and batch script
 files.
 
-```
+```bash
 # Replicate the files for all decoys 
 $ ./Make.csh
 $ ls
@@ -243,7 +241,7 @@ INP11      INP23  INP35  INP47  job11.sh    job23.sh  job35.sh  job47.sh
 Then, let's submit all jobs using `Submit.csh`, which executes all jobs
 one by one using the `qsub` command.
 
-```
+```bash
 # Check the script
 $ less ./Submit.csh
 
@@ -261,8 +259,7 @@ in `Check.csh`, log messages are checked to investigate whether
 chirality errors and ring penetrations are detected or not. For the cis
 peptide bonds, VMD [cispeptide plugin](http://www.ks.uiuc.edu/Research/vmd/plugins/cispeptide/) is carried out. 
 
-
-```
+```bash
 # Check the script
 $ less ./Check.csh
 
@@ -288,8 +285,7 @@ Let's move to the `4_fix_errors_1` directory, in which the chirality
 errors and ring penetrations are fixed with the energy minimization
 protocol.
 
-
-```
+```bash
 # Change directory to fix the errors Step1
 $ cd ../4_fix_errors_1
 $ ls
@@ -299,8 +295,7 @@ Check.csh  Make.csh  Submit.csh  template
 In the control file, `fix_ring_error` and `fix_chirality_error` in the
 `[MINIMIZE]` section are turned on:
 
-
-```
+```toml
 [MINIMIZE] 
 method              = SD
 nsteps              = 2000
@@ -313,7 +308,7 @@ fix_chirality_error = YES
 
 Let's execute the three scripts one by one. 
 
-```
+```bash
 $ ./Make.csh
 $ ./Submit.csh
 $ ./Check.csh
@@ -332,7 +327,7 @@ the `[SELECTION]` and `[RESTRAINTS]` sections, respectively. The
 information in these two files are appended to the template control
 file.
 
-```
+```bash
 # Change directory to fix the errors Step2
 $ cd ../4_fix_errors_2
 $ ls
@@ -365,8 +360,7 @@ We convert the all-atom model (CHARMM C36) to the united-atom model
 is almost same with that in `2_psfgen`. Here, we specify
 `toph19_eef1.1.inp` in VMD/PSFGEN.
 
-
-```
+```bash
 # Change directory to build the united-atom model
 $ cd ../5_build_c19
 $ ls
@@ -382,8 +376,7 @@ Let's move to `6_saua-ffr`. As in our recent paper [^3], the SAUA-FFR
 is carried out iteratively. The restart files of the calculations are
 taken over from Cycle1 to Cycle5.
 
-
-```
+```bash
 # Change directory to perform SAUA-FFR
 $ cd ../6_saua-ffr
 $ ls
@@ -392,8 +385,7 @@ Cycle1  Cycle2  Cycle3  Cycle4  Cycle5
 
 Let's move to `Cycle1`, and check the template control file.
 
-
-```
+```bash
 # Perform SAUA-FFR with 5 cycles
 $ cd Cycle1
 $ ls
@@ -410,8 +402,7 @@ biasing potential is 10,000 kcal/mol.
 
 Let's execute the script one by one. 
 
-
-```
+```bash
 # Perform SAUA-FFR with 5 cycles
 $ ./Make.csh
 $ ./Submit.csh
@@ -439,12 +430,6 @@ demonstrated a new protocol for the best model selection, where the
 model is selected based on c.c., RWplus score, and MolProbity score from
 multiple flexible fitting runs using different force constants. 
 
-
-##  References
-
-[^1]: G. Terashi and D. Kihara, *Nat. Commun.*, **9**, 1618 (2018).
-[^2]: M. Y. Chen *et al.*, *J. Struct. Biol.*, **196**, 289-298 (2016).
-[^3]: Mori et al., *J. Chem. Inf. Model.*, **61**, 3516--3528 (2021).
 
 ##  Acknowledgement 
 

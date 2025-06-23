@@ -3,6 +3,8 @@ title: GENESIS 1.0 paper
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 GENESIS 1.0 published on *WIREs Comput. Mol. Sci.* is available

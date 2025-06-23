@@ -3,6 +3,8 @@ title: GENESIS tutorial in Japanese at Tokyo (Oct. 5, 2017)
 excerpt_separator: "<!--more-->"
 categories:
  - News
+sidebar:
+  nav: sidebar-basic
 ---
 
 (This is a GENESIS tutorial in Japanese)
