@@ -10,8 +10,8 @@ sidebar:
   nav: sidebar-basic
 ---
 
-See [Tutorials 2.1](/tutorials/genesis_tutorial_2.1_2022/) and
-[4.4](/tutorials/genesis_tutorial_4.4_2022/).
+See [Tutorials 6.2](/tutorials/genesis_tutorial_6.2_2022/) and
+[6.4](/tutorials/genesis_tutorial_6.4_2022/).
 
 
 ## Projection of each snapshot of MD trajectories onto PC axes

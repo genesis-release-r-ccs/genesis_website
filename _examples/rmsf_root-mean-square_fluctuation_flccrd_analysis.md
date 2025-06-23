@@ -10,10 +10,10 @@ sidebar:
   nav: sidebar-basic
 ---
 
-`flccrd_anslysis` compute the RMSF (Root-mean-square fluctuation) of the
+`flccrd_anslysis` compute the RMSF (Root-Mean-Square Fluctuation) of the
 selected atoms. This tool is also used for the principal component analysis
-(PCA). See [Tutorials
-2.1](/tutorials/genesis_tutorial_2.1_2022/) and [4.4](/tutorials/genesis_tutorial_4.4_2022/).
+(PCA). See [Tutorials 6.2](/tutorials/genesis_tutorial_6.2_2022/) 
+and [6.4](/tutorials/genesis_tutorial_6.4_2022/).
 In the case of "`vcv_matrix = Global`" analysis_atoms are analyzed, while in the
 case of "`vcv_matrix = Local`" fitting_atoms are analyzed.
 

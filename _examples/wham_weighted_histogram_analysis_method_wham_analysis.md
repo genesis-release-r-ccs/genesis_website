@@ -18,7 +18,7 @@ to use the latter style, since that overall computational cost is usually lower
 than the former one. You should prepare `cvfile` from `trj_analysis` or
 something equivalent to it at first. We here show sample input files of
 `wham_analysis`. (One-dimensional sample is almost the same as the one used in
-[Tutorial-2.2](/tutrials/genesis_tutorial_2.2_2022/).)  Note that this
+[Tutorial-12.2](/tutorials/genesis_tutorial_12.2_2022/).)  Note that this
 `wham_analysis` supports OpenMP parallelization. If you can use a multicore CPU
 in this analysis, setting `OMP_NUM_THREADS` environmental variable may improve
 the efficiency of wham calculations.
@@ -96,8 +96,11 @@ Number of values must be the same as "dimension" parameter value in
 `[WHAM]` section. Step numbers (1st column) are required but not used in
 the actual calculations.
 
-Example cvfile (intermediate data of [Tutorial-2.2](/tutorials/genesis_tutorial_2.2_2022/)):
-steps and distances of replica parameter 1 (calculated by [trj_analysis](/examples/distance__angle__dihedral_angle__com_distance__com_angle__com_dihedral_angle_trj_analysis/))
+Example cvfile (intermediate data of
+[Tutorial-12.2](/tutorials/genesis_tutorial_12.2_2022/)): steps and distances of
+replica parameter 1 (calculated by
+[trj_analysis](/examples/distance__angle__dihedral_angle__com_distance__com_angle__com_dihedral_angle_trj_analysis/))
+
 ```
   1   2.088
   2   2.300

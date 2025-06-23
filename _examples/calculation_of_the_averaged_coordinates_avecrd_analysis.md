@@ -12,8 +12,8 @@ sidebar:
 
 
 This tool is also used for the principal component analysis (PCA). 
-See [Tutorials 2.1](/tutorials/genesis_tutorial_2.1_2022/) and
-[4.4](/tutorials/genesis_tutorial_4.4_2022/).
+See [Tutorials 6.2](/tutorials/genesis_tutorial_6.2_2022/) and
+[6.4](/tutorials/genesis_tutorial_6.4_2022/).
 
 ## Calculation of the averaged coordinates of the protein CA atoms
 
