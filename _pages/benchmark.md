@@ -251,8 +251,9 @@ sidebar:
 
 ## Input and control files of the benchmark
 
-- [Benchmark sets for DHFR, ApoA1, and UUN](/assets/fundamental/2020_12_benchmark_mkl_ver4_nocrowding.tar.gz)
- 
+<!-- - [Benchmark sets for DHFR, ApoA1, and UUN](/assets/fundamental/2020_12_benchmark_mkl_ver4_nocrowding.tar.gz) -->
+
+Get the input files of GENESIS benchmark from our [GitHub repository](https://github.com/genesis-release-r-ccs/genesis_benchmark_input). 
 
 ## Previous versions
 
