@@ -52,13 +52,13 @@ and unbound states is significantly large, many intermediate states
 an acceptable range. As shown in Figure 1, instead of explicitly
 calculating \\(\\Delta G\_{\rm bind}^{L8}\\) and \\(\\Delta G\_{\rm bind}^{L9}\\), \\(\\Delta\\Delta G\_{\rm bind}\\) can be calculated by
 mutation from L8 to L9 as follows:
-<div>
+
+
+\\[
 \begin{aligned}
-\[
     \Delta\Delta G_{\rm bind} = \Delta G_{\rm mut}^{\rm complex} - \Delta G_{\rm mut}^{\rm ligand}
-\]
-\end{alined}
-</div>
+\end{aligned}
+\\]
 
 where \\(\\Delta G\_{\rm mut}^{\rm complex}\\) and \\(\\Delta G_{\rm mut}^{\rm ligand}\\) are the free energy changes upon mutation from L8 to L9 in the bound and unbound states, respectively. Since the
 perturbation in the mutation is small (from a benzene ring in L8 (green in Figure 1) to a cyclohexyl ring in L9 (magenta in Figure 1)), the

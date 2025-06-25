@@ -62,7 +62,7 @@ where \\(\\Delta G\_{\rm tr}\\) is the change in the free energy of
 translational and rotational motion of the solute. In the fully
 decoupled state (molecule B), the solute can move freely in the
 simulation box both in vacuum and in solvent, resulting in \\(\\Delta G\_{\rm tr}=0\\). In this tutorial, we will demonstrate how to calculate
-\\(\\Delta G\_{\rm annih}\^{\rm vacuum}\\) and \\(\\Delta G\_{\rm annih}^{\rm solvent}\\) using the FEP functions in GENESIS.
+\\(\\Delta G\_{\rm annih}^{\rm vacuum}\\) and \\(\\Delta G\_{\rm annih}^{\rm solvent}\\) using the FEP functions in GENESIS.
 
 ![](/assets/images/2022_03_fep_abs_solv_fig1.jpg)
 
@@ -205,7 +205,7 @@ $ sh make_inp.sh
 ```
 
 The simulation time can be modified in the "`make_inp.sh`" script (5-ns by default). If 24 replicas are too large for the user's computer
-resources, it is recommended to use the "e[mbarrassingly parallel computing" option by modifying `make_inp.sh` (see Sec 14.1.6).
+resources, it is recommended to use the "embarrassingly parallel computing" option by modifying `make_inp.sh` (see Sec 14.1.6).
 
 The most important sections in `run_fep1.inp` are shown below. In the
 FEP/REMD simulation, \[REMD\] section is also required. `type1` is set
@@ -310,9 +310,7 @@ computational resources or time available for the user.
 ### 3. 3. Analysis
 
 After the FEP/\\(\\lambda\\)REMD simulations have ended, we calculate
-the free energy from the fepfile files. The
-
-`post_run.sh` script calculates the free-energy difference between the
+the free energy from the fepfile files. The `post_run.sh` script calculates the free-energy difference between the
 initial and final states:
 
 
@@ -331,7 +329,7 @@ are divided into three blocks, and each column in `fene.dat` represents
 the free-energy changes in each block (i.e., the block average of the free-energy changes are obtained). Each row represents the free-energy
 change from the initial state (state A). The last row corresponds to the
 free-energy change from the initial state to the final state (state B),
-which is equal to \\(\\Delta G\_{\rm annih}\^{\rm solvent}\\).
+which is equal to \\(\\Delta G\_{\rm annih}^{\rm solvent}\\).
 
 ![](/assets/images/2022_03_fep_abs_solv_fig5.jpg)
 
@@ -420,9 +418,6 @@ March 31, 2022*
 [^5]: D. L. Mobley, J. P. Guthrie, FreeSolv: A Database of Experimental and Calculated Hydration Free Energies, with Input Files, *J. Comput. Aided Mol. Des.* **28**, 711--720 (2014)
 
 ------------------------------------------------------------------------
-
-*Written by Hiraku Oshima@RIKEN BDR\
-March 31, 2022*
 
  
 

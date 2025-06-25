@@ -204,7 +204,7 @@ in the dcd file, which illustrates how the FUS collapsed from a straight line
 (the initial structure) to a relatively compact conformation, as shown in the
 following:
 
-![FUS single IDR MD simulation](/assets/images/2021_10_single_final.png)
+![](/assets/images/2021_10_single_final.png){: width="400" .align-center}
 
 
 ###  2.2 Multiple chains
