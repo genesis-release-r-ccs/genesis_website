@@ -21,8 +21,7 @@ going to simulate the unfolding of RNase H protein from HIV-1 (RNase-H),
 and observe molten globule state of the molecule [^2].
 
 All the files required for this tutorial are hosted in the
-[GENESIS tutorials repository on GitHub]
-(https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
+[GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials).
 If you haven't downloaded the files yet, open your terminal
 and run the following command (see more in
 [Tutorial 1.1](/tutorials/genesis_tutorial_1.1_2022/)):
@@ -47,7 +46,7 @@ This tutorial is composed of three steps:
 
 ## 1. Setup the system
 
-Firstly, you need to install SMOG2 [^3] [^4] [^5], a software to generate
+Firstly, you need to install SMOG2 [^3]<sup>,</sup>[^4]<sup>,</sup>[^5], a software to generate
 coarse-grained model of biomolecules, on your local machine. You can download
 both source codes and user manual of SMOG2 from [its website](https://smog-server.org/smog2/).  
 Installation and configuration of SMOG2 is described from page 3 to page 5 on
@@ -56,7 +55,7 @@ availability of some prerequisites such as Perl, Perl Data Language (PDL), and
 various modules. You can install these modules by using `yum` (Red-Hat),
 `apt-get` (Debian), and so on depending your operating system. Here are examples
 on Ubuntu:
-```
+```bash
 $ sudo apt-get install -y perl # Perl
 $ sudo apt-get install -y libxml-parser-perl \
                           libxml-simple-perl \
@@ -86,7 +85,7 @@ HIV-1 reverse transcriptase, containing RNase-H, is available from the [RCSB
 Protein Data Bank](https://www.rcsb.org/) (PDB). You can download the PDB file
 (PDB ID: 1r0a) on a web browser, or with running the following commands:
 
-```
+```bash
 # change to the setup directory
 $ cd /path/to/1_setup
 
@@ -97,7 +96,7 @@ $ wget https://files.rcsb.org/download/1r0a.pdb
 You have to extract RNase-H from the PDB file by trimming off the other
 part:
 
-```
+```bash
 # extract RNase-H from 1r0a.pdb
 $ head -n6198 1r0a.pdb | tail -n932 > 1r0a_mod.pdb
 
@@ -110,7 +109,7 @@ $ echo END >> 1r0a_mod.pdb
  
 Then we perform SMOG2 with `1r0a_mod.pdb`:
 
-```
+```bash
 # adjust format of the input PDB file
 $ smog_adjustPDB -i 1r0a_mod.pdb # adjusted.pdb file will be generated as an output
 
@@ -132,7 +131,7 @@ The following commands perform a 1.0 x 10<sup>7</sup> steps (20 ns) simulation
 with `atdyn`:
 
 
-```
+```bash
 # change to the production run directory
 $ cd /path/to/2_production
 
@@ -172,7 +171,7 @@ isothermal simulation with the friction constant of 0.1 ps<sup>-1</sup>.  
 Finally, in the `[BOUNDARY]` section, we set the boundary condition for the
 system, which is no boundary condition ( `NOBC` ) here.
 
-```
+```toml
 [INPUT] 
 grotopfile     = ../1_setup/smog.top # topology/parameter file
 grocrdfile     = ../1_setup/smog.gro # coordinate file (equivalent to PDB file)
@@ -214,7 +213,7 @@ type           = NOBC # [PBC, NOBC]
 As an example for the analysis, we use the `rg_analysis`, which calculates a
 radius of gyration (\\(R_g\\)) for each snapshot in the trajectory. You can perform `rg_analysis` with following commands:
 
-```
+```bash
 # change to the analysis directory
 $ cd /path/to/3_analysis/
 
@@ -227,7 +226,7 @@ $ rg_analysis run.inp | tee run.out
 
 The control file for the \\(R_g\\) calculation is shown below:
 
-```
+```toml
 [INPUT] 
 grotopfile     = ../1_setup/smog.top # topology/parameter file
 grocrdfile     = ../1_setup/smog.gro # coordinate file
@@ -269,7 +268,7 @@ is the \\(R_g\\) values in the unit of Angstrom. We can visualize it with
 programs such as gnuplot:
 
 
-```
+```bash
 $ gnuplot
 gnuplot> set xlabel “Step”
 gnuplot> set ylabel “Rg [Angstrom]”
@@ -286,9 +285,9 @@ June 18, 2022*
 
 ## References
 
-[^1]: L. Wang *et al.*, *J. Chem. Phys.*, **128**, 235103 (2008).
-[^2]: S. Yadahalli and S. Gosavi, *Phys. Chem. Chem. Phys.*, **19**, 9164-9173 (2017).
-[^3]: J. K. Noel *et al.*, *PLoS Comput. Biol.*, **12**, e1004794 (2016).
-[^4]: P. C. Whitford *et al.*, [*Proteins: Structure, Function,     Bioinformatics*, **75**, 430-441 (2009).]
-[^5]: J. K. Noel *et al.*, *J. Phys. Chem. B* **116**, 8692-8702 (2012). 
+[^1]: L. Wu *et al.*, *J. Chem. Phys.*, **128**, 235103 (2008).[<i class="fas fa-link"></i>](https://pubs.aip.org/aip/jcp/article/128/23/235103/70857/Folding-of-proteins-with-an-all-atom-Go-model)
+[^2]: S. Yadahalli and S. Gosavi, *Phys. Chem. Chem. Phys.*, **19**, 9164--9173 (2017).[<i class="fas fa-link"></i>](https://pubs.rsc.org/en/content/articlehtml/2017/cp/c6cp08940b)
+[^3]: J. K. Noel *et al.*, *PLoS Comput. Biol.*, **12**, e1004794 (2016).[<i class="fas fa-link"></i>](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004794)
+[^4]: P. C. Whitford *et al.*, *Proteins: Structure, Function, Bioinformatics*, **75**, 430--441 (2009).[<i class="fas fa-link"></i>](https://onlinelibrary.wiley.com/doi/full/10.1002/prot.22253)
+[^5]: J. K. Noel *et al.*, *J. Phys. Chem. B* **116**, 8692--8702 (2012). [<i class="fas fa-link"></i>](https://pubs.acs.org/doi/full/10.1021/jp300852d)
 
