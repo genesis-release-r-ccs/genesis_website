@@ -46,31 +46,37 @@ One of the proton (H31) of DHAP is transferred to Glu165 of TIM. Note
 that the proton transfer accompanies a charge transfer of the electron
 from Glu165 to O2 of DHAP (red in Fig. 1), where His95 donates a
 hydrogen bond. Therefore, the reaction coordinate involves not only r<sub>1</sub>
-/ r<sub>2</sub> but also several intermolecular degrees of freedom (e.g., r<sub>3</sub>, r<sub>4</sub>, r<sub>6</sub>). In fact, HE2 of His95 is transferred to O2 in a later
-stage, though the process is beyond the scope of this tutorial.
+/ r<sub>2</sub> but also several intermolecular degrees of freedom (e.g.,
+r<sub>3</sub>, r<sub>4</sub>, r<sub>6</sub>). In fact, HE2 of His95 is
+transferred to O2 in a later stage, though the process is beyond the scope of
+this tutorial.
 
 ## 2. System preparation 
 
 Download the tutorial file
-([GENESIS tutorials repository on GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials "github")), and proceed to tutorial-15.5/1.tim. This directory contains five sub-directories.
+([GENESIS tutorials repository on
+GitHub](https://github.com/genesis-release-r-ccs/genesis_tutorial_materials)), 
+and proceed to `tutorial-15.5/1.tim`. This directory contains five
+sub-directories.
 
 ```bash
-$ unzip tutorial22-15.5.zip 
 $ cd tutorial-15.5/1.tim
 $ ls  
 0.build/ 1.pre_equil/ 2.equil/ 3.min/ 4.mep/
 ```
 
 `0.build`, `1.pre_equil`, and `2.equil` are the setup and equilibration
-of the system prior to QM/MM calculations. Since relevant files (pdb, psf, and rst) are retained, you can skip these steps and go directly to
-QM/MM calculations in `3.min`. Nonetheless, let us give a brief
+of the system prior to QM/MM calculations. Since relevant files (pdb, psf, and
+rst) are retained, you can skip these steps and go directly to QM/MM
+calculations in `3.min`. Nonetheless, let us give a brief
 description of these steps.
 
 The protein structure was based on a X-ray crystal structure,
 [7TIM](https://www.rcsb.org/structure/7TIM), obtained from the protein data
-bank.[CHARMM-GUI](https://www.charmm-gui.org/ "CHARMM-GUI") was used to setup the system, namely, add
-hydrogen atoms, set the protonation states, add water molecules and
-ions, and so on. `0.build` contains the resulting pdb and psf files.
+bank.[CHARMM-GUI](https://www.charmm-gui.org/ "CHARMM-GUI") was used to setup
+the system, namely, add hydrogen atoms, set the protonation states, add water
+molecules and ions, and so on. `0.build` contains the resulting pdb and psf
+files.
 
 ``` bash
 $ ls 0.build
@@ -89,47 +95,12 @@ Fig. 2. The overall structure of the system.
 In `1.pre_equil`, the system is equilibrated in the following four MD
 steps.
 
-<figure class="wp-block-table">
-<table>
-<tbody>
-<tr class="odd">
-<td>Step</td>
-<td>Ensemble</td>
-<td>Integrator</td>
-<td>Time / ps</td>
-<td>dt / fs</td>
-</tr>
-<tr class="even">
-<td>3.1</td>
-<td>Min</td>
-<td>–</td>
-<td>1,000 step</td>
-<td>–</td>
-</tr>
-<tr class="odd">
-<td>3.2</td>
-<td>NVT(0.1 -&gt; 300 K)</td>
-<td>LEAP, Langevin</td>
-<td>100</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>3.3</td>
-<td>NPT (1 atm, 300K)</td>
-<td>VVER, Bussi</td>
-<td>100</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>3.4</td>
-<td>NVT (300 K)</td>
-<td>VVER, Bussi</td>
-<td>100</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-</figure>
+| Step | Ensemble | Integrator | Time / ps | dt / fs |
+|---|-------------|------------|-----------|---------|
+| 3.1  | Min | − | 1,000 (step) | − |
+| 3.2 | NVT(0.1 -> 300 K) | LEAP, Langevin | 100 | 2 |
+| 3.3 | NPT (1 atm, 300K) | VVER, Bussi | 100 | 2 |
+| 3.4 | NVT (300 K) | VVER, Bussi | 100 | 2 |
 
 The positional restraints are added to the backbone (with k = 10 kcal/mol/Å<sup>2</sup>) and the sidechain, ligand, and crystal water molecules
 (with k = 2 kcal/mol/Å<sup>2</sup>).
@@ -165,108 +136,21 @@ are gradually reduced in 8 steps, while retaining those of DHAP. In the
 last three steps (9 -- 11), DHAP is relaxed with QM/MM-MD using DFTB3
 for the QM calculations.
 
-<figure class="wp-block-table">
-<table>
-<tbody>
-<tr class="odd">
-<td>Step</td>
-<td>Potential</td>
-<td>Time / ps</td>
-<td>k [bb]</td>
-<td>k [sc/cw]</td>
-<td>k [dhap]</td>
-</tr>
-<tr class="even">
-<td>4.1</td>
-<td>MM</td>
-<td>100</td>
-<td>10</td>
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>4.2</td>
-<td>MM</td>
-<td>100</td>
-<td>5</td>
-<td>1</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>4.3</td>
-<td>MM</td>
-<td>100</td>
-<td>2.5</td>
-<td>0.5</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>4.4</td>
-<td>MM</td>
-<td>100</td>
-<td>1</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>4.5</td>
-<td>MM</td>
-<td>100</td>
-<td>0.5</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>4.6</td>
-<td>MM</td>
-<td>100</td>
-<td>0.1</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>4.7</td>
-<td>MM</td>
-<td>1000</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>4.8</td>
-<td>MM</td>
-<td>1000</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>4.9</td>
-<td>DFTB3/MM</td>
-<td>20</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr class="odd">
-<td>4.10</td>
-<td>DFTB3/MM</td>
-<td>20</td>
-<td>0</td>
-<td>0</td>
-<td>0.5</td>
-</tr>
-<tr class="even">
-<td>4.11</td>
-<td>DFTB3/MM</td>
-<td>100</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</figure>
+
+| Step  | Potential  | Time / ps | k [bb] | k [sc/cw] | k [dhap] |
+|-------|------------|-----------|--------|-----------|----------|
+| 4.1   | MM         | 100       | 10     | 2         | 2        |
+| 4.2   | MM         | 100       | 5      | 1         | 2        |
+| 4.3   | MM         | 100       | 2.5    | 0.5       | 2        |
+| 4.4   | MM         | 100       | 1      | 0         | 2        |
+| 4.5   | MM         | 100       | 0.5    | 0         | 2        |
+| 4.6   | MM         | 100       | 0.1    | 0         | 2        |
+| 4.7   | MM         | 1000      | 0      | 0         | 2        |
+| 4.8   | MM         | 1000      | 0      | 0         | 2        |
+| 4.9   | DFTB3/MM   | 20        | 0      | 0         | 1        |
+| 4.10  | DFTB3/MM   | 20        | 0      | 0         | 0.5      |
+| 4.11  | DFTB3/MM   | 100       | 0      | 0         | 0        |
+
 
 The files in `2.equil` are as follows:
 
@@ -303,7 +187,7 @@ qmmm_min1.inp    qmmm_min2b.inp   rst_convert.inp  toppar
 
 `qmmm_min1.inp` is an input file to find the reactant,
 
-```bash
+```toml
 [INPUT]
 topfile = toppar/top_all36_prot.rtf, toppar/top_all36_cgenff.rtf
 parfile = toppar/par_all36_prot.prm, toppar/par_all36_cgenff.prm
@@ -350,7 +234,7 @@ qmatm_select_index = 1
 exclude_charge     = group
 
 [SELECTION]
-group1 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) \          and not (an:CA |an:C |an:O |an:N |an:HN |an:HA))  # QM region
+group1 = sid:DHA or (sid:TIMA and (rno:95 or rno:165) and not (an:CA |an:C |an:O |an:N |an:HN |an:HA))  # QM region
 group2 = not (sid:DHA or sid:DHA around_res:6.0) # fixed atoms during minimization
 ```
 <!--
@@ -897,13 +781,13 @@ April., 3, 2022*
 
 [^3]:  [Q. Cui and M. Karplus, J. Am. Chem. Soc. **123**, 2284-2290 (2001).](https://pubs.acs.org/doi/10.1021/ja002886c)
 
-[^4]:  [Q. Cui and M. Karplus, J. Am. Chem. Soc. **124**, 3093--3124 (2002).](https://pubs.acs.org/doi/10.1021/ja0118439)
+[^4]:  [Q. Cui and M. Karplus, J. Am. Chem. Soc. **124**, 3093-3124 (2002).](https://pubs.acs.org/doi/10.1021/ja0118439)
 
 [^5]:  [Q. Cui and M. Karplus, J. Phys. Chem. B **106**, 1768-1798 (2002).](https://pubs.acs.org/doi/10.1021/jp012659c)
 
 [^6]:  [C. Lennartz, A. Schäfer, F. Terstegen, and W. Thiel, J. Phys. Chem. B **106**, 1758-1767 (2002).](https://pubs.acs.org/doi/10.1021/jp012658k)
 
-[^7]:  [Y. Zhang, H. Liu, and W. Yang, J. Chem. Phys. **112**, 3483 (2000).](https://aip.scitation.org/doi/10.1063/1.480503)
+[^7]:  [Y. Zhang, H. Liu, and W. Yang, J. Chem. Phys. **112**, 3483-3492 (2000).](https://aip.scitation.org/doi/10.1063/1.480503)
 
 [^8]:  [H. Hu, Z. Lu, and W. Yang, J. Chem. Theory Comput. **3**, 390-406 (2007).](https://pubs.acs.org/doi/10.1021/ct600240y)
 

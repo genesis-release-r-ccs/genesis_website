@@ -191,7 +191,7 @@ geninp1.sh   qsimulate.json   run.sh   template.inp   toppar
 window based on a template file, `template.inp`. The template file is
 shown below:
 
-```bash
+```toml
 [INPUT]
 topfile = toppar/top_all36_prot.rtf, toppar/top_all36_cgenff.rtf
 parfile = toppar/par_all36_prot.prm, toppar/par_all36_cgenff.prm
@@ -252,7 +252,7 @@ qmatm_select_index = 1
 exclude_charge = group
 
 [SELECTION]
-group1  = sid:DHA or (sid:TIMA and (rno:95 or rno:165) and \           not (an:CA  | an:C   | an:O   | an:N | an:HN | an:HA))
+group1  = sid:DHA or (sid:TIMA and (rno:95 or rno:165) and not (an:CA  | an:C   | an:O   | an:N | an:HN | an:HA))
 group2  = atomno:1900 or atomno:5687 # COM of TIMA/TIMB
 group3  = atomno:1442   # NE2 of HSE95
 group4  = atomno:1443   # HE2 of HSE95
@@ -659,7 +659,7 @@ acceptance_ratio.sh  prod4.vmd            replica_index.sh     rmsd_analysis.inp
 analysis.sh          replica_index.gpi    rmsd_analysis.gpi    rst_convert.inp
 ```
 
-\(1\) `analysis.sh` is a script to run rmsd_analysis and rst_convert for
+\(1\) `analysis.sh` is a script to run `rmsd_analysis` and `rst_convert` for
 each window. Running the script yields an output for each window as
 follow,
 
@@ -1160,7 +1160,7 @@ $ ls
 pmf.inp      pmf.out      pmf2.dat ...
 ```
 
-pmf2.dat contains the data of 2D-PMF in a gnuplot format. Finally, plot
+`pmf2.dat` contains the data of 2D-PMF in a gnuplot format. Finally, plot
 the data using gnuplot,
 
 ```bash
@@ -1209,12 +1209,12 @@ April., 3, 2022*
 
 ## References 
 
-[^1]:  [Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 604 (2000).](https://aip.scitation.org/doi/10.1063/1.1308516)
+[^1]:  [Y. Sugita, A. Kitao, and Y. Okamoto, J. Chem. Phys. **113**, 6042-6051 (2000).](https://aip.scitation.org/doi/10.1063/1.1308516)
 
-[^2]:  [K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701 -- 4713 (2021).](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
+[^2]:  [K. Yagi, S. Ito, and Y. Sugita, J. Phys. Chem. B **125**, 4701-4713 (2021).](https://pubs.acs.org/doi/10.1021/acs.jpcb.1c01862)
 
 [^3]:  [D. Branduardi, F. L. Gervasio, M. Parrinello, J. Chem. Phys. **126**, 054103 (2007).](https://aip.scitation.org/doi/10.1063/1.2432340)
 
 [^4]:  [Y. Matsunaga, Y. Komuro, C. Kobayashi, J. Jung, T. Mori, and Y. Sugita, J. Phys. Chem. Lett. **7**, 1446−1451 (2016).](https://pubs.acs.org/doi/10.1021/acs.jpclett.6b00317)
 
-[^5]:  [M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124194 (2008).](https://aip.scitation.org/doi/10.1063/1.2978177)
+[^5]:  [M. R. Shirts and J. D. Chodera, J. Chem. Phys. **129**, 124105 (2008).](https://aip.scitation.org/doi/10.1063/1.2978177)
