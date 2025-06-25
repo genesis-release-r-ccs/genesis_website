@@ -299,7 +299,7 @@ Jan. 3, 2022*
 
 ## References
 
-[^1]: M. Tuckerman, "Statistical Mechanics: Theory and Molecular Simulation", Oxford University Press (2010). [<i class="fas fa-link"></i>](https://global.oup.com/academic/product/statistical-mechanics-theory-and-molecular-simulation-9780198525264?q=Tuckerman&lang=en&cc=jp)
+[^1]: M. Tuckerman, "Statistical Mechanics: Theory and Molecular Simulation (2nd edn)", Oxford University Press (2023). [<i class="fas fa-link"></i>](https://academic.oup.com/book/51892)
 [^2]: M. P. Allen and D. J. Tildesley, "Computer Simulation of Liquids", Oxford University Press (2017). [<i class="fas fa-link"></i>](https://global.oup.com/academic/product/computer-simulation-of-liquids-9780198803201?q=Computer%20Simulation%20of%20Liquids&lang=en&cc=jp)
 [^3]: D. Frenkel and B. Smit, "Understanding Molecular Simulation 2nd Edition", Academic Press (2001). [<i class="fas fa-link"></i>](https://www.elsevier.com/books/understanding-molecular-simulation/frenkel/978-0-12-267351-1)
 [^4]: A. Brünger *et al.*, *Chem. Phys. Lett.*, **105**, 495-500 (1984). [<i class="fas fa-link"></i>](https://www.sciencedirect.com/science/article/abs/pii/0009261484800986)
