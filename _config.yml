@@ -199,6 +199,8 @@ exclude:
   - tmp
   - /docs
   - /test
+  - /tutorials
+  - /examples
   - .DS_Store
 keep_files:
   - .git
