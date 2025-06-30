@@ -23,7 +23,7 @@ Chapter “Getting Started”.
 -   **Operating systems**
     -   Linux
     -   Mac OSX
-    -   Window 10, 11 (spdyn, ver 1.7.1)
+    -   Windows 10, 11 (spdyn, ver 1.7.1)
 -   **Fortran and C compilers**
     -   [GNU compiler](https://gcc.gnu.org/) `gfortran`, `gcc` (version 7.0.0 or
         higher is required.)
