@@ -452,17 +452,24 @@ $ grep "OH2 TIP3" ionized.pdb | wc -l
     7882
 ```
 
-Now, remember basic chemistry. 
-Since we specified 150 mM NaCl solution, the number of moles of solute in 1 litter (L) solution should be 150 mmol. 
-The Avogadro number is 6.02 × 10<sup>23</sup>. 
-Accordingly, there are 150 × 10<sup>-3</sup> × 6.02 × 10<sup>23</sup> = 9.03 × 10<sup>22</sup> NaCl molecules in the 1 L NaCl solution. 
-Here, we assume that the density of NaCl solution is almost same with that of solvent. 
-The density of water is \~0.997 g/cm<sup>3</sup> at the room temperature, and thus, the weight of 1 L water is \~997 g. 
-Since the weight of 1 mol H<sub>2</sub>O is \~18.02 g, the 1 L water is composed of \~3.33 × 10<sup>25</sup> H<sub>2</sub>O molecules (55.3 mol). 
-According to these relationships, when there are *N* water molecules in the system, we should add (9.03 × 10<sup>22</sup>)/(3.33 × 10<sup>25</sup>) × *N* = **0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. 
-In the case of *N* = 7,882, this equation gives \~21.4, which is close to the number of Cl<sup>−</sup> in the constructed system. 
-Actually, 4 more Na<sup>+</sup> were added to the system than Cl<sup>−</sup>. 
-This is because Protein G has a total net charge of −4, and the corresponding positive charge was needed to neutralize the system, which is required to use the particle mesh Ewald method (PME) in the MD simulations.
+Now, remember basic chemistry.  Since we specified 150 mM NaCl solution, the
+number of moles of solute in 1 liter (L) solution should be 150 mmol.  The
+Avogadro number is 6.02 × 10<sup>23</sup>.  Accordingly, there are 150 ×
+10<sup>-3</sup> × 6.02 × 10<sup>23</sup> = 9.03 × 10<sup>22</sup> NaCl molecules
+in the 1 L NaCl solution.  Here, we assume that the density of NaCl solution is
+almost same with that of solvent.  The density of water is \~0.997
+g/cm<sup>3</sup> at the room temperature, and thus, the weight of 1 L water is
+\~997 g.  Since the weight of 1 mol H<sub>2</sub>O is \~18.02 g, the 1 L water
+is composed of \~3.33 × 10<sup>25</sup> H<sub>2</sub>O molecules (55.3 mol). 
+According to these relationships, when there are *N* water molecules in the
+system, we should add (9.03 × 10<sup>22</sup>)/(3.33 × 10<sup>25</sup>) × *N* =
+**0.002712 × *N*** NaCl molecules in the system to make 150 mM NaCl solution. 
+In the case of *N* = 7,882, this equation gives \~21.4, which is close to the
+number of Cl<sup>−</sup> in the constructed system.  Actually, 4 more
+Na<sup>+</sup> were added to the system than Cl<sup>−</sup>.  This is because
+Protein G has a total net charge of −4, and the corresponding positive charge
+was needed to neutralize the system, which is required to use the particle mesh
+Ewald method (PME) in the MD simulations.
 
 ##  Let's take a note
 Now, we have completed Tutorial 2.3. Let's move on to the `Works`

@@ -197,7 +197,8 @@ Multiple conformers in the PDB structure
 ##  Download PDB files for GENESIS tutorial 
 
 In Tutorial 3 and later, we will perform MD simulations for several
-selected biomolecules ([Protein G](https://www.rcsb.org/structure/2QMT), alanine-dipeptide, (Ala)<sub>3</sub>, etc.) as the common targets. Let's download
+selected biomolecules ([Protein G](https://www.rcsb.org/structure/2QMT), 
+alanine-dipeptide, (Ala)<sub>3</sub>, etc.) as the common targets. Let's download
 these PDB files from the PDB website to the "`Data/PDB`" directory by
 executing the following commands. Here, alanine-dipeptide and (Ala)<sub>3</sub>
 are small peptides, whose PDB files are actually not available on the
@@ -218,10 +219,10 @@ $ wget https://files.rcsb.org/download/2QMT.pdb
 #  refer to tutorial 1.1)
 #
 # Copy alanine-dipeptide from genesis_tutorial_materials
-$ cp ../../genesis_tutorial_materials/ala2.pdb .
+$ cp ../../genesis_tutorial_materials/tutorial-2.1/PDB/ala2.pdb .
 
 # Copy (Ala)3 from genesis_tutorial_materials
-$ cp ../../genesis_tutorial_materials/ala3.pdb .
+$ cp ../../genesis_tutorial_materials/tutorial-2.1/PDB/ala3.pdb .
 ```
 
 Before moving on to the next tutorial, let's check the structure of
@@ -236,7 +237,8 @@ modeling such a system is very complex. If you are using the X-ray
 crystal structure for the protein, it is necessary to add hydrogen atoms
 to the heavy atoms. In addition, you have to place water molecules
 around the protein to make a water box in the PDB file. The detailed
-modeling protocol will be explained in [Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/), but before that, let's run through [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).
+modeling protocol will be explained in [Tutorial 2.3](/tutorials/genesis_tutorial_2.3_2022/),
+but before that, let's run through [Tutorial 2.2](/tutorials/genesis_tutorial_2.2_2022/).
 
 ![](/assets/images/2019_06_basic_scheme.jpg)
 
