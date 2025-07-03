@@ -9,6 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
+- [GENESIS User Guide](/assets/fundamental/GENESIS_UserGuide_v2.0.0.pdf)
 
 In the GENESIS program package, not only MD simulators but also various
 trajectory analysis tools are available. The users execute those
