@@ -167,7 +167,7 @@ You will find a cluster system, where the solute, Ala<sub>3</sub>, is located in
 the center of a sphere surrounded by a layer of water molecules of 20 Å
 thickness. The current version of GENESIS does not support periodic
 boundary condition (PBC) for QM/MM, and thus QM/MM must be carried out
-in noBC using a cluster system. In [Section 16.3](/tutorials/genesis_tutorial_16.3_2022/), we will illustrate how to prepare such
+in noBC using a cluster system. In [Section 15.3](/tutorials/genesis_tutorial_15.3_2022/), we will illustrate how to prepare such
 systems.
 
 ## 3. QM/MM calculation 
