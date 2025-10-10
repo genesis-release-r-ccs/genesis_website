@@ -18,7 +18,7 @@ The following text is the help message that is output with `./msd_analysis -h
 ctrl`:
 
 
-```
+```toml
 # This program calculates mean square displacement.
 
 # The output is composed of at least two columns.
@@ -72,7 +72,7 @@ prmtopfile = input.top # AMBER parameter topology file
 ambcrdfile = input.crd # AMBER coordinate file
  
 [OUTPUT]
-rmsfile = output.rms # RMSD file
+msdfile = output.msd   # MSD file
  
 [TRAJECTORY]
 # trjfile1 = sample.dcd # trajectory file
@@ -108,7 +108,7 @@ psffile        = BPTI.psf # protein structure file
 pdbfile        = BPTI.pdb # PDB file
 
 [OUTPUT]
-rmsfile        = BPTI.msd # MSD file
+msdfile        = BPTI.msd # MSD file
 
 [TRAJECTORY]
 trjfile1       = BPTI.dcd        # trajectory file
@@ -135,7 +135,7 @@ psffile        = BPTI.psf # protein structure file
 pdbfile        = BPTI.pdb # PDB file
 
 [OUTPUT]
-rmsfile        = BPTI.msd # MSD file
+msdfile        = BPTI.msd # MSD file
 
 [TRAJECTORY]
 trjfile1       = BPTI.dcd        # trajectory file
@@ -168,7 +168,7 @@ psffile        = BPTI.psf # protein structure file
 pdbfile        = BPTI.pdb # PDB file
 
 [OUTPUT]
-rmsfile        = BPTI.msd # MSD file
+msdfile        = BPTI.msd # MSD file
 
 [TRAJECTORY]
 trjfile1       = BPTI.dcd        # trajectory file
@@ -199,7 +199,7 @@ psffile        = BPTI.psf # protein structure file
 pdbfile        = BPTI.pdb # PDB file
 
 [OUTPUT]
-rmsfile        = BPTI.msd # MSD file
+msdfile        = BPTI.msd # MSD file
 
 [TRAJECTORY]
 trjfile1       = BPTI.dcd        # trajectory file
