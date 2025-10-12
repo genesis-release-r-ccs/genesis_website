@@ -11,8 +11,7 @@ sidebar:
 ---
 
 
-`diffusion_analysis` calculates the translational diffusion coefficients from
-either simulation trajectory files or MSD data files produced by `msd_analysis`.
+`diffusion_analysis` calculates the translational diffusion coefficients from MSD data files produced by `msd_analysis`.
 It is necessary to understand how msd_analysis works before using
 diffusion_analysis, so please study the
 [msd_analysis](/examples/mean-square_displacement_msd_analysis/) page if you
