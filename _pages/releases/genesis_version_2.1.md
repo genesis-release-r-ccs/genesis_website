@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-releases
 ---
 
-## List of functions in ver. 2.1.5
+## List of functions in ver. 2.1.6
 
 -   CHARMM force fields
     -   CHARMM19, 22, 27, C36, C36m
@@ -84,6 +84,14 @@ sidebar:
 
 ## Change Log
 
+-   Nov 07, 2025: GENESIS 2.1.6 released
+    -   Replaced deprecated CUDA function xor with the newer xor_sync.
+    -   Update the QM/MM interface for Q-Chem5.
+    -   Unified input parameter handling for Targeted MD between atdyn and spdyn.
+
+-   Feb 17, 2025: GENESIS 2.1.5 released
+    -   Fix inconsistencies in the conversion of uppercase and lowercase letters in psf files and par/toppar. 
+    -   Bugfix in pairlist assignment for CG HPS + AICG. Fix explanation in the user document.
 -   Aug 16, 2024: GENESIS 2.1.4 released
     -   Bugfix of reading psf file when reading an atomtype that begins
         with a non-alphabetic letter.

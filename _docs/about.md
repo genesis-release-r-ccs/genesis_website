@@ -31,11 +31,11 @@ Feel free to open a [GitHub Issue](https://github.com/genesis-release-r-ccs/gene
 
 ### Project leader
 
-- Yuji Sugita (RIKEN CPR, R-CCS, BDR)
+- Yuji Sugita (RIKEN PRI, R-CCS, The University of Tokyo)
 
 ### Current main developers
 
-- Jaewoon Jung (RIKEN CPR, AICS/R-CCS)
+- Jaewoon Jung (RIKEN CPR/PRI, AICS/R-CCS)
 - Chigusa Kobayashi (RIKEN AICS/R-CCS)
 - Cheng Tan (RIKEN R-CCS)
 - Diego Ugarte (RIKEN R-CCS)
@@ -48,7 +48,7 @@ Feel free to open a [GitHub Issue](https://github.com/genesis-release-r-ccs/gene
 
 - Motoshi Kamiya (RIKEN R-CCS; now at IMS)
 - Kento Kasahara (RIKEN BDR; now at Osaka University)
-- Yasuhiro Matsunaga (RIKEN AICS/R-CCS; now at Saitama University)
+- Yasuhiro Matsunaga (RIKEN AICS/R-CCS, Saitama University)
 - Daisuke Matsuoka (RIKEN CPR; now at RIST)
 - Osamu Miyashita (RIKEN R-CCS)
 - Suyong Re (RIKEN BDR; now at NIBIOHN)
@@ -82,7 +82,8 @@ R&D), Toru Shiozaki (QSimulate), Klaas Gunst (QSimulate), Hideyo Yoshida
 
 ---
 
-- RIKEN CPR: RIKEN Cluster for Pioneering Research (April 2018--)
+- RIKEN PRI: RIKEN Pioneering Research Institute (April 2025--)
+  - (RIKEN CPR: RIKEN Cluster for Pioneering Research (April 2018--March 2025))
   - (RIKEN TMS: RIKEN Theoretical Molecular Science Laboratory (--March 2018))
 - RIKEN R-CCS: RIKEN Center for Computational Science (April 2018--)
   - (RIKEN AICS: RIKEN Advanced Institute for Computational Science (--March 2018))

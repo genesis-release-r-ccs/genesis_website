@@ -57,7 +57,8 @@ Chapter “Getting Started”.
             ver 2.1.3)
         -   [CUDA](https://developer.nvidia.com/cuda-toolkit) ver. 8.0, 9.0, 9.1, 9.2, 10.0,
             11.2, 11.4, 11.5, 12.1-12.6
-        -   Compute Capability 3.5, 3.7, 6.0, 6.1, 6.2
+        -   Compute Capability 3.5, 3.7, 6.0, 6.1, 6.2, 8.0
+    - For GPUs of the Hopper generation or later, we recommend using version 2.1.6 or later. 
 
 ##  General scheme for installation
 
