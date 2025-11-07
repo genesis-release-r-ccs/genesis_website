@@ -16,6 +16,7 @@ or earlier is distributed under [the GNU General Public License version
 
 
 - **[Version 2.1](/releases/genesis_version_2.1/)**
+    - Version 2.1.6 (Nov. 07, 2025)
     - Version 2.1.5 (Feb. 17, 2025)
     - Version 2.1.4 (Aug. 16, 2024)
     - Version 2.1.3 (Jun. 10, 2024)

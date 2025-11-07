@@ -10,7 +10,7 @@ header:
       url: "/docs/installation/"
 excerpt: >
   A high-performance molecular simulation platform supporting multiscale models and enhanced sampling techniques. <br />
-  <small><a href="/releases/genesis_version_2.1/">Latest release v2.1.5</a></small>
+  <small><a href="/releases/genesis_version_2.1/">Latest release v2.1.6</a></small>
 feature_row:
   - image_path: /assets/images/20250509_homepage_high_optimized.png
     alt: "highly-optimized"
