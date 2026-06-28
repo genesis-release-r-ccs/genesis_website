@@ -6,10 +6,15 @@ search: false
 @charset "utf-8";
 
 $link-color: #621111;
+$max-width: 1440px;
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
 .sidebar li{
   font-size: 0.8em;
+}
+
+.page__content {
+  font-size: 0.9em;
 }
