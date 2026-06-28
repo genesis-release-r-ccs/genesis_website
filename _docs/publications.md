@@ -9,13 +9,53 @@ sidebar:
   nav: sidebar-basic
 ---
 
+## 2026
+
+- Structural analysis of a motor with increased mechanical output reveals new transitions in kinesin microtubule motility  
+Satoki Shibata, Matthew Y. Wang, Tsuyoshi Imasaki, Hideki Shigematsu, Diego Ugarte La Torre, Yuanyuan Wei, Chacko Jobichen, Hajime Hagio, J. Sivaraman, Yuji Sugita, Sharyn A. Endow, Ryo Nitta  
+[*Sci. Rep.* **16**, 487 (2026).](https://www.nature.com/articles/s41598-025-28573-7)
 
 ## 2025
 
-- Langevin integration for isothermal--isobaric condition with a large
-time step  
+- CGBack: Diffusion Model for Backmapping Large-Scale and Complex Coarse-Grained Molecular Systems  
+Diego Ugarte La Torre, Yuji Sugita  
+[*J. Chem. Inf. Model.* **65**, 19, 9974-9986 (2025).](https://pubs.acs.org/doi/full/10.1021/acs.jcim.5c01281)
+
+- An Empirical Biasing Force Constant to Minimize Overfitting in Cryo-EM Flexible Fitting Refinement  
+Daisuke Matsuoka, Yuji Sugita, Takaharu Mori  
+[*J. Chem. Inf. Model.* **65**, 18, 9790-9799 (2025).](https://pubs.acs.org/doi/full/10.1021/acs.jcim.5c01424)
+
+- The distortion–push mechanism for the γ subunit rotation in F<sub>1</sub>-ATPase  
+Masahiro Motohashi, Mao Oide, Chigusa Kobayashi, Jaewoon Jung, Eiro Muneyuki, Yuji Sugita  
+[*Proc. Natl. Acad. Sci. USA* **122**, 33, e2502642122 (2025).](https://www.pnas.org/doi/abs/10.1073/pnas.2502642122)
+
+- In silico nanoscope to study the interplay of genome organization and transcription regulation  
+Soundhararajan Gopi, Giovanni B Brandani, Cheng Tan, Jaewoon Jung, Chenyang Gu, Azuki Mizutani, Hiroshi Ochiai, Yuji Sugita, Shoji Takada  
+[*Nucleic Acids Research* **53**, gkaf189 (2025).](https://doi.org/10.1093/nar/gkaf189)
+
+- Heterogeneous condensates of transcription factors in embryonic stem cells: Molecular simulations  
+Azuki Mizutani, Cheng Tan, Yuji Sugita, Shoji Takada  
+[*Biophysical Journal* **124**, 10, 1587–1598 (2025).](https://doi.org/10.1016/j.bpj.2025.04.001)
+
+- High-performance QM/MM Enhanced Sampling Molecular Dynamics Simulations with GENESIS SPDYN and QSimulate-QM  
+Kiyoshi Yagi, Klaas Gunst, Toru Shiozaki, Yuji Sugita  
+[*J. Chem. Theory Comp.* **21**, 8, 4016–4029 (2025).](https://doi.org/10.1021/acs.jctc.5c00163)
+
+- Rational Design Principles for De Novo α-Helical Peptide Barrels with Dynamic Conductive Channels  
+Ai Niitsu, Andrew R Thomson, Alistair J Scott, Jason T Sengel, Jaewoon Jung, Kozhinjampara R Mahendran, Mikiko Sodeoka, Hagan Bayley, Yuji Sugita, Derek N Woolfson, Mark I Wallace  
+[*J. Am. Chem. Soc.* **147**, 14, 11741–11753 (2025).](https://doi.org/10.1021/jacs.4c13933)
+
+- Efficient Training of Neural Network Potentials for Chemical and Enzymatic Reactions by Continual Learning  
+Yao-Kun Lei, Kiyoshi Yagi, Yuji Sugita  
+[*J. Chem. Theory Comp.* **21**, 5, 2695–2711 (2025).](https://doi.org/10.1021/acs.jctc.4c01393)
+
+- Langevin integration for isothermal--isobaric condition with a large time step  
 Jaewoon Jung, Yuji Sugita  
 [*J. Chem. Phys.* **162**, 10, 104108, (2025).](http://dx.doi.org/10.1063/5.0251642)
+
+- Structural dynamics of a designed peptide pore under an external electric field  
+Ai Niitsu, Jaewoon Jung, Yuji Sugita  
+[*Biophys. Chem.* **318**, March 2025, 107380 (2025).](https://doi.org/10.1016/j.bpc.2024.107380)
 
 - Scaling molecular dynamics for large-scale simulation of biological
 systems on AMD CPU/GPU supercomputers: Lessons from LUMI  
@@ -25,8 +65,7 @@ Diego Ugarte La Torre, Jaewoon Jung, Yuji Sugita
 
 ## 2024
 
-- Fusion Dynamics and Size-Dependence of Droplet Microstructure in
-ssDNA-Mediated Protein Phase Separation  
+- Fusion Dynamics and Size-Dependence of Droplet Microstructure in ssDNA-Mediated Protein Phase Separation  
 Yunqiang Bian, Fangyi Lv, Hai Pan, Weitong Ren, Weiwei Zhang, Yanwei
 Wang, Yi Cao, Wenfei Li, Wei Wang  
 [*JACS Au* **4**, 3690−3704, (2024).](http://dx.doi.org/10.1021/jacsau.4c00690)
