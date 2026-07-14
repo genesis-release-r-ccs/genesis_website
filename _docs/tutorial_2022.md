@@ -91,7 +91,7 @@ available resources.
     - [10.1 Acceleration of MD simulations using HMR and a longertime step](/tutorials/genesis_tutorial_10.1_2022/)
 - \\(11.\\) Advanced MD simulations with the coarse-grained model
     - [11.1 Coarse-grained simulation of protein with AICG2+ model](/tutorials/genesis_tutorial_11.1_2022/) <i class="fas fa-laptop"></i> 
-    - [11.2 Coarse-grained simulation of double-stranded DNA with 3PSC.N model](/tutorials/genesis_tutorial_11.2_2022/) <i class="fas fa-computer"></i>
+    - [11.2 Coarse-grained simulation of double-stranded DNA with 3SPN.C model](/tutorials/genesis_tutorial_11.2_2022/) <i class="fas fa-computer"></i>
     - [11.3 Coarse-grained simulation of protein-DNA interactions with PWMcos model](/tutorials/genesis_tutorial_11.3_2022/) <i class="fas fa-computer"></i>
     - [11.4 Coarse-grained simulation of FUS condensation with HPS model](/tutorials/genesis_tutorial_11.4_2022/) <i class="fas fa-computer"></i>
 - \\(12.\\) Enhanced conformational sampling simulations of (Ala)\\(_3\\) in water
