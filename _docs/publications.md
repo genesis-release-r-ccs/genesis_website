@@ -1,13 +1,21 @@
 ---
 title: "GENESIS Related Publications"
 excerpt: "GENESIS has been widely used by many people."
-last_modified_at: 2025-05-13T11:59:26+09:00
+last_modified_at: 2026-09-16T14:40:35+09:00
 layout: single
 classes: wide
 toc: false
 sidebar:
   nav: sidebar-basic
 ---
+
+
+## 2026
+
+- Impact of Inhibitor Size and Flexibility on the Binding Pathways to c-Src
+Kinase  
+Ai Shinobu, Suyong Re, Hiraku Oshima, Yuji Sugita  
+[*J. Phys. Chem. Lett.* (2026).](http://dx.doi.org/10.1021/acs.jpclett.6c02620)
 
 
 ## 2025
