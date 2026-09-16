@@ -11,16 +11,13 @@ sidebar:
 
 ## 2026
 
+- Impact of Inhibitor Size and Flexibility on the Binding Pathways to c-Src Kinase  
+Ai Shinobu, Suyong Re, Hiraku Oshima, Yuji Sugita  
+[*J. Phys. Chem. Lett.* (2026).](http://dx.doi.org/10.1021/acs.jpclett.6c02620)
+
 - Structural analysis of a motor with increased mechanical output reveals new transitions in kinesin microtubule motility  
 Satoki Shibata, Matthew Y. Wang, Tsuyoshi Imasaki, Hideki Shigematsu, Diego Ugarte La Torre, Yuanyuan Wei, Chacko Jobichen, Hajime Hagio, J. Sivaraman, Yuji Sugita, Sharyn A. Endow, Ryo Nitta  
 [*Sci. Rep.* **16**, 487 (2026).](https://www.nature.com/articles/s41598-025-28573-7)
-
-## 2026
-
-- Impact of Inhibitor Size and Flexibility on the Binding Pathways to c-Src
-Kinase  
-Ai Shinobu, Suyong Re, Hiraku Oshima, Yuji Sugita  
-[*J. Phys. Chem. Lett.* (2026).](http://dx.doi.org/10.1021/acs.jpclett.6c02620)
 
 
 ## 2025
