@@ -104,10 +104,14 @@ Common installation problems often stem from missing compilers, MPI libraries,
 or mathematical libraries, or from incorrectly set environment paths. During
 simulations, frequently encountered issues include:
 
-- SHAKE algorithm convergence failures: often due to insufficient equilibration, problematic initial structures, or inappropriate input parameters.
-- Atomic clashes: where atom pairs are too close, leading to numerical errors. This can occur in initial structures or due to periodic boundary conditions.
-- Domain and cell definition issues in SPDYN: indicating that the number of MPI processors is unsuitable for the system size. Solutions often involve reducing the number of MPI processors, adjusting pairlistdist, or rebuilding a larger system.
+- SHAKE algorithm convergence failures: often due to insufficient equilibration,
+problematic initial structures, or inappropriate input parameters.  - Atomic
+clashes: where atom pairs are too close, leading to numerical errors. This can
+occur in initial structures or due to periodic boundary conditions.
+- Domain and cell definition issues in SPDYN: indicating that the number of MPI
+processors is unsuitable for the system size. Solutions often involve reducing
+the number of MPI processors, adjusting pairlistdist, or rebuilding a larger
+system.
 
-Feel free to open a [GitHub
-Issue](https://github.com/genesis-release-r-ccs/genesis/issues) for questions
-and bug reports.
+Feel free to open a [GitHub Issue](https://github.com/genesis-release-r-ccs/genesis/issues) 
+for questions and bug reports.

@@ -8,7 +8,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-## Example control files for atdyn/spdyn
+## Control file examples for atdyn/spdyn
 
 - Recommended main control parameters
   - [For GENESIS ver. 1.4 or later](/examples/recommended_parameters/)
@@ -28,7 +28,7 @@ sidebar:
   - [Replica-exchange umbrella sampling (REUS or Hamiltonian REMD) using a distance restraint](/examples/sample_of_reus/)
   - [Two-dimensional REMD (T-REMD/REUS) simulation](/examples/two-dimensional_remd_t-remd_reus_simulation/)
 
-## Example control files for analysis tools
+## Control file examples for analysis tools
 
 - Structure analysis
   - [RMSD: root-mean-square deviation (`rmsd_analysis`)](/examples/rmsd_root-mean-square_deviation_rmsd_analysis/)
