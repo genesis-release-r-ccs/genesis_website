@@ -14,7 +14,8 @@ version 3](https://www.gnu.org/licenses/lgpl-3.0.en.html). Note that Version 1.4
 or earlier is distributed under [the GNU General Public License version
 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).  
 
-
+- **[Version 2.2](/releases/genesis_version_2.2/)**
+    - Version 2.2.0 (Oct. 21, 2026)
 - **[Version 2.1](/releases/genesis_version_2.1/)**
     - Version 2.1.6 (Nov. 07, 2025)
     - Version 2.1.5 (Feb. 17, 2025)

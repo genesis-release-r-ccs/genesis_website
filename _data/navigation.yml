@@ -11,6 +11,8 @@ main:
 
 # sidebar releases
 sidebar-releases:
+  - title: "Ver 2.2"
+    url: /releases/genesis_version_2.2/
   - title: "Ver 2.1"
     url: /releases/genesis_version_2.1/
   - title: "Ver 2.0"
