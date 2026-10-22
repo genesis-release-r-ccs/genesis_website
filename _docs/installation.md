@@ -23,13 +23,15 @@ Chapter “Getting Started”.
 -   **Operating systems**
     -   Linux
     -   Mac OSX
-    -   Windows 10, 11 (spdyn, ver 1.7.1)
+    -   Windows 11 (spdyn, ver 1.7.1)
 -   **Fortran and C compilers**
     -   [GNU compiler](https://gcc.gnu.org/) `gfortran`, `gcc` (version 7.0.0 or
-        higher is required.)
-    -   Intel compiler `ifort`, `icc` (`ifx`, `icx` are available from
+        later is required.)
+    -   Intel compilers `ifort`, `icc` (`ifx`, `icx` are available from
         ver 2.1.3.)
-    -   Fujitsu compiler `frtpx`, `fccpx`
+    -   Fujitsu compilers `frtpx`, `fccpx`
+    -   LLVM/Clang compilers `flang`, `clang` (version 18.1.0 or later is required.)
+    -   NVIDIA compilers `nvfortran`, `nvcc` (version 25.1 or later is required.)
     -   Cygwin/mingw (spdyn, ver 1.7.1)
 -   **Preprocessors**
     -   GCC preprocessor `cpp`
@@ -48,7 +50,7 @@ Chapter “Getting Started”.
     -   OpenBlas
 -   **GPU (Optional)**
     -   NVIDIA GPU cards which support [Compute Capability
-        (CC)](https://developer.nvidia.com/cuda-gpus) 3.5 or higher (except for 5.X)
+        (CC)](https://developer.nvidia.com/cuda-gpus) 3.5 or later (except for 5.X)
     -   The following GPU cards and CUDA versions have been tested by
         the GENESIS developers
         -   NVIDIA K20, K40, P100, TITAN V, GTX 1080, GTX 1080Ti, RTX
