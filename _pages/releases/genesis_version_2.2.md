@@ -127,7 +127,7 @@ sidebar:
 
 - Cryo-EM flexible fitting
 
-- Free-energy perturbation method (FEP) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+- Free-energy perturbation method (FEP)
 
   - Dual and hybrid topology schemes
 
