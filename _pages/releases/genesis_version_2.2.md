@@ -19,7 +19,7 @@ sidebar:
 
   - FF99SB (ATDYN/SPDYN), FF14SB (ATDYN/SPDYN), FF19SB (SPDYN)
 
-- SPICA/pSPICA model
+- SPICA/pSPICA model ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
 - Structure-based (Go-like) models for protein
 
@@ -32,6 +32,7 @@ sidebar:
   - Macro-mixing KB Go/DoME model
 
 - Coarse-Grained (CG) models
+
   - 3SPN.2C DNA model
 
   - Structure-based RNA model
@@ -40,10 +41,9 @@ sidebar:
 
   - PWMcos model for protein-DNA sequence-specific interaction
 
-  - iSoLFv2 model for lipid
+  - iSoLFv2 model for lipid ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
   - A tool for preparing CG files: GENESIS-CG-tool
-
 
 - Energy minimization
 
@@ -57,7 +57,7 @@ sidebar:
 
   - NVE, NVT, NPT, NPAT, NPγT ensembles
 
-  - Langevin (BAOAB with half-step pressure), Berendsen/Bussi/NHC thermostat with MTK-style barostat
+  - Langevin (BAOAB with half-step pressure) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}, Berendsen/Bussi/NHC thermostat with MTK-style barostat
 
   - Particle mesh Ewald method
 
@@ -99,17 +99,17 @@ sidebar:
 
 - Gaussian accelerated molecular dynamics method (GaMD, GaREUS)
 
-- Adaptively biased molecular dynamics and its variants
+- Adaptively biased molecular dynamics and its variants ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-  - Adaptively biased molecular dynamics (ABMD)
+  - Adaptively biased molecular dynamics (ABMD) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-  - Multiple-walker ABMD (MW-ABMD)
+  - Multiple-walker ABMD (MW-ABMD) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-  - Replica-exchange ABMD (RE-ABMD)
+  - Replica-exchange ABMD (RE-ABMD) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
-  - Bias-exchange ABMD (BE-ABMD)
+  - Bias-exchange ABMD (BE-ABMD) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
   
-  - Generalized replica exchange with solute tempering ABMD (gREST-ABMD)
+  - Generalized replica exchange with solute tempering ABMD (gREST-ABMD) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
 - QM/MM calculation
 
@@ -127,7 +127,7 @@ sidebar:
 
 - Cryo-EM flexible fitting
 
-- Free-energy perturbation method (FEP) ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
+- Free-energy perturbation method (FEP)
 
   - Dual and hybrid topology schemes
 
