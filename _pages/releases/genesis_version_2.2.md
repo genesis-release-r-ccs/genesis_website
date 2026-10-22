@@ -37,13 +37,15 @@ sidebar:
 
   - Structure-based RNA model
 
-  - HPS/KH, CALVADOS, and Mpipi models for IDR and RNA
+  - HPS/KH, CALVADOS, and Mpipi ![](/assets/images/2016_04_icon4neworange.gif){: width="40"} models for IDR and RNA
 
   - PWMcos model for protein-DNA sequence-specific interaction
 
   - iSoLFv2 model for lipid ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
   - A tool for preparing CG files: GENESIS-CG-tool
+
+- CGDYN: a new high-performance MD engine specifically for CG ![](/assets/images/2016_04_icon4neworange.gif){: width="40"}
 
 - Energy minimization
 
