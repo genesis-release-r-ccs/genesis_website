@@ -51,7 +51,7 @@ $ export OMP_NUM_THREADS=4
 $ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
 ```
 
-Note that for `cgdyn`, the 3D spatial domain decomposition requires at least 8 MPI processes (\\(N_x \ge 2, N_y \ge 2, N_z \ge 2\\)) and explicit domain decomposition settings in the `[BOUNDARY]` section (see [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2026/) for details).
+Note that for `cgdyn`, the 3D spatial domain decomposition requires at least 8 MPI processes (\\(N_x \ge 2, N_y \ge 2, N_z \ge 2\\)) and explicit domain decomposition settings in the `[BOUNDARY]` section.
 
 You may want to know [more details about using spdyn with hybrid MPI/OpenMP](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
