@@ -1,7 +1,7 @@
 ---
 title: "Using GENESIS"
 excerpt: "How to use GENESIS."
-last_modified_at: 2025-05-14T11:59:26+09:00
+last_modified_at: 2026-10-28T10:12:00+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -19,24 +19,21 @@ The users may find other useful information in the online
 manual for basic usage (see Chapters "Getting started" and "Available
 programs").
 
-## General usage of the MD simulators (atdyn/spdyn) 
+## General usage of the MD simulators (atdyn/spdyn/cgdyn)
 
-The GENESIS program package contains two MD simulators: atdyn and spdyn.
-In most cases, atdyn is applied to small systems or coarse-grained
-systems. On the other hand, spdyn is mainly employed for large systems
-(> 100,000 atoms) in a periodic boundary condition. Basic usage of
-atdyn and spdyn is almost same, and it is displayed by executing the
-program with the "`-h`" option.
+The GENESIS program package contains three MD simulators: `atdyn`, `spdyn`, and `cgdyn`:
+- **atdyn**: Primarily applied to small systems, non-periodic simulations, or small-to-medium coarse-grained (CG) simulations.
+- **spdyn**: Highly optimized for large all-atom systems (> 100,000 atoms) under periodic boundary conditions using spatial domain decomposition and GPU acceleration.
+- **cgdyn**: Specifically designed for large-scale, residue-level coarse-grained MD simulations (such as biomolecular condensates, chromatin, and cellular-scale systems) with dynamic load balancing on massively parallel supercomputers.
+
+Basic command-line usage across `atdyn`, `spdyn`, and `cgdyn` is largely identical. A summary of command-line options is displayed by running the binary with the "`-h`" option:
 
 ```bash
-# Show the usage of spdyn 
+# Show the usage of spdyn (or atdyn / cgdyn)
 $ /home/user/genesis/bin/spdyn -h
 ```
 
-Template input (or control) file of atdyn/spdyn can be obtained with the "`-h
-ctrl`" or "`-h ctrl_all`" option. If the users want to use spdyn for MD
-simulations, the following command is executed to generate a template control
-file:
+Template input (or control) files for `atdyn`, `spdyn`, or `cgdyn` can be obtained with the "`-h ctrl`" or "`-h ctrl_all`" option. For example, the following command generates a template control file for MD simulations:
 
 ```bash
 # Generate a template control file for MD 
@@ -44,20 +41,17 @@ $ /home/user/genesis/bin/spdyn -h ctrl_all md > INP
 $ less INP
 ```
 
-Then, the users edit this control file by themselves according to the user's
-desired simulation condition. Note that in one line of the file all characters
-after "#" are recognized as a comment (not read in the program). Example control
-files are shown in [Examples](/docs/examples/) and
-[Tutorials](/docs/tutorial_2022/). In order to run the MD
-simulation, the users execute atdyn/spdyn for the control file. In the following
-example, MD simulation is carried out with 16 CPU cores, where the 4 MPI
-processors and 4 OpenMP threads are employed for parallel calculation:
+Then, the users edit this control file according to their desired simulation condition. Note that in any line of the file, all characters after "#" are treated as comments. Example control files are shown in [Examples](/docs/examples/) and [Tutorials](/docs/tutorial_2022/).
+
+In order to run the MD simulation, the users execute `atdyn`, `spdyn`, or `cgdyn` with the control file. In the following example, an MD simulation is carried out using 16 CPU cores, where 4 MPI processes and 4 OpenMP threads are employed:
 
 ```bash
-# Run spdyn for INP using 16 CPU cores with mpirun
+# Run spdyn (or atdyn) for INP using 16 CPU cores with mpirun
 $ export OMP_NUM_THREADS=4
 $ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
 ```
+
+Note that for `cgdyn`, the 3D spatial domain decomposition requires at least 8 MPI processes (\\(N_x \ge 2, N_y \ge 2, N_z \ge 2\\)) and explicit domain decomposition settings in the `[BOUNDARY]` section (see [Tutorial 11.1](/tutorials/genesis_tutorial_11.1_2026/) for details).
 
 You may want to know [more details about using spdyn with hybrid MPI/OpenMP](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
