@@ -1,7 +1,7 @@
 ---
 title: "GENESIS Related Publications"
 excerpt: "GENESIS has been widely used by many people."
-last_modified_at: 2026-09-16T14:40:35+09:00
+last_modified_at: 2026-10-28T14:00:00+09:00
 layout: single
 classes: wide
 toc: false
@@ -10,6 +10,14 @@ sidebar:
 ---
 
 ## 2026
+
+- Optimized M-SHAKE Constraint Implementations for GPU-Accelerated Molecular Dynamics: Balancing Precision and Performance Across Architectures  
+Jaewoon Jung, Diego Ugarte La Torre, Chigusa Kobayashi, Katsuhisa Ozaki, Yuji Sugita  
+[*J. Comput. Chem.* **47**, 25, e70492 (2026).](https://doi.org/10.1002/jcc.70492)
+
+- Coarse-grained Martini 3 model for collagen fibrils  
+Matthias Brosz, Johanna Buck, Fabian Grünewald, Debora Monego, Jaewoon Jung, Yuji Sugita, Camilo Aponte-Santamaría, Frauke Gräter  
+[*Biophys. J.* **125**, 2, 581–593 (2026).](https://doi.org/10.1016/j.bpj.2025.10.012)
 
 - Impact of Inhibitor Size and Flexibility on the Binding Pathways to c-Src Kinase  
 Ai Shinobu, Suyong Re, Hiraku Oshima, Yuji Sugita  
