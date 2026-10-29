@@ -2,10 +2,12 @@
 main:
   - title: "News"
     url: /news/
-  - title: "Benchmarks"
-    url: /benchmark/
   - title: "Documentation"
     url: /documentation/
+  - title: "Manual"
+    url: /assets/fundamental/GENESIS_UserGuide_v2.2.0.pdf
+  - title: "Benchmarks"
+    url: /benchmark/
   - title: "Links"
     url: /link/
 
@@ -52,26 +54,8 @@ sidebar-basic:
   - title: "Documentation"
     url: /documentation/
     children:
-      - title: "Installation"
-        url: /docs/installation/
-      - title: "Usage"
-
-# sidebar basic 
-sidebar-basic:
-  - title: "Home"
-    url: /
-    children:
-      - title: "Download"
-        url: /docs/download/
-      - title: "Releases"
-        url: /docs/release_notes/
-      - title: "Citation"
-        url: /docs/citation/
-      - title: "About"
-        url: /docs/about/
-  - title: "Documentation"
-    url: /documentation/
-    children:
+      - title: "Manual"
+        url: /assets/fundamental/GENESIS_UserGuide_v2.2.0.pdf
       - title: "Installation"
         url: /docs/installation/
       - title: "Usage"
@@ -86,4 +70,3 @@ sidebar-basic:
         url: /docs/showcase/
       - title: "FAQ"
         url: /docs/FAQ/
-
