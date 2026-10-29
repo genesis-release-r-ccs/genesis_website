@@ -51,7 +51,9 @@ $ export OMP_NUM_THREADS=2
 $ mpirun -np 8 /home/user/genesis/bin/spdyn INP > log
 ```
 
-For `spdyn`, it is recommended to use at least 8 MPI processes (\\(\ge 8\\)) to achieve efficient spatial domain decomposition. For `cgdyn`, the number of MPI processes must be at least 8 (\\(\ge 8\\)) and a power of 2 (e.g., 8, 16, 32, ...). Specifying domain partitioning (`domain_x`, `domain_y`, `domain_z`) in the `[BOUNDARY]` section is optional; if explicitly specified, their product (\\(N_x \times N_y \times N_z\\)) must strictly equal the total number of MPI processes.
+For `spdyn`, it is recommended to use at least 8 MPI processes (\\(\ge 8\\)) to achieve efficient spatial domain decomposition. 
+
+For `cgdyn`, the number of MPI processes must be at least 8 (\\(\ge 8\\)) and a power of 2 (e.g., 8, 16, 32, ...). Specifying domain partitioning (`domain_x`, `domain_y`, `domain_z`) in the `[BOUNDARY]` section is optional; if explicitly specified, their product (\\(N_x \times N_y \times N_z\\)) must strictly equal the total number of MPI processes.
 
 You may want to know [more details about using spdyn with hybrid MPI/OpenMP](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
