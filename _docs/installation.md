@@ -1,7 +1,7 @@
 ---
 title: "Installation"
 excerpt: "Installation of GENESIS."
-last_modified_at: 2025-05-08T11:59:26+09:00
+last_modified_at: 2026-10-29T11:41:00+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -23,16 +23,15 @@ Chapter “Getting Started”.
 -   **Operating systems**
     -   Linux
     -   Mac OSX
-    -   Windows 11 (spdyn, ver 1.7.1)
+    -   Windows 11 (spdyn, GENESIS 1.7.1)
 -   **Fortran and C compilers**
-    -   [GNU compiler](https://gcc.gnu.org/) `gfortran`, `gcc` (version 7.0.0 or
-        later is required.)
-    -   Intel compilers `ifort`, `icc` (`ifx`, `icx` are available from
-        ver 2.1.3.)
+    -   [GNU compiler](https://gcc.gnu.org/) `gfortran`, `gcc` (version 7.0.0 or later is required; version 8.5.0 or later is recommended.)
+    -   Intel compilers `ifort`, `icc` (`ifx`, `icx` are available 
+        GENESIS 2.1.3 or later.)
     -   Fujitsu compilers `frtpx`, `fccpx`
-    -   LLVM/Clang compilers `flang`, `clang` (version 18.1.0 or later is required.)
-    -   NVIDIA compilers `nvfortran`, `nvcc` (version 25.1 or later is required.)
-    -   Cygwin/mingw (spdyn, ver 1.7.1)
+    -   LLVM/Clang compilers `flang`, `clang` (version 18.1.0 or later is required; GENESIS 2.2.0 or later)
+    -   NVIDIA compilers `nvfortran`, `nvcc` (version 25.1 or later is required; GENESIS 2.2.0 or later)
+    -   Cygwin/mingw (spdyn, GENESIS 1.7.1)
 -   **Preprocessors**
     -   GCC preprocessor `cpp`
     -   Intel preprocessor `fpp`
@@ -40,9 +39,9 @@ Chapter “Getting Started”.
 -   **MPI libraries for parallel computing**
     -   [OpenMPI](https://www.open-mpi.org/) `mpirun`, `mpif90`, `mpicc`
     -   Intel MPI `mpiexec`, `mpiifort`, `mpiicc` (`mpiifx`, `mpiicx`
-        are available from ver 2.1.3.)
+        are supported in GENESIS 2.1.3 or later)
     -   Fujitsu MPI
-    -   Microsoft MPI (spdyn, ver 1.7.1)
+    -   Microsoft MPI (spdyn, GENESIS 1.7.1)
 -   **Numerical libraries for mathematical algorithms**
     -   [LAPACK/BLAS](http://www.netlib.org/lapack/)
     -   Intel Math Kernel Library (MKL)
@@ -50,17 +49,19 @@ Chapter “Getting Started”.
     -   OpenBlas
 -   **GPU (Optional)**
     -   NVIDIA GPU cards which support [Compute Capability
-        (CC)](https://developer.nvidia.com/cuda-gpus) 3.5 or later (except for 5.X)
-    -   The following GPU cards and CUDA versions have been tested by
+        (CC)](https://developer.nvidia.com/cuda-gpus) 6.0 or higher.
+    -   The following GPUs and CUDA versions have been tested by
         the GENESIS developers
-        -   NVIDIA K20, K40, P100, TITAN V, GTX 1080, GTX 1080Ti, RTX
-            2080, RTX 2080Ti, RTX 3090, RTX A6000, RTX 4500 ada (from
-            ver 2.1.3), A30, A100, H100 (from ver 2.1.3) , GH200 (from
-            ver 2.1.3)
-        -   [CUDA](https://developer.nvidia.com/cuda-toolkit) ver. 8.0, 9.0, 9.1, 9.2, 10.0,
-            11.2, 11.4, 11.5, 12.1-12.6
-        -   Compute Capability 3.5, 3.7, 6.0, 6.1, 6.2, 8.0
-    - For GPUs of the Hopper generation or later, we recommend using version 2.1.6 or later. 
+        -   Geforce: NVIDIA RTX 2080, RTX 2080Ti, RTX 3090, RTX5090
+        -   Professional and data center: NVIDIA RTX A6000, A30, A100, RTX 4500 Ada,
+        RTX 6000 Ada, H100, GH200,
+        RTX PRO 6000 Blackwell Workstation Edition 
+        -   [CUDA](https://developer.nvidia.com/cuda-toolkit) ver. 12.1-12.6, 13.0, 13.1.
+    -  For NVIDIA Ada Lovelace, Hopper, 
+    GENESIS version 2.1.3 or later is required.
+    Version 2.1.6 or later is recommended.
+    - For NVIDIA Blackwell GPUs, we recommend using the latest version of GENESIS.
+    - AMD GPUs with ROCm (supported in GENESIS 2.2.0 or later)
 
 ##  General scheme for installation
 
@@ -95,7 +96,7 @@ libraries.
 
 #### Configure
 
-- If you encounter an error such as "configure: error: Fortran compiler cannot create executables", it is likely that no suitable Fortran compiler was detected. By default, the configure script looks for `mpiifort`, `mpif90`, or `mpifrtpx` as Fortran compilers, and `mpiicc`, `mpicc`, or `mpifccpx` for C compilers. If none of these are available in your environment, the configuration process will fail. To resolve this, ensure that the appropriate compiler and MPI library paths are correctly set in your `~/.bashrc` (or equivalent shell configuration file), or specify them explicitly in the configure command. Double-check for any typos in the paths as well.
+- If you encounter an error such as "configure: error: Fortran compiler cannot create executables", it is likely that no suitable Fortran compiler was detected. By default, the configure script looks for `mpifort`, `mpiifx`, or `mpifrtpx` as Fortran compilers, and `mpicc`, `mpiicx`, or `mpifccpx` for C compilers. If none of these are available in your environment, the configuration process will fail. To resolve this, ensure that the appropriate compiler and MPI library paths are correctly set in your `~/.bashrc` (or equivalent shell configuration file), or specify them explicitly in the configure command. Double-check for any typos in the paths as well.
 - If you are using compilers or libraries other than the recommended ones, warning messages may appear during the configure step. These are only warnings (not errors), and compilation can still proceed. However, we strongly recommend performing an installation check in such cases.
 - On some supercomputing systems, you may need to run `module load [module]` before executing the `configure` command. Please consult the user guide of your system for more details.
 - If you experience unexpected configuration errors, especially after editing `configure.ac` or `Makefile.am`, or if your environment differs significantly from the developer’s, try running `autoreconf` before executing `configure`. This may help resolve compatibility issues.
