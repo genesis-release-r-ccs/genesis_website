@@ -1,7 +1,7 @@
 ---
 title: "Using GENESIS"
 excerpt: "How to use GENESIS."
-last_modified_at: 2026-10-29T11:51:00+09:00
+last_modified_at: 2026-10-29T14:20:00+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -43,15 +43,15 @@ $ less INP
 
 Then, the users edit this control file according to their desired simulation condition. Note that in any line of the file, all characters after "#" are treated as comments. Example control files are shown in [Examples](/docs/examples/) and [Tutorials](/docs/tutorial_2022/).
 
-In order to run the MD simulation, the users execute `atdyn`, `spdyn`, or `cgdyn` with the control file. In the following example, an MD simulation is carried out using 16 CPU cores, where 4 MPI processes and 4 OpenMP threads are employed:
+In order to run the MD simulation, the users execute `atdyn`, `spdyn`, or `cgdyn` with the control file. In the following example, an MD simulation is carried out using 16 CPU cores, where 8 MPI processes and 2 OpenMP threads are employed:
 
 ```bash
-# Run spdyn (or atdyn) for INP using 16 CPU cores with mpirun
-$ export OMP_NUM_THREADS=4
-$ mpirun -np 4 /home/user/genesis/bin/spdyn INP > log
+# Run spdyn (or atdyn / cgdyn) for INP using 16 CPU cores with mpirun
+$ export OMP_NUM_THREADS=2
+$ mpirun -np 8 /home/user/genesis/bin/spdyn INP > log
 ```
 
-Note that for `cgdyn`, the 3D spatial domain decomposition requires at least 8 MPI processes (\\(N_x \ge 2, N_y \ge 2, N_z \ge 2\\)) and explicit domain decomposition settings in the `[BOUNDARY]` section.
+For `spdyn`, it is recommended to use at least 8 MPI processes (\\(\ge 8\\)) to achieve efficient spatial domain decomposition. For `cgdyn`, the number of MPI processes must be at least 8 (\\(\ge 8\\)) and a power of 2 (e.g., 8, 16, 32, ...). Specifying domain partitioning (`domain_x`, `domain_y`, `domain_z`) in the `[BOUNDARY]` section is optional; if explicitly specified, their product (\\(N_x \times N_y \times N_z\\)) must strictly equal the total number of MPI processes.
 
 You may want to know [more details about using spdyn with hybrid MPI/OpenMP](/docs/usage_spdyn_hybrid_MPI_OpenMP/).
 
