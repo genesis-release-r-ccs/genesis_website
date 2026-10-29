@@ -1,7 +1,7 @@
 ---
 title: "Using GENESIS"
 excerpt: "How to use GENESIS."
-last_modified_at: 2026-10-28T10:12:00+09:00
+last_modified_at: 2026-10-29T11:51:00+09:00
 layout: single
 toc: true
 toc_sticky: true
@@ -9,7 +9,7 @@ sidebar:
   nav: sidebar-basic
 ---
 
-- [GENESIS User Guide](/assets/fundamental/GENESIS_UserGuide_v2.0.0.pdf)
+- [GENESIS User Guide](/assets/fundamental/GENESIS_UserGuide_v2.2.0.pdf)
 
 In the GENESIS program package, not only MD simulators but also various
 trajectory analysis tools are available. The users execute those
